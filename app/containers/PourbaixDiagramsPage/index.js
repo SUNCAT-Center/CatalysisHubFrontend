@@ -10,13 +10,18 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import makeSelectPourbaixDiagramsPage from './selectors';
 import messages from './messages';
+import PeriodicTable from 'components/PeriodicTable';
+import PourbaixDiagramView from 'components/PourbaixDiagramView';
+import Flexbox from 'flexbox-react';
 
 export class PourbaixDiagramsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
-        <FormattedMessage {...messages.header} />
-      </div>
+        <Flexbox flexDirection="column" minHeight="100vh">
+        <h2>Periodic Table of Elements</h2>
+        <PeriodicTable />
+        <PourbaixDiagramView />
+        </Flexbox>
     );
   }
 }

@@ -13,7 +13,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     return (
       <div>
         <A href="http://suncat.stanford.edu/">
-          <Img src={Banner} alt="react-boilerplate - Logo" />
+          <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
         </A>
         <NavBar>
           <HeaderLink to="/energies">
