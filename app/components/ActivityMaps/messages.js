@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.components.ActivityMaps.header',
-    defaultMessage: 'This is the ActivityMaps component !',
+    defaultMessage: 'Here be dragons ...',
   },
 });

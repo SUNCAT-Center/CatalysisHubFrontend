@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.PourbaixDiagramsPage.header',
-    defaultMessage: 'This is PourbaixDiagramsPage container !',
+    defaultMessage: 'Here be Pourbaix Diagrams ...!',
   },
 });

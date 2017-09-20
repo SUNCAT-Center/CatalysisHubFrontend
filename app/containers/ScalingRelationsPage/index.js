@@ -10,12 +10,13 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import makeSelectScalingRelationsPage from './selectors';
 import messages from './messages';
+import Iframe from 'react-iframe'
 
 export class ScalingRelationsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <Iframe url="https://web.stanford.edu/~ctsai89/cgi-bin/apps/catapp/plot" />
       </div>
     );
   }

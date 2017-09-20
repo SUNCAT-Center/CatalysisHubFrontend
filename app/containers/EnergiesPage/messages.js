@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.EnergiesPage.header',
-    defaultMessage: 'This is EnergiesPage container !',
+    defaultMessage: 'Maybe the original energies Menu here?',
   },
 });

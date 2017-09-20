@@ -20,6 +20,8 @@ function Footer() {
           {...messages.authorMessage}
           values={{
             author: <A href="https://twitter.com/maxjhoffmann">Max Hoffmann</A>,
+            author_town: "Menlo Park",
+
           }}
         />
       </section>
