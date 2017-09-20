@@ -8,6 +8,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   header: {
     id: 'app.containers.ActivityMapsPage.header',
-    defaultMessage: 'This is ActivityMapsPage container !',
+    defaultMessage: 'Explore Structures via Activity Maps!',
   },
 });
