@@ -10,4 +10,8 @@ export default defineMessages({
     id: 'app.components.PeriodicTable.header',
     defaultMessage: 'This is the PeriodicTable component !',
   },
+  selection: {
+    id: 'app.components.PeriodicTable.selection',
+    defaultMessage: 'Selection',
+  },
 });

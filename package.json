@@ -224,7 +224,6 @@
     "lodash": "4.17.2",
     "minimist": "1.2.0",
     "ngl": "^0.10.4",
-    "periodic-table": "0.0.8",
     "react": "15.4.1",
     "react-dom": "15.4.1",
     "react-helmet": "3.2.2",
