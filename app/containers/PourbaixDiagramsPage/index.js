@@ -11,6 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import makeSelectPourbaixDiagramsPage from './selectors';
 import messages from './messages';
 import PeriodicTable from 'components/PeriodicTable';
+import PeriodicTableSelector from 'containers/PeriodicTableSelector'
 import PourbaixDiagramView from 'components/PourbaixDiagramView';
 import Flexbox from 'flexbox-react';
 

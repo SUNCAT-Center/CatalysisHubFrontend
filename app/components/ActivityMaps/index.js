@@ -14,36 +14,39 @@ import PeriodicTable from '../PeriodicTable';
 import ActivityMapOER from '../ActivityMapOer';
 import StructureView from '../StructureView';
 
+import PeriodicTableSelector from 'containers/PeriodicTableSelector';
+import Foobar from 'containers/Foobar';
+
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
-    render() {
-        return (
-            <Flexbox flexDirection="column" minHeight="100vh">
-            <Flexbox height="25px">
-            <span>Choose Reaction</span>
-            <select>
+  render() {
+    return (
+      <Flexbox flexDirection="column" minHeight="100vh">
+        <Flexbox height="25px">
+          <span>Choose Reaction</span>
+          <select>
             <option>HER (2 structures)</option>
             <option>OER (4 structures)</option>
             <option>ORR</option>
             <option>CO oxidation (2 structures)</option>
             <option>CO2RR (6+ structures)</option>
             <option>Ammonia</option>
-            </select>
-            </Flexbox>
-            <Flexbox height="500px">
-            <PeriodicTable />
-            </Flexbox>
-            <div>
-            <Flexbox height="900px" width="100%">
+          </select>
+        </Flexbox>
+        <Flexbox height="500px">
+          <PeriodicTableSelector />
+        </Flexbox>
+        <div>
+          <Flexbox height="900px" width="100%">
             <ActivityMapOER />
-            </Flexbox>
-            <Flexbox height="600px">
+          </Flexbox>
+          <Flexbox height="600px">
             <StructureView />
-            </Flexbox>
+          </Flexbox>
 
-            </div>
-            </Flexbox>
-        );
-    }
+        </div>
+      </Flexbox>
+    );
+  }
 }
 
 ActivityMaps.propTypes = {

@@ -9,17 +9,8 @@ import styled from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import Element from 'components/ElementBox'
 
-
-const Box = styled.div`
-    border: 3px solid black; 
-    max-width: 50px;
-    max-height: 50px; 
-    padding: 10px;
-    line-height: 50px; 
-    text-align: center; 
-    font-size: 1.23em;
-`;
 
 const Section = styled.section`
     width: 900px;
@@ -77,193 +68,193 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           <input type="text" name="element_selection" />
           <Container>
             <PanelOne>
-              <Box label="H"> H </Box>
-              <Box label="Li"> Li </Box>
-              <Box label="Na"> Na </Box>
-              <Box label="K"> K </Box>
-              <Box label="Rb"> Rb </Box>
-              <Box label="Cs"> Cs </Box>
-              <Box label="Fr"> Fr </Box>
+              <Element label="H"/>
+              <Element label="Li"/>
+              <Element label="Na"/>
+              <Element label="K"/>
+              <Element label="Rb"/>
+              <Element label="Cs"/>
+              <Element label="Fr"/>
             </PanelOne>
             <PanelTwo>
-              <Box label="Be"> Be </Box>
-              <Box label="Mg"> Mg </Box>
-              <Box label="Ca"> Ca </Box>
-              <Box label="Sr"> Sr </Box>
-              <Box label="Ba"> Ba </Box>
-              <Box label="Ra"> Ra </Box>
+              <Element label="Be"/>
+              <Element label="Mg"/>
+              <Element label="Ca"/>
+              <Element label="Sr"/>
+              <Element label="Ba"/>
+              <Element label="Ra"/>
             </PanelTwo>
             <PanelThree>
-              <Box label="Sc"> Sc </Box>
-              <Box label="Y"> Y </Box>
-              <Box label="X"> X </Box>
-              <Box label="X"> X </Box>
+              <Element label="Sc"/>
+              <Element label="Y"/>
+              <Element label="..."/>
+              <Element label="..."/>
             </PanelThree>
             <PanelThree>
-              <Box label="Ti"> Ti </Box>
-              <Box label="Zr"> Zr </Box>
-              <Box label="Hf"> Hf </Box>
-              <Box label="Rf"> Rf </Box>
+              <Element label="Ti"/>
+              <Element label="Zr"/>
+              <Element label="Hf"/>
+              <Element label="Rf"/>
             </PanelThree>
             <PanelThree>
-              <Box label="V"> V </Box>
-              <Box label="Nb"> Nb </Box>
-              <Box label="Ta"> Ta </Box>
-              <Box label="Db"> Db </Box>
+              <Element label="V"/>
+              <Element label="Nb"/>
+              <Element label="Ta"/>
+              <Element label="Db"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Cr"> Cr </Box>
-              <Box label="Mo"> Mo </Box>
-              <Box label="W"> W </Box>
-              <Box label="Sg"> Sg </Box>
+              <Element label="Cr"/>
+              <Element label="Mo"/>
+              <Element label="W"/>
+              <Element label="Sg"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Mn"> Mn </Box>
-              <Box label="Tc"> Tc </Box>
-              <Box label="Re"> Re </Box>
-              <Box label="Bh"> Bh </Box>
+              <Element label="Mn"/>
+              <Element label="Tc"/>
+              <Element label="Re"/>
+              <Element label="Bh"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Fe"> Fe </Box>
-              <Box label="Ru"> Ru </Box>
-              <Box label="Os"> Os </Box>
-              <Box label="Hs"> Hs </Box>
+              <Element label="Fe"/>
+              <Element label="Ru"/>
+              <Element label="Os"/>
+              <Element label="Hs"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Co"> Co </Box>
-              <Box label="Rh"> Rh</Box>
-              <Box label="Ir"> Ir </Box>
-              <Box label="Mt"> Mt </Box>
+              <Element label="Co"/>
+              <Element label="Rh"/>
+              <Element label="Ir"/>
+              <Element label="Mt"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Ni"> Ni </Box>
-              <Box label="Pd"> Pd </Box>
-              <Box label="Pt"> Pt </Box>
-              <Box label="Ds"> Ds </Box>
+              <Element label="Ni"/>
+              <Element label="Pd"/>
+              <Element label="Pt"/>
+              <Element label="Ds"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Cu"> Cu </Box>
-              <Box label="Ag"> Ag </Box>
-              <Box label="Au"> Au </Box>
-              <Box label="Rg"> Rg </Box>
+              <Element label="Cu"/>
+              <Element label="Ag"/>
+              <Element label="Au"/>
+              <Element label="Rg"/>
             </PanelThree>
             <PanelThree>
-              <Box label="Zn"> Zn </Box>
-              <Box label="Cd"> Cd </Box>
-              <Box label="Hg"> Hg </Box>
-              <Box label="Cn"> Cn </Box>
+              <Element label="Zn"/>
+              <Element label="Cd"/>
+              <Element label="Hg"/>
+              <Element label="Cn"/>
             </PanelThree>
             <PanelFour>
-              <Box label="B"> B </Box>
-              <Box label="Al"> Al </Box>
-              <Box label="Ga"> Ga </Box>
-              <Box label="In"> In </Box>
-              <Box label="Ti"> Ti </Box>
-              <Box label="Uut"> Uut </Box>
+              <Element label="B"/>
+              <Element label="Al"/>
+              <Element label="Ga"/>
+              <Element label="In"/>
+              <Element label="Ti"/>
+              <Element label="Uut"/>
             </PanelFour>
             <PanelFour>
-              <Box label="C"> C </Box>
-              <Box label="Si"> Si </Box>
-              <Box label="Ge"> Ge </Box>
-              <Box label="Sn"> Sn </Box>
-              <Box label="Rb"> Rb </Box>
-              <Box label="Fl"> Fl </Box>
+              <Element label="C"/>
+              <Element label="Si"/>
+              <Element label="Ge"/>
+              <Element label="Sn"/>
+              <Element label="Rb"/>
+              <Element label="Fl"/>
             </PanelFour>
             <PanelFour>
-              <Box label="N"> N </Box>
-              <Box label="P"> P </Box>
-              <Box label="As"> As </Box>
-              <Box label="Sb"> Sb </Box>
-              <Box label="Bi"> Bi </Box>
-              <Box label="Uup"> Uup </Box>
+              <Element label="N"/>
+              <Element label="P"/>
+              <Element label="As"/>
+              <Element label="Sb"/>
+              <Element label="Bi"/>
+              <Element label="Uup"/>
             </PanelFour>
             <PanelFour>
-              <Box label="O"> O </Box>
-              <Box label="S"> S </Box>
-              <Box label="Se"> Se </Box>
-              <Box label="Te"> Te </Box>
-              <Box label="Po"> Po </Box>
-              <Box label="Lv"> Lv </Box>
+              <Element label="O"/>
+              <Element label="S"/>
+              <Element label="Se"/>
+              <Element label="Te"/>
+              <Element label="Po"/>
+              <Element label="Lv"/>
             </PanelFour>
             <PanelFour>
-              <Box label="F"> F </Box>
-              <Box label="Cl"> Cl </Box>
-              <Box label="Br"> Br </Box>
-              <Box label="I"> I </Box>
-              <Box label="At"> At </Box>
-              <Box label="Uus"> Uus </Box>
+              <Element label="F"/>
+              <Element label="Cl"/>
+              <Element label="Br"/>
+              <Element label="I"/>
+              <Element label="At"/>
+              <Element label="Uus"/>
             </PanelFour>
             <PanelFive>
-              <Box label="He"> He </Box>
-              <Box label="Ne"> Ne </Box>
-              <Box label="Ar"> Ar </Box>
-              <Box label="Kr"> Kr </Box>
-              <Box label="Xe"> Xe </Box>
-              <Box label="Rn"> Rn </Box>
-              <Box label="Uuo"> Uuo </Box>
+              <Element label="He"/>
+              <Element label="Ne"/>
+              <Element label="Ar"/>
+              <Element label="Kr"/>
+              <Element label="Xe"/>
+              <Element label="Rn"/>
+              <Element label="Uuo"/>
             </PanelFive>
           </Container>
 
           <LowerContainer>
             <Bottom>
-              <Box label="La"> La </Box>
-              <Box label="Ac"> Ac </Box>
+              <Element label="La"/>
+              <Element label="Ac"/>
             </Bottom>
             <Bottom>
-              <Box label="Ce"> Ce </Box>
-              <Box label="Th"> Th </Box>
+              <Element label="Ce"/>
+              <Element label="Th"/>
             </Bottom>
             <Bottom>
-              <Box label="Pr"> Pr </Box>
-              <Box label="Pa"> Pa </Box>
+              <Element label="Pr"/>
+              <Element label="Pa"/>
             </Bottom>
             <Bottom>
-              <Box label="Nd"> Nd </Box>
-              <Box label="U"> U </Box>
+              <Element label="Nd"/>
+              <Element label="U"/>
             </Bottom>
             <Bottom>
-              <Box label="Pm"> Pm </Box>
-              <Box label="Np"> Np </Box>
+              <Element label="Pm"/>
+              <Element label="Np"/>
             </Bottom>
             <Bottom>
-              <Box label="Sm"> Sm </Box>
-              <Box label="Pu"> Pu </Box>
+              <Element label="Sm"/>
+              <Element label="Pu"/>
             </Bottom>
             <Bottom>
-              <Box label="Eu"> Eu </Box>
-              <Box label="Am"> Am </Box>
+              <Element label="Eu"/>
+              <Element label="Am"/>
             </Bottom>
             <Bottom>
-              <Box label="Gd"> Gd </Box>
-              <Box label="Cm"> Cm </Box>
+              <Element label="Gd"/>
+              <Element label="Cm"/>
             </Bottom>
             <Bottom>
-              <Box label="Tb"> Tb </Box>
-              <Box label="Bk"> Bk </Box>
+              <Element label="Tb"/>
+              <Element label="Bk"/>
             </Bottom>
             <Bottom>
-              <Box label="Dy"> Dy </Box>
-              <Box label="Cf"> Cf </Box>
+              <Element label="Dy"/>
+              <Element label="Cf"/>
             </Bottom>
             <Bottom>
-              <Box label="Ho"> Ho </Box>
-              <Box label="Es"> Es </Box>
+              <Element label="Ho"/>
+              <Element label="Es"/>
             </Bottom>
             <Bottom>
-              <Box label="Er"> Er </Box>
-              <Box label="Fm"> Fm </Box>
+              <Element label="Er"/>
+              <Element label="Fm"/>
             </Bottom>
             <Bottom>
-              <Box label="Tm"> Tm </Box>
-              <Box label="Md"> Md </Box>
+              <Element label="Tm"/>
+              <Element label="Md"/>
             </Bottom>
             <Bottom>
-              <Box label="Yb"> Yb </Box>
-              <Box label="No"> No </Box>
+              <Element label="Yb"/>
+              <Element label="No"/>
             </Bottom>
             <Bottom>
-              <Box label="Lu"> Lu </Box>
-              <Box label="Lr"> Lr </Box>
+              <Element label="Lu"/>
+              <Element label="Lr"/>
             </Bottom>
 
           </LowerContainer>
