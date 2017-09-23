@@ -6,17 +6,16 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import PeriodicTable from 'components/PeriodicTable';
+
 import makeSelectPeriodicTableSelector from './selectors';
-import messages from './messages';
-import PeriodicTable from 'components/PeriodicTable'
+import { clickElement } from './actions';
 
 export class PeriodicTableSelector extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
         <PeriodicTable />
       </div>
     );
@@ -33,9 +32,9 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    clickElement : (element) => {
-      dispatch(actions.clickElement(element))
-    }
+    clickElement: (element) => {
+      dispatch(clickElement(element));
+    },
   };
 }
 

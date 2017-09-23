@@ -8,14 +8,10 @@ import React from 'react';
 // import styled from 'styled-components';
 import Flexbox from 'flexbox-react';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-import PeriodicTable from '../PeriodicTable';
-import ActivityMapOER from '../ActivityMapOer';
-import StructureView from '../StructureView';
+import ActivityMapOER from 'components/ActivityMapOer';
+import StructureView from 'components/StructureView';
 
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
-import Foobar from 'containers/Foobar';
 
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

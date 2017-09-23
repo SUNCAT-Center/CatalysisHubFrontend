@@ -19,8 +19,11 @@ function periodicTableSelectorReducer(state = initialState, action) {
     case ELEMENT_CLICKED:
       return {
         ...state,
-        selection: (selection.trim() == '') ? action.payload.element.label : [selection, action.payload.element.label].join(' & ')
-      }
+        selection: (state.selection.trim() === '') ?
+                    action.payload.element.label
+                    :
+                    [state.selection, action.payload.element.label].join(' & '),
+      };
     case DEFAULT_ACTION:
       return state;
     default:

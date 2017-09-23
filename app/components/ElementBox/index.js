@@ -6,9 +6,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import PropTypes from 'prop-types';
 
 const Box = styled.div`
     border: 3px solid black; 
@@ -21,21 +19,22 @@ const Box = styled.div`
 `;
 
 class ElementBox extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props){
-    super(props)
-  }
   render() {
     return (
       <div>
         <Box
-          onClick={() => {console.log("CLICKED BOX " + this.props.label); console.log(JSON.stringify(this.props))}}
-        > {this.props.label } </Box>
+          onClick={() => {
+            console.log(`CLICKED BOX ${this.props.label}`);
+            console.log(JSON.stringify(this.props));
+          }}
+        >{ this.props.label }</Box>
       </div>
     );
   }
 }
 
 ElementBox.propTypes = {
+  label: PropTypes.string.isRequired,
 
 };
 
