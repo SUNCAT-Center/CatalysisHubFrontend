@@ -6,23 +6,21 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import makeSelectPourbaixDiagramsPage from './selectors';
-import messages from './messages';
-import PeriodicTable from 'components/PeriodicTable';
-import PeriodicTableSelector from 'containers/PeriodicTableSelector'
+import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 import PourbaixDiagramView from 'components/PourbaixDiagramView';
 import Flexbox from 'flexbox-react';
+
+import makeSelectPourbaixDiagramsPage from './selectors';
 
 export class PourbaixDiagramsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-        <Flexbox flexDirection="column" minHeight="100vh">
+      <Flexbox flexDirection="column" minHeight="100vh">
         <h2>Periodic Table of Elements</h2>
-        <PeriodicTable />
+        <PeriodicTableSelector />
         <PourbaixDiagramView />
-        </Flexbox>
+      </Flexbox>
     );
   }
 }

@@ -8,9 +8,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-import Element from 'components/ElementBox'
+import Element from 'components/ElementBox';
 
+import messages from './messages';
 
 const Section = styled.section`
     width: 900px;
@@ -65,196 +65,204 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
         {/* Periodic Table of Elements */}
         <Section>
           <span><FormattedMessage {...messages.selection} /></span>
-          <input type="text" name="element_selection" />
+          <input
+            type="text"
+            name="element_selection"
+            value={Object.keys(this.props).toString()}
+            onChange={(input) => {
+              console.log(Object.keys(input));
+            }
+            }
+          />
           <Container>
             <PanelOne>
-              <Element label="H"/>
-              <Element label="Li"/>
-              <Element label="Na"/>
-              <Element label="K"/>
-              <Element label="Rb"/>
-              <Element label="Cs"/>
-              <Element label="Fr"/>
+              <Element label="H" />
+              <Element label="Li" />
+              <Element label="Na" />
+              <Element label="K" />
+              <Element label="Rb" />
+              <Element label="Cs" />
+              <Element label="Fr" />
             </PanelOne>
             <PanelTwo>
-              <Element label="Be"/>
-              <Element label="Mg"/>
-              <Element label="Ca"/>
-              <Element label="Sr"/>
-              <Element label="Ba"/>
-              <Element label="Ra"/>
+              <Element label="Be" />
+              <Element label="Mg" />
+              <Element label="Ca" />
+              <Element label="Sr" />
+              <Element label="Ba" />
+              <Element label="Ra" />
             </PanelTwo>
             <PanelThree>
-              <Element label="Sc"/>
-              <Element label="Y"/>
-              <Element label="..."/>
-              <Element label="..."/>
+              <Element label="Sc" />
+              <Element label="Y" />
+              <Element label="..." />
+              <Element label="..." />
             </PanelThree>
             <PanelThree>
-              <Element label="Ti"/>
-              <Element label="Zr"/>
-              <Element label="Hf"/>
-              <Element label="Rf"/>
+              <Element label="Ti" />
+              <Element label="Zr" />
+              <Element label="Hf" />
+              <Element label="Rf" />
             </PanelThree>
             <PanelThree>
-              <Element label="V"/>
-              <Element label="Nb"/>
-              <Element label="Ta"/>
-              <Element label="Db"/>
+              <Element label="V" />
+              <Element label="Nb" />
+              <Element label="Ta" />
+              <Element label="Db" />
             </PanelThree>
             <PanelThree>
-              <Element label="Cr"/>
-              <Element label="Mo"/>
-              <Element label="W"/>
-              <Element label="Sg"/>
+              <Element label="Cr" />
+              <Element label="Mo" />
+              <Element label="W" />
+              <Element label="Sg" />
             </PanelThree>
             <PanelThree>
-              <Element label="Mn"/>
-              <Element label="Tc"/>
-              <Element label="Re"/>
-              <Element label="Bh"/>
+              <Element label="Mn" />
+              <Element label="Tc" />
+              <Element label="Re" />
+              <Element label="Bh" />
             </PanelThree>
             <PanelThree>
-              <Element label="Fe"/>
-              <Element label="Ru"/>
-              <Element label="Os"/>
-              <Element label="Hs"/>
+              <Element label="Fe" />
+              <Element label="Ru" />
+              <Element label="Os" />
+              <Element label="Hs" />
             </PanelThree>
             <PanelThree>
-              <Element label="Co"/>
-              <Element label="Rh"/>
-              <Element label="Ir"/>
-              <Element label="Mt"/>
+              <Element label="Co" />
+              <Element label="Rh" />
+              <Element label="Ir" />
+              <Element label="Mt" />
             </PanelThree>
             <PanelThree>
-              <Element label="Ni"/>
-              <Element label="Pd"/>
-              <Element label="Pt"/>
-              <Element label="Ds"/>
+              <Element label="Ni" />
+              <Element label="Pd" />
+              <Element label="Pt" />
+              <Element label="Ds" />
             </PanelThree>
             <PanelThree>
-              <Element label="Cu"/>
-              <Element label="Ag"/>
-              <Element label="Au"/>
-              <Element label="Rg"/>
+              <Element label="Cu" />
+              <Element label="Ag" />
+              <Element label="Au" />
+              <Element label="Rg" />
             </PanelThree>
             <PanelThree>
-              <Element label="Zn"/>
-              <Element label="Cd"/>
-              <Element label="Hg"/>
-              <Element label="Cn"/>
+              <Element label="Zn" />
+              <Element label="Cd" />
+              <Element label="Hg" />
+              <Element label="Cn" />
             </PanelThree>
             <PanelFour>
-              <Element label="B"/>
-              <Element label="Al"/>
-              <Element label="Ga"/>
-              <Element label="In"/>
-              <Element label="Ti"/>
-              <Element label="Uut"/>
+              <Element label="B" />
+              <Element label="Al" />
+              <Element label="Ga" />
+              <Element label="In" />
+              <Element label="Ti" />
+              <Element label="Uut" />
             </PanelFour>
             <PanelFour>
-              <Element label="C"/>
-              <Element label="Si"/>
-              <Element label="Ge"/>
-              <Element label="Sn"/>
-              <Element label="Rb"/>
-              <Element label="Fl"/>
+              <Element label="C" />
+              <Element label="Si" />
+              <Element label="Ge" />
+              <Element label="Sn" />
+              <Element label="Rb" />
+              <Element label="Fl" />
             </PanelFour>
             <PanelFour>
-              <Element label="N"/>
-              <Element label="P"/>
-              <Element label="As"/>
-              <Element label="Sb"/>
-              <Element label="Bi"/>
-              <Element label="Uup"/>
+              <Element label="N" />
+              <Element label="P" />
+              <Element label="As" />
+              <Element label="Sb" />
+              <Element label="Bi" />
+              <Element label="Uup" />
             </PanelFour>
             <PanelFour>
-              <Element label="O"/>
-              <Element label="S"/>
-              <Element label="Se"/>
-              <Element label="Te"/>
-              <Element label="Po"/>
-              <Element label="Lv"/>
+              <Element label="O" />
+              <Element label="S" />
+              <Element label="Se" />
+              <Element label="Te" />
+              <Element label="Po" />
+              <Element label="Lv" />
             </PanelFour>
             <PanelFour>
-              <Element label="F"/>
-              <Element label="Cl"/>
-              <Element label="Br"/>
-              <Element label="I"/>
-              <Element label="At"/>
-              <Element label="Uus"/>
+              <Element label="F" />
+              <Element label="Cl" />
+              <Element label="Br" />
+              <Element label="I" />
+              <Element label="At" />
+              <Element label="Uus" />
             </PanelFour>
             <PanelFive>
-              <Element label="He"/>
-              <Element label="Ne"/>
-              <Element label="Ar"/>
-              <Element label="Kr"/>
-              <Element label="Xe"/>
-              <Element label="Rn"/>
-              <Element label="Uuo"/>
+              <Element label="He" />
+              <Element label="Ne" />
+              <Element label="Ar" />
+              <Element label="Kr" />
+              <Element label="Xe" />
+              <Element label="Rn" />
+              <Element label="Uuo" />
             </PanelFive>
           </Container>
 
           <LowerContainer>
             <Bottom>
-              <Element label="La"/>
-              <Element label="Ac"/>
+              <Element label="La" />
+              <Element label="Ac" />
             </Bottom>
             <Bottom>
-              <Element label="Ce"/>
-              <Element label="Th"/>
+              <Element label="Ce" />
+              <Element label="Th" />
             </Bottom>
             <Bottom>
-              <Element label="Pr"/>
-              <Element label="Pa"/>
+              <Element label="Pr" />
+              <Element label="Pa" />
             </Bottom>
             <Bottom>
-              <Element label="Nd"/>
-              <Element label="U"/>
+              <Element label="Nd" />
+              <Element label="U" />
             </Bottom>
             <Bottom>
-              <Element label="Pm"/>
-              <Element label="Np"/>
+              <Element label="Pm" />
+              <Element label="Np" />
             </Bottom>
             <Bottom>
-              <Element label="Sm"/>
-              <Element label="Pu"/>
+              <Element label="Sm" />
+              <Element label="Pu" />
             </Bottom>
             <Bottom>
-              <Element label="Eu"/>
-              <Element label="Am"/>
+              <Element label="Eu" />
+              <Element label="Am" />
             </Bottom>
             <Bottom>
-              <Element label="Gd"/>
-              <Element label="Cm"/>
+              <Element label="Gd" />
+              <Element label="Cm" />
             </Bottom>
             <Bottom>
-              <Element label="Tb"/>
-              <Element label="Bk"/>
+              <Element label="Tb" />
+              <Element label="Bk" />
             </Bottom>
             <Bottom>
-              <Element label="Dy"/>
-              <Element label="Cf"/>
+              <Element label="Dy" />
+              <Element label="Cf" />
             </Bottom>
             <Bottom>
-              <Element label="Ho"/>
-              <Element label="Es"/>
+              <Element label="Ho" />
+              <Element label="Es" />
             </Bottom>
             <Bottom>
-              <Element label="Er"/>
-              <Element label="Fm"/>
+              <Element label="Er" />
+              <Element label="Fm" />
             </Bottom>
             <Bottom>
-              <Element label="Tm"/>
-              <Element label="Md"/>
+              <Element label="Tm" />
+              <Element label="Md" />
             </Bottom>
             <Bottom>
-              <Element label="Yb"/>
-              <Element label="No"/>
+              <Element label="Yb" />
+              <Element label="No" />
             </Bottom>
             <Bottom>
-              <Element label="Lu"/>
-              <Element label="Lr"/>
+              <Element label="Lu" />
+              <Element label="Lr" />
             </Bottom>
 
           </LowerContainer>

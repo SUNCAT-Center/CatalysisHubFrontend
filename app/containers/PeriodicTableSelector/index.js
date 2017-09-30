@@ -4,39 +4,43 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+/* import React, { PropTypes } from 'react'; */
+import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
-import makeSelectPeriodicTableSelector from './selectors';
-import messages from './messages';
-import PeriodicTable from 'components/PeriodicTable'
+/* import { createStructuredSelector } from 'reselect'; */
+import PeriodicTable from 'components/PeriodicTable';
+
+/* import makeSelectPeriodicTableSelector from './selectors'; */
+import { clickElement } from './actions';
 
 export class PeriodicTableSelector extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
-        <PeriodicTable />
+        <p>{`Paragraph ${Object.keys(this.props).toString()}`}</p>
+        <PeriodicTable props={this.props} />
       </div>
     );
   }
 }
 
-PeriodicTableSelector.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+/* PeriodicTableSelector.propTypes = { */
+/* dispatch: PropTypes.func.isRequired, */
+/* }; */
 
-const mapStateToProps = createStructuredSelector({
-  PeriodicTableSelector: makeSelectPeriodicTableSelector(),
+/* const mapStateToProps = createStructuredSelector({ */
+/* PeriodicTableSelector: makeSelectPeriodicTableSelector(), */
+/* selection: state.get('selection') */
+/* }); */
+
+const mapStateToProps = (state) => ({
+  selection: state.get('selection'),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    clickElement : (element) => {
-      dispatch(actions.clickElement(element))
-    }
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  clickElement: (element) => {
+    dispatch(clickElement(element));
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PeriodicTableSelector);
