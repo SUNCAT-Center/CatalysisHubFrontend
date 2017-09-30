@@ -115,6 +115,14 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/generalSearch',
+      name: 'generalSearch',
+      getComponent(location, cb) {
+        import('components/GeneralSearch')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
