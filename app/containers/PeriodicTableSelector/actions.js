@@ -11,8 +11,8 @@ import {
 
 export function clickElement() {
   return {
-    type: ELEMENT_CLICKED
-  }
+    type: ELEMENT_CLICKED,
+  };
 }
 
 export function defaultAction() {

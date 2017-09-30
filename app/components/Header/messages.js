@@ -30,4 +30,8 @@ export default defineMessages({
     id: 'boilerplate.components.Header.pourbaixDiagrams',
     defaultMessage: 'Pourbaix Diagrams',
   },
+  generalSearch: {
+    id: 'boilerplate.components.Header.generalSearch',
+    defaultMessage: 'Your Next App ...',
+  },
 });
