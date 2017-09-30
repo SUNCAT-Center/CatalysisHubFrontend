@@ -65,7 +65,13 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
         {/* Periodic Table of Elements */}
         <Section>
           <span><FormattedMessage {...messages.selection} /></span>
-          <input type="text" name="element_selection" />
+          <input type="text" name="element_selection" value={Object.keys(this.props).toString()}
+            onChange={(input)=>
+              {
+                console.log(Object.keys(input));
+              }
+            }
+          />
           <Container>
             <PanelOne>
               <Element label="H" />

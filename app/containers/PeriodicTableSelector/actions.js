@@ -10,7 +10,6 @@ import {
 } from './constants';
 
 export function clickElement() {
-  console.log('Inside action')
   return {
     type: ELEMENT_CLICKED,
   };
