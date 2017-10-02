@@ -21,6 +21,11 @@ To run this you will need npm/node which is explained [here](https://docs.npmjs.
 
 The current interface is created from [React Boilerplate](https://github.com/react-boilerplate/react-boilerplate). This may change in the future, we are just playing with different interfaces.
 
+### Contributions
+
+Contributions in the form of pull requests are highly welcome. To this end you will need a github.com account (free) and create a fork by clicking in the [Fork](https://github.com/mhoffman/CatAppBrowser#fork-destination-box) in the upper-right corner.
+Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/<username>/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.
+
 
 ### Adding New Components
 
