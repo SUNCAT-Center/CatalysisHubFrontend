@@ -9,9 +9,10 @@ import {
   ELEMENT_CLICKED,
 } from './constants';
 
-export function clickElement() {
+export function clickElement(element) {
   return {
     type: ELEMENT_CLICKED,
+    payload: element,
   };
 }
 

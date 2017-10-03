@@ -6,11 +6,12 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-import { FormattedMessage } from 'react-intl';
-import Element from 'components/ElementBox';
+import Element from 'containers/ElementContainer';
 
-import messages from './messages';
+
+import TextField from 'material-ui/TextField';
 
 const Section = styled.section`
     width: 900px;
@@ -64,15 +65,12 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
       <div>
         {/* Periodic Table of Elements */}
         <Section>
-          <span><FormattedMessage {...messages.selection} /></span>
-          <input
+          <TextField
             type="text"
             name="element_selection"
-            value={Object.keys(this.props).toString()}
-            onChange={(input) => {
-              console.log(Object.keys(input));
-            }
-            }
+            size={150}
+            hintText="Selected Elements"
+            value={this.props.selection}
           />
           <Container>
             <PanelOne>
@@ -95,8 +93,8 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
             <PanelThree>
               <Element label="Sc" />
               <Element label="Y" />
-              <Element label="..." />
-              <Element label="..." />
+              <Element label="&nbsp;" />
+              <Element label="&nbsp;" />
             </PanelThree>
             <PanelThree>
               <Element label="Ti" />
@@ -158,7 +156,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               <Element label="Ga" />
               <Element label="In" />
               <Element label="Ti" />
-              <Element label="Uut" />
+              <Element label="Nh" />
             </PanelFour>
             <PanelFour>
               <Element label="C" />
@@ -174,7 +172,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               <Element label="As" />
               <Element label="Sb" />
               <Element label="Bi" />
-              <Element label="Uup" />
+              <Element label="Mc" />
             </PanelFour>
             <PanelFour>
               <Element label="O" />
@@ -190,7 +188,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               <Element label="Br" />
               <Element label="I" />
               <Element label="At" />
-              <Element label="Uus" />
+              <Element label="Ts" />
             </PanelFour>
             <PanelFive>
               <Element label="He" />
@@ -199,7 +197,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               <Element label="Kr" />
               <Element label="Xe" />
               <Element label="Rn" />
-              <Element label="Uuo" />
+              <Element label="Og" />
             </PanelFive>
           </Container>
 
@@ -273,6 +271,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
 }
 
 PeriodicTable.propTypes = {
+  selection: PropTypes.string.isRequired,
 
 };
 

@@ -11,6 +11,7 @@ import globalReducer from 'containers/App/reducer';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 
 import periodicTableSelector from 'containers/PeriodicTableSelector/reducer';
+import elementContainerReducer from 'containers/ElementContainer/reducer';
 
 /*
  * routeReducer
@@ -49,6 +50,7 @@ export default function createReducer(asyncReducers) {
     global: globalReducer,
     language: languageProviderReducer,
     periodicTableSelector,
+    elementContainerReducer,
     ...asyncReducers,
   });
 }

@@ -1,8 +1,8 @@
 /**
-*
-* ElementBox
-*
-*/
+ *
+ * ElementBox
+ *
+ */
 
 import React from 'react';
 import styled from 'styled-components';
@@ -21,20 +21,20 @@ const Box = styled.div`
 class ElementBox extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
-        <Box
-          onClick={() => {
-            console.log(`CLICKED BOX ${this.props.label}`);
-            console.log(JSON.stringify(this.props));
-          }}
-        >{ this.props.label }</Box>
-      </div>
+      <Box
+        onClick={() => {
+          this.props.clickElement(this.props.label);
+        }}
+        key={this.props.label}
+      >{ this.props.label }
+      </Box>
     );
   }
 }
 
 ElementBox.propTypes = {
   label: PropTypes.string.isRequired,
+  clickElement: PropTypes.func.isRequired,
 
 };
 

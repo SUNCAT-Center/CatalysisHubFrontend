@@ -17,24 +17,15 @@ export class PeriodicTableSelector extends React.Component { // eslint-disable-l
   render() {
     return (
       <div>
-        <p>{`Paragraph ${Object.keys(this.props).toString()}`}</p>
-        <PeriodicTable props={this.props} />
+        <PeriodicTable {...this.props} />
       </div>
     );
   }
 }
 
-/* PeriodicTableSelector.propTypes = { */
-/* dispatch: PropTypes.func.isRequired, */
-/* }; */
-
-/* const mapStateToProps = createStructuredSelector({ */
-/* PeriodicTableSelector: makeSelectPeriodicTableSelector(), */
-/* selection: state.get('selection') */
-/* }); */
 
 const mapStateToProps = (state) => ({
-  selection: state.get('selection'),
+  selection: state.get('periodicTableSelector').selection,
 });
 
 const mapDispatchToProps = (dispatch) => ({

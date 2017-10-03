@@ -4,26 +4,34 @@
  *
  */
 
-import { fromJS } from 'immutable';
 import {
   DEFAULT_ACTION,
   ELEMENT_CLICKED,
 } from './constants';
 
-const initialState = fromJS({
+const initialState = {
   selection: '',
-});
+};
 
 function periodicTableSelectorReducer(state = initialState, action) {
+  var new_selection;
   switch (action.type) {
     case ELEMENT_CLICKED:
+      if(state.selection.trim() === ''){
+        new_selection = action.payload;
+      } else {
+        if(action.payload.trim() === ''){
+          new_selection = state.selection
+        } else{
+          new_selection = [state.selection, action.payload].join(' & ')
+        }
+      }
+
       return {
         ...state,
-        selection: (state.selection.trim() === '') ?
-                    action.payload.element.label
-                    :
-                    [state.selection, action.payload.element.label].join(' & '),
+        selection: new_selection, 
       };
+      break;
     case DEFAULT_ACTION:
       return state;
     default:
