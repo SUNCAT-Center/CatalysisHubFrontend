@@ -80,7 +80,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           <Button
             label="Clear"
             onClick={() => {
-              this.props.clearSelection()
+              this.props.clearSelection();
             }}
           />
           <Button label="Search" />

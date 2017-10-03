@@ -7,11 +7,12 @@ import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
 import Banner from './banner.png';
 import messages from './messages';
+import HeaderBar from './HeaderBar';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
+      <HeaderBar>
         <A href="http://suncat.stanford.edu/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
         </A>
@@ -32,7 +33,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
             <FormattedMessage {...messages.generalSearch} />
           </HeaderLink>
         </NavBar>
-      </div>
+      </HeaderBar>
     );
   }
 }
