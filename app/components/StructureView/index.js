@@ -20,16 +20,16 @@ function StructureView() {
         tabItemContainerStyle={{ width: '900px' }}
       >
         <Tab label="Structure One">
-          <h2>... More on Structure 1</h2>
+          <h2>... More to follow on Structure 1</h2>
         </Tab>
         <Tab label="Structure Two">
-          <h2>... More on Structure 2</h2>
+          <h2>... More to follow on Structure 2</h2>
         </Tab>
         <Tab label="Structure Three">
-          <h2>... More on Structure 3</h2>
+          <h2>... More to follow on Structure 3</h2>
         </Tab>
         <Tab label="Structure Four">
-          <h2>... More on Structure 4</h2>
+          <h2>... More to follow on Structure 4</h2>
         </Tab>
       </Tabs>
     </div>
