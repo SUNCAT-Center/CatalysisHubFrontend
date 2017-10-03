@@ -12,6 +12,7 @@ import Element from 'containers/ElementContainer';
 
 
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const Section = styled.section`
     width: 900px;
@@ -59,6 +60,10 @@ const Bottom = styled.div`
     float: left; 
 `;
 
+const Button = styled(RaisedButton)`
+  margin: 12px;
+`;
+
 class PeriodicTable extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -72,6 +77,8 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
             hintText="Selected Elements (click on Table)"
             value={this.props.selection}
           />
+          <Button label="Clear" />
+          <Button label="Search" />
           <Container>
             <PanelOne>
               <Element label="H" />
