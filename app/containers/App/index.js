@@ -29,18 +29,20 @@ const AppWrapper = styled.div`
 export function App(props) {
   return (
     <AppWrapper>
-      <Paper style={{
-        padding: '40px'
-      }}>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="CatApp Boilerplate"
-        meta={[
-          { name: 'description', content: 'A React.js Boilerplate application' },
-        ]}
-      />
-      <Header />
-      {React.Children.toArray(props.children)}
+      <Paper
+        style={{
+          padding: '40px',
+        }}
+      >
+        <Helmet
+          titleTemplate="%s - React.js Boilerplate"
+          defaultTitle="CatApp Boilerplate"
+          meta={[
+            { name: 'description', content: 'A React.js Boilerplate application' },
+          ]}
+        />
+        <Header />
+        {React.Children.toArray(props.children)}
       </Paper>
       <Footer />
     </AppWrapper>

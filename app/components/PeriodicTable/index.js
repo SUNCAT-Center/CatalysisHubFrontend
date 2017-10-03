@@ -69,7 +69,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
             type="text"
             name="element_selection"
             size={150}
-            hintText="Selected Elements"
+            hintText="Selected Elements (click on Table)"
             value={this.props.selection}
           />
           <Container>
