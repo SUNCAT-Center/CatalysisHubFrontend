@@ -14,24 +14,22 @@ const initialState = {
 };
 
 function periodicTableSelectorReducer(state = initialState, action) {
-  var new_selection;
+  let newSelection;
   switch (action.type) {
     case ELEMENT_CLICKED:
-      if(state.selection.trim() === ''){
-        new_selection = action.payload;
+      if (state.selection.trim() === '') {
+        newSelection = action.payload;
+      } else if (action.payload.trim() === '') {
+        newSelection = state.selection;
       } else {
-        if(action.payload.trim() === ''){
-          new_selection = state.selection
-        } else{
-          new_selection = [state.selection, action.payload].join(' & ')
-        }
+        newSelection = [state.selection, action.payload].join(' & ');
       }
+
 
       return {
         ...state,
-        selection: new_selection, 
+        selection: newSelection,
       };
-      break;
     case DEFAULT_ACTION:
       return state;
     default:

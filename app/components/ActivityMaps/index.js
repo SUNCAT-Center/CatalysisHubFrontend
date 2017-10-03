@@ -13,20 +13,26 @@ import StructureView from 'components/StructureView';
 
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <Flexbox flexDirection="column" minHeight="100vh">
-        <Flexbox height="25px">
-          <span>Choose Reaction</span>
-          <select>
-            <option>HER (2 structures)</option>
-            <option>OER (4 structures)</option>
-            <option>ORR</option>
-            <option>CO oxidation (2 structures)</option>
-            <option>CO2RR (6+ structures)</option>
-            <option>Ammonia</option>
-          </select>
+        <Flexbox
+          height="75px" style={{
+            paddingLeft: '45px',
+          }}
+        >
+          <SelectField floatingLabelText="Chemical Reaction" >
+            <MenuItem value="HER" primaryText="HER (2 structures)" />
+            <MenuItem value="OER" primaryText="OER (4 structures)" />
+            <MenuItem value="ORR" primaryText="ORR" />
+            <MenuItem value="COR2RR" primaryText="CO oxidation (2 structures)" />
+            <MenuItem value="Ammonia" primaryText="Ammonia Syntheis" />
+          </SelectField>
+
         </Flexbox>
         <Flexbox height="500px">
           <PeriodicTableSelector />
