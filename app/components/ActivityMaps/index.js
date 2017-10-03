@@ -38,7 +38,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           <PeriodicTableSelector />
         </Flexbox>
         <div>
-          <Flexbox height="900px" width="100%">
+          <Flexbox height="950px" width="100%">
             <ActivityMapOER />
           </Flexbox>
           <Flexbox height="600px">
