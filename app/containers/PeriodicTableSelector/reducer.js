@@ -7,6 +7,7 @@
 import {
   DEFAULT_ACTION,
   ELEMENT_CLICKED,
+  CLEAR_SELECTION,
 } from './constants';
 
 const initialState = {
@@ -16,6 +17,13 @@ const initialState = {
 function periodicTableSelectorReducer(state = initialState, action) {
   let newSelection;
   switch (action.type) {
+
+    case CLEAR_SELECTION:
+
+      return {
+        ...state,
+        selection: '',
+      };
     case ELEMENT_CLICKED:
       if (state.selection.trim() === '') {
         newSelection = action.payload;
@@ -24,7 +32,6 @@ function periodicTableSelectorReducer(state = initialState, action) {
       } else {
         newSelection = [state.selection, action.payload].join(' & ');
       }
-
 
       return {
         ...state,

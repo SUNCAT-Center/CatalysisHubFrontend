@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import PeriodicTable from 'components/PeriodicTable';
 
 /* import makeSelectPeriodicTableSelector from './selectors'; */
-import { clickElement } from './actions';
+import { clickElement, clearSelection } from './actions';
 
 export class PeriodicTableSelector extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -31,6 +31,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   clickElement: (element) => {
     dispatch(clickElement(element));
+  },
+  clearSelection: (selection) => {
+    dispatch(clearSelection(selection));
   },
 });
 

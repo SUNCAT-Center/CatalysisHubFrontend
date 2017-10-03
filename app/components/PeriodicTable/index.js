@@ -77,7 +77,12 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
             hintText="Selected Elements (click on Table)"
             value={this.props.selection}
           />
-          <Button label="Clear" />
+          <Button
+            label="Clear"
+            onClick={() => {
+              this.props.clearSelection()
+            }}
+          />
           <Button label="Search" />
           <Container>
             <PanelOne>
@@ -279,6 +284,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
 
 PeriodicTable.propTypes = {
   selection: PropTypes.string.isRequired,
+  clearSelection: PropTypes.func.isRequired,
 
 };
 
