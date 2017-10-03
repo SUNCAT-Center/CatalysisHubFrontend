@@ -102,9 +102,9 @@ if(typeof(mpld3) !== "undefined" && mpld3._mpld3IsLoaded){
   render() {
     return (
       <div ref={(el) => { this.instance = el; }}>
-        <h2>Activity Map</h2>
+        <h2 style={{ marginTop: '100px' }}>Activity Map</h2>
         <p>Data generously provided by M. Bajdich, unpublished, 2017.</p>
-        <div style={{ marginLeft: '-350px', marginTop: '-200px' }} id="fig_el8808443469520806355687333"></div>
+        <div style={{ marginLeft: '-350px', marginTop: '-240px' }} id="fig_el8808443469520806355687333"></div>
       </div>
     );
   }
