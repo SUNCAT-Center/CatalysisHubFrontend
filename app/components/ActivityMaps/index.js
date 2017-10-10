@@ -9,7 +9,7 @@ import React from 'react';
 import Flexbox from 'flexbox-react';
 
 import ActivityMapOER from 'components/ActivityMapOer';
-import StructureView from 'components/StructureView';
+import StructureView from 'components/StructureView2';
 
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 
@@ -41,7 +41,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           <Flexbox height="950px" width="100%">
             <ActivityMapOER />
           </Flexbox>
-          <Flexbox height="600px">
+          <Flexbox height="1000px">
             <StructureView />
           </Flexbox>
 
