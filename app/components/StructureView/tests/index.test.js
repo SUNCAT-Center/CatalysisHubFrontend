@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import StructureView from '../index';
+// import StructureView2 from '../index';
 
-describe('<StructureView />', () => {
+describe('<StructureView2 />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

@@ -9,7 +9,7 @@ import React from 'react';
 import Flexbox from 'flexbox-react';
 
 import ActivityMapOER from 'components/ActivityMapOer';
-import StructureView from 'components/StructureView2';
+import StructureView from 'components/StructureView';
 
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 
