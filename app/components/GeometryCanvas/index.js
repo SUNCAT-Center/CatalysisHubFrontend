@@ -17,7 +17,6 @@ class GeometryCanvas extends React.Component { // eslint-disable-line react/pref
     script.innerHTML = `
 function _load_lib(url, callback){
   id =  'load_' + url;
-  if (document.getElementById(id) === null){
   var s = document.createElement('script');
   s.src = url;
   s.id = id;
@@ -25,7 +24,6 @@ function _load_lib(url, callback){
   s.onreadystatechange = s.onload = callback;
   s.onerror = function(){console.warn("failed to load library " + url);};
   document.getElementsByTagName("head")[0].appendChild(s);
-  }
 
 }
 // Load Libraries
