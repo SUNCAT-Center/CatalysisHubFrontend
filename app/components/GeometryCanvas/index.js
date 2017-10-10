@@ -7,7 +7,10 @@
 import React from 'react';
 // import styled from 'styled-components';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import PropTypes from 'prop-types';
+import { download } from 'utils';
 
 class GeometryCanvas extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -53,8 +56,15 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   render() {
     return (
       <div>
-        <p id={`${this.props.id}_script`} />
-        <canvas id={`${this.props.id}_view`} height={this.props.height} width={this.props.width} />
+        <div>
+          <p id={`${this.props.id}_script`} />
+          <canvas id={`${this.props.id}_view`} height={this.props.height} width={this.props.width} />
+        </div>
+        <RaisedButton
+          primary
+          label="Download CIF"
+          onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
+        />
       </div>
     );
   }
