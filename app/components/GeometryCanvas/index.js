@@ -47,6 +47,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   tfcanvas.specs.shapes_color = 'black';
   tfcanvas.specs.shapes_lineWidth = 1;
   tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
+  global.canvas = tfcanvas;
   });
 });
     `;
@@ -58,12 +59,24 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
       <div>
         <div>
           <p id={`${this.props.id}_script`} />
-          <canvas id={`${this.props.id}_view`} height={this.props.height} width={this.props.width} />
+          <canvas
+            id={`${this.props.id}_view`}
+            height={this.props.height}
+            width={this.props.width}
+            style={{
+              borderWidth: 1,
+              borderColor: '#000000',
+              borderStyle: 'solid',
+            }}
+          />
         </div>
         <RaisedButton
           primary
           label="Download CIF"
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
+          style={{
+            margin: 12,
+          }}
         />
       </div>
     );
@@ -71,8 +84,8 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 }
 
 GeometryCanvas.defaultProps = {
-  height: 450,
-  width: 450,
+  height: 550,
+  width: 550,
   color: '#fff',
 };
 
