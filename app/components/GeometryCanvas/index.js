@@ -56,7 +56,6 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   tfcanvas.specs.atoms_useJMOLColors = true;
   tfcanvas.specs.compass_display = true;
   tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
-  global.canvas = tfcanvas;
   });
 });`;
         document.getElementById(`${this.props.id}_view`).appendChild(script);
@@ -95,7 +94,6 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   tfcanvas.specs.shapes_color = 'black';
   tfcanvas.specs.shapes_lineWidth = 1;
   tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
-  global.canvas = tfcanvas;
   });
 });
     `;
