@@ -27,10 +27,12 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
         >
           <SelectField floatingLabelText="Chemical Reaction" >
             <MenuItem value="HER" primaryText="HER (2 structures)" />
-            <MenuItem value="OER" primaryText="OER (4 structures)" />
-            <MenuItem value="ORR" primaryText="ORR" />
-            <MenuItem value="COR2RR" primaryText="CO oxidation (2 structures)" />
-            <MenuItem value="Ammonia" primaryText="Ammonia Syntheis" />
+            <MenuItem value="OER" primaryText="OER (2 descriptors)" />
+            <MenuItem value="ORR" primaryText="ORR (2 descriptors)" />
+            <MenuItem value="CO2RR" primaryText="CO reduction (2 descriptors)" />
+            <MenuItem value="Ammonia" primaryText="Ammonia Synthesis" />
+            <MenuItem value="COx" primaryText="CO oxidation (2 descriptors)" />
+            <MenuItem value="deNOx" primaryText="NO reduction (2 descriptors)" />
           </SelectField>
 
         </Flexbox>
