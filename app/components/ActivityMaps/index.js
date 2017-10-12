@@ -25,7 +25,12 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
             paddingLeft: '45px',
           }}
         >
-          <SelectField floatingLabelText="Chemical Reaction" >
+          <SelectField
+            floatingLabelStyle={{
+              fontFamily: 'Arial',
+            }}
+            floatingLabelText="Chemical Reaction"
+          >
             <MenuItem value="HER" primaryText="HER (2 structures)" />
             <MenuItem value="OER" primaryText="OER (2 descriptors)" />
             <MenuItem value="ORR" primaryText="ORR (2 descriptors)" />
