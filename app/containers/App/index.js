@@ -32,7 +32,9 @@ export function App(props) {
       <Paper
         style={{
           padding: '40px',
+          marginTop: '20px',
         }}
+        zDepth={2}
       >
         <Helmet
           titleTemplate="%s - React.js Boilerplate"
