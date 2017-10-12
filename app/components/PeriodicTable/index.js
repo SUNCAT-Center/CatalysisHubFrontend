@@ -13,6 +13,7 @@ import Element from 'containers/ElementContainer';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { MdClear, MdSearch } from 'react-icons/lib/md';
 
 const Section = styled.section`
     width: 900px;
@@ -79,11 +80,12 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           />
           <Button
             label="Clear"
+            icon={<MdClear />}
             onClick={() => {
               this.props.clearSelection();
             }}
           />
-          <Button label="Search" />
+          <Button label="Search" icon={<MdSearch />} />
           <Container>
             <PanelOne>
               <Element label="H" />

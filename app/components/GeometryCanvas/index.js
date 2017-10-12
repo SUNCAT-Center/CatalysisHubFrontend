@@ -13,6 +13,8 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { download } from 'utils';
 
+import { MdFileDownload } from 'react-icons/lib/md';
+
 class GeometryCanvas extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
     let cifdata = this.props.cifdata;
@@ -119,6 +121,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         </div>
         <RaisedButton
           primary
+          icon={<MdFileDownload />}
           label="Download CIF"
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
           style={{
