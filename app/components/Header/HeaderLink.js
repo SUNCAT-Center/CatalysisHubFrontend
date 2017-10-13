@@ -6,7 +6,7 @@ export default styled(Link)`
   padding: 0.25em 2em;
   margin: .3em;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 0px;
   -webkit-font-smoothing: antialiased;
   -webkit-touch-callout: none;
   user-select: none;
@@ -14,7 +14,7 @@ export default styled(Link)`
   outline: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 11px;
   border: 2px solid #41ADDD;
   color: #41ADDD;
   
