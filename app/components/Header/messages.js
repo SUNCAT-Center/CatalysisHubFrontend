@@ -32,6 +32,14 @@ export default defineMessages({
   },
   generalSearch: {
     id: 'boilerplate.components.Header.generalSearch',
+    defaultMessage: 'General Search',
+  },
+  publications: {
+    id: 'boilerplate.components.Header.publications',
+    defaultMessage: 'Publications',
+  },
+  yourNextApp: {
+    id: 'boilerplate.components.Header.yourNextApp',
     defaultMessage: 'Your Next App ...',
   },
 });

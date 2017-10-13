@@ -16,7 +16,11 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         <A href="http://suncat.stanford.edu/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
         </A>
-        <NavBar>
+        <NavBar
+          style={{
+            marginTop: '15px',
+          }}
+        >
           <HeaderLink to="/energies">
             <FormattedMessage {...messages.energies} />
           </HeaderLink>
@@ -31,6 +35,12 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           </HeaderLink>
           <HeaderLink to="/generalSearch">
             <FormattedMessage {...messages.generalSearch} />
+          </HeaderLink>
+          <HeaderLink to="/publications">
+            <FormattedMessage {...messages.publications} />
+          </HeaderLink>
+          <HeaderLink to="/yourNextApp">
+            <FormattedMessage {...messages.yourNextApp} />
           </HeaderLink>
         </NavBar>
       </HeaderBar>
