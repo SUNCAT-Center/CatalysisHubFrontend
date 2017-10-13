@@ -123,6 +123,22 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/publications',
+      name: 'publications',
+      getComponent(location, cb) {
+        import('components/Publications')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/yourNextApp',
+      name: 'yourNextApp',
+      getComponent(location, cb) {
+        import('components/YourNextApp')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
