@@ -43,3 +43,7 @@ and used throughout the app.
 - Graphs are created with [mpld3](http://mpld3.github.io/)
 - React v15 (will be updated to 16 soon)
   React is a powerful JavaScript library that is actively developed by Facebook. With some background in HTML and a little bit of JavaScript one can quite far. There are a ton of [tutorials](https://reactjs.org/tutorial/tutorial.html) out there.
+
+## UI Development
+
+- This project uses [Material UI](http://www.material-ui.com/#/components/slider) Component throughout.
