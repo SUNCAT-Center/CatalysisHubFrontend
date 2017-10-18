@@ -1,10 +1,13 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import { PeriodicTableSelector } from '../index';
+import { PeriodicTableSelector } from '../index';
 
 describe('<PeriodicTableSelector />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render a div', () => {
+    const renderedComponent = shallow(
+      <PeriodicTableSelector />
+    );
+    expect(renderedComponent.find('div').length).toEqual(1);
   });
 });
