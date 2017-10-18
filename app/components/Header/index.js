@@ -9,6 +9,8 @@ import Banner from './banner.png';
 import messages from './messages';
 import HeaderBar from './HeaderBar';
 
+// import DrawerBar from 'components/DrawerBar';
+
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
