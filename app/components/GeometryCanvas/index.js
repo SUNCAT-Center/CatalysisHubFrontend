@@ -106,19 +106,18 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   render() {
     return (
       <div>
-        <div>
-          <p id={`${this.props.id}_script`} />
-          <canvas
-            id={`${this.props.id}_view`}
-            height={this.props.height}
-            width={this.props.width}
-            style={{
-              borderWidth: 1,
-              borderColor: '#000000',
-              borderStyle: 'solid',
-            }}
-          />
-        </div>
+        <p id={`${this.props.id}_script`} />
+        <canvas
+          id={`${this.props.id}_view`}
+          height={this.props.height}
+          width={this.props.width}
+          style={{
+            borderWidth: 1,
+            borderColor: '#000000',
+            borderStyle: 'solid',
+          }}
+        />
+        <br />
         <RaisedButton
           primary
           icon={<MdFileDownload />}
