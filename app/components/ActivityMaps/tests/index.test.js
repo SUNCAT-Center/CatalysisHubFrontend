@@ -1,10 +1,10 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
-
-// import ActivityMaps from '../index';
+import React from 'react';
+import { shallow } from 'enzyme';
+import ActivityMaps from '../index';
 
 describe('<ActivityMaps />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render a flexbox', () => {
+    const rc = shallow(<ActivityMaps />);
+    expect(rc).toMatchSnapshot();
   });
 });
