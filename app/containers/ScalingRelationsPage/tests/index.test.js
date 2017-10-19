@@ -5,6 +5,6 @@ import { ScalingRelationsPage } from '../index';
 
 describe('<ScalingRelationsPage />', () => {
   it('should render a div', () => {
-    expect(shallow(<ScalingRelationsPage />).find('div').length).toEqual(1);
+    expect(shallow(<ScalingRelationsPage dispatch={() => {}} />).find('div').length).toEqual(1);
   });
 });
