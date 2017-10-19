@@ -25,6 +25,9 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
         <TextField hintText="Free Text Search" />
         {'\t '}
         <TextField hintText="Composition" />
+        {'\t '}
+        <TextField hintText="Year" />
+        <br />
         <br />
         <TextField hintText="Authors" />
         {'\t '}

@@ -37,10 +37,10 @@ export function App(props) {
         zDepth={2}
       >
         <Helmet
-          titleTemplate="%s - React.js Boilerplate"
-          defaultTitle="CatApp Boilerplate"
+          titleTemplate="%s - CatApp Browser"
+          defaultTitle="CatApp Browser"
           meta={[
-            { name: 'description', content: 'A React.js Boilerplate application' },
+            { name: 'description', content: 'CatApp Browser' },
           ]}
         />
         <Header />

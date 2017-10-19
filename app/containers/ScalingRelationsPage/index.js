@@ -6,11 +6,10 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import Iframe from 'react-iframe';
+
 import makeSelectScalingRelationsPage from './selectors';
-import messages from './messages';
-import Iframe from 'react-iframe'
 
 export class ScalingRelationsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
