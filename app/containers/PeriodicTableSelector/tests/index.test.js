@@ -6,7 +6,7 @@ import { PeriodicTableSelector } from '../index';
 describe('<PeriodicTableSelector />', () => {
   it('should render a div', () => {
     const renderedComponent = shallow(
-      <PeriodicTableSelector />
+      <PeriodicTableSelector selection="" clearSelection={() => {}} />
     );
     expect(renderedComponent.find('div').length).toEqual(1);
   });

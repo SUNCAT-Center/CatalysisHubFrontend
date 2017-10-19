@@ -1,0 +1,417 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> should render a div 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <styled.div>
+    <styled.a
+      href="http://suncat.stanford.edu/"
+    >
+      <Styled(undefined)
+        alt="react-boilerplate - Logo"
+        height="100px"
+        src="IMAGE_MOCK"
+      />
+    </styled.a>
+    <styled.div
+      style={
+        Object {
+          "marginTop": "15px",
+        }
+      }
+    >
+      <Styled(Link)
+        to="/energies"
+      >
+        <FormattedMessage
+          defaultMessage="Energies"
+          id="boilerplate.components.Header.energies"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/activityMaps"
+      >
+        <FormattedMessage
+          defaultMessage="Activity Maps"
+          id="boilerplate.components.Header.activityMaps"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/scalingRelations"
+      >
+        <FormattedMessage
+          defaultMessage="Scaling Relations"
+          id="boilerplate.components.Header.scalingRelations"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/pourbaixDiagrams"
+      >
+        <FormattedMessage
+          defaultMessage="Pourbaix Diagrams"
+          id="boilerplate.components.Header.pourbaixDiagrams"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/generalSearch"
+      >
+        <FormattedMessage
+          defaultMessage="General Search"
+          id="boilerplate.components.Header.generalSearch"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/publications"
+      >
+        <FormattedMessage
+          defaultMessage="Publications"
+          id="boilerplate.components.Header.publications"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+      <Styled(Link)
+        to="/yourNextApp"
+      >
+        <FormattedMessage
+          defaultMessage="Your Next App ..."
+          id="boilerplate.components.Header.yourNextApp"
+          tagName="span"
+          values={Object {}}
+        />
+      </Styled(Link)>
+    </styled.div>
+  </styled.div>,
+  "nodes": Array [
+    <styled.div>
+      <styled.a
+        href="http://suncat.stanford.edu/"
+      >
+        <Styled(undefined)
+          alt="react-boilerplate - Logo"
+          height="100px"
+          src="IMAGE_MOCK"
+        />
+      </styled.a>
+      <styled.div
+        style={
+          Object {
+            "marginTop": "15px",
+          }
+        }
+      >
+        <Styled(Link)
+          to="/energies"
+        >
+          <FormattedMessage
+            defaultMessage="Energies"
+            id="boilerplate.components.Header.energies"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/activityMaps"
+        >
+          <FormattedMessage
+            defaultMessage="Activity Maps"
+            id="boilerplate.components.Header.activityMaps"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/scalingRelations"
+        >
+          <FormattedMessage
+            defaultMessage="Scaling Relations"
+            id="boilerplate.components.Header.scalingRelations"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/pourbaixDiagrams"
+        >
+          <FormattedMessage
+            defaultMessage="Pourbaix Diagrams"
+            id="boilerplate.components.Header.pourbaixDiagrams"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/generalSearch"
+        >
+          <FormattedMessage
+            defaultMessage="General Search"
+            id="boilerplate.components.Header.generalSearch"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/publications"
+        >
+          <FormattedMessage
+            defaultMessage="Publications"
+            id="boilerplate.components.Header.publications"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+        <Styled(Link)
+          to="/yourNextApp"
+        >
+          <FormattedMessage
+            defaultMessage="Your Next App ..."
+            id="boilerplate.components.Header.yourNextApp"
+            tagName="span"
+            values={Object {}}
+          />
+        </Styled(Link)>
+      </styled.div>
+    </styled.div>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_instance": ShallowComponentWrapper {
+      "_calledComponentWillUnmount": false,
+      "_compositeType": 0,
+      "_context": Object {},
+      "_currentElement": <Header />,
+      "_debugID": 1,
+      "_hostContainerInfo": null,
+      "_hostParent": null,
+      "_instance": Header {
+        "_reactInternalInstance": [Circular],
+        "context": Object {},
+        "props": Object {},
+        "refs": Object {},
+        "state": null,
+        "updater": Object {
+          "enqueueCallback": [Function],
+          "enqueueCallbackInternal": [Function],
+          "enqueueElementInternal": [Function],
+          "enqueueForceUpdate": [Function],
+          "enqueueReplaceState": [Function],
+          "enqueueSetState": [Function],
+          "isMounted": [Function],
+          "validateCallback": [Function],
+        },
+      },
+      "_mountOrder": 1,
+      "_pendingCallbacks": null,
+      "_pendingElement": null,
+      "_pendingForceUpdate": false,
+      "_pendingReplaceState": false,
+      "_pendingStateQueue": null,
+      "_renderedComponent": NoopInternalComponent {
+        "_currentElement": <styled.div>
+          <styled.a
+            href="http://suncat.stanford.edu/"
+          >
+            <Styled(undefined)
+              alt="react-boilerplate - Logo"
+              height="100px"
+              src="IMAGE_MOCK"
+            />
+          </styled.a>
+          <styled.div
+            style={
+              Object {
+                "marginTop": "15px",
+              }
+            }
+          >
+            <Styled(Link)
+              to="/energies"
+            >
+              <FormattedMessage
+                defaultMessage="Energies"
+                id="boilerplate.components.Header.energies"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/activityMaps"
+            >
+              <FormattedMessage
+                defaultMessage="Activity Maps"
+                id="boilerplate.components.Header.activityMaps"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/scalingRelations"
+            >
+              <FormattedMessage
+                defaultMessage="Scaling Relations"
+                id="boilerplate.components.Header.scalingRelations"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/pourbaixDiagrams"
+            >
+              <FormattedMessage
+                defaultMessage="Pourbaix Diagrams"
+                id="boilerplate.components.Header.pourbaixDiagrams"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/generalSearch"
+            >
+              <FormattedMessage
+                defaultMessage="General Search"
+                id="boilerplate.components.Header.generalSearch"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/publications"
+            >
+              <FormattedMessage
+                defaultMessage="Publications"
+                id="boilerplate.components.Header.publications"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/yourNextApp"
+            >
+              <FormattedMessage
+                defaultMessage="Your Next App ..."
+                id="boilerplate.components.Header.yourNextApp"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+          </styled.div>
+        </styled.div>,
+        "_debugID": 2,
+        "_renderedOutput": <styled.div>
+          <styled.a
+            href="http://suncat.stanford.edu/"
+          >
+            <Styled(undefined)
+              alt="react-boilerplate - Logo"
+              height="100px"
+              src="IMAGE_MOCK"
+            />
+          </styled.a>
+          <styled.div
+            style={
+              Object {
+                "marginTop": "15px",
+              }
+            }
+          >
+            <Styled(Link)
+              to="/energies"
+            >
+              <FormattedMessage
+                defaultMessage="Energies"
+                id="boilerplate.components.Header.energies"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/activityMaps"
+            >
+              <FormattedMessage
+                defaultMessage="Activity Maps"
+                id="boilerplate.components.Header.activityMaps"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/scalingRelations"
+            >
+              <FormattedMessage
+                defaultMessage="Scaling Relations"
+                id="boilerplate.components.Header.scalingRelations"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/pourbaixDiagrams"
+            >
+              <FormattedMessage
+                defaultMessage="Pourbaix Diagrams"
+                id="boilerplate.components.Header.pourbaixDiagrams"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/generalSearch"
+            >
+              <FormattedMessage
+                defaultMessage="General Search"
+                id="boilerplate.components.Header.generalSearch"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/publications"
+            >
+              <FormattedMessage
+                defaultMessage="Publications"
+                id="boilerplate.components.Header.publications"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+            <Styled(Link)
+              to="/yourNextApp"
+            >
+              <FormattedMessage
+                defaultMessage="Your Next App ..."
+                id="boilerplate.components.Header.yourNextApp"
+                tagName="span"
+                values={Object {}}
+              />
+            </Styled(Link)>
+          </styled.div>
+        </styled.div>,
+      },
+      "_renderedNodeType": 1,
+      "_rootNodeID": 0,
+      "_topLevelWrapper": null,
+      "_updateBatchNumber": null,
+      "_warnedAboutRefsInRender": false,
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <Header />,
+}
+`;
