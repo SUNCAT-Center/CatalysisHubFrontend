@@ -8,7 +8,6 @@ describe('<Header />', () => {
     const tree = shallow(
       <Header />
     );
-
-    expect(tree).toMatchSnapshot();
+    expect(tree.root.node.type.target).toEqual('div');
   });
 });
