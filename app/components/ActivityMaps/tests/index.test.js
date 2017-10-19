@@ -5,6 +5,6 @@ import ActivityMaps from '../index';
 describe('<ActivityMaps />', () => {
   it('should render a flexbox', () => {
     const rc = shallow(<ActivityMaps />);
-    expect(rc).toMatchSnapshot();
+    expect(rc.find('div').length).toEqual(1);
   });
 });
