@@ -47,3 +47,8 @@ and used throughout the app.
 ## UI Development
 
 - This project uses [Material UI](http://www.material-ui.com/#/components/slider) Component throughout.
+
+## Development
+
+- To commit javascript code, it has to pass the ESLint linter. The linter may seem a little pesky at first, but I promise it makes your code look great and let's us focus on bigger code design issues.
+- For testing we rely on [Jest](https://facebook.github.io/jest/docs/en/more-resources.html) and [Travis CI](https://travis-ci.org/mhoffman/CatAppBrowser)
