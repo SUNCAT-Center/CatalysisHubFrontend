@@ -1,72 +1,163 @@
 /**
-*
-* GeneralSearch
-*
-*/
+ *
+ * GeneralSearch
+ *
+ */
 
 import React from 'react';
 import styled from 'styled-components';
 
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import { MenuItem } from 'material-ui/Menu';
+import { InputLabel } from 'material-ui/Input';
+import Select from 'material-ui/Select';
+
+import { FormControl } from 'material-ui/Form';
+import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
 
-const Button = styled(RaisedButton)`
+import gql from 'graphql-tag';
+/* import { graphql, createNetworkInterface, ApolloClient } from 'react-apollo'; */
+/* import axios from 'axios'; */
+
+
+/* import { graphQLRoot } from 'utils/constants'; */
+
+
+import ResultTable from 'components/ResultTable';
+
+
+/* const networkInterface = createNetworkInterface({ */
+/* uri: graphQLRoot */
+/* }); */
+
+/* const client = new ApolloClient({ */
+/* networkInterface, */
+/* }); */
+
+
+const MButton = styled(Button)`
   margin: 12px;
 `;
 
+
 class GeneralSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      free_text: '',
+      year: '',
+      authors: '',
+      article_title: '',
+      journal_title: '',
+      facet: '',
+      site: '',
+      composition: '',
+      results: [],
+    };
+    // Workaround, instead of calling .bind in every render
+    this.submitQuery = this.submitQuery.bind(this);
+    this.clearForm = this.clearForm.bind(this);
+  }
+  submitQuery() {
+    const query = gql`
+    query {textKeys(key: "publication_title", value:"~${this.state.article_title}") {
+  edges {
+    node {
+      systems {
+        id
+        Formula
+        Density
+        Volume
+        Facet
+
+      }
+    }
+  }
+}}
+    `;
+    console.log(query);
+    /* client.query(query).then((response) =>{ */
+    /* console.log(response) */
+    /* }) */
+  }
+
+  handleChange(name) {
+    return (event) => {
+      this.setState({
+        [name]: event.target.value,
+      });
+    };
+  }
+  clearForm() {
+    this.setState({
+      free_text: '',
+      composition: '',
+      year: '',
+      authors: '',
+      article_title: '',
+      journal_title: '',
+      facet: '',
+      site: '',
+    });
+  }
   render() {
     return (
       <div>
         <h2>General Search</h2>
-        <TextField hintText="Free Text Search" />
+        <TextField label="Free Text Search" value={this.state.free_text} onChange={this.handleChange('free_text')} />
         {'\t '}
-        <TextField hintText="Composition" />
+        <TextField label="Composition" value={this.state.composition} onChange={this.handleChange('composition')} />
         {'\t '}
-        <TextField hintText="Year" />
+        <TextField label="Year" value={this.state.year} onChange={this.handleChange('year')} />
         <br />
         <br />
-        <TextField hintText="Authors" />
+        <TextField label="Authors" value={this.state.authors} onChange={this.handleChange('authors')} />
         {'\t '}
-        <TextField hintText="Title of Article" />
+        <TextField label="Title of Article" value={this.state.article_title} onChange={this.handleChange('article_title')} />
         {'\t '}
-        <TextField hintText="Title of Journal" />
+        <TextField label="Title of Journal" value={this.state.journal_title} onChange={this.handleChange('journal_title')} />
         <br />
 
-        <SelectField
-          floatingLabelText="Facet"
-          floatingLabelStyle={{
-            fontFamily: 'Arial',
-          }}
+        <FormControl
+          style={{ minWidth: 120, margin: 12 }}
         >
-          <MenuItem value="any" primaryText="any" />
-          <MenuItem value="111" primaryText="(111)" />
-          <MenuItem value="100" primaryText="(100)" />
-          <MenuItem value="110" primaryText="(110)" />
-          <MenuItem value="210" primaryText="(210)" />
-          <MenuItem value="310" primaryText="(310)" />
-          <MenuItem value="other" primaryText="other" />
-        </SelectField>
-        <SelectField
-          floatingLabelText="Site"
-          floatingLabelStyle={{
-            fontFamily: 'Arial',
-          }}
+          <InputLabel>Facet</InputLabel>
+          <Select
+            onChange={this.handleChange('facet')}
+            value={this.state.facet}
+          >
+            <MenuItem value="any">any</MenuItem>
+            <MenuItem value="111">111</MenuItem>
+            <MenuItem value="100">100</MenuItem>
+            <MenuItem value="110">110</MenuItem>
+            <MenuItem value="211">211</MenuItem>
+            <MenuItem value="311">311</MenuItem>
+            <MenuItem value="other">other</MenuItem>
+          </Select>
+        </FormControl>
+        {'   '}
+        <FormControl
+          style={{ minWidth: 120 }}
         >
-          <MenuItem value="any" primaryText="any" />
-          <MenuItem value="fcc" primaryText="fcc" />
-          <MenuItem value="hcp" primaryText="hcp" />
-          <MenuItem value="bridge" primaryText="bridge" />
-          <MenuItem value="hollow" primaryText="hollow" />
-          <MenuItem value="top" primaryText="top" />
-          <MenuItem value="other" primaryText="other" />
-        </SelectField>
-        <br />
-        <Button label="Clear" icon={<MdClear />} />
-        <Button label="Search" icon={<MdSearch />} />
+          <InputLabel>Site</InputLabel>
+          <Select
+            onChange={this.handleChange('site')}
+            value={this.state.site}
+          >
+            <MenuItem value="any">any</MenuItem>
+            <MenuItem value="fcc">fcc</MenuItem>
+            <MenuItem value="hcp">hcp</MenuItem>
+            <MenuItem value="bridge">bridge</MenuItem>
+            <MenuItem value="hollow">hollow</MenuItem>
+            <MenuItem value="top">top</MenuItem>
+            <MenuItem value="other">other</MenuItem>
+          </Select>
+        </FormControl>
+        <MButton raised onClick={this.clearForm}><MdClear /> Clear</MButton>
+        <MButton raised onClick={this.submitQuery}><MdSearch /> Search</MButton>
+
+        <ResultTable results={this.state.results} />
       </div>
     );
   }
