@@ -12,7 +12,7 @@ import Element from 'containers/ElementContainer';
 
 
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
 
 const Section = styled.section`
@@ -26,42 +26,42 @@ const Container = styled.div`
 `;
 
 const PanelOne = styled.div`
-    float: left; 
+    float: left;
 `;
 
 const PanelTwo = styled.div`
-    float: left; 
-    position: relative; 
-    top: 50px; 
+    float: left;
+    position: relative;
+    top: 50px;
 `;
 
 const PanelThree = styled.div`
-    float: left; 
-    position: relative; 
-    top: 150px; 
+    float: left;
+    position: relative;
+    top: 150px;
 `;
 
 const PanelFour = styled.div`
-    float: left; 
-    position: relative; 
-    top: 50px; 
+    float: left;
+    position: relative;
+    top: 50px;
 `;
 
 const PanelFive = styled.div`
-    float: left; 
+    float: left;
 `;
 
 const LowerContainer = styled.div`
-    float: left; 
+    float: left;
     margin-top: 20px;
     margin-left: 50px;
 `;
 
 const Bottom = styled.div`
-    float: left; 
+    float: left;
 `;
 
-const Button = styled(RaisedButton)`
+const MButton = styled(Button)`
   margin: 12px;
 `;
 
@@ -74,18 +74,24 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           <TextField
             type="text"
             name="element_selection"
-            size={150}
-            hintText="Selected Elements (click on Table)"
+            size={250}
+            label="Selected Elements (click on Table)"
             value={this.props.selection}
+            style={{
+              minWidth: 250,
+            }}
           />
-          <Button
-            label="Clear"
-            icon={<MdClear />}
+          <MButton
+            raised
             onClick={() => {
               this.props.clearSelection();
             }}
-          />
-          <Button label="Search" icon={<MdSearch />} />
+          >
+            <MdClear /> Clear
+          </MButton>
+          <MButton raised>
+            <MdSearch /> Search
+          </MButton>
           <Container>
             <PanelOne>
               <Element label="H" />
@@ -276,7 +282,6 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               <Element label="Lu" />
               <Element label="Lr" />
             </Bottom>
-
           </LowerContainer>
         </Section>
       </div>
