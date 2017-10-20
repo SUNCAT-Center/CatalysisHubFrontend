@@ -6,6 +6,8 @@
 
 import React from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { withStyles } from 'material-ui/styles';
+
 import GeometryCanvas from 'components/GeometryCanvas';
 
 import { backendRoot } from 'utils/constants';
@@ -18,6 +20,17 @@ function TabContainer(props) {
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
+function styles(theme) {
+  return { root:
+    {
+      flexGrow: 1,
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      backgroundColor: theme.palette.background.paper,
+    },
+  };
+}
+
 
 class StructureView2 extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -42,14 +55,15 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
       cifurl4,
     ];
 
+    const { classes } = this.props;
     const { value } = this.state;
 
     return (
-      <div>
+      <div className={classes.root}>
         <h2>Detailed Structure View</h2>
         <Tabs
           fullWidth
-          value={value}
+          value={this.state.value}
           onChange={this.handleChange}
         >
           <Tab label="Structure One">
@@ -70,7 +84,10 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
           </Tab>
         </Tabs>
         <TabContainer>
-          <GeometryCanvas cifurl={cifUrls[value]} />
+          {value === 0 && <GeometryCanvas cifurl={cifUrls[0]} />}
+          {value === 1 && <GeometryCanvas cifurl={cifUrls[1]} />}
+          {value === 2 && <GeometryCanvas cifurl={cifUrls[2]} />}
+          {value === 3 && <GeometryCanvas cifurl={cifUrls[3]} />}
         </TabContainer>
       </div>
     );
@@ -78,7 +95,9 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
 }
 
 StructureView2.propTypes = {
+  classes: PropTypes.object.isRequired,
 
 };
 
-export default StructureView2;
+/* export default StructureView2; */
+export default withStyles(styles)(StructureView2);
