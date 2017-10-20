@@ -24,7 +24,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
     super(props);
     this.state = {
       value: 0,
-    }
+    };
   }
   handleChange = (event, value) => {
     this.setState({ value });
@@ -47,9 +47,11 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
     return (
       <div>
         <h2>Detailed Structure View</h2>
-        <Tabs fullWidth
+        <Tabs
+          fullWidth
           value={value}
-          onChange={this.handleChange} >
+          onChange={this.handleChange}
+        >
           <Tab label="Structure One">
             <h2>Structure 1</h2>
             <GeometryCanvas id="structure1" />
