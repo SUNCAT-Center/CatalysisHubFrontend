@@ -17,23 +17,22 @@ import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
 
 import gql from 'graphql-tag';
-/* import { graphql, createNetworkInterface, ApolloClient } from 'react-apollo'; */
-/* import axios from 'axios'; */
+import { createNetworkInterface, ApolloClient } from 'react-apollo';
 
 
-/* import { graphQLRoot } from 'utils/constants'; */
+import { graphQLRoot } from 'utils/constants';
 
 
 import ResultTable from 'components/ResultTable';
 
 
-/* const networkInterface = createNetworkInterface({ */
-/* uri: graphQLRoot */
-/* }); */
+const networkInterface = createNetworkInterface({
+  uri: graphQLRoot,
+});
 
-/* const client = new ApolloClient({ */
-/* networkInterface, */
-/* }); */
+const client = new ApolloClient({
+  networkInterface,
+});
 
 
 const MButton = styled(Button)`
@@ -61,25 +60,30 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
   }
   submitQuery() {
     const query = gql`
-    query {textKeys(key: "publication_title", value:"~${this.state.article_title}") {
+   query{systems {
   edges {
     node {
-      systems {
-        id
+            id
         Formula
-        Density
-        Volume
+        #Density
+        volume
         Facet
 
-      }
     }
   }
 }}
     `;
-    console.log(query);
-    /* client.query(query).then((response) =>{ */
-    /* console.log(response) */
-    /* }) */
+    client.query({ query }).then((response) => {
+      const results = response.data.systems.edges.map((node) => {
+        const result = {
+          id: node.node.id,
+          Formula: node.node.Formula,
+          Volume: node.node.volume,
+        };
+        return result;
+      });
+      this.setState({ results });
+    });
   }
 
   handleChange(name) {
@@ -99,6 +103,7 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
       journal_title: '',
       facet: '',
       site: '',
+      results: [],
     });
   }
   render() {
