@@ -34,7 +34,7 @@ export function App(props) {
           padding: '40px',
           marginTop: '20px',
         }}
-        zDepth={2}
+        elevation={2}
       >
         <Helmet
           titleTemplate="%s - CatApp Browser"
