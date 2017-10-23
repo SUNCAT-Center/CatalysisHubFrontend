@@ -41,15 +41,10 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       ads: '',
       conc: '',
       site: '',
-      results: [],
-      returned_result: [],
-      printr: null,
+      energy: '',
+      uncertainty: '',
     };
-  }
-
-  componentGet() {
-    axios.get('http://127.0.0.1:5000/')
-    .then((res) => { this.setState({ results: res }); });
+    this.componentPost = this.componentPost.bind(this);
   }
 
   componentPost() {
@@ -62,9 +57,11 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       site: this.state.site,
     };
     axios.post('http://127.0.0.1:5000/', d)
-    .then(function (response) {
-      console.log(response.data.output);
-      this.setState({ printr: response.data.output[0] });
+    .then((response) => {
+      this.setState({
+        energy: response.data.energy,
+        uncertainty: response.data.uncertainty,
+      });
     });
   }
 
@@ -179,11 +176,9 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           </FormControl>
           <br />
           <br />
-          <Button onClick={this.componentPost} data-something="here I am">
+          <Button onClick={this.componentPost}>
             Calculate
           </Button>
-          <br />
-          {this.printr}
         </div>
       </div>
     );
