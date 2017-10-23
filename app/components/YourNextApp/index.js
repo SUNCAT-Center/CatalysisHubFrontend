@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import axios from 'axios';
 
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
@@ -41,7 +42,30 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       conc: '',
       site: '',
       results: [],
+      returned_result: [],
+      printr: null,
     };
+  }
+
+  componentGet() {
+    axios.get('http://127.0.0.1:5000/')
+    .then((res) => { this.setState({ results: res }); });
+  }
+
+  componentPost() {
+    const d = {
+      m1: this.state.m1,
+      m2: this.state.m2,
+      facet: this.state.facet,
+      a: this.state.ads,
+      conc: this.state.conc,
+      site: this.state.site,
+    };
+    axios.post('http://127.0.0.1:5000/', d)
+    .then(function (response) {
+      console.log(response.data.output);
+      this.setState({ printr: response.data.output[0] });
+    });
   }
 
   handleChange(name) {
@@ -155,9 +179,11 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           </FormControl>
           <br />
           <br />
-          <Button raised style={{ margin: 12 }}>
+          <Button onClick={this.componentPost} data-something="here I am">
             Calculate
           </Button>
+          <br />
+          {this.printr}
         </div>
       </div>
     );
