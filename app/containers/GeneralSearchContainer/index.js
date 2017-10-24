@@ -7,10 +7,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import GeneralSearchInput from 'components/GeneralSearchInput';
 import ResultTable from 'components/ResultTable';
 import SingleStructureView from 'components/SingleStructureView';
 
+import GeneralSearchInput from './Input';
 import { selectUUID, receiveResults, saveSystem } from './actions';
 
 export class GeneralSearchContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
