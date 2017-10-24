@@ -29,11 +29,9 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           <HeaderLink to="/activityMaps">
             <FormattedMessage {...messages.activityMaps} />
           </HeaderLink>
-          {/*
           <HeaderLink to="/scalingRelations">
             <FormattedMessage {...messages.scalingRelations} />
           </HeaderLink>
-          */}
           <HeaderLink to="/pourbaixDiagrams">
             <FormattedMessage {...messages.pourbaixDiagrams} />
           </HeaderLink>
