@@ -99,7 +99,21 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           </FormControl>
           {'   '}
           <FormControl
-            style={{ minWidth: 120 }}
+            style={{ minWidth: 120, margin: 12 }}
+          >
+            <InputLabel>Concentration</InputLabel>
+            <Select
+              onChange={this.handleChange('conc')}
+              value={this.state.conc}
+            >
+              <MenuItem value="0.25">0.25</MenuItem>
+              <MenuItem value="0.50">0.50</MenuItem>
+              <MenuItem value="0.75">0.75</MenuItem>
+            </Select>
+          </FormControl>
+          {'   '}
+          <FormControl
+            style={{ minWidth: 120, margin: 12 }}
           >
             <InputLabel>Metal Two</InputLabel>
             <Select
@@ -109,9 +123,9 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               {items}
             </Select>
           </FormControl>
-          {'   '}
+          <br />
           <FormControl
-            style={{ minWidth: 120 }}
+            style={{ minWidth: 120, margin: 12 }}
           >
             <InputLabel>Facet</InputLabel>
             <Select
@@ -153,21 +167,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           </FormControl>
           {'   '}
           <FormControl
-            style={{ minWidth: 120 }}
-          >
-            <InputLabel>Concentration</InputLabel>
-            <Select
-              onChange={this.handleChange('conc')}
-              value={this.state.conc}
-            >
-              <MenuItem value="0.25">0.25</MenuItem>
-              <MenuItem value="0.50">0.50</MenuItem>
-              <MenuItem value="0.75">0.75</MenuItem>
-            </Select>
-          </FormControl>
-          {'   '}
-          <FormControl
-            style={{ minWidth: 120 }}
+            style={{ minWidth: 120, margin: 12 }}
           >
             <InputLabel>Site</InputLabel>
             <Select
@@ -196,10 +196,12 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
                 <TableRow>
                   <TableCell>Energy:</TableCell>
                   <TableCell numeric>{this.state.energy}</TableCell>
+                  <TableCell> </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Uncertainty:</TableCell>
                   <TableCell numeric>{this.state.uncertainty}</TableCell>
+                  <TableCell> </TableCell>
                 </TableRow>
               </TableHead>
             </Table>
