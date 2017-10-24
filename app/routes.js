@@ -115,14 +115,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/generalSearch',
-      name: 'generalSearch',
-      getComponent(location, cb) {
-        import('components/GeneralSearch')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/publications',
       name: 'publications',
       getComponent(location, cb) {
@@ -135,6 +127,14 @@ export default function createRoutes(store) {
       name: 'yourNextApp',
       getComponent(location, cb) {
         import('components/YourNextApp')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/generalSearch',
+      name: 'generalSearch',
+      getComponent(location, cb) {
+        import('components/GeneralSearch')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
