@@ -13,6 +13,9 @@ import Select from 'material-ui/Select';
 
 import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
+
+import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Paper from 'material-ui/Paper';
 // import styled from 'styled-components';
 
 const supportAtoms = [
@@ -32,6 +35,8 @@ for (let i = 0; i < supportLength; i += 1) {
 
 
 class YourNextApp extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  // const { classes } = props;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -174,11 +179,31 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               <MenuItem value="BB">BB</MenuItem>
             </Select>
           </FormControl>
+
           <br />
           <br />
+
           <Button onClick={this.componentPost}>
             Calculate
           </Button>
+
+          <br />
+          <br />
+
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Energy:</TableCell>
+                  <TableCell numeric>{this.state.energy}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Uncertainty:</TableCell>
+                  <TableCell numeric>{this.state.uncertainty}</TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </Paper>
         </div>
       </div>
     );
