@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router';
 
-import A from './A';
 import Img from './Img';
 import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
@@ -15,9 +15,9 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   render() {
     return (
       <HeaderBar>
-        <A href="/">
+        <Link to="/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
-        </A>
+        </Link>
         <NavBar
           style={{
             marginTop: '15px',
