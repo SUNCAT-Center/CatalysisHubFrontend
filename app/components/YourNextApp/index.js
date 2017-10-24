@@ -11,9 +11,8 @@ import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import Select from 'material-ui/Select';
 
-import { FormControl } from 'material-ui/Form';
+import { FormControl, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
-
 import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 // import styled from 'styled-components';
@@ -110,6 +109,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               <MenuItem value="0.50">0.50</MenuItem>
               <MenuItem value="0.75">0.75</MenuItem>
             </Select>
+            <FormHelperText>of Metal 1</FormHelperText>
           </FormControl>
           {'   '}
           <FormControl
@@ -183,7 +183,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           <br />
           <br />
 
-          <Button onClick={this.componentPost}>
+          <Button raised color="primary" onClick={this.componentPost}>
             Calculate
           </Button>
 
