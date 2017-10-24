@@ -13,7 +13,7 @@ import { createNetworkInterface, ApolloClient } from 'react-apollo';
 import { graphQLRoot } from 'utils/constants';
 
 import Button from 'material-ui/Button';
-import { MdFileDownload } from 'react-icons/lib/md';
+import { MdFileDownload, MdRefresh } from 'react-icons/lib/md';
 
 import { download } from 'utils';
 
@@ -36,10 +36,15 @@ class GeometryCanvasFromUuid extends React.Component { // eslint-disable-line re
       formula: '',
     };
   }
-
-  componentDidMount() {
-    const query = gql`
-   query{systems(uniqueId: "${this.props.uuid}") {
+  componentWillMount() {
+    this.draw();
+  }
+  componentDidUpdate() {
+    this.redraw();
+  }
+  draw() {
+    if (this.props.selectedUUID !== '') {
+      const query = gql`query{systems(uniqueId: "${this.props.selectedUUID}") {
   edges {
     node {
     Cifdata
@@ -47,16 +52,18 @@ class GeometryCanvasFromUuid extends React.Component { // eslint-disable-line re
 
     }
   }
-}}
-    `;
+}}`;
 
-    client.query({ query }).then((response) => {
-      const cifdata = response.data.systems.edges[0].node.Cifdata;
-      const script = document.createElement('script');
-      this.setState({ formula: response.data.systems.edges[0].node.Formula });
-      script.type = 'text/javascript';
-      script.async = true;
-      script.innerHTML = `
+      client.query({ query }).then((response) => {
+        const cifdata = response.data.systems.edges[0].node.Cifdata;
+        const script = document.createElement('script');
+        this.setState({
+          formula: response.data.systems.edges[0].node.Formula,
+          cifdata: response.data.systems.edges[0].node.Cifdata,
+        });
+        script.type = 'text/javascript';
+        script.async = true;
+        script.innerHTML = `
 function _load_lib(url, callback){
   id =  'load_' + url;
   var s = document.createElement('script');
@@ -75,8 +82,8 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   var rotationMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
 
   //Code
-  let tfcanvas = new ChemDoodle.TransformCanvas3D('${this.props.uuid}_view');
-  let cif = ChemDoodle.readCIF(\`${cifdata}\`, 2, 2, 1);
+  let tfcanvas = new ChemDoodle.TransformCanvas3D('${this.props.selectedUUID}_view');
+  let cif = ChemDoodle.readCIF(\`${this.props.selectedSystem.Cifdata || cifdata}\`, 2, 2, 1);
 
   tfcanvas.specs.set3DRepresentation('Ball and Stick');
   tfcanvas.specs.backgroundColor = '${this.props.bg_color}';
@@ -90,18 +97,31 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   tfcanvas.specs.atoms_useJMOLColors = true;
   tfcanvas.specs.compass_display = true;
   tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
+  global.tfcanvas = tfcanvas;
+  global.ChemDoodle = ChemDoodle;
   });
 });`;
-      document.getElementById(`${this.props.uuid}_div`).appendChild(script);
-    });
+        script.className += 'singleStructureCanvas';
+        document.getElementById(`${this.props.selectedUUID}_div`).appendChild(script);
+      });
+    }
   }
+  redraw() {
+    /* eslint-disable */
+    if (typeof ChemDoodle !== 'undefined') {
+      const Cif = new ChemDoodle.readCIF(this.props.selectedSystem.Cifdata, 2, 2, 1);
+      tfcanvas.loadContent([Cif.molecule], [Cif.unitCell]);
+    }
+    /* eslint-enable */
+  }
+
   render() {
     return (
       <div>
-        <p id={`${this.props.uuid}_script`} />
-        <div id={`${this.props.uuid}_div`}></div>
+        <p id={`${this.props.selectedUUID}_script`} />
+        <div id={`${this.props.selectedUUID}_div`}></div>
         <canvas
-          id={`${this.props.uuid}_view`}
+          id={`${this.props.selectedUUID}_view`}
           height={this.props.height}
           width={this.props.width}
           style={{
@@ -113,7 +133,16 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         <br />
         <MButton
           raised
-          onClick={() => { download(`structure_${this.state.formula}.cif`, this.state.cifdata); }}
+          onClick={() => { this.draw(); }}
+          style={{
+            margin: 12,
+          }}
+        >
+          <MdRefresh /> Unfreeze
+        </MButton>
+        <MButton
+          raised
+          onClick={() => { download(`structure_${this.props.selectedSystem.Formula}.cif`, this.props.selectedSystem.Cifdata); }}
           style={{
             margin: 12,
           }}
@@ -126,10 +155,11 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 }
 
 GeometryCanvasFromUuid.propTypes = {
-  uuid: PropTypes.string.isRequired,
+  selectedUUID: PropTypes.string.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
   bg_color: PropTypes.string,
+  selectedSystem: PropTypes.object,
 };
 
 GeometryCanvasFromUuid.defaultProps = {
