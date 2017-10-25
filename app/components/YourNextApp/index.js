@@ -63,8 +63,8 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
     axios.post('http://127.0.0.1:5000/', d)
     .then((response) => {
       this.setState({
-        energy: response.data.energy,
-        uncertainty: response.data.uncertainty,
+        energy: response.data.output.energy,
+        uncertainty: response.data.output.uncertainty,
       });
     });
   }
@@ -95,6 +95,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             >
               {items}
             </Select>
+            <FormHelperText>support element</FormHelperText>
           </FormControl>
           {'   '}
           <FormControl
@@ -109,7 +110,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               <MenuItem value="0.50">0.50</MenuItem>
               <MenuItem value="0.75">0.75</MenuItem>
             </Select>
-            <FormHelperText>of Metal 1</FormHelperText>
+            <FormHelperText>of metal 1</FormHelperText>
           </FormControl>
           {'   '}
           <FormControl
@@ -122,6 +123,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             >
               {items}
             </Select>
+            <FormHelperText>support element</FormHelperText>
           </FormControl>
           <br />
           <FormControl
@@ -151,7 +153,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               onChange={this.handleChange('ads')}
               value={this.state.ads}
             >
-              <MenuItem value="graphene">graphene</MenuItem>
+              <MenuItem value="C (graphene)">Graphene</MenuItem>
               <MenuItem value="CH2CH2">CH2CH2</MenuItem>
               <MenuItem value="CH3CH2CH3">CH3CH2CH3</MenuItem>
               <MenuItem value="CH3CH3">CH3CH3</MenuItem>
@@ -162,7 +164,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
               <MenuItem value="NH3">NH3</MenuItem>
               <MenuItem value="NO">NO</MenuItem>
               <MenuItem value="O2">O2</MenuItem>
-              <MenuItem value="O">O</MenuItem>
+              <MenuItem value="hfO2">O</MenuItem>
             </Select>
           </FormControl>
           {'   '}
