@@ -13,10 +13,25 @@ import StructureView from 'components/StructureView';
 
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      chemicalReaction: 'OER-1',
+    };
+  }
+  handleChange(name) {
+    return (event) => {
+      this.setState({
+        [name]: event.target.value,
+      });
+    };
+  }
   render() {
     return (
       <Flexbox flexDirection="column" minHeight="100vh">
@@ -25,20 +40,25 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
             paddingLeft: '45px',
           }}
         >
-          <SelectField
-            floatingLabelStyle={{
-              fontFamily: 'Arial',
-            }}
-            floatingLabelText="Chemical Reaction"
+          <FormControl
+            style={{ minWidth: 220, margin: 12 }}
           >
-            <MenuItem value="HER" primaryText="HER (2 structures)" />
-            <MenuItem value="OER" primaryText="OER (2 descriptors)" />
-            <MenuItem value="ORR" primaryText="ORR (2 descriptors)" />
-            <MenuItem value="CO2RR" primaryText="CO reduction (2 descriptors)" />
-            <MenuItem value="Ammonia" primaryText="Ammonia Synthesis" />
-            <MenuItem value="COx" primaryText="CO oxidation (2 descriptors)" />
-            <MenuItem value="deNOx" primaryText="NO reduction (2 descriptors)" />
-          </SelectField>
+            <InputLabel>Chemical Reaction</InputLabel>
+            <Select
+              onChange={this.handleChange('chemicalReaction')}
+              value={this.state.chemicalReaction}
+            >
+              <MenuItem value="HER">HER (1 descriptor)</MenuItem>
+              <MenuItem value="OER-1">OER (1 descriptor)</MenuItem>
+              <MenuItem value="OER-2">OER (2 descriptors)</MenuItem>
+              <MenuItem value="ORR-1">ORR (1 descriptors)</MenuItem>
+              <MenuItem value="ORR-2">ORR (2 desescriptor)</MenuItem>
+              <MenuItem value="CO2RR">CO reduction (2 descriptors)</MenuItem>
+              <MenuItem value="Ammonia">Ammonia Synthesis</MenuItem>
+              <MenuItem value="COx">CO oxidation (2 descriptors)</MenuItem>
+              <MenuItem value="deNOx">NO reduction (2 descriptors)</MenuItem>
+            </Select>
+          </FormControl>
 
         </Flexbox>
         <Flexbox height="500px">

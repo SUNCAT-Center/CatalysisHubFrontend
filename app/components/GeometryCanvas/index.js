@@ -5,15 +5,19 @@
  */
 
 import React from 'react';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import axios from 'axios';
 
 import PropTypes from 'prop-types';
 import { download } from 'utils';
 
 import { MdFileDownload } from 'react-icons/lib/md';
+
+const MButton = styled(Button)`
+  margin: 12px,
+`;
 
 class GeometryCanvas extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -106,28 +110,28 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   render() {
     return (
       <div>
-        <div>
-          <p id={`${this.props.id}_script`} />
-          <canvas
-            id={`${this.props.id}_view`}
-            height={this.props.height}
-            width={this.props.width}
-            style={{
-              borderWidth: 1,
-              borderColor: '#000000',
-              borderStyle: 'solid',
-            }}
-          />
-        </div>
-        <RaisedButton
+        <p id={`${this.props.id}_script`} />
+        <canvas
+          id={`${this.props.id}_view`}
+          height={this.props.height}
+          width={this.props.width}
+          style={{
+            borderWidth: 1,
+            borderColor: '#000000',
+            borderStyle: 'solid',
+          }}
+        />
+        <br />
+        <MButton
           primary
-          icon={<MdFileDownload />}
-          label="Download CIF"
+          raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
           style={{
             margin: 12,
           }}
-        />
+        >
+          <MdFileDownload /> Download CIF
+        </MButton>
       </div>
     );
   }

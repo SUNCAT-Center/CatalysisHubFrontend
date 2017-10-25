@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router';
 
-import A from './A';
 import Img from './Img';
 import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
@@ -9,13 +9,15 @@ import Banner from './banner.png';
 import messages from './messages';
 import HeaderBar from './HeaderBar';
 
+// import DrawerBar from 'components/DrawerBar';
+
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <HeaderBar>
-        <A href="http://suncat.stanford.edu/">
+        <Link to="/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
-        </A>
+        </Link>
         <NavBar
           style={{
             marginTop: '15px',
