@@ -2,6 +2,7 @@ import { createMuiTheme } from 'material-ui/styles';
 
 /* Theme Colors from https://identity.stanford.edu/web-mobile.html#themes-templates */
 /* Generated Color Palette using http://mcg.mbitson.com/ */
+/* http://mcg.mbitson.com/#!?cardinalred=%238c1515&sandstone=%23d2c295&paloalto=%2326a69a&white=%23ffffff&coolgrey=%234d4f53&black=%232e2d29&brightred=%23b1040e&chocolate=%232f2424&stone=%23544948&fog=%23f4f4f4&lightsandstone=%23f9f6ef&warmgrey=%23f9f6ef&beige=%239d9573&lightsage=%23c7d1c5&clay=%235f574f&cloud=%23dad7cb&driftwood=%23b6b1a9&stonelegacy=%23928b81&sandhill=%23b3995d&teal=%2300505c&purple=%2353284f&redwood=%238d3c1e&brown=%235e3032&sky=%230098db&lagunita=%23007c92&mint=%23009b76&gold=%23b26f16&sun=%23eaab00&poppy=%23e98300&brightblue=%23006cb8&blue=%2300548f&themename=stanfordcolors */
 
 
 /* For use in material-ui/src/styles/colors.js */
