@@ -21,7 +21,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 // Import root app
 import App from 'containers/App';
@@ -49,6 +49,8 @@ import './global-styles';
 
 // Import routes
 import createRoutes from './routes';
+
+import { theme } from 'utils/theme';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -81,9 +83,10 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+
 const render = (messages) => {
   ReactDOM.render(
-    <MuiThemeProvider>
+    <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <LanguageProvider messages={messages}>
           <Router
