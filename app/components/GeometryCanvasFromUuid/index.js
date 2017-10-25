@@ -59,7 +59,6 @@ class GeometryCanvasFromUuid extends React.Component { // eslint-disable-line re
       tfcanvas.specs.atoms_useJMOLColors = true;
       tfcanvas.specs.compass_display = true;
       tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
-      tfcanvas.center();
       window.tfcanvas = tfcanvas;
     }
   }
