@@ -19,7 +19,6 @@ import Table, {
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
-
 class ResultTable extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -89,6 +88,7 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                   .map((result, i) => {
                     return (
                       <TableRow
+                        hover
                         key={`row_${i}`}
                         onClick={() => {
                           this.props.selectUUID(result.node.uniqueId);
