@@ -1,26 +1,62 @@
 /**
-*
-* Publications
-*
-*/
+ *
+ * Publications
+ *
+ */
 
 import React from 'react';
 // import styled from 'styled-components';
 
+import axios from 'axios';
+import { graphQLRoot } from 'utils/constants';
+
 
 class Publications extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      years: [],
+      references: {},
+    };
+  }
+  componentDidMount() {
+    axios.post(graphQLRoot, {
+      query: '{numberKeys(key:"publication_year", distinct: true) { edges { node { value } } }}',
+    })
+      .then((response) => {
+        const years = response.data.data.numberKeys.edges.map((n) => (n.node.value));
+        this.setState({
+          years,
+        });
+        years.map((year) => (
+          axios.post(graphQLRoot, {
+            query: `{catapp(year: ${year}, reference: "~", distinct: true) { edges { node { reference } } }}`,
+          })
+          .then((yearResponse) => {
+            const references = yearResponse.data.data.catapp.edges.map((n) => (n.node.reference));
+            const allReferences = this.state.references;
+            allReferences[year] = references;
+            this.setState({
+              references: allReferences,
+            });
+          })
+        ));
+      });
+  }
   render() {
     return (
       <div>
-        <h2>Publications</h2>
-        <ul>
-          <li>Paper #1</li>
-          <li>Paper #2</li>
-          <li>Paper #3</li>
-          <li>Paper #4</li>
-          <li>Paper #5</li>
-          <li>Paper ...</li>
-        </ul>
+        {this.state.years.map((year) => (
+          <div>
+            <h2 key={`year_${year}`}>{year}</h2>
+            {(this.state.references[year] || []).map((reference) => (
+              <div>
+                <li>{reference}</li>
+              </div>
+            ))}
+          </div>
+        ))
+        }
       </div>
     );
   }
