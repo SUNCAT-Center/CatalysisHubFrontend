@@ -16,6 +16,7 @@ import Select from 'material-ui/Select';
 import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
+import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -37,12 +38,16 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
       facet: '',
       site: '',
       composition: '',
+      loading: false,
     };
     // Workaround, instead of calling .bind in every render
     this.submitQuery = this.submitQuery.bind(this);
     this.clearForm = this.clearForm.bind(this);
   }
   submitQuery() {
+    this.setState({
+      loading: true,
+    });
     axios.post(graphQLRoot, {
       query: `query{systems {
   edges {
@@ -55,6 +60,9 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
   }
   }}`,
     }).then((response) => {
+      this.setState({
+        loading: false,
+      });
       this.props.receiveResults(response.data.data.systems.edges);
     });
   }
@@ -134,7 +142,7 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
         </FormControl>
         <MButton raised onClick={this.clearForm}><MdClear /> Clear</MButton>
         <MButton raised onClick={this.submitQuery} color="primary"><MdSearch /> Search</MButton>
-
+        {this.state.loading ? <LinearProgress color="primary" /> : null }
       </div>
     );
   }
