@@ -133,7 +133,7 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
           </Select>
         </FormControl>
         <MButton raised onClick={this.clearForm}><MdClear /> Clear</MButton>
-        <MButton raised onClick={this.submitQuery}><MdSearch /> Search</MButton>
+        <MButton raised onClick={this.submitQuery} color="primary"><MdSearch /> Search</MButton>
 
       </div>
     );
