@@ -15,6 +15,7 @@ import Table, {
   TableFooter,
   TablePagination,
 } from 'material-ui/Table';
+import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -28,10 +29,14 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
       orderBy: 'energy',
       page: 0,
       rowsPerPage: 10,
+      loading: false,
     };
   }
 
   fetchRow(uuid) {
+    this.setState({
+      loading: true,
+    });
     axios.post(graphQLRoot, {
       query: `query{systems(uniqueId: "${uuid}") {
   edges {
@@ -53,6 +58,9 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
 }}`,
     }).then((response) => {
       this.props.saveSystem(response.data.data.systems.edges[0].node);
+      this.setState({
+        loading: false,
+      });
     });
   }
   handlePageChange = (event, page) => {
@@ -121,6 +129,7 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
             </TableFooter>
           </Table>
         </div>
+        {this.state.loading ? <LinearProgress color="primary" /> : null }
       </div>
     );
   }
