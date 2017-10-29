@@ -27,7 +27,7 @@ const AppWrapper = styled.div`
   font-family: 'Roboto', sans-serif;
 `;
 
-const suBranding = true;
+const suBranding = false;
 const boldFooterWeight = 500;
 const lightFooterWeight = 200;
 
