@@ -25,21 +25,23 @@ const MButton = styled(Button)`
   margin: 12px;
 `;
 
+const initialState = {
+  free_text: '',
+  year: '',
+  authors: '',
+  article_title: '',
+  journal_title: '',
+  facet: '',
+  site: '',
+  composition: '',
+  loading: false,
+};
+
 
 class GeneralSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = {
-      free_text: '',
-      year: '',
-      authors: '',
-      article_title: '',
-      journal_title: '',
-      facet: '',
-      site: '',
-      composition: '',
-      loading: false,
-    };
+    this.state = initialState;
     // Workaround, instead of calling .bind in every render
     this.submitQuery = this.submitQuery.bind(this);
     this.clearForm = this.clearForm.bind(this);
@@ -75,22 +77,12 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
     };
   }
   clearForm() {
-    this.setState({
-      free_text: '',
-      composition: '',
-      year: '',
-      authors: '',
-      article_title: '',
-      journal_title: '',
-      facet: '',
-      site: '',
-      results: [],
-    });
+    this.setState(initialState);
   }
   render() {
     return (
       <div>
-        <h2>General Search</h2>
+        <h2>Structure Search</h2>
         <TextField label="Free Text Search" value={this.state.free_text} onChange={this.handleChange('free_text')} />
         {'\t '}
         <TextField label="Composition" value={this.state.composition} onChange={this.handleChange('composition')} />
