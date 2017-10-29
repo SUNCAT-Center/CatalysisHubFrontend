@@ -7,7 +7,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Iframe from 'react-iframe';
 
 import makeSelectScalingRelationsPage from './selectors';
 
@@ -15,7 +14,10 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
   render() {
     return (
       <div>
-        <Iframe url="https://web.stanford.edu/~ctsai89/cgi-bin/apps/catapp/plot" />
+        <h2>Scaling Relations</h2>
+        <div>
+        Currently under construction.
+        </div>
       </div>
     );
   }
