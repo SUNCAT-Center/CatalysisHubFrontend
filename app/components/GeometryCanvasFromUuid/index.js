@@ -64,7 +64,7 @@ class GeometryCanvasFromUuid extends React.Component { // eslint-disable-line re
   }
   redraw() {
     /* eslint-disable */
-    if (typeof ChemDoodle !== 'undefined' && typeof window.tfcanvas !== 'undefined' && typeof window.tfcanvas.loadContent !== 'undefined') {
+    if (typeof ChemDoodle !== 'undefined' && typeof window.tfcanvas !== 'undefined') {
       const cif = new ChemDoodle.readCIF(this.props.selectedSystem.Cifdata, 2, 2, 1);
       window.tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
     }
