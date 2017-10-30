@@ -12,7 +12,7 @@ export default defineMessages({
   },
   energies: {
     id: 'boilerplate.components.Header.energies',
-    defaultMessage: 'Energies',
+    defaultMessage: 'Reaction Energies',
   },
   features: {
     id: 'boilerplate.components.Header.features',
@@ -32,7 +32,7 @@ export default defineMessages({
   },
   generalSearch: {
     id: 'boilerplate.components.Header.generalSearch',
-    defaultMessage: 'General Search',
+    defaultMessage: 'Structure Search',
   },
   publications: {
     id: 'boilerplate.components.Header.publications',

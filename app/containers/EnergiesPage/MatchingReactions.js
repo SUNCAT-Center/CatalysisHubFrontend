@@ -1,6 +1,6 @@
 /**
  *
- * ResultTable
+ * MatchingReactions
  *
  */
 
@@ -20,7 +20,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
-class ResultTable extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class MatchingReactions extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.fetchRow = this.fetchRow.bind(this);
@@ -33,12 +33,15 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
     };
   }
 
-  fetchRow(uuid) {
+  fetchRow(reaction) {
     this.setState({
       loading: true,
     });
-    axios.post(graphQLRoot, {
-      query: `query{systems(uniqueId: "${uuid}") {
+    const aseIds = Object.values(JSON.parse(reaction.aseIds));
+    this.props.clearSystems();
+    aseIds.map((aseId) => {
+      const query = {
+        query: `query{systems(uniqueId: "${aseId}") {
   edges {
     node {
     Formula
@@ -53,13 +56,21 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
     PublicationNumber
     PublicationJournal
     PublicationPages
+    uniqueId
     }
   }
 }}`,
-    }).then((response) => {
-      this.props.saveSystem(response.data.data.systems.edges[0].node);
-      this.setState({
-        loading: false,
+      };
+      return axios.post(graphQLRoot, query).then((response) => {
+        this.props.saveSystem(response.data.data.systems.edges[0].node);
+        this.setState({
+          loading: false,
+        });
+      }).catch((error) => {
+        console.log(error);
+        this.setState({
+          loading: false,
+        });
       });
     });
   }
@@ -71,27 +82,27 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
   };
 
   render() {
-    if (this.props.searchResults.length === 0) {
+    if (this.props.matchingReactions.length === 0) {
       return null;
     }
     return (
       <div>
         <div>
-          <h2>Search Results</h2>
+          <h2>Matching Reactions</h2>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Formula</TableCell>
-                <TableCell>Density</TableCell>
-                <TableCell>Volume</TableCell>
+                <TableCell>Reactants</TableCell>
+                <TableCell>Products</TableCell>
+                <TableCell>Reaction Energy</TableCell>
+                <TableCell>Activation Energy</TableCell>
                 <TableCell>Facet</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {
                 /* eslint-disable arrow-body-style */
-                this.props.searchResults
+                this.props.matchingReactions
                   .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
                   .map((result, i) => {
                     return (
@@ -99,14 +110,14 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                         hover
                         key={`row_${i}`}
                         onClick={() => {
-                          this.props.selectUUID(result.node.uniqueId);
-                          this.fetchRow(result.node.uniqueId);
+                          this.props.selectReaction(result.node.id);
+                          this.fetchRow(result.node);
                         }}
                       >
-                        <TableCell>{result.node.uniqueId}</TableCell>
-                        <TableCell>{result.node.Formula}</TableCell>
-                        <TableCell>{result.node.Density}</TableCell>
-                        <TableCell>{result.node.volume.toFixed(2)}</TableCell>
+                        <TableCell>{result.node.reactants}</TableCell>
+                        <TableCell>{result.node.products}</TableCell>
+                        <TableCell>{!result.node.reactionEnergy || result.node.reactionEnergy.toFixed(3) } eV</TableCell>
+                        <TableCell>{!result.node.activationEnergy || result.node.activationEnergy.toFixed(2)}</TableCell>
                         <TableCell>{result.node.Facet}</TableCell>
                       </TableRow>
 
@@ -124,7 +135,6 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                   onChangePage={this.handlePageChange}
                   onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
-
               </TableRow>
             </TableFooter>
           </Table>
@@ -135,15 +145,15 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
   }
 }
 
-ResultTable.propTypes = {
-  selectUUID: PropTypes.func,
-  saveSystem: PropTypes.func,
-  searchResults: PropTypes.array,
+MatchingReactions.propTypes = {
+  selectReaction: PropTypes.func.isRequired,
+  clearSystems: PropTypes.func.isRequired,
+  saveSystem: PropTypes.func.isRequired,
+  searchResults: PropTypes.array.isRequired,
+  matchingReactions: PropTypes.array.isRequired,
 };
 
-ResultTable.defaultProps = {
-  results: [],
+MatchingReactions.defaultProps = {
+  searchResults: [],
 
 };
-
-export default ResultTable;
