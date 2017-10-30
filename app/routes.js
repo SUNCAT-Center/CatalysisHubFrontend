@@ -139,6 +139,14 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/graphQLConsole',
+      name: 'graphQlapi',
+      getComponent(location, cb) {
+        import('components/GraphQlapi')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

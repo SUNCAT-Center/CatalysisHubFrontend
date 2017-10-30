@@ -66,6 +66,11 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
             </Button>
           </Link>
 
+          <Link to="/graphQLConsole">
+            <Button color="primary" >
+              <FormattedMessage {...messages.graphqlconsole} />
+            </Button>
+          </Link>
 
           <Link to="/yourNextApp">
             <Button color="primary" >
