@@ -9,7 +9,7 @@
   "engines": {
     "npm": ">=3",
     "node": ">=5",
-    "yarn": ">=1.2"
+    "yarn": ">=1"
   },
   "author": "Max Stoiber",
   "license": "MIT",
