@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
+import GeometryCanvasFromUuid from 'components/GeometryCanvasFromUuid';
 
 const initialState = {
   Formula: '',
@@ -37,7 +37,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>Structure {this.props.selectedSystem.Formula}</h2>
-          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} />
+          <GeometryCanvasFromUuid {...this.props} />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Energy: {energy.toFixed(3)} eV</li>

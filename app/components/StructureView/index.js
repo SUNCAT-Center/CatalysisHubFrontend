@@ -20,12 +20,16 @@ function TabContainer(props) {
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
-const styles = (theme) => ({
-  flexGrow: 1,
-  width: '100%',
-  marginTop: theme.spacing.unit * 3,
-  backgroundColor: theme.palette.background.paper,
-});
+function styles(theme) {
+  return { root:
+    {
+      flexGrow: 1,
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      backgroundColor: theme.palette.background.paper,
+    },
+  };
+}
 
 
 class StructureView2 extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -61,8 +65,6 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
           fullWidth
           value={this.state.value}
           onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
         >
           <Tab label="Structure One">
             <h2>Structure 1</h2>

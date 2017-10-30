@@ -16,7 +16,6 @@ import Select from 'material-ui/Select';
 import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
-import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -25,31 +24,25 @@ const MButton = styled(Button)`
   margin: 12px;
 `;
 
-const initialState = {
-  free_text: '',
-  year: '',
-  authors: '',
-  article_title: '',
-  journal_title: '',
-  facet: '',
-  site: '',
-  composition: '',
-  loading: false,
-};
-
 
 class GeneralSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      free_text: '',
+      year: '',
+      authors: '',
+      article_title: '',
+      journal_title: '',
+      facet: '',
+      site: '',
+      composition: '',
+    };
     // Workaround, instead of calling .bind in every render
     this.submitQuery = this.submitQuery.bind(this);
     this.clearForm = this.clearForm.bind(this);
   }
   submitQuery() {
-    this.setState({
-      loading: true,
-    });
     axios.post(graphQLRoot, {
       query: `query{systems {
   edges {
@@ -62,9 +55,6 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
   }
   }}`,
     }).then((response) => {
-      this.setState({
-        loading: false,
-      });
       this.props.receiveResults(response.data.data.systems.edges);
     });
   }
@@ -77,12 +67,22 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
     };
   }
   clearForm() {
-    this.setState(initialState);
+    this.setState({
+      free_text: '',
+      composition: '',
+      year: '',
+      authors: '',
+      article_title: '',
+      journal_title: '',
+      facet: '',
+      site: '',
+      results: [],
+    });
   }
   render() {
     return (
       <div>
-        <h2>Structure Search</h2>
+        <h2>General Search</h2>
         <TextField label="Free Text Search" value={this.state.free_text} onChange={this.handleChange('free_text')} />
         {'\t '}
         <TextField label="Composition" value={this.state.composition} onChange={this.handleChange('composition')} />
@@ -133,8 +133,8 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
           </Select>
         </FormControl>
         <MButton raised onClick={this.clearForm}><MdClear /> Clear</MButton>
-        <MButton raised onClick={this.submitQuery} color="primary"><MdSearch /> Search</MButton>
-        {this.state.loading ? <LinearProgress color="primary" /> : null }
+        <MButton raised onClick={this.submitQuery}><MdSearch /> Search</MButton>
+
       </div>
     );
   }
