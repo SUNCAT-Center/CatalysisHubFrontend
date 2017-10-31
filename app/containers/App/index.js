@@ -35,7 +35,7 @@ import { withStyles } from 'material-ui/styles';
 import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 
-import { suBranding, appBar } from 'utils/constants';
+import { suBranding, appBar, version } from 'utils/constants';
 import { theme } from 'utils/theme';
 
 import messages from 'components/Header/messages';
@@ -127,7 +127,7 @@ class App extends React.Component {
           <Button dense color="primary" onClick={this.handleDrawerToggle}>
             <MenuLink to="/">
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
-              <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v0.1.0</div>
+              <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
             </MenuLink>
           </Button>
         </div>

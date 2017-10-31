@@ -3,5 +3,6 @@ module.exports = {
   graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql',
   suBranding: true,
   appBar: true,
+  version: '0.1.0',
 
 };
