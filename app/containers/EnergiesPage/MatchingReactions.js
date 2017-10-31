@@ -62,6 +62,9 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
 }}`,
       };
       return axios.post(graphQLRoot, query).then((response) => {
+        const node = response.data.data.systems.edges[0].node;
+        node.DftCode = reaction.DFTCode;
+        node.DftFunctional = reaction.DFTunctional;
         this.props.saveSystem(response.data.data.systems.edges[0].node);
         this.setState({
           loading: false,
@@ -129,7 +132,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  count={this.props.searchResults.length}
+                  count={this.props.matchingReactions.length}
                   rowsPerPage={this.state.rowsPerPage}
                   page={this.state.page}
                   onChangePage={this.handlePageChange}
@@ -149,7 +152,6 @@ MatchingReactions.propTypes = {
   selectReaction: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
-  searchResults: PropTypes.array.isRequired,
   matchingReactions: PropTypes.array.isRequired,
 };
 
