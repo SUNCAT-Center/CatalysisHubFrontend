@@ -78,7 +78,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 
   render() {
     return (
-      <div>
+      <div style={{ float: 'left', marginRight: 80 }}>
         { /*  this.state.loading ? <LinearProgress color="primary" /> : null */ }
         <p id={`${this.props.id}_script`} />
         <canvas
