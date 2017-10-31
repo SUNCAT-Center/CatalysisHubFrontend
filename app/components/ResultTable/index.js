@@ -53,6 +53,8 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
     PublicationNumber
     PublicationJournal
     PublicationPages
+    DftCode
+    DftFunctional
     }
   }
 }}`,
