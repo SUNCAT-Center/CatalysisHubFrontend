@@ -40,6 +40,12 @@ import { theme } from 'utils/theme';
 
 import messages from 'components/Header/messages';
 
+const MenuLink = styled(Link)`
+  text-decoration: none;
+  cursor: pointer;
+  height: .30em;
+`;
+
 const AppWrapper = styled.div`
   max-width: calc(1200px + 16px * 2);
   margin: 0 auto;
@@ -118,11 +124,11 @@ class App extends React.Component {
     const drawer = (
       <div>
         <div className={this.props.classes.drawerHeader}>
-          <Button color="primary" onClick={this.handleDrawerToggle}>
-            <Link to="/">
-              <Img width="200px" src={Banner} alt="react-boilerplate - Logo" />
+          <Button dense color="primary" onClick={this.handleDrawerToggle}>
+            <MenuLink to="/">
+              <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
               <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v0.1.0</div>
-            </Link>
+            </MenuLink>
           </Button>
         </div>
         <Divider />
@@ -130,27 +136,27 @@ class App extends React.Component {
           <List>
             <List subheader={<ListSubheader>SEARCH</ListSubheader>}>
               <ListItem>
-                <Link to="/energies" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/energies" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
                     <FormattedMessage {...messages.energies} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
 
 
               <ListItem>
-                <Link to="/generalSearch" onClick={this.handleDrawerToggle}>
-                  <Button color="primary">
+                <MenuLink to="/generalSearch" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary">
                     <FormattedMessage {...messages.generalSearch} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
             </List>
 
 
             <List subheader={<ListSubheader>GROUPS</ListSubheader>}>
               <ListItem>
-                <Button color="primary" >
+                <Button disabled dense color="primary" >
                   ...
                 </Button>
               </ListItem>
@@ -159,59 +165,66 @@ class App extends React.Component {
             <List subheader={<ListSubheader>APPS</ListSubheader>}>
 
               <ListItem>
-                <Link to="/yourNextApp" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/yourNextApp" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
                     <FormattedMessage {...messages.yourNextApp} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
 
               <ListItem>
-                <Link to="/activityMaps" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/activityMaps" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
                     <FormattedMessage {...messages.activityMaps} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
               <ListItem>
-                <Button color="primary" >
-                  AtoML
-                </Button>
-              </ListItem>
-
-
-              <ListItem>
-                <Link to="/scalingRelations" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
-                    <FormattedMessage {...messages.scalingRelations} />
+                <MenuLink>
+                  <Button disabled dense color="primary" >
+                    AtoML
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
 
 
               <ListItem>
-                <Link to="/pourbaixDiagrams" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/pourbaixDiagrams" onClick={this.handleDrawerToggle}>
+                  <Button disabled dense color="primary" >
                     <FormattedMessage {...messages.pourbaixDiagrams} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
 
 
               <ListItem>
-                <Link to="/publications" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
                     <FormattedMessage {...messages.publications} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
 
+
               <ListItem>
-                <Link to="/graphQLConsole" onClick={this.handleDrawerToggle}>
-                  <Button color="primary" >
+                <MenuLink to="/scalingRelations" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
+                    <FormattedMessage {...messages.scalingRelations} />
+                  </Button>
+                </MenuLink>
+              </ListItem>
+
+
+            </List>
+
+            <List subheader={<ListSubheader>API</ListSubheader>}>
+
+              <ListItem>
+                <MenuLink to="/graphQLConsole" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
                     <FormattedMessage {...messages.graphqlconsole} />
                   </Button>
-                </Link>
+                </MenuLink>
               </ListItem>
             </List>
           </List>
@@ -242,8 +255,8 @@ class App extends React.Component {
                 <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
               </a>
               }
-              <Typography type="body1" color="inherit" style={{ marginLeft: 20 }}>
-                {this.props.location.pathname}
+              <Typography type="body4" color="inherit" style={{ marginLeft: 20 }}>
+                {`CatApp${this.props.location.pathname}`}
               </Typography>
             </Toolbar>
           </AppBar>
