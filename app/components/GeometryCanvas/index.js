@@ -123,7 +123,6 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         />
         <br />
         <MButton
-          primary
           raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
           style={{
