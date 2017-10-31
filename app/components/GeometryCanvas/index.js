@@ -42,7 +42,7 @@ function _load_lib(url, callback){
 }
 // Load Libraries
 _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
-  _load_lib("http://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js", function(){
+  _load_lib("https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js", function(){
 
   var rotationMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
 
@@ -84,7 +84,7 @@ function _load_lib(url, callback){
 }
 // Load Libraries
 _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
-  _load_lib("http://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js", function(){
+  _load_lib("https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js", function(){
 
   var rotationMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
 
@@ -123,7 +123,6 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         />
         <br />
         <MButton
-          primary
           raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
           style={{

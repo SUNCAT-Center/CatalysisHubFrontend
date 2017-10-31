@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'boilerplate.components.Header.publications',
     defaultMessage: 'Publications',
   },
+  graphqlconsole: {
+    id: 'boilerplate.components.Header.graphqlconsole',
+    defaultMessage: 'GraphQL API',
+  },
   yourNextApp: {
     id: 'boilerplate.components.Header.yourNextApp',
     defaultMessage: 'Your Next App ...',
