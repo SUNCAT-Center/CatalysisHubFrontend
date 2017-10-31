@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import Button from 'material-ui/Button';
 
+import { appBar } from 'utils/constants';
+
 import Img from './Img';
 import NavBar from './NavBar';
 // import HeaderLink from './HeaderLink';
@@ -20,6 +22,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         <Link to="/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
         </Link>
+        { appBar ? null :
         <NavBar
           style={{
             marginTop: '15px',
@@ -103,6 +106,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           </HeaderLink>
           */}
         </NavBar>
+        }
       </HeaderBar>
     );
   }
