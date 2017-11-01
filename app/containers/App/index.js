@@ -247,8 +247,9 @@ class App extends React.Component {
         <div>
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
-              <IconButton color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
-                <MenuIcon onClick={this.handleDrawerToggle} />
+              <IconButton onClick={this.handleDrawerToggle} color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
+                {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                <MenuIcon />
               </IconButton>
               { suBranding === false ? null :
               <a href="http://www.stanford.edu" style={{ margin: 0, marginLeft: 20 }}>
