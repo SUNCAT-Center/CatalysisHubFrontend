@@ -255,7 +255,7 @@ class App extends React.Component {
                 <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
               </a>
               }
-              <Typography type="body4" color="inherit" style={{ marginLeft: 20 }}>
+              <Typography type="body1" color="inherit" style={{ marginLeft: 20 }}>
                 {`CatApp${this.props.location.pathname}`}
               </Typography>
             </Toolbar>

@@ -76,26 +76,33 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           </CenteredSection>
           <Section>
             <View row justifyContent="space-around">
-              <View row auto>
+              <View row>
                 <Paper
                   style={{
                     padding: 25,
+                    minWidth: 240,
                     textAlign: 'center',
                   }}
                 >
                   <h3>Reaction Energies</h3>
-                  <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
+                  <View row style={{ justifyContent: 'center' }}>
+                    <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
+                  </View>
                 </Paper>
               </View>
-              <View row auto>
+              <View row>
                 <Paper
                   style={{
                     padding: 25,
+                    minWidth: 240,
                     textAlign: 'center',
+                    align: 'center',
                   }}
                 >
                   <h3>Geometries</h3>
-                  <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
+                  <View row style={{ justifyContent: 'center' }}>
+                    <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
+                  </View>
                 </Paper>
               </View>
             </View>
