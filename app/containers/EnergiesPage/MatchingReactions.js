@@ -63,8 +63,9 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
       };
       return axios.post(graphQLRoot, query).then((response) => {
         const node = response.data.data.systems.edges[0].node;
-        node.DftCode = reaction.DFTCode;
-        node.DftFunctional = reaction.DFTunctional;
+        console.log(reaction);
+        node.DftCode = reaction.dftCode;
+        node.DftFunctional = reaction.dftFunctional;
         this.props.saveSystem(response.data.data.systems.edges[0].node);
         this.setState({
           loading: false,

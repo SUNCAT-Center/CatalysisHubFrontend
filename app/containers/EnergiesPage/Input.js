@@ -103,13 +103,14 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
   submitForm() {
     this.setState({ loading: true });
+
     const query = {
       query: `query{catapp {
   edges {
     node {
       id
-      DFTCode
-      DFTFunctional
+      dftCode
+      dftFunctional
       reactants
       products
       #Equation
