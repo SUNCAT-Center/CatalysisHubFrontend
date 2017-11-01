@@ -50,8 +50,7 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
     this.setState({
       loading: true,
     });
-    axios.post(graphQLRoot, {
-      query: `query{systems {
+    const query = `query{systems {
   edges {
     node {
         uniqueId
@@ -60,7 +59,9 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
         Facet
     }
   }
-  }}`,
+  }}`;
+    axios.post(graphQLRoot, {
+      query,
     }).then((response) => {
       this.setState({
         loading: false,
