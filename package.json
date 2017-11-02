@@ -238,6 +238,7 @@
     "react": "15.4.1",
     "react-apollo": "^1.4.16",
     "react-dom": "15.4.1",
+    "react-ga": "^2.3.5",
     "react-helmet": "3.2.2",
     "react-icons": "^2.2.7",
     "react-iframe": "^1.0.7",

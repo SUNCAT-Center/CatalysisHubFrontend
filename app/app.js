@@ -35,6 +35,9 @@ import { makeSelectLocationState } from 'containers/App/selectors';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
+// Google Analytics
+import ReactGA from 'react-ga';
+
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
 import '!file-loader?name=[name].[ext]!./favicon.ico';
@@ -52,6 +55,13 @@ import './global-styles';
 
 // Import routes
 import createRoutes from './routes';
+
+ReactGA.initialize(process.env.GA_TRACKING_ID);
+
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -85,6 +95,7 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+// Initialize Google Analytics
 
 const render = (messages) => {
   ReactDOM.render(
@@ -99,6 +110,7 @@ const render = (messages) => {
               // behaviour
               applyRouterMiddleware(useScroll())
             }
+            onUpdate={logPageView} // Google Analytics
           />
         </LanguageProvider>
       </Provider>
