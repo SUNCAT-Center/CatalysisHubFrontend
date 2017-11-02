@@ -39,17 +39,19 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     this.clickPublication = this.clickPublication.bind(this);
   }
   componentDidMount() {
+    const yearQuery = '{numberKeys(key:"publication_year", distinct: true) { edges { node { value } } }}';
     axios.post(graphQLRoot, {
-      query: '{numberKeys(key:"publication_year", distinct: true) { edges { node { value } } }}',
+      query: yearQuery,
     })
       .then((response) => {
         const years = response.data.data.numberKeys.edges.map((n) => (n.node.value));
         this.setState({
           years,
         });
-        years.map((year) => (
-          axios.post(graphQLRoot, {
-            query: `{catapp(year: ${year}, reference: "~", distinct: true) { edges { node { reference } } }}`,
+        years.map((year) => {
+          const query = `{catapp(year: ${year}, reference: "~", distinct: true) { edges { node { reference } } }}`;
+          return axios.post(graphQLRoot, {
+            query,
           })
           .then((yearResponse) => {
             const references = yearResponse.data.data.catapp.edges.map((n) => (n.node.reference));
@@ -58,8 +60,8 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             this.setState({
               references: allReferences,
             });
-          })
-        ));
+          });
+        });
       });
   }
   clickPublication(event, target, key) {
@@ -68,7 +70,6 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     const count = parseInt(splitKey[2], 10);
     let reference = this.state.references[year][count];
     reference = reference.split('"').join('\\"');
-    console.log(reference);
     const query = `query{catapp(reference: "${reference}") { edges { node { aseIds } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
