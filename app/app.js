@@ -37,6 +37,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 
 // Google Analytics
 import ReactGA from 'react-ga';
+import { gaTrackingId } from 'utils/constants';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -56,7 +57,7 @@ import './global-styles';
 // Import routes
 import createRoutes from './routes';
 
-ReactGA.initialize(process.env.GA_TRACKING_ID);
+ReactGA.initialize(gaTrackingId);
 
 function logPageView() {
   ReactGA.set({ page: window.location.pathname + window.location.search });

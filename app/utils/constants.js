@@ -4,5 +4,5 @@ module.exports = {
   suBranding: false,
   appBar: true,
   version: '0.1.0',
-
+  gaTrackingId: 'UA-109061730-1',
 };
