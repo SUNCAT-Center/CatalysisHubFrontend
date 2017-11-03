@@ -44,6 +44,15 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
               <li><pre>{'{systems(last: 5) { edges { node { id energy PublicationTitle keyValuePairs } } }}'}</pre></li>
             </ul>
             <div>{"Open the 'Docs' tab on the right to find a full documentation."}</div>
+            <div>Alternatively you query from the command line using <pre style={{ display: 'inline' }}>curl</pre>:
+              <pre>{ `curl -XPOST http://catappdatabase.herokuapp.com/graphql --data 'query={systems(last: 10 ) {
+  edges {
+    node {
+      energy Cifdata
+          }
+  }
+}}' ` }</pre>
+            </div>
           </CardContent>
           <CardActions>
             <Button dense color="primary" onClick={this.handleGotit}>Got it! </Button>
