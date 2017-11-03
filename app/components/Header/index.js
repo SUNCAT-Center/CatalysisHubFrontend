@@ -1,13 +1,17 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
+import Button from 'material-ui/Button';
+
+import { appBar } from 'utils/constants';
 
 import Img from './Img';
 import NavBar from './NavBar';
-import HeaderLink from './HeaderLink';
+// import HeaderLink from './HeaderLink';
 import Banner from './banner.png';
 import messages from './messages';
 import HeaderBar from './HeaderBar';
+
 
 // import DrawerBar from 'components/DrawerBar';
 
@@ -18,12 +22,68 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         <Link to="/">
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
         </Link>
+        { appBar ? null :
         <NavBar
           style={{
             marginTop: '15px',
           }}
         >
-          <HeaderLink to="/energies">
+          <Link to="/energies">
+            <Button color="primary" >
+              <FormattedMessage {...messages.energies} />
+            </Button>
+          </Link>
+
+
+          <Link to="/generalSearch">
+            <Button color="primary" >
+              <FormattedMessage {...messages.generalSearch} />
+            </Button>
+          </Link>
+
+
+          <Link to="/activityMaps">
+            <Button color="primary" >
+              <FormattedMessage {...messages.activityMaps} />
+            </Button>
+          </Link>
+
+
+          <Link to="/scalingRelations">
+            <Button color="primary" >
+              <FormattedMessage {...messages.scalingRelations} />
+            </Button>
+          </Link>
+
+
+          <Link to="/pourbaixDiagrams">
+            <Button color="primary" >
+              <FormattedMessage {...messages.pourbaixDiagrams} />
+            </Button>
+          </Link>
+
+
+          <Link to="/publications">
+            <Button color="primary" >
+              <FormattedMessage {...messages.publications} />
+            </Button>
+          </Link>
+
+          <Link to="/graphQLConsole">
+            <Button color="primary" >
+              <FormattedMessage {...messages.graphqlconsole} />
+            </Button>
+          </Link>
+
+          <Link to="/yourNextApp">
+            <Button color="primary" >
+              <FormattedMessage {...messages.yourNextApp} />
+            </Button>
+          </Link>
+
+
+          {/*
+          <HeaderLink to="/energies" color="primary">
             <FormattedMessage {...messages.energies} />
           </HeaderLink>
           <HeaderLink to="/activityMaps">
@@ -44,7 +104,9 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           <HeaderLink to="/yourNextApp">
             <FormattedMessage {...messages.yourNextApp} />
           </HeaderLink>
+          */}
         </NavBar>
+        }
       </HeaderBar>
     );
   }

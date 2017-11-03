@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-import GeometryCanvasFromUuid from 'components/GeometryCanvasFromUuid';
+import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
 
 const initialState = {
   Formula: '',
@@ -22,6 +22,8 @@ const initialState = {
   PublicationNumber: '',
   PublicationJournal: '',
   PublicationPages: '',
+  DftCode: '',
+  DftFunctional: '',
 };
 
 class SingleStructureView extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -37,10 +39,12 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>Structure {this.props.selectedSystem.Formula}</h2>
-          <GeometryCanvasFromUuid {...this.props} />
+          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
-            <li>Energy: {energy.toFixed(3)} eV</li>
+            <li>Total Energy: {energy.toFixed(3)} eV</li>
+            <li>DFT Code: {this.props.selectedSystem.DftCode}</li>
+            <li>DFT Functional: {this.props.selectedSystem.DftFunctional}</li>
             <li>Title: {this.props.selectedSystem.PublicationTitle}</li>
             <li>Authors: {this.props.selectedSystem.PublicationAuthors}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
