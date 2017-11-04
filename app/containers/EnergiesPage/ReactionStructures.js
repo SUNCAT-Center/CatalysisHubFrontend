@@ -3,6 +3,8 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 
 import SingleStructureView from 'components/SingleStructureView';
 
+import BarrierChart from 'components/BarrierChart';
+
 function TabContainer(props) {
   return <div style={{ padding: 8 * 3 }}>{props.children}</div>;
 }
@@ -31,6 +33,7 @@ export class ReactionStructures extends React.Component { // eslint-disable-line
       {this.props.reactionSystems.length === 0 ? null :
       <div>
         <h2>Reaction Geometries</h2>
+        <BarrierChart {...this.props} />
         <Tabs
           value={tabValue}
           onChange={this.handleChange}
