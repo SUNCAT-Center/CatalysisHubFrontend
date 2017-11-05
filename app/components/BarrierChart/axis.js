@@ -18,15 +18,12 @@ export default class Axis extends React.Component {
   }
 
   render() {
+    /* eslint-disable react/no-string-refs */
     return (
-      <g
-        className="axis"
-        ref={(x) => { this.axis = x; }}
-        transform={this.props.translate}
-        tickFormat={(x) => ({ 0: 'IS', 5: 'TS', 10: 'FS' }[x])}
-      >
+      <g className="axis" ref="axis" transform={this.props.translate} tickFormat={(x) => ({ 0: 'IS', 5: 'TS', 10: 'FS' }[x])} >
       </g>
     );
+    /* eslint-enable react/no-string-refs */
   }
 }
 

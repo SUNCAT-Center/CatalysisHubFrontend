@@ -49,7 +49,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
         <Flexbox flexDirection="row" justifyContent="space-around">
           <Flexbox
             flexDirection="column"
-            style={{ marginRight: '-20vw' }}
+            style={{ marginRight: '0vw' }}
             justifyContent="space-around"
           >
             {this.state.reactantUUIDs.map((uuid, i) =>
@@ -71,7 +71,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
           <ScatterPlot {...this.state} {...styles} {...this.props} />
           <Flexbox
             flexDirection="column"
-            style={{ marginLeft: '-20vw' }}
+            style={{ marginLeft: '0vw' }}
             justifyContent="space-around"
           >
             {this.state.productUUIDs.map((uuid, i) =>
