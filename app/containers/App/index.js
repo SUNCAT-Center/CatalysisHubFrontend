@@ -179,6 +179,7 @@ class App extends React.Component {
                   </Button>
                 </MenuLink>
               </ListItem>
+
               <ListItem>
                 <MenuLink>
                   <Button disabled dense color="primary" >
@@ -187,7 +188,6 @@ class App extends React.Component {
                 </MenuLink>
               </ListItem>
 
-
               <ListItem>
                 <MenuLink to="/pourbaixDiagrams" onClick={this.handleDrawerToggle}>
                   <Button disabled dense color="primary" >
@@ -195,7 +195,6 @@ class App extends React.Component {
                   </Button>
                 </MenuLink>
               </ListItem>
-
 
               <ListItem>
                 <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
@@ -208,7 +207,7 @@ class App extends React.Component {
 
               <ListItem>
                 <MenuLink to="/scalingRelations" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
+                  <Button disabled dense color="primary" >
                     <FormattedMessage {...messages.scalingRelations} />
                   </Button>
                 </MenuLink>
