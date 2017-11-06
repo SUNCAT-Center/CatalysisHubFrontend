@@ -109,8 +109,8 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   edges {
     node {
       id
-      dftCode
-      dftFunctional
+      DFTCode
+      DFTFunctional
       reactants
       products
       #Equation
@@ -125,6 +125,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
 }}`,
     };
+    console.log(query);
     axios.post(graphQLRoot, query).then((response) => {
       this.setState({
         loading: false,
@@ -132,6 +133,9 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       this.props.receiveReactions(response.data.data.catapp.edges);
     }).catch((error) => {
       console.log(`Error loading reactions: ${error}`);
+      console.log(graphQLRoot);
+      console.log(query.query);
+
       this.setState({
         loading: false,
       });

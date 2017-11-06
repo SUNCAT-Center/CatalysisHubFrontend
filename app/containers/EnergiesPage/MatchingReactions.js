@@ -72,6 +72,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
         });
       }).catch((error) => {
         console.log(error);
+        console.log(query);
         this.setState({
           loading: false,
         });
@@ -114,7 +115,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                         hover
                         key={`row_${i}`}
                         onClick={() => {
-                          this.props.selectReaction(result.node.id);
+                          this.props.selectReaction(result.node);
                           this.fetchRow(result.node);
                         }}
                       >
