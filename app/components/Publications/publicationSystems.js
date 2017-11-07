@@ -17,7 +17,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
     super(props);
     this.fetchRow = this.fetchRow.bind(this);
     this.state = {
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       page: 0,
       uuid: null,
       system: {},
@@ -76,6 +76,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
                 page={this.state.page}
                 onChangePage={this.handlePageChange}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                rowsPerPageOptions={[10, 25, 100, 1000]}
               />
             </TableRow>
           </TableFooter>
