@@ -35,7 +35,7 @@ import { withStyles } from 'material-ui/styles';
 import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 
-import { suBranding, appBar, version } from 'utils/constants';
+import { suBranding, appBar, version, whiteLabel } from 'utils/constants';
 import { theme } from 'utils/theme';
 
 import messages from 'components/Header/messages';
@@ -126,8 +126,14 @@ class App extends React.Component {
         <div className={this.props.classes.drawerHeader}>
           <Button dense color="primary" onClick={this.handleDrawerToggle}>
             <MenuLink to="/">
+              {whiteLabel ? null :
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
-              <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
+              }
+              {whiteLabel ?
+                <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
+                    :
+                <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
+              }
             </MenuLink>
           </Button>
         </div>
@@ -256,7 +262,9 @@ class App extends React.Component {
               </a>
               }
               <Typography type="body1" color="inherit" style={{ marginLeft: 20 }}>
-                {`CatApp${this.props.location.pathname}`}
+                {whiteLabel ?
+                  `${this.props.location.pathname}` :
+                  `CatApp${this.props.location.pathname}`}
               </Typography>
             </Toolbar>
           </AppBar>

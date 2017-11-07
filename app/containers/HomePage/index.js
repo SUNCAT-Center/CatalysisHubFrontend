@@ -15,7 +15,7 @@ import { FaDatabase } from 'react-icons/lib/fa';
 import View from 'flexbox-react';
 
 import axios from 'axios';
-import { graphQLRoot } from 'utils/constants';
+import { graphQLRoot, whiteLabel } from 'utils/constants';
 
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
@@ -62,17 +62,21 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   render() {
     return (
       <article>
+        { whiteLabel === true ? null :
         <Helmet
           title="Home Page"
           meta={[
             { name: 'description', content: 'CatApp Browser' },
           ]}
         />
+        }
         <div>
           <CenteredSection>
+            {whiteLabel ? null :
             <H1>
               <FormattedMessage {...messages.startProjectHeader} />
             </H1>
+            }
           </CenteredSection>
           <Section>
             <View row justifyContent="space-around">

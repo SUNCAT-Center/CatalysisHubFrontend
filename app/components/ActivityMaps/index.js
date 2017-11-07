@@ -48,15 +48,17 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
               onChange={this.handleChange('chemicalReaction')}
               value={this.state.chemicalReaction}
             >
+              <MenuItem value="OER-2">OER (2 descriptors)</MenuItem>
+              {/*
               <MenuItem value="HER">HER (1 descriptor)</MenuItem>
               <MenuItem value="OER-1">OER (1 descriptor)</MenuItem>
-              <MenuItem value="OER-2">OER (2 descriptors)</MenuItem>
               <MenuItem value="ORR-1">ORR (1 descriptors)</MenuItem>
               <MenuItem value="ORR-2">ORR (2 desescriptor)</MenuItem>
               <MenuItem value="CO2RR">CO reduction (2 descriptors)</MenuItem>
               <MenuItem value="Ammonia">Ammonia Synthesis</MenuItem>
               <MenuItem value="COx">CO oxidation (2 descriptors)</MenuItem>
               <MenuItem value="deNOx">NO reduction (2 descriptors)</MenuItem>
+              */}
             </Select>
           </FormControl>
 

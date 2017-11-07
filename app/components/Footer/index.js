@@ -5,6 +5,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import A from 'components/A';
 /* import LocaleToggle from 'containers/LocaleToggle'; */
+import { whiteLabel } from 'utils/constants';
 import Wrapper from './Wrapper';
 import messages from './messages';
 
@@ -14,7 +15,9 @@ function Footer() {
       <section>
         <List>
           <ListItem>
+            {whiteLabel ? null :
             <A href="http://suncat.slac.stanford.edu/"><ListItemText primary="SUNCAT" /></A>
+            }
           </ListItem>
         </List>
       </section>
