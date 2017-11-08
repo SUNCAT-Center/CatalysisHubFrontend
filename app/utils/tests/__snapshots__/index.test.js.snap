@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`download should create a download link 1`] = `
-<a
-  download="http://localhost/"
-  href="data:text/plain;charset=utf-8,undefined"
-  style="display: none;"
-/>
-`;

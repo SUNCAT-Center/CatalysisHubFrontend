@@ -1,7 +1,7 @@
 import { injectGlobal } from 'styled-components';
 
 /* eslint no-unused-expressions: 0 */
-const globalStyle = injectGlobal`
+injectGlobal`
   html {
    font-family: 'Roboto', sans-serif ! important;
   }
@@ -31,5 +31,3 @@ const globalStyle = injectGlobal`
     line-height: 1.5em;
   }
 `;
-
-export default globalStyle;

@@ -23,6 +23,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
+          import('containers/HomePage/sagas'),
           import('containers/HomePage'),
         ]);
 
@@ -59,6 +60,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/PourbaixDiagramsPage/reducer'),
+          import('containers/PourbaixDiagramsPage/sagas'),
           import('containers/PourbaixDiagramsPage'),
         ]);
 
@@ -78,6 +80,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/EnergiesPage/reducer'),
+          import('containers/EnergiesPage/sagas'),
           import('containers/EnergiesPage'),
         ]);
 
@@ -97,6 +100,7 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/ScalingRelationsPage/reducer'),
+          import('containers/ScalingRelationsPage/sagas'),
           import('containers/ScalingRelationsPage'),
         ]);
 

@@ -6,7 +6,6 @@ function download(filename, text) {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
-  return element;
 }
 
 module.exports = { download };

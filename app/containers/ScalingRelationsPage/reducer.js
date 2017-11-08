@@ -3,11 +3,13 @@
  * ScalingRelationsPage reducer
  *
  */
+
+import { fromJS } from 'immutable';
 import {
   DEFAULT_ACTION,
 } from './constants';
 
-const initialState = {};
+const initialState = fromJS({});
 
 function scalingRelationsPageReducer(state = initialState, action) {
   switch (action.type) {
