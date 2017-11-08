@@ -1,10 +1,12 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import SlabGenerator from '../index';
+import SlabGenerator from '../index';
 
 describe('<SlabGenerator />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('Expect to have render a div', () => {
+    const rc = shallow(<SlabGenerator />
+    );
+    expect(rc.find('div').length).toBe(1);
   });
 });

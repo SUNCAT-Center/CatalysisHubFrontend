@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { FormattedMessage } from 'react-intl';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 
 import messages from '../messages';
 import Footer from '../index';
@@ -12,7 +13,11 @@ describe('<Footer />', () => {
     );
     expect(renderedComponent.contains(
       <section>
-        <FormattedMessage {...messages.licenseMessage} />
+        <List>
+          <ListItem>
+            <ListItemText primary={<FormattedMessage {...messages.licenseMessage} />} />
+          </ListItem>
+        </List>
       </section>
     )).toBe(true);
   });

@@ -1,10 +1,10 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import ResultTable from '../index';
+import ResultTable from '../index';
 
 describe('<ResultTable />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('have no h2 header', () => {
+    expect(shallow(<ResultTable selectedUUID={() => {}} saveSystem={() => {}} searchResults={[]} />).find('h2').length).toBe(0);
   });
 });

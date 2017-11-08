@@ -1,10 +1,10 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import { GeneralSearchContainer } from '../index';
+import { GeneralSearchContainer } from '../index';
 
 describe('<GeneralSearchContainer />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('to render a a div', () => {
+    expect(shallow(<GeneralSearchContainer selectUUID={() => {}} selectedUUID="" />).find('div').length).toBe(1);
   });
 });
