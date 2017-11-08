@@ -190,6 +190,7 @@
       "!app/app.js",
       "!app/routes.js"
     ],
+    "coverageReporters": ["html", "json", "lcov", "text"],
     "coverageThreshold": {
       "global": {
         "statements": 98,
