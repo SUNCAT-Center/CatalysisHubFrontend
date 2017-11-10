@@ -8,6 +8,7 @@
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
+
 /* import injectTapEventPlugin from 'react-tap-event-plugin'; */
 /* injectTapEventPlugin(); */
 
