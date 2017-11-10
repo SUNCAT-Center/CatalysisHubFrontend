@@ -10,7 +10,6 @@ import 'babel-polyfill';
 
 /* import injectTapEventPlugin from 'react-tap-event-plugin'; */
 /* injectTapEventPlugin(); */
-
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
