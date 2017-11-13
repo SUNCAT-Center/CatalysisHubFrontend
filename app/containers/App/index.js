@@ -160,6 +160,7 @@ class App extends React.Component {
             </List>
 
 
+            {/*
             <List subheader={<ListSubheader>GROUPS</ListSubheader>}>
               <ListItem>
                 <Button disabled dense color="primary" >
@@ -167,6 +168,7 @@ class App extends React.Component {
                 </Button>
               </ListItem>
             </List>
+            */}
 
             <List subheader={<ListSubheader>APPS</ListSubheader>}>
 
