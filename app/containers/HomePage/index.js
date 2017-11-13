@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
+import Grid from 'material-ui/Grid';
+import { Link } from 'react-router';
 import { FaDatabase } from 'react-icons/lib/fa';
 import View from 'flexbox-react';
 
@@ -21,7 +23,6 @@ import { graphQLRoot, whiteLabel } from 'utils/constants';
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
 import CenteredSection from './CenteredSection';
-import Section from './Section';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
@@ -78,27 +79,31 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </H1>
             }
           </CenteredSection>
-          <Section>
-            <View row justifyContent="space-around">
-              <View row>
+          <Grid container justify="center">
+            <Grid item>
+              <Link to="/energies">
                 <Paper
                   style={{
                     padding: 25,
                     minWidth: 240,
+                    maxWidth: 300,
                     textAlign: 'center',
                   }}
                 >
                   <h3>Reaction Energies</h3>
-                  <View row style={{ justifyContent: 'center' }}>
+                  <View row style={{ justifyContent: 'space-around' }}>
                     <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
-              </View>
-              <View row>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/generalSearch">
                 <Paper
                   style={{
                     padding: 25,
                     minWidth: 240,
+                    maxWidth: 300,
                     textAlign: 'center',
                     align: 'center',
                   }}
@@ -108,9 +113,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
-              </View>
-            </View>
-          </Section>
+              </Link>
+            </Grid>
+          </Grid>
         </div>
       </article>
     );
