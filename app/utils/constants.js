@@ -5,6 +5,6 @@ module.exports = {
   whiteLabel: false,
   suBranding: false,
   appBar: true,
-  version: '0.1.0',
+  version: '0.1.1',
   gaTrackingId: 'UA-109061730-1',
 };
