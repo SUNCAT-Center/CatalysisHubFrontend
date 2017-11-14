@@ -66,6 +66,11 @@ const styles = (xtheme) => ({
     marginTop: xtheme.spacing.unit * 3,
     zIndex: 1,
   },
+  footer: {
+    [xtheme.breakpoints.down('lg')]: {
+      visibility: 'hidden',
+    },
+  },
   appFrame: {
     position: 'relative',
     display: 'flex',
@@ -95,12 +100,13 @@ const styles = (xtheme) => ({
   content: {
     backgroundColor: xtheme.palette.background.default,
     width: '100%',
-    padding: xtheme.spacing.unit * 3,
+    padding: xtheme.spacing.unit * 0,
+    paddingTop: xtheme.spacing.unit * 1,
     height: 'calc(100% - 56px)',
-    marginTop: (appBar ? 56 : 0),
-    [xtheme.breakpoints.up('xl')]: {
+    marginTop: (appBar ? 36 : 0),
+    [xtheme.breakpoints.up('lg')]: {
       height: 'calc(100% - 64px)',
-      marginTop: 64,
+      marginTop: 80,
     },
   },
 });
@@ -131,7 +137,7 @@ class App extends React.Component {
               }
               {whiteLabel ?
                 <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
-                    :
+                :
                 <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
               }
             </MenuLink>
@@ -295,12 +301,12 @@ class App extends React.Component {
           </Hidden>
         </div>
         }
-
         <main className={this.props.classes.content}>
           <AppWrapper>
             <Paper
               style={{
                 padding: '40px',
+                margin: 0,
                 marginTop: (appBar ? '20px' : '20px'),
               }}
               elevation={8}
@@ -323,8 +329,8 @@ class App extends React.Component {
           </AppWrapper>
         </main>
         {suBranding === false ? null :
-        <div>
-          <Flexbox id="global-footer" flexDirection="column" justifyContent="space-around">
+        <div className={this.props.classes.footer}>
+          <Flexbox id="global-footer" flexDirection="column" justifyContent="space-around" style={{ marginTop: '0px' }}>
             <Flexbox flexDirection="row" justifyContent="space-around">
               <Flexbox flexDirection="column" justifyContent="space-around">
                 <Flexbox flexDirection="row" justifyContent="space-around">
@@ -338,7 +344,7 @@ class App extends React.Component {
                   </Flexbox>
                   <Flexbox width="10vh" />
 
-                  <Flexbox flexDirection="column" justifyContent="space-around">
+                  <Flexbox flexDirection="column" justifyContent="space-around" className={this.props.classes.footer}>
                     <Flexbox height="10vh" />
                     <Flexbox
                       id="bottom-text"
