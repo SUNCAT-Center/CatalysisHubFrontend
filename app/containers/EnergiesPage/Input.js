@@ -108,6 +108,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
   submitForm() {
     this.props.clearSystems();
+    this.props.submitSearch();
     this.setState({ loading: true });
     const filters = [];
     if (typeof this.state.surface.label !== 'undefined') {
@@ -210,6 +211,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
 EnergiesPageInput.propTypes = {
   receiveReactions: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
+  submitSearch: PropTypes.func.isRequired,
 };
 
 EnergiesPageInput.defaultProps = {

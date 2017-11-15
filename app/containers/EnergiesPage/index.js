@@ -13,6 +13,7 @@ import { selectReaction,
   receiveSystems,
   clearSystems,
   saveSystem,
+  submitSearch,
 } from './actions';
 import { EnergiesPageInput } from './Input';
 import { MatchingReactions } from './MatchingReactions';
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => ({
   selectedReaction: state.get('energiesPageReducer').selectedReaction,
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
   reactionSystems: state.get('energiesPageReducer').reactionSystems,
+  searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -54,6 +56,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(saveSystem(system));
+  },
+  submitSearch: () => {
+    dispatch(submitSearch());
   },
 });
 

@@ -11,16 +11,24 @@ import {
   RECEIVE_SYSTEMS,
   SAVE_SYSTEM,
   CLEAR_SYSTEMS,
+  SUBMIT_SEARCH,
 } from './constants';
 
 const initialState = {
   selectedReaction: {},
   matchingReactions: [],
   reactionSystems: [],
+  searchSubmitted: false,
 };
+
 
 function energiesPageReducer(state = initialState, action) {
   switch (action.type) {
+    case SUBMIT_SEARCH:
+      return {
+        ...state,
+        searchSubmitted: true,
+      };
     case DEFAULT_ACTION:
       return state;
     case SELECT_REACTION:

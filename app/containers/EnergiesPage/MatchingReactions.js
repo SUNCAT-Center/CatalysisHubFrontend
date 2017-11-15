@@ -93,12 +93,15 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
 
   render() {
     if (this.props.matchingReactions.length === 0) {
-      return (
-        <div>
-          <h2>Ooops!</h2>
-          No reaction energies found. Please remove one or more filters.
-        </div>
-      );
+      if (this.props.searchSubmitted) {
+        return (
+          <div>
+            <h2>Ooops!</h2>
+            No reaction energies found. Please remove one or more filters.
+          </div>
+        );
+      }
+      return null;
     }
     return (
       <div>
@@ -142,7 +145,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                         </Hidden>
                         <TableCell>{result.node.surfaceComposition}</TableCell>
                         <Hidden smDown>
-                          <TableCell>{result.node.Facet}</TableCell>
+                          <TableCell>{result.node.facet}</TableCell>
                         </Hidden>
                       </TableRow>
 
@@ -176,6 +179,7 @@ MatchingReactions.propTypes = {
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
+  searchSubmitted: PropTypes.bool,
 };
 
 MatchingReactions.defaultProps = {
