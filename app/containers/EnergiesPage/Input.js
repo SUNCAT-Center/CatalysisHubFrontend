@@ -108,7 +108,6 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
   submitForm() {
     this.props.clearSystems();
-    this.props.submitSearch();
     this.setState({ loading: true });
     const filters = [];
     if (typeof this.state.surface.label !== 'undefined') {
@@ -152,6 +151,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       this.setState({
         loading: false,
       });
+      this.props.submitSearch();
       this.props.receiveReactions(response.data.data.catapp.edges);
     }).catch((error) => {
       console.log(query.query);
