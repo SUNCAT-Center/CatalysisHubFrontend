@@ -38,11 +38,23 @@ function energiesPageReducer(state = initialState, action) {
         ...state,
         reactionSystems: action.payload,
       };
-    case SAVE_SYSTEM:
+    case SAVE_SYSTEM: {
+      let reactionSystems = state.reactionSystems;
+      reactionSystems = reactionSystems.concat(action.payload);
+
+      const negativeDensity = (system) => {
+        if (typeof system.mass !== 'undefined' && typeof system.volume !== 'undefined') {
+          return system.mass / system.volume;
+        }
+        return 0.0;
+      };
+
+      reactionSystems.sort(negativeDensity);
       return {
         ...state,
-        reactionSystems: state.reactionSystems.concat(action.payload),
+        reactionSystems,
       };
+    }
     case CLEAR_SYSTEMS:
       return {
         ...state,

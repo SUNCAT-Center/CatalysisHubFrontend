@@ -8,19 +8,17 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
-import { FormControl } from 'material-ui/Form';
-import { MenuItem } from 'material-ui/Menu';
-import { InputLabel } from 'material-ui/Input';
-import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 
 
-import { MdClear, MdSearch } from 'react-icons/lib/md';
+import { MdSearch } from 'react-icons/lib/md';
 import { FaArrowsH } from 'react-icons/lib/fa';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
+
+import TermAutosuggest from './TermAutosuggest';
 
 const MButton = styled(Button)`
   margin: 12px;
@@ -44,9 +42,16 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
     // Workaround, instead of calling .bind in every render
     this.submitForm = this.submitForm.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.setSubstate = this.setSubstate.bind(this);
   }
   componentDidMount() {
     this.updateOptions();
+  }
+
+  setSubstate(key, value) {
+    const newSubstate = {};
+    newSubstate[key] = value;
+    this.setState(newSubstate);
   }
 
   updateOptions(blocked = '') {
@@ -63,7 +68,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         reactants = reactants.map((r) => ({ value: r, label: r.replace('star', '*') }));
         reactants.push({ label: 'any', value: '' });
         this.setState({
-          reactant_options: reactants,
+          reactant_options: [...new Set(reactants)],
         });
       });
     }
@@ -81,7 +86,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));
         products.push({ label: 'any', value: '' });
         this.setState({
-          product_options: products,
+          product_options: [...new Set(products)],
         });
       });
     }
@@ -102,10 +107,26 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
     this.props.clearSystems();
   }
   submitForm() {
+    this.props.clearSystems();
     this.setState({ loading: true });
+    const filters = [];
+    if (typeof this.state.surface.label !== 'undefined') {
+      filters.push(`surfaceComposition: "~${this.state.surface.label}"`);
+    }
+    if (typeof this.state.facet.label !== 'undefined') {
+      filters.push(`facet: "~${this.state.facet.label}"`);
+    }
+    if (typeof this.state.reactants.label !== 'undefined') {
+      filters.push(`reactants: "~${this.state.reactants.label.replace('*', '').replace('any', '')}"`);
+    }
+    if (typeof this.state.products.label !== 'undefined') {
+      filters.push(`products: "~${this.state.products.label.replace('*', '').replace('any', '')}"`);
+    }
+
+    const filterString = filters.join(', ');
 
     const query = {
-      query: `query{catapp {
+      query: `query{catapp ( last: 500, ${filterString} ) {
   edges {
     node {
       id
@@ -121,21 +142,19 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       chemicalComposition
       reactionEnergy
       activationEnergy
+      surfaceComposition
     }
   }
 }}`,
     };
-    console.log(query);
     axios.post(graphQLRoot, query).then((response) => {
       this.setState({
         loading: false,
       });
       this.props.receiveReactions(response.data.data.catapp.edges);
     }).catch((error) => {
-      console.log(`Error loading reactions: ${error}`);
-      console.log(graphQLRoot);
       console.log(query.query);
-
+      console.log(error);
       this.setState({
         loading: false,
       });
@@ -147,82 +166,40 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       <div>
         <h2>Reactions</h2>
 
-        <FormControl
-          style={{ minWidth: 220, margin: 12 }}
-        >
-          <InputLabel>Reactant</InputLabel>
-          <Select
-            onChange={this.handleChange('reactants')}
-            value={this.state.reactants}
-            renderValue={(value) => value.label}
-          >
-            {this.state.reactant_options.map((reactant, i) =>
-              <MenuItem
-                value={reactant}
-                key={`reactant_option_${i}`}
-              >{reactant.label}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-        {' '}
+        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} />
         <FaArrowsH
           size={30}
           style={{
             margin: 15,
-            marginTop: -25,
+            marginTop: 0,
+            flexGrow: 1,
+            float: 'left',
+            display: 'inline-block',
           }}
         />
-        {' '}
-        <FormControl
-          style={{ minWidth: 220, margin: 12 }}
-        >
-          <InputLabel>Products</InputLabel>
-          <Select
-            onChange={this.handleChange('products')}
-            value={this.state.products}
-            renderValue={(value) => value.label}
-          >
-            {this.state.product_options.map((product, i) =>
-              <MenuItem
-                value={product}
-                key={`product_option_${i}`}
-              >{product.label}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
+        <TermAutosuggest field="products" setSubstate={this.setSubstate} />
+        <br /> <br />
+
+
+        <TermAutosuggest field="surface" setSubstate={this.setSubstate} />
+        <div
+          size={30}
+          style={{
+            margin: 15,
+            marginTop: 0,
+            flexGrow: 1,
+            float: 'left',
+            display: 'inline-block',
+          }}
+        />
+        <TermAutosuggest field="facet" setSubstate={this.setSubstate} />
         <br />
-        <FormControl
-          style={{ minWidth: 120, margin: 12 }}
-        >
-          <InputLabel>Surface</InputLabel>
-          <Select
-            onChange={this.handleChange('surface')}
-            value={this.state.surface}
-          >
-            <MenuItem value="Pd">Pd</MenuItem>
-            <MenuItem value="Pt">Pt</MenuItem>
-            <MenuItem value="Ag">Ag</MenuItem>
-            <MenuItem value="Cu">Cu</MenuItem>
-            <MenuItem value="Rh">Rh</MenuItem>
-            <MenuItem value="Ir">Ir</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          style={{ minWidth: 120, margin: 12 }}
-        >
-          <InputLabel>Facet</InputLabel>
-          <Select
-            onChange={this.handleChange('facet')}
-            value={this.state.facet}
-          >
-            <MenuItem value="100">(100)</MenuItem>
-            <MenuItem value="111">(111)</MenuItem>
-            <MenuItem value="211">(211)</MenuItem>
-            <MenuItem value="311">(311)</MenuItem>
-            <MenuItem value="110">(110)</MenuItem>
-          </Select>
-        </FormControl>
+        <br />
+        <br />
+
+        {/*
         <MButton raised onClick={this.resetForm}><MdClear /> Reset </MButton>
+        */}
         <MButton raised onClick={this.submitForm} color="primary"><MdSearch /> Search </MButton>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
       </div>

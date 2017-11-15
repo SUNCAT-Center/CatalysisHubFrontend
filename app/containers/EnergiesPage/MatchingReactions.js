@@ -16,6 +16,7 @@ import Table, {
   TablePagination,
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
+import Hidden from 'material-ui/Hidden';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -57,6 +58,8 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
     PublicationJournal
     PublicationPages
     uniqueId
+    volume
+    mass
     }
   }
 }}`,
@@ -66,7 +69,9 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
         console.log(reaction);
         node.DftCode = reaction.dftCode;
         node.DftFunctional = reaction.dftFunctional;
-        this.props.saveSystem(response.data.data.systems.edges[0].node);
+        node.aseId = aseId;
+
+        this.props.saveSystem(node);
         this.setState({
           loading: false,
         });
@@ -88,7 +93,12 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
 
   render() {
     if (this.props.matchingReactions.length === 0) {
-      return null;
+      return (
+        <div>
+          <h2>Ooops!</h2>
+          No reaction energies found. Please remove one or more filters.
+        </div>
+      );
     }
     return (
       <div>
@@ -100,8 +110,13 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                 <TableCell>Reactants</TableCell>
                 <TableCell>Products</TableCell>
                 <TableCell>Reaction Energy</TableCell>
-                <TableCell>Activation Energy</TableCell>
-                <TableCell>Facet</TableCell>
+                <Hidden smDown>
+                  <TableCell>Activation Energy</TableCell>
+                </Hidden>
+                <TableCell>Surface</TableCell>
+                <Hidden smDown>
+                  <TableCell>Facet</TableCell>
+                </Hidden>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -122,8 +137,13 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                         <TableCell>{result.node.reactants}</TableCell>
                         <TableCell>{result.node.products}</TableCell>
                         <TableCell>{!result.node.reactionEnergy || result.node.reactionEnergy.toFixed(3) } eV</TableCell>
-                        <TableCell>{!result.node.activationEnergy || result.node.activationEnergy.toFixed(2)}</TableCell>
-                        <TableCell>{result.node.Facet}</TableCell>
+                        <Hidden smDown>
+                          <TableCell>{!result.node.activationEnergy || result.node.activationEnergy.toFixed(2)}</TableCell>
+                        </Hidden>
+                        <TableCell>{result.node.surfaceComposition}</TableCell>
+                        <Hidden smDown>
+                          <TableCell>{result.node.Facet}</TableCell>
+                        </Hidden>
                       </TableRow>
 
                     );

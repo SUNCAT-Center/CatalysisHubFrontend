@@ -1,9 +1,14 @@
 import React, { PropTypes } from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { withStyles } from 'material-ui/styles';
+import Hidden from 'material-ui/Hidden';
 
 import SingleStructureView from 'components/SingleStructureView';
 
 import BarrierChart from 'components/BarrierChart';
+
+const styles = () => ({
+});
 
 function TabContainer(props) {
   return <div style={{ padding: 8 * 3 }}>{props.children}</div>;
@@ -13,7 +18,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export class ReactionStructures extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class ReactionStructures extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
@@ -21,6 +26,8 @@ export class ReactionStructures extends React.Component { // eslint-disable-line
     };
   }
   handleChange = (event, value) => {
+    console.log(event);
+    console.log(value);
     this.setState({
       tabValue: value,
     });
@@ -33,7 +40,12 @@ export class ReactionStructures extends React.Component { // eslint-disable-line
       {this.props.reactionSystems.length === 0 ? null :
       <div>
         <h2>Reaction Geometries</h2>
-        <BarrierChart {...this.props} />
+        <Hidden smUp>
+          <BarrierChart {...this.props} thumbnailSize={50} />
+        </Hidden>
+        <Hidden smDown>
+          <BarrierChart {...this.props} />
+        </Hidden>
         <Tabs
           value={tabValue}
           onChange={this.handleChange}
@@ -60,3 +72,5 @@ export class ReactionStructures extends React.Component { // eslint-disable-line
 ReactionStructures.propTypes = {
   reactionSystems: PropTypes.array.isRequired,
 };
+
+exports.ReactionStructures = withStyles(styles, { withTheme: true })(ReactionStructures);
