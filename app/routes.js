@@ -147,6 +147,24 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/plotlyDemo',
+      name: 'plotlyDemo',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PlotlyDemo/reducer'),
+          import('containers/PlotlyDemo'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('plotlyDemo', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
