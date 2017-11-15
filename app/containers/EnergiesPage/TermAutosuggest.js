@@ -228,11 +228,16 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={{
-            autoFocus: true,
+            autoFocus: this.props.autofocus,
             classes,
             placeholder: toProperCase(this.props.field),
             value: this.state.value,
             onChange: this.handleChange,
+            onKeyDown: ((event) => {
+              if (event.nativeEvent.keyCode === 13) {
+                this.props.submitForm();
+              }
+            }),
           }}
         />
         {this.state.value === '' ? null :
@@ -260,7 +265,13 @@ TermAutosuggest.propTypes = {
     'facet',
   ]),
   setSubstate: PropTypes.func,
+  submitForm: PropTypes.func,
   classes: PropTypes.object,
+  autofocus: PropTypes.bool,
+};
+
+TermAutosuggest.defaultProps = {
+  autofocus: false,
 };
 
 

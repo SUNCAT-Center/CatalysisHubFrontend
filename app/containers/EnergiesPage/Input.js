@@ -167,7 +167,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       <div>
         <h2>Reactions</h2>
 
-        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} />
+        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
         <FaArrowsH
           size={30}
           style={{
@@ -178,11 +178,11 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
             display: 'inline-block',
           }}
         />
-        <TermAutosuggest field="products" setSubstate={this.setSubstate} />
+        <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br /> <br />
 
 
-        <TermAutosuggest field="surface" setSubstate={this.setSubstate} />
+        <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <div
           size={30}
           style={{
@@ -193,7 +193,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
             display: 'inline-block',
           }}
         />
-        <TermAutosuggest field="facet" setSubstate={this.setSubstate} />
+        <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br />
         <br />
         <br />

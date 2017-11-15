@@ -106,7 +106,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
     return (
       <div>
         <div>
-          <h2>Matching Reactions</h2>
+          <h2>Matching Reactions ({this.props.matchingReactions.length})</h2>
           <Table>
             <TableHead>
               <TableRow>
