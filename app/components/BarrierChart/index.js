@@ -26,6 +26,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
       reactantUUIDs: [],
       productUUIDs: [],
     };
+    this.clickThumbnail = this.clickThumbnail.bind(this);
   }
   componentDidMount() {
     const products = (JSON.parse(this.props.selectedReaction.products).filter((x) => !x.endsWith('gas')));
@@ -42,6 +43,10 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
     }); // eslint-disable-line react/no-did-mount-set-state
   }
 
+  clickThumbnail = (uuid) => {
+    console.log(uuid);
+  }
+
 
   render() {
     return (
@@ -51,9 +56,11 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
             flexDirection="column"
             style={{ marginRight: '0vw' }}
             justifyContent="space-around"
+            onClick={() => this.clickThumbnail('reactants')}
           >
             {this.state.reactantUUIDs.map((uuid, i) =>
               <GeometryCanvasUuid
+                onClick={(uuid_arg) => this.clickThumbnail(uuid_arg)}
                 key={`reactant_${i}`}
                 id={`reactant_${i}`}
                 uuid={uuid}
@@ -73,6 +80,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
             flexDirection="column"
             style={{ marginLeft: '0vw' }}
             justifyContent="space-around"
+            onClick={() => this.clickThumbnail('products')}
           >
             {this.state.productUUIDs.map((uuid, i) =>
               <GeometryCanvasUuid
@@ -87,6 +95,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
                 x={1}
                 y={1}
                 borderWidth={0.0}
+                onClick={() => this.clickThumbnail(uuid)}
               />
             )}
           </Flexbox>

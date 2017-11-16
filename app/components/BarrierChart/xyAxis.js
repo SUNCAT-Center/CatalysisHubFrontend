@@ -41,9 +41,9 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
       <Axis {...xSettings} />
       <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
       <line x1={0} x2={500} y1={200} y2={400} />
-      <text x={20} y={180} fontFamily="sans-serif" fontSize="14px" fill="red">Reaction Energy {reactionEnergy.toFixed(3)} eV</text>
+      <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">Reaction Energy {reactionEnergy.toFixed(3)} eV</text>
       {activationEnergy === reactionEnergy / 2.0 ? null :
-      <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">Activation Energy {activationEnergy.toFixed(3)} eV</text>
+      <text x={20} y={180} fontFamily="sans-serif" fontSize="14px" fill="red">Activation Energy {activationEnergy.toFixed(3)} eV</text>
       }
     </g>);
   }
