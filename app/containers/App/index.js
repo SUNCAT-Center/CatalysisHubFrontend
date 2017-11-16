@@ -97,6 +97,14 @@ const styles = (xtheme) => ({
       width: `calc(100% - ${drawerWidth}px)`,
     },
   },
+  mainPaper: {
+      margin: 0,
+      marginTop: (appBar ? '20px' : '20px'),
+      padding: '40px',
+      [xtheme.breakpoints.down('sm')]: {
+        padding: '10px',
+      }
+  },
   content: {
     backgroundColor: xtheme.palette.background.default,
     width: '100%',
@@ -303,12 +311,7 @@ class App extends React.Component {
         }
         <main className={this.props.classes.content}>
           <AppWrapper>
-            <Paper
-              style={{
-                padding: '40px',
-                margin: 0,
-                marginTop: (appBar ? '20px' : '20px'),
-              }}
+            <Paper className={this.props.classes.mainPaper}
               elevation={8}
             >
               <Helmet
