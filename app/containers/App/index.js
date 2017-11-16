@@ -98,12 +98,12 @@ const styles = (xtheme) => ({
     },
   },
   mainPaper: {
-      margin: 0,
-      marginTop: (appBar ? '20px' : '20px'),
-      padding: '40px',
-      [xtheme.breakpoints.down('sm')]: {
-        padding: '10px',
-      }
+    margin: 0,
+    marginTop: (appBar ? '20px' : '20px'),
+    padding: '40px',
+    [xtheme.breakpoints.down('sm')]: {
+      padding: '5px',
+    },
   },
   content: {
     backgroundColor: xtheme.palette.background.default,
@@ -311,7 +311,8 @@ class App extends React.Component {
         }
         <main className={this.props.classes.content}>
           <AppWrapper>
-            <Paper className={this.props.classes.mainPaper}
+            <Paper
+              className={this.props.classes.mainPaper}
               elevation={8}
             >
               <Helmet
