@@ -168,11 +168,11 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         <h2>Reactions</h2>
 
         <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {'⇄'} </span>
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
         <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {' '} </span>
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
         <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {' '} </span>
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br />
         <br />
