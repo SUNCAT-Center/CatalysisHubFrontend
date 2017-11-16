@@ -21,6 +21,9 @@ import Hidden from 'material-ui/Hidden';
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
+const prettyPrintReaction = (reactants, products) => (`${JSON.parse(reactants).join(' + ')}  ⇄  ${JSON.parse(products).join(' + ')}`
+  ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
+
 export class MatchingReactions extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -91,6 +94,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
     this.setState({ rowsPerPage: event.target.value });
   };
 
+
   render() {
     if (this.props.matchingReactions.length === 0) {
       if (this.props.searchSubmitted) {
@@ -110,8 +114,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Reactants</TableCell>
-                <TableCell>Products</TableCell>
+                <TableCell>Reaction</TableCell>
                 <TableCell>Reaction Energy</TableCell>
                 <Hidden smDown>
                   <TableCell>Activation Energy</TableCell>
@@ -137,8 +140,7 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                           this.fetchRow(result.node);
                         }}
                       >
-                        <TableCell>{result.node.reactants}</TableCell>
-                        <TableCell>{result.node.products}</TableCell>
+                        <TableCell>{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
                         <TableCell>{!result.node.reactionEnergy || result.node.reactionEnergy.toFixed(3) } eV</TableCell>
                         <Hidden smDown>
                           <TableCell>{!result.node.activationEnergy || result.node.activationEnergy.toFixed(2)}</TableCell>

@@ -13,7 +13,6 @@ import { LinearProgress } from 'material-ui/Progress';
 
 
 import { MdSearch } from 'react-icons/lib/md';
-import { FaArrowsH } from 'react-icons/lib/fa';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -21,7 +20,8 @@ import { graphQLRoot } from 'utils/constants';
 import TermAutosuggest from './TermAutosuggest';
 
 const MButton = styled(Button)`
-  margin: 12px;
+  margin: 25px;
+  marginLeft: 0;
 `;
 
 
@@ -168,39 +168,14 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         <h2>Reactions</h2>
 
         <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
-        <FaArrowsH
-          size={30}
-          style={{
-            margin: 15,
-            marginTop: 0,
-            flexGrow: 1,
-            float: 'left',
-            display: 'inline-block',
-          }}
-        />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {'⇄'} </span>
         <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
-        <br /> <br />
-
-
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {' '} </span>
         <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} />
-        <div
-          size={30}
-          style={{
-            margin: 15,
-            marginTop: 0,
-            flexGrow: 1,
-            float: 'left',
-            display: 'inline-block',
-          }}
-        />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10, }} > {' '} </span>
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br />
         <br />
-        <br />
-
-        {/*
-        <MButton raised onClick={this.resetForm}><MdClear /> Reset </MButton>
-        */}
         <MButton raised onClick={this.submitForm} color="primary"><MdSearch /> Search </MButton>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
       </div>

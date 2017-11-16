@@ -27,7 +27,7 @@ const styles = (theme) => ({
     whiteSpace: 'nowrap',
   },
   input: {
-    margin: 0,
+    padding: '10 20 10 20',
     float: 'left',
     display: 'inline-block',
     whiteSpace: 'nowrap',
