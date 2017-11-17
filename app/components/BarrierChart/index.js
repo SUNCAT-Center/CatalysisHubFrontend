@@ -60,7 +60,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
           >
             {this.state.reactantUUIDs.map((uuid, i) =>
               <GeometryCanvasUuid
-                onClick={(uuid_arg) => this.clickThumbnail(uuid_arg)}
+                onClick={(uuidArg) => this.clickThumbnail(uuidArg)}
                 key={`reactant_${i}`}
                 id={`reactant_${i}`}
                 uuid={uuid}
