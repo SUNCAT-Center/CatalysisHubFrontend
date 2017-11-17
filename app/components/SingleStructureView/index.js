@@ -45,16 +45,16 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(3)} eV</li>
-            <li>DFT Code: {this.props.selectedSystem.DftCode}</li>
-            <li>DFT Functional: {this.props.selectedSystem.DftFunctional}</li>
+            <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
+            <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
             <li>Title: {this.props.selectedSystem.PublicationTitle}</li>
             <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
-                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ')}</li>
+                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
             {this.props.selectedSystem.PublicationDoi === '' ? null :
             <div>
               <li>
-                Publication <ReactGA.OutboundLink
+                <ReactGA.OutboundLink
                   eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
                   to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
                   target="_blank"
@@ -62,7 +62,6 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
                 DOI: {this.props.selectedSystem.PublicationDoi}
                 </ReactGA.OutboundLink>
               </li>
-              <li>Citation: {this.props.selectedSystem.PublicationJournal}, {this.props.selectedSystem.PublicationVolume}, {this.props.selectedSystem.PublicationVolume}</li>
             </div>
             }
           </ul>

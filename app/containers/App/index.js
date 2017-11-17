@@ -10,6 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
+import ReactGA from 'react-ga';
 
 import Flexbox from 'flexbox-react';
 import Helmet from 'react-helmet';
@@ -264,9 +265,14 @@ class App extends React.Component {
         {suBranding === false || appBar === true ? null :
         <div id="brandbar">
           <div className="container">
-            <a href="http://www.stanford.edu" style={{ margin: 60 }}>
+            <ReactGA.OutboundLink
+              to="http://www.stanford.edu"
+              eventLabel="http://www.stanford.edu"
+              style={{ margin: 60 }}
+              target="_blank"
+            >
               <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
-            </a>
+            </ReactGA.OutboundLink>
           </div>
         </div>
         }
@@ -279,9 +285,14 @@ class App extends React.Component {
                 <MenuIcon />
               </IconButton>
               { suBranding === false ? null :
-              <a href="http://www.stanford.edu" style={{ margin: 0, marginLeft: 20 }}>
+              <ReactGA.OutboundLink
+                to="http://www.stanford.edu"
+                eventLabel="http://www.stanford.edu"
+                style={{ margin: 0, marginLeft: 20 }}
+                target="_blank"
+              >
                 <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
-              </a>
+              </ReactGA.OutboundLink>
               }
               <Typography type="body1" color="inherit" style={{ marginLeft: 20 }}>
                 {whiteLabel ?
@@ -348,9 +359,13 @@ class App extends React.Component {
                   <Flexbox width="25vh" />
                   <Flexbox flexDirection="column" justifyContent="center">
                     <Flexbox>
-                      <a href="http://www.stanford.edu">
+                      <ReactGA.OutboundLink
+                        to="http://www.stanford.edu"
+                        eventLabel="http://www.stanford.edu"
+                        target="_blank"
+                      >
                         <img src="https://www.stanford.edu/su-identity/images/footer-stanford-logo@2x.png" alt="Stanford University" width="105" height="49" />
-                      </a>
+                      </ReactGA.OutboundLink>
                     </Flexbox>
                   </Flexbox>
                   <Flexbox width="10vh" />
@@ -366,11 +381,11 @@ class App extends React.Component {
                       }}
                     >
                       <ul >
-                        <li className="home"><a style={{ fontWeight: boldFooterWeight }} href="http://www.stanford.edu">Stanford Home</a></li>
-                        <li className="maps alt"><a style={{ fontWeight: boldFooterWeight }} href="http://visit.stanford.edu/plan/maps.html">Maps &amp; Directions</a></li>
-                        <li className="search-stanford"><a style={{ fontWeight: boldFooterWeight }} href="http://www.stanford.edu/search/">Search Stanford</a></li>
-                        <li className="terms alt"><a style={{ fontWeight: boldFooterWeight }} href="http://www.stanford.edu/site/terms.html">Terms of Use</a></li>
-                        <li className="emergency-info"><a style={{ fontWeight: boldFooterWeight }} href="http://emergency.stanford.edu">Emergency Info</a></li>
+                        <li className="home"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu" eventLabel="http://www.stanford.edu" target="_blank">Stanford Home</ReactGA.OutboundLink></li>
+                        <li className="maps alt"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://visit.stanford.edu/plan/maps.html" eventLabel="http://visit.stanford.edu/plan/maps.html">Maps &amp; Directions</ReactGA.OutboundLink></li>
+                        <li className="search-stanford"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu/search/" eventLabel="http://www.stanford.edu/search/">Search Stanford</ReactGA.OutboundLink></li>
+                        <li className="terms alt"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu/site/terms.html" eventLabel="http://www.stanford.edu/site/terms.html">Terms of Use</ReactGA.OutboundLink></li>
+                        <li className="emergency-info"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://emergency.stanford.edu" eventLabel="http://emergency.stanford.edu">Emergency Info</ReactGA.OutboundLink></li>
                       </ul>
                     </Flexbox>
                     <Flexbox height="1vh" />

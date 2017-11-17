@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
+import ReactGA from 'react-ga';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
@@ -26,7 +27,12 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
           <List>
             <ListItem>
               {whiteLabel ? null :
-              <A href="http://suncat.slac.stanford.edu/"><ListItemText primary="SUNCAT" /></A>
+              <ReactGA.OutboundLink
+                eventLabel="http://suncat.slac.stanford.edu/"
+                to="http://suncat.slac.stanford.edu/"
+              >
+                <ListItemText primary="SUNCAT" />
+              </ReactGA.OutboundLink>
               }
             </ListItem>
           </List>
@@ -41,7 +47,10 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
         <section>
           <List>
             <ListItem>
-              <A href="https://github.com/mhoffman/CatAppBrowser">
+              <ReactGA.OutboundLink
+                to="https://github.com/mhoffman/CatAppBrowser"
+                eventLabel="https://github.com/mhoffman/CatAppBrowser"
+              >
                 <ListItemText
                   primary={<FormattedMessage
                     {...messages.authorMessage}
@@ -52,7 +61,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   />
                   }
                 />
-              </A>
+              </ReactGA.OutboundLink>
             </ListItem>
           </List>
         </section>

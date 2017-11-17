@@ -39,7 +39,7 @@ const prettyPrintReference = (reference) => {
     // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
     return (<span>
       {ref.title !== '' ? <emph>{ref.title}. </emph> : null }
-      {typeof ref.authors !== 'undefined' ? <span>{ref.authors.join('; ')}. </span> : null }
+      {typeof ref.authors !== 'undefined' ? <span>{ref.authors.join('; ').replace('\\o', 'ø')}. </span> : null }
       {ref.journal !== '' ? <i>{ref.journal}, </i> : null }
       {ref.volume !== '' ? <span>{ref.volume}, </span> : null}
       {ref.pages !== '' ? <span>{ref.pages}, </span> : null}
