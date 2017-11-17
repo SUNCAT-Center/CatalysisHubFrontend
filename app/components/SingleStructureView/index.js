@@ -7,6 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ReactGA from 'react-ga';
+
 
 import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
 
@@ -46,11 +48,20 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>DFT Code: {this.props.selectedSystem.DftCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DftFunctional}</li>
             <li>Title: {this.props.selectedSystem.PublicationTitle}</li>
-            <li>Authors: {this.props.selectedSystem.PublicationAuthors}</li>
+            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
+                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
-            {this.state.PublicationDoi === '' ? null :
+            {this.props.selectedSystem.PublicationDoi === '' ? null :
             <div>
-              <li>Publication DOI: {this.props.selectedSystem.PublicationDoi}</li>
+              <li>
+                Publication <ReactGA.OutboundLink
+                  eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                  to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                  target="_blank"
+                >
+                DOI: {this.props.selectedSystem.PublicationDoi}
+                </ReactGA.OutboundLink>
+              </li>
               <li>Citation: {this.props.selectedSystem.PublicationJournal}, {this.props.selectedSystem.PublicationVolume}, {this.props.selectedSystem.PublicationVolume}</li>
             </div>
             }
