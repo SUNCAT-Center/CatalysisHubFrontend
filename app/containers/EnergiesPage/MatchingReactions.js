@@ -17,6 +17,7 @@ import Table, {
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
 import Hidden from 'material-ui/Hidden';
+import { withStyles } from 'material-ui/styles';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -24,7 +25,18 @@ import { graphQLRoot } from 'utils/constants';
 const prettyPrintReaction = (reactants, products) => (`${JSON.parse(reactants).join(' + ')}  ⇄  ${JSON.parse(products).join(' + ')}`
   ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
 
-export class MatchingReactions extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+const styles = () => ({
+  tableFooter: {
+    marginLeft: '-30px',
+    div: {
+      marginLeft: '-30px',
+    },
+  },
+
+});
+
+class MatchingReactions extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.fetchRow = this.fetchRow.bind(this);
@@ -114,12 +126,12 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Reaction</TableCell>
-                <TableCell>Reaction Energy</TableCell>
+                <TableCell padding="none">Reaction</TableCell>
+                <TableCell padding="none">Reaction Energy</TableCell>
                 <Hidden smDown>
                   <TableCell>Activation Energy</TableCell>
                 </Hidden>
-                <TableCell>Surface</TableCell>
+                <TableCell padding="none">Surface</TableCell>
                 <Hidden smDown>
                   <TableCell>Facet</TableCell>
                 </Hidden>
@@ -140,12 +152,12 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                           this.fetchRow(result.node);
                         }}
                       >
-                        <TableCell>{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
-                        <TableCell>{!result.node.reactionEnergy || result.node.reactionEnergy.toFixed(3) } eV</TableCell>
+                        <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
+                        <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(3)} eV` }</TableCell>
                         <Hidden smDown>
-                          <TableCell>{!result.node.activationEnergy || result.node.activationEnergy.toFixed(2)}</TableCell>
+                          <TableCell>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</TableCell>
                         </Hidden>
-                        <TableCell>{result.node.surfaceComposition}</TableCell>
+                        <TableCell padding="none">{result.node.surfaceComposition}</TableCell>
                         <Hidden smDown>
                           <TableCell>{result.node.facet}</TableCell>
                         </Hidden>
@@ -156,7 +168,9 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                 /* eslint-enable */
               }
             </TableBody>
-            <TableFooter>
+            <TableFooter
+              className={this.props.classes.tableFooter}
+            >
               <TableRow>
                 <TablePagination
                   count={this.props.matchingReactions.length}
@@ -165,6 +179,8 @@ export class MatchingReactions extends React.Component { // eslint-disable-line 
                   onChangePage={this.handlePageChange}
                   onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   rowsPerPageOptions={[10, 25, 100, 1000]}
+                  className={this.props.classes.tableFooter}
+                  labelRowsPerPage=""
                 />
               </TableRow>
             </TableFooter>
@@ -182,9 +198,12 @@ MatchingReactions.propTypes = {
   saveSystem: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
+  classes: PropTypes.array,
 };
 
 MatchingReactions.defaultProps = {
   searchResults: [],
 
 };
+
+export default withStyles(styles)(MatchingReactions);

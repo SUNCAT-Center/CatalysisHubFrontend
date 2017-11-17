@@ -16,7 +16,7 @@ import { selectReaction,
   submitSearch,
 } from './actions';
 import { EnergiesPageInput } from './Input';
-import { MatchingReactions } from './MatchingReactions';
+import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
 
 export class EnergiesPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
