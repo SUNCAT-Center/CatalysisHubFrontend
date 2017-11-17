@@ -14,6 +14,7 @@ import periodicTableSelector from 'containers/PeriodicTableSelector/reducer';
 import elementContainerReducer from 'containers/ElementContainer/reducer';
 import generalSearchReducer from 'containers/GeneralSearchContainer/reducer';
 import energiesPageReducer from 'containers/EnergiesPage/reducer';
+import plotlyDemoReducer from 'containers/PlotlyDemo/reducer';
 
 /*
  * routeReducer
@@ -55,6 +56,7 @@ export default function createReducer(asyncReducers) {
     generalSearchReducer,
     elementContainerReducer,
     energiesPageReducer,
+    plotlyDemoReducer,
     ...asyncReducers,
   });
 }
