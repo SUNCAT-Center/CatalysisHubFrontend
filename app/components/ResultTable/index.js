@@ -16,6 +16,7 @@ import Table, {
   TablePagination,
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
+import Hidden from 'material-ui/Hidden';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -83,10 +84,11 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Formula</TableCell>
-                <TableCell>Density</TableCell>
-                <TableCell>Volume</TableCell>
+                <Hidden smUp>
+                  <TableCell>Density</TableCell>
+                  <TableCell>Volume</TableCell>
+                </Hidden>
                 <TableCell>Facet</TableCell>
               </TableRow>
             </TableHead>
@@ -105,10 +107,11 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                           this.fetchRow(result.node.uniqueId);
                         }}
                       >
-                        <TableCell>{result.node.uniqueId}</TableCell>
                         <TableCell>{result.node.Formula}</TableCell>
-                        <TableCell>{result.node.Density}</TableCell>
-                        <TableCell>{result.node.volume.toFixed(2)}</TableCell>
+                        <Hidden smUp>
+                          <TableCell>{result.node.Density}</TableCell>
+                          <TableCell>{result.node.volume.toFixed(2)}</TableCell>
+                        </Hidden>
                         <TableCell>{result.node.Facet}</TableCell>
                       </TableRow>
 
