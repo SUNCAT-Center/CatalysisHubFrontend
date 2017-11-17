@@ -4,16 +4,32 @@
  *
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
-import IconButton from 'material-ui/IconButton';
 import { MdAddCircleOutline } from 'react-icons/lib/md';
+
+import { withStyles } from 'material-ui/styles';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
 import PublicationSystems from './publicationSystems';
+
+const styles = (theme) => ({
+  publicationEntry: {
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px',
+    },
+  },
+  publicationYear: {
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center',
+    },
+  },
+});
 
 const prettyPrintReference = (reference) => {
   if (reference.indexOf('{') > -1) {
@@ -122,16 +138,18 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         {this.state.references === {} ? <LinearProgress color="primary" /> : null }
         {this.state.years.map((year, i) => (
           <div key={`div_year_${i}`}>
-            <h2 key={`pyear_${year}`}>{year}</h2>
+            <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
             {(this.state.references[year] || [])
                 .filter((references, j) => (
                   this.state.dois[year][j] !== ''
                 ))
                 .map((reference, j) => (
-                  <div key={`pli_${i}_${j}`}>
-                    <button role="button" onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)}>
-                      <IconButton key={`pdiv_${i}_${j}`}> <MdAddCircleOutline /> </IconButton>
-                      &nbsp;{prettyPrintReference(reference)} <a href={`http://dx.doi.org/${this.state.dois[year][j]}`} target="_blank">DOI: {this.state.dois[year][j]}</a>
+                  <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
+                    <button role="button" onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationEntry}>
+                      <MdAddCircleOutline className={this.props.classes.publicationEntry} />
+                      <span className={this.props.classes.publicationEntry}>
+                        {prettyPrintReference(reference)} <a href={`http://dx.doi.org/${this.state.dois[year][j]}`} target="_blank">DOI: {this.state.dois[year][j]}</a>
+                      </span>
                     </button>
                     <div>
                       { this.state.openedPublication !== `elem_${year}_${j}` ? null :
@@ -150,7 +168,8 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 }
 
 Publications.propTypes = {
+  classes: PropTypes.array,
 
 };
 
-export default Publications;
+export default withStyles(styles, { withTheme: true })(Publications);
