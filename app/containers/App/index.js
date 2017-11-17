@@ -71,6 +71,11 @@ const styles = (xtheme) => ({
       visibility: 'hidden',
     },
   },
+  helmet: {
+    [xtheme.breakpoints.down('sm')]: {
+      marginBottom: '-20px',
+    },
+  },
   appFrame: {
     position: 'relative',
     display: 'flex',
@@ -103,6 +108,7 @@ const styles = (xtheme) => ({
     padding: '40px',
     [xtheme.breakpoints.down('sm')]: {
       padding: '5px',
+      paddingBottom: '40px',
     },
   },
   content: {
@@ -316,6 +322,7 @@ class App extends React.Component {
               elevation={8}
             >
               <Helmet
+                className={this.props.classes.helmet}
                 titleTemplate="%s - CatApp Browser"
                 defaultTitle="CatApp Browser"
                 meta={[
