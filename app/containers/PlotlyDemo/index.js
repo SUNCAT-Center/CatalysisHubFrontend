@@ -6,41 +6,22 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import Plot from 'react-plotly.js';
 
 import linspace from 'linspace';
 import unpack from 'ndarray-unpack';
 import zeros from 'zeros';
 
-import makeSelectPlotlyDemo from './selectors';
+import {
+  clickDot,
+} from './actions';
 
 export class PlotlyDemo extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    this.plotClick = this.plotClick.bind(this);
-    this.plotDoubleClick = this.plotDoubleClick.bind(this);
-    this.state = {
-      pointX: 0.0,
-      pointY: 0.0,
-    };
-  }
-  plotClick(event) {
-    const point = event.points[0];
-    /* this.setState({*/
-    /* pointX: point.x,*/
-    /* pointY: point.y*/
-    /* });*/
-    this.setState({
-      pointX: point.x,
-      pointY: point.y,
-    });
-  }
   plotDoubleClick(event) {
     console.log('DC EVENT');
     console.log(event);
   }
-  render = () => {
+  render() {
     const size = 100;
     const x = linspace(-2 * Math.PI, 2 * Math.PI, size);
     const y = linspace(-2 * Math.PI, 2 * Math.PI, size);
@@ -61,7 +42,6 @@ export class PlotlyDemo extends React.Component { // eslint-disable-line react/p
               `}
         </div>
         <div>
-          {this.state.pointX} | {this.state.pointY}
         </div>
         <div>
           <Plot
@@ -118,7 +98,7 @@ export class PlotlyDemo extends React.Component { // eslint-disable-line react/p
               legendPosition: false,
               showTips: false,
             }}
-            onClick={this.plotClick}
+            onClick={(elem) => { this.props.clickDot(elem); }}
           />
         </div>
       </div>
@@ -127,17 +107,21 @@ export class PlotlyDemo extends React.Component { // eslint-disable-line react/p
 }
 
 PlotlyDemo.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  PlotlyDemo: makeSelectPlotlyDemo(),
+const mapStateToProps = (state) => ({
+  selectedDot: state.get('plotlyDemoReducer').selectedDot,
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  clickDot: (dot) => {
+    dispatch(clickDot(dot));
+  },
+});
+
+PlotlyDemo.propTypes = {
+  clickDot: PropTypes.func,
+};
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlotlyDemo);
