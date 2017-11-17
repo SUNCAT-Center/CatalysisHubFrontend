@@ -8,6 +8,7 @@ import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
 import { MdAddCircleOutline, MdRemoveCircleOutline } from 'react-icons/lib/md';
+import ReactGA from 'react-ga';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -153,7 +154,14 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       }
                       <span> </span>
                       <span className={this.props.classes.publicationEntry}>
-                        {prettyPrintReference(reference)} <a href={`http://dx.doi.org/${this.state.dois[year][j]}`} target="_blank">DOI: {this.state.dois[year][j]}</a>
+                        {prettyPrintReference(reference)}
+                        <ReactGA.OutboundLink
+                          eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                          to={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                          target="_blank"
+                        >
+                          DOI: {this.state.dois[year][j]}
+                        </ReactGA.OutboundLink>
                       </span>
                     </button>
                     <div>
