@@ -41,6 +41,7 @@ export class PlotlyDemo extends React.Component { // eslint-disable-line react/p
           You will need a recent node version 8, and npm version 5 as a development environment.
               `}
         </div>
+        <div>{JSON.stringify(this.props.selectedDot)}</div>
         <div>
         </div>
         <div>
@@ -121,6 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 PlotlyDemo.propTypes = {
   clickDot: PropTypes.func,
+  selectedDot: PropTypes.oject,
 };
 
 
