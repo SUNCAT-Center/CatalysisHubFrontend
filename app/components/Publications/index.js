@@ -120,7 +120,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         openedPublication: key,
       });
     }
-    const query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode PublicationTitle PublicationAuthors PublicationYear } } }}`;
+    const query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
         this.setState({
