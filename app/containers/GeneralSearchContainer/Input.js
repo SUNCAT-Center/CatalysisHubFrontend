@@ -8,18 +8,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import TextField from 'material-ui/TextField';
-import { MenuItem } from 'material-ui/Menu';
-import { InputLabel } from 'material-ui/Input';
-import Select from 'material-ui/Select';
-
-import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { MdClear, MdSearch } from 'react-icons/lib/md';
 import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
+import TermAutosuggest from './TermAutosuggest';
 
 const MButton = styled(Button)`
   margin: 12px;
@@ -45,7 +40,71 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
     // Workaround, instead of calling .bind in every render
     this.submitQuery = this.submitQuery.bind(this);
     this.clearForm = this.clearForm.bind(this);
+    this.setSubstate = this.setSubstate.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
+  setSubstate(key, value) {
+    const newSubstate = {};
+    newSubstate[key] = value;
+    this.setState(newSubstate);
+  }
+  submitForm() {
+    /* this.props.clearSystems();*/
+    this.setState({ loading: true });
+    const filters = [];
+    if (typeof this.state.surface.label !== 'undefined') {
+      filters.push(`surfaceComposition: "~${this.state.surface.label}"`);
+    }
+    if (typeof this.state.facet.label !== 'undefined') {
+      filters.push(`facet: "~${this.state.facet.label}"`);
+    }
+    if (typeof this.state.reactants.label !== 'undefined') {
+      filters.push(`reactants: "~${this.state.reactants.label.replace('*', '').replace('any', '')}"`);
+    }
+    if (typeof this.state.products.label !== 'undefined') {
+      filters.push(`products: "~${this.state.products.label.replace('*', '').replace('any', '')}"`);
+    }
+
+    const filterString = filters.join(', ');
+
+    const query = {
+      query: `query{catapp ( last: 500, ${filterString} ) {
+  edges {
+    node {
+      id
+      DFTCode
+      DFTFunctional
+      reactants
+      products
+      #Equation
+      aseIds
+      #reactantIds
+      #productIds
+      facet
+      chemicalComposition
+      reactionEnergy
+      activationEnergy
+      surfaceComposition
+    }
+  }
+}}`,
+    };
+    axios.post(graphQLRoot, query).then((response) => {
+      this.setState({
+        loading: false,
+      });
+      this.props.submitSearch();
+      this.props.receiveReactions(response.data.data.catapp.edges);
+    }).catch((error) => {
+      console.log(query.query);
+      console.log(error);
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
+
   submitQuery() {
     this.setState({
       loading: true,
@@ -84,55 +143,11 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
     return (
       <div>
         <h2>Structure Search</h2>
-        <TextField label="Free Text Search" value={this.state.free_text} onChange={this.handleChange('free_text')} />
-        {'\t '}
-        <TextField label="Composition" value={this.state.composition} onChange={this.handleChange('composition')} />
-        {'\t '}
-        <TextField label="Year" value={this.state.year} onChange={this.handleChange('year')} />
-        <br />
-        <br />
-        <TextField label="Authors" value={this.state.authors} onChange={this.handleChange('authors')} />
-        {'\t '}
-        <TextField label="Title of Article" value={this.state.article_title} onChange={this.handleChange('article_title')} />
-        {'\t '}
-        <TextField label="Title of Journal" value={this.state.journal_title} onChange={this.handleChange('journal_title')} />
-        <br />
+        <TermAutosuggest field="formula" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
+        <TermAutosuggest field="year" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
 
-        <FormControl
-          style={{ minWidth: 120, margin: 12 }}
-        >
-          <InputLabel>Facet</InputLabel>
-          <Select
-            onChange={this.handleChange('facet')}
-            value={this.state.facet}
-          >
-            <MenuItem value="any">any</MenuItem>
-            <MenuItem value="111">111</MenuItem>
-            <MenuItem value="100">100</MenuItem>
-            <MenuItem value="110">110</MenuItem>
-            <MenuItem value="211">211</MenuItem>
-            <MenuItem value="311">311</MenuItem>
-            <MenuItem value="other">other</MenuItem>
-          </Select>
-        </FormControl>
-        {'   '}
-        <FormControl
-          style={{ minWidth: 120 }}
-        >
-          <InputLabel>Site</InputLabel>
-          <Select
-            onChange={this.handleChange('site')}
-            value={this.state.site}
-          >
-            <MenuItem value="any">any</MenuItem>
-            <MenuItem value="fcc">fcc</MenuItem>
-            <MenuItem value="hcp">hcp</MenuItem>
-            <MenuItem value="bridge">bridge</MenuItem>
-            <MenuItem value="hollow">hollow</MenuItem>
-            <MenuItem value="top">top</MenuItem>
-            <MenuItem value="other">other</MenuItem>
-          </Select>
-        </FormControl>
+        <br />
+        <br />
         <MButton raised onClick={this.clearForm}><MdClear /> Clear</MButton>
         <MButton raised onClick={this.submitQuery} color="primary"><MdSearch /> Search</MButton>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
@@ -143,6 +158,9 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
 
 GeneralSearch.propTypes = {
   receiveResults: PropTypes.func,
+  submitSearch: PropTypes.func,
+  receiveReactions: PropTypes.func,
+
 };
 
 export default GeneralSearch;
