@@ -108,9 +108,10 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   }
 }
 
+console.log(window);
 GeometryCanvasUuid.defaultProps = {
-  height: 550,
-  width: 550,
+  height: Math.max(window.innerWidth * 0.5, 300),
+  width: Math.max(window.innerWidth * 0.5, 300),
   color: '#fff',
   uuid: '',
   showDownload: true,
