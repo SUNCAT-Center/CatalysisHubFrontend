@@ -75,7 +75,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           years,
         });
         years.map((year) => {
-          const query = `{catapp(year: ${year}, reference: "~") { edges { node { reference doi } } }}`;
+          const query = `{catapp(year: ${year}, reference: "~") { edges { node { reference doi DFTCode DFTFunctional } } }}`;
           return axios.post(graphQLRoot, {
             query,
           })
@@ -120,7 +120,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         openedPublication: key,
       });
     }
-    const query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
+    const query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
         this.setState({

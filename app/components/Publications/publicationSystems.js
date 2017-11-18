@@ -44,9 +44,9 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>#Atoms</TableCell>
-              <TableCell>Composition</TableCell>
-              <TableCell>Facet</TableCell>
+              <TableCell padding="none">#Atoms</TableCell>
+              <TableCell padding="none">Composition</TableCell>
+              <TableCell padding="none">Facet</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,10 +61,9 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
                       this.fetchRow(system.node);
                     }}
                   >
-                    <TableCell>{JSON.stringify(system.node.natoms)}</TableCell>
-                    <TableCell>{system.node.Formula}</TableCell>
-                    <TableCell>{system.node.Facet}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell padding="none">{JSON.stringify(system.node.natoms)}</TableCell>
+                    <TableCell padding="none">{system.node.Formula}</TableCell>
+                    <TableCell padding="none">{system.node.Facet}</TableCell>
                   </TableRow>
                 ))}
           </TableBody>
@@ -88,6 +87,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
           </Flexbox>
           }
         </div>
+        <hr />
       </div>
     );
   }
