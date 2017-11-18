@@ -181,7 +181,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 }
 
 Publications.propTypes = {
-  classes: PropTypes.array,
+  classes: PropTypes.object,
 
 };
 

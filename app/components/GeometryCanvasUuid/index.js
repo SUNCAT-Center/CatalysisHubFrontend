@@ -139,7 +139,7 @@ GeometryCanvasUuid.propTypes = {
   y: PropTypes.number,
   z: PropTypes.number,
   borderWidth: PropTypes.number,
-  classes: PropTypes.array,
+  classes: PropTypes.object,
 };
 
 export default (withStyles(styles, { withTheme: true }))(GeometryCanvasUuid);
