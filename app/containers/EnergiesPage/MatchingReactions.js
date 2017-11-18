@@ -198,7 +198,7 @@ MatchingReactions.propTypes = {
   saveSystem: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
-  classes: PropTypes.array,
+  classes: PropTypes.object,
 };
 
 MatchingReactions.defaultProps = {
