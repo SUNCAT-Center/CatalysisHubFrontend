@@ -5,9 +5,9 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
 
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -17,9 +17,14 @@ import { download } from 'utils';
 
 import { MdFileDownload } from 'react-icons/lib/md';
 
-const MButton = styled(Button)`
-  margin: 12px,
-`;
+const styles = (xtheme) => ({
+  MuiButton: {
+    margin: '12px',
+    [xtheme.breakpoints.down('sm')]: {
+      visibility: 'hidden',
+    },
+  },
+});
 
 class GeometryCanvasUuid extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidUpdate() {
@@ -93,15 +98,13 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         />
         <br />
         {this.props.showDownload === false ? null :
-        <MButton
+        <Button
+          className={this.props.classes.MuiButton}
           raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.cifdata); }}
-          style={{
-            margin: 12,
-          }}
         >
           <MdFileDownload /> Download CIF
-        </MButton>
+        </Button>
         }
       </div>
     );
@@ -136,6 +139,7 @@ GeometryCanvasUuid.propTypes = {
   y: PropTypes.number,
   z: PropTypes.number,
   borderWidth: PropTypes.number,
+  classes: PropTypes.array,
 };
 
-export default GeometryCanvasUuid;
+export default (withStyles(styles, { withTheme: true }))(GeometryCanvasUuid);
