@@ -37,6 +37,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.state = {
       geometries: 0,
       reactions: 0,
+      publications: 0,
     };
   }
 
@@ -58,6 +59,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         geometries: response.data.data.systems.edges.length,
       });
     });
+    axios.post(graphQLRoot, {
+      query: '{catapp(reference: "~", distinct: true) { edges { node { doi } } }}',
+    }).then((response) => {
+      const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
+      // TODO: new Set can be removed if distinct: true filter works on API
+      this.setState({
+        publications: dois.length,
+      });
+    });
   }
 
   render() {
@@ -67,7 +77,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <Helmet
           title="Home Page"
           meta={[
-            { name: 'description', content: 'CatApp Browser' },
+                { name: 'description', content: 'CatApp Browser' },
           ]}
         />
         }
@@ -111,6 +121,24 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   <h3>Geometries</h3>
                   <View row style={{ justifyContent: 'center' }}>
                     <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
+                  </View>
+                </Paper>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/publications">
+                <Paper
+                  style={{
+                    padding: 25,
+                    minWidth: 240,
+                    maxWidth: 300,
+                    textAlign: 'center',
+                    align: 'center',
+                  }}
+                >
+                  <h3>Publications</h3>
+                  <View row style={{ justifyContent: 'center' }}>
+                    <Chip label={this.state.publications} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
               </Link>
