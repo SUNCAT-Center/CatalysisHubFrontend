@@ -18,6 +18,8 @@ import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 
+import { MdWarning } from 'react-icons/lib/md';
+
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <Flexbox flexDirection="column" minHeight="100vh">
+        <div><MdWarning />Under construction.</div>
         <Flexbox
           height="75px" style={{
             paddingLeft: '45px',

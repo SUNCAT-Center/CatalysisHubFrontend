@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Button from 'material-ui/Button';
-import { MdClear, MdSearch } from 'react-icons/lib/md';
+import { MdClear, MdSearch, MdWarning } from 'react-icons/lib/md';
 import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
@@ -142,6 +142,7 @@ class GeneralSearch extends React.Component { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
+        <div><MdWarning />Under construction.</div>
         <h2>Structure Search</h2>
         <TermAutosuggest field="formula" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
         <TermAutosuggest field="year" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
