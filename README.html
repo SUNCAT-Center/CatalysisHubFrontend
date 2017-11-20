@@ -1,114 +1,34 @@
-<p><img src="https://raw.githubusercontent.com/react-boilerplate/react-boilerplate-brand/master/assets/banner-metal-optimized.jpg" alt="react boilerplate banner" align="center" /></p>
-<p><br /></p>
-<div align="center">
-<strong>Start your next react project in seconds</strong>
-</div>
-<div align="center">
-A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices
-</div>
-<p><br /></p>
-<div align="center">
-<p><!-- Dependency Status --> <a href="https://david-dm.org/react-boilerplate/react-boilerplate"> <img src="https://david-dm.org/react-boilerplate/react-boilerplate.svg" alt="Dependency Status" /> </a> <!-- devDependency Status --> <a href="https://david-dm.org/react-boilerplate/react-boilerplate#info=devDependencies"> <img src="https://david-dm.org/react-boilerplate/react-boilerplate/dev-status.svg" alt="devDependency Status" /> </a> <!-- Build Status --> <a href="https://travis-ci.org/react-boilerplate/react-boilerplate"> <img src="https://travis-ci.org/react-boilerplate/react-boilerplate.svg" alt="Build Status" /> </a> <!-- Test Coverage --> <a href="https://coveralls.io/r/react-boilerplate/react-boilerplate"> <img src="https://coveralls.io/repos/github/react-boilerplate/react-boilerplate/badge.svg" alt="Test Coverage" /> </a></p>
-</div>
-<div align="center">
-<pre><code>&lt;!-- Backers --&gt;</code></pre>
-<p><a href="#backers"> <img src="https://opencollective.com/react-boilerplate/backers/badge.svg" alt="Backers" /> </a> <!-- Sponsors --> <a href="#sponsors"> <img src="https://opencollective.com/react-boilerplate/sponsors/badge.svg" alt="Sponsors" /> </a> <a href="http://thinkmill.com.au/?utm_source=github&utm_medium=badge&utm_campaign=react-boilerplate"> <img alt="Supported by Thinkmill" src="https://thinkmill.github.io/badge/heart.svg" /> </a> <!-- Gitter --> <a href="https://gitter.im/mxstbr/react-boilerplate"> <img src="https://camo.githubusercontent.com/54dc79dc7da6b76b17bc8013342da9b4266d993c/68747470733a2f2f6261646765732e6769747465722e696d2f6d78737462722f72656163742d626f696c6572706c6174652e737667" alt="Gitter Chat" /> </a></p>
-</div>
-<p><br /></p>
-<div align="center">
-<p><sub>Created by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and maintained with ❤️ by an amazing <a href="https://github.com/orgs/react-boilerplate/teams/core">team of developers</a>.</sub></p>
-</div>
-<h2 id="features">Features</h2>
-<dl>
-<dt>
-Quick scaffolding
-</dt>
-<dd>
-Create components, containers, routes, selectors and sagas - and their tests - right from the CLI!
-</dd>
-<dt>
-Instant feedback
-</dt>
-<dd>
-Enjoy the best DX (Developer eXperience) and code your app at the speed of thought! Your saved changes to the CSS and JS are reflected instantaneously without refreshing the page. Preserve application state even when you update something in the underlying code!
-</dd>
-<dt>
-Predictable state management
-</dt>
-<dd>
-Unidirectional data flow allows for change logging and time travel debugging.
-</dd>
-<dt>
-Next generation JavaScript
-</dt>
-<dd>
-Use template strings, object destructuring, arrow functions, JSX syntax and more, today.
-</dd>
-<dt>
-Next generation CSS
-</dt>
-<dd>
-Write composable CSS that's co-located with your components for complete modularity. Unique generated class names keep the specificity low while eliminating style clashes. Ship only the styles that are on the page for the best performance.
-</dd>
-<dt>
-Industry-standard routing
-</dt>
-<dd>
-It's natural to want to add pages (e.g. <code>/about</code>) to your application, and routing makes this possible.
-</dd>
-<dt>
-Industry-standard i18n internationalization support
-</dt>
-<dd>
-Scalable apps need to support multiple languages, easily add and support multiple languages with <code>react-intl</code>.
-</dd>
-<dt>
-Offline-first
-</dt>
-<dd>
-The next frontier in performant web apps: availability without a network connection from the instant your users load the app.
-</dd>
-<dt>
-SEO
-</dt>
-<dd>
-We support SEO (document head tags management) for search engines that support indexing of JavaScript content. (eg. Google)
-</dd>
-</dl>
-<p>But wait... there's more!</p>
+<h1 id="catapp-browser">CatApp Browser</h1>
+<h2 id="install">Install</h2>
+<p>For local installation make a local clone of this repo</p>
+<pre><code>git clone https://github.com/mhoffman/CatAppBrowser.git</code></pre>
+<p>change into the repository and run</p>
+<pre><code>cd CatAppBrowser
+npm run setup # only first time
+npm run start</code></pre>
+<p>Open a browser at <code>http://localhost:3000/</code> to see it run.</p>
+<p>To run this you will need npm/node which is explained <a href="https://docs.npmjs.com/getting-started/installing-node">here</a>.</p>
+<h2 id="development">Development</h2>
+<p>The current interface is created from <a href="https://github.com/react-boilerplate/react-boilerplate">React Boilerplate</a>.</p>
+<h3 id="contributions">Contributions</h3>
+<p>Contributions in the form of pull requests are highly welcome. To this end you will need a <a href="https://github.com/join">github.com account (free)</a> and create a fork by clicking in the <a href="https://github.com/mhoffman/CatAppBrowser#fork-destination-box">Fork</a> in the upper-right corner. Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/[username]/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.</p>
+<h3 id="adding-new-appscomponents">Adding New Apps/Components</h3>
+<p>To add a new component simply run</p>
+<pre><code>npm run generate component</code></pre>
+<p>Give it a succinct name and follow the default choices. This will create a new folder under <code>app/components/</code> with all the needed files. The new component can be readily imported and used throughout the app.</p>
+<h3 id="add-new-appscontainers">Add New Apps/Containers</h3>
+<p>For more complex applications, i.e. requiring several levels of user interface and user choice, you should go right a ahead and create a container. For intermittently storing user choices you will likely need <a href="https://github.com/reactjs/react-redux">React Redux</a>. If that sounds scary and complex, don't worry. Still start mocking up the user interface and we can talk about getting 'interactivity' into it later.</p>
+<h2 id="dependencies">Dependencies</h2>
 <ul>
-<li><em>The best test setup:</em> Automatically guarantee code quality and non-breaking changes. (Seen a react app with 99% test coverage before?)</li>
-<li><em>Native web app:</em> Your app's new home? The home screen of your users' phones.</li>
-<li><em>The fastest fonts:</em> Say goodbye to vacant text.</li>
-<li><em>Stay fast</em>: Profile your app's performance from the comfort of your command line!</li>
-<li><em>Catch problems:</em> AppVeyor and TravisCI setups included by default, so your tests get run automatically on Windows and Unix.</li>
+<li>Graphs are created with <a href="http://mpld3.github.io/">mpld3</a></li>
+<li>React v15 (will be updated to 16 soon) React is a powerful JavaScript library that is actively developed by Facebook. With some background in HTML and a little bit of JavaScript one can quite far. There are a ton of <a href="https://reactjs.org/tutorial/tutorial.html">tutorials</a> out there.</li>
 </ul>
-<p>There’s also a <a href="https://vimeo.com/168648012">fantastic video</a> on how to structure your React.js apps with scalability in mind. It provides rationale for the majority of boilerplate's design decisions.</p>
-<p><sub><i>Keywords: React.js, Redux, Hot Reloading, ESNext, Babel, react-router, Offline First, ServiceWorker, <code>styled-components</code>, redux-saga, FontFaceObserver</i></sub></p>
-<h2 id="quick-start">Quick start</h2>
-<ol style="list-style-type: decimal">
-<li>Clone this repo using <code>git clone --depth=1 https://github.com/react-boilerplate/react-boilerplate.git</code></li>
-<li>Move to the appropriate directory: <code>cd react-boilerplate</code>.<br /></li>
-<li>Run <code>npm run setup</code> in order to install dependencies and clean the git repo.<br /> <em>We auto-detect <code>yarn</code> for installing packages by default, if you wish to force <code>npm</code> usage do: <code>USE_YARN=false npm run setup</code></em><br /> <em>At this point you can run <code>npm start</code> to see the example app at <code>http://localhost:3000</code>.</em></li>
-<li>Run <code>npm run clean</code> to delete the example app.</li>
-</ol>
-<p>Now you're ready to rumble!</p>
-<blockquote>
-<p>Please note that this boilerplate is <strong>production-ready and not meant for beginners</strong>! If you're just starting out with react or redux, please refer to https://github.com/petehunt/react-howto instead. If you want a solid, battle-tested base to build your next product upon and have some experience with react, this is the perfect start for you.</p>
-</blockquote>
-<h2 id="documentation">Documentation</h2>
+<h2 id="ui-development">UI Development</h2>
 <ul>
-<li><a href="docs/general/introduction.md"><strong>The Hitchhikers Guide to <code>react-boilerplate</code></strong></a>: An introduction for newcomers to this boilerplate.</li>
-<li><a href="docs/general">Overview</a>: A short overview of the included tools</li>
-<li><a href="docs/general/commands.md"><strong>Commands</strong></a>: Getting the most out of this boilerplate</li>
-<li><a href="docs/testing">Testing</a>: How to work with the built-in test harness</li>
-<li><a href="docs/css">Styling</a>: How to work with the CSS tooling</li>
-<li><a href="docs/js">Your app</a>: Supercharging your app with Routing, Redux, simple asynchronicity helpers, etc.</li>
+<li>This project uses <a href="http://www.material-ui.com/#/components/slider">Material UI</a> Component throughout.</li>
 </ul>
-<h2 id="supporters">Supporters</h2>
-<p>This project would not be possible without the support by these amazing folks. <a href="https://opencollective.com/react-boilerplate"><strong>Become a sponsor</strong></a> to get your company in front of thousands of engaged react developers and help us out!</p>
-<p><a href="https://opencollective.com/react-boilerplate/bronze-sponsor/0/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/0/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/1/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/1/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/2/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/2/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/3/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/3/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/4/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/4/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/5/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/5/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/6/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/6/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/7/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/7/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/8/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/8/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/bronze-sponsor/9/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/bronze-sponsor/9/avatar.svg"></a></p>
-<hr />
-<p><a href="https://opencollective.com/react-boilerplate/backer/0/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/0/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/1/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/1/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/2/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/2/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/3/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/3/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/4/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/4/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/5/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/5/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/6/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/6/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/7/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/7/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/8/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/8/avatar.svg"></a> <a href="https://opencollective.com/react-boilerplate/backer/9/website" target="_blank"><img src="https://opencollective.com/react-boilerplate/backer/9/avatar.svg"></a></p>
-<h2 id="license">License</h2>
-<p>This project is licensed under the MIT license, Copyright (c) 2017 Maximilian Stoiber. For more information see <code>LICENSE.md</code>.</p>
+<h2 id="development-1">Development</h2>
+<ul>
+<li><p>To commit javascript code, it has to pass the ESLint linter. The linter may seem a little pesky at first, but I promise it makes your code look great and let's us focus on bigger code design issues. Some issues can be fixed automatically by running <code>./node_modules/eslint/bin/eslint.js --fix &lt;filename&gt;</code></p></li>
+<li><p>For testing we rely on <a href="https://facebook.github.io/jest/docs/en/more-resources.html">Jest</a> and <a href="https://travis-ci.org/mhoffman/CatAppBrowser">Travis CI</a>. Please have a look a Jest and write some simple test. Test coverage should eventually go up.</p></li>
+</ul>
