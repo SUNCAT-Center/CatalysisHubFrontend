@@ -12,6 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
+import { LinearProgress } from 'material-ui/Progress';
 import { Link } from 'react-router';
 import { FaDatabase } from 'react-icons/lib/fa';
 import View from 'flexbox-react';
@@ -38,6 +39,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       geometries: 0,
       reactions: 0,
       publications: 0,
+      loading: true,
     };
   }
 
@@ -49,6 +51,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       query: '{catapp { edges { node { id } } }}',
     }).then((response) => {
       this.setState({
+        loading: false,
         reactions: response.data.data.catapp.edges.length,
       });
     });
@@ -56,6 +59,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       query: '{systems { edges { node { id } } }}',
     }).then((response) => {
       this.setState({
+        loading: false,
         geometries: response.data.data.systems.edges.length,
       });
     });
@@ -65,6 +69,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
       // TODO: new Set can be removed if distinct: true filter works on API
       this.setState({
+        loading: false,
         publications: dois.length,
       });
     });
@@ -88,6 +93,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               <FormattedMessage {...messages.startProjectHeader} />
             </H1>
             }
+          </CenteredSection>
+          <CenteredSection>
+            {this.state.loading ? <div>Contacting database ... <LinearProgress color="primary" /></div> : null }
           </CenteredSection>
           <Grid container justify="center">
             <Grid item>
