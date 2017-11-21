@@ -6,6 +6,7 @@ describe('energiesPageReducer', () => {
     expect(energiesPageReducer(undefined, {})).toEqual(({
       selectedReaction: {},
       matchingReactions: [],
+      searchSubmitted: false,
       reactionSystems: [],
     }));
   });
