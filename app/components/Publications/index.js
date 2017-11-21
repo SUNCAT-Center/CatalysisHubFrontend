@@ -75,12 +75,12 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           years,
         });
         years.map((year) => {
-          const query = `{catapp(year: ${year}, reference: "~") { edges { node { reference doi DFTCode DFTFunctional } } }}`;
+          const query = `{catapp(year: ${year}) { edges { node { year publication doi dftCode dftFunctional } } }}`;
           return axios.post(graphQLRoot, {
             query,
           })
             .then((yearResponse) => {
-              let references = yearResponse.data.data.catapp.edges.map((n) => (n.node.reference));
+              let references = yearResponse.data.data.catapp.edges.map((n) => (n.node.publication));
               references = [...new Set(references)];
               let dois = yearResponse.data.data.catapp.edges.map((n) => (n.node.doi));
               dois = [...new Set(dois)];
