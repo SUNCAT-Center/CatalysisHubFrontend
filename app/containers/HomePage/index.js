@@ -64,7 +64,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       });
     });
     axios.post(graphQLRoot, {
-      query: '{catapp(reference: "~", distinct: true) { edges { node { doi } } }}',
+      query: '{catapp { edges { node { doi } } }}',
     }).then((response) => {
       const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
       // TODO: new Set can be removed if distinct: true filter works on API
