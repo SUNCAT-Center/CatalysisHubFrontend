@@ -109,7 +109,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   }}
                 >
                   <h3>Reaction Energies</h3>
-                  <View row style={{ justifyContent: 'space-around' }}>
+                  <View style={{ justifyContent: 'space-around' }}>
                     <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
@@ -127,7 +127,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   }}
                 >
                   <h3>Geometries</h3>
-                  <View row style={{ justifyContent: 'center' }}>
+                  <View style={{ justifyContent: 'center' }}>
                     <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
@@ -145,7 +145,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   }}
                 >
                   <h3>Publications</h3>
-                  <View row style={{ justifyContent: 'center' }}>
+                  <View style={{ justifyContent: 'center' }}>
                     <Chip label={this.state.publications} avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
