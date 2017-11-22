@@ -15,6 +15,7 @@ import Grid from 'material-ui/Grid';
 import { LinearProgress } from 'material-ui/Progress';
 import { Link } from 'react-router';
 import { FaDatabase } from 'react-icons/lib/fa';
+import { MdWarning } from 'react-icons/lib/md';
 import View from 'flexbox-react';
 
 import axios from 'axios';
@@ -40,6 +41,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       reactions: 0,
       publications: 0,
       loading: true,
+      error: false,
     };
   }
 
@@ -50,28 +52,49 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     axios.post(graphQLRoot, {
       query: '{catapp { edges { node { id } } }}',
     }).then((response) => {
-      this.setState({
-        loading: false,
-        reactions: response.data.data.catapp.edges.length,
-      });
+      if (response.data.data.catapp === null) {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      } else {
+        this.setState({
+          loading: false,
+          reactions: response.data.data.catapp.edges.length,
+        });
+      }
     });
     axios.post(graphQLRoot, {
       query: '{systems { edges { node { id } } }}',
     }).then((response) => {
-      this.setState({
-        loading: false,
-        geometries: response.data.data.systems.edges.length,
-      });
+      if (response.data.data.systems === null) {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      } else {
+        this.setState({
+          loading: false,
+          geometries: response.data.data.systems.edges.length,
+        });
+      }
     });
     axios.post(graphQLRoot, {
       query: '{catapp { edges { node { doi } } }}',
     }).then((response) => {
-      const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
-      // TODO: new Set can be removed if distinct: true filter works on API
-      this.setState({
-        loading: false,
-        publications: dois.length,
-      });
+      if (response.data.data.catapp === null) {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      } else {
+        const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
+        // TODO: new Set can be removed if distinct: true filter works on API
+        this.setState({
+          loading: false,
+          publications: dois.length,
+        });
+      }
     });
   }
 
@@ -96,6 +119,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           </CenteredSection>
           <CenteredSection>
             {this.state.loading ? <div>Contacting database ... <LinearProgress color="primary" /></div> : null }
+            {this.state.error ? <div><MdWarning />Failed to contact database. </div> : null }
           </CenteredSection>
           <Grid container justify="center">
             <Grid item>
