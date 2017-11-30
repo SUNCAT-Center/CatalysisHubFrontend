@@ -5,6 +5,6 @@ import Publications from '../index';
 
 describe('<Publications />', () => {
   it('should render a div', () => {
-    expect(shallow(<Publications />).find('div').length).toEqual(1);
+    expect(shallow(<Publications />).find('div').length).toEqual(0);
   });
 });
