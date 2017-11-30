@@ -8,7 +8,7 @@ function download(filename, text, click = true) {
     element.click();
   }
   document.body.removeChild(element);
-  return document
+  return document;
 }
 
 module.exports = { download };
