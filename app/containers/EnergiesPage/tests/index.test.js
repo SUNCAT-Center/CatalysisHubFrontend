@@ -12,6 +12,7 @@ describe('<EnergiesPage />', () => {
         clearSystems={() => {}}
         selectReaction={() => {}}
         saveSystem={() => {}}
+        submitSearch={() => {}}
         matchingReactions={[]}
         reactionSystems={[]}
       />).type()).toEqual('div');
