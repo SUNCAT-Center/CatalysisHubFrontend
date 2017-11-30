@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 /* import { createStructuredSelector } from 'reselect'; */
 import PeriodicTable from 'components/PeriodicTable';
 
-/* import makeSelectPeriodicTableSelector from './selectors'; */
 import { clickElement, clearSelection } from './actions';
 
 export class PeriodicTableSelector extends React.Component { // eslint-disable-line react/prefer-stateless-function

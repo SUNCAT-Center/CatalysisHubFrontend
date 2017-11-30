@@ -80,15 +80,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/EnergiesPage/reducer'),
-          import('containers/EnergiesPage/sagas'),
           import('containers/EnergiesPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('energiesPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -100,15 +98,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/ScalingRelationsPage/reducer'),
-          import('containers/ScalingRelationsPage/sagas'),
           import('containers/ScalingRelationsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('scalingRelationsPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
