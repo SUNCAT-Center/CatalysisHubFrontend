@@ -153,9 +153,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       });
       this.props.submitSearch();
       this.props.receiveReactions(response.data.data.catapp.edges);
-    }).catch((error) => {
-      console.log(query.query);
-      console.log(error);
+    }).catch(() => {
       this.setState({
         loading: false,
       });
