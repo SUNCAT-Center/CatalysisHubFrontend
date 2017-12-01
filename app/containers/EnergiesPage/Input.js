@@ -64,8 +64,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       }).then((response) => {
         let reactants = [];
         const reactant = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.reactants)));
-        reactants = reactants.concat([].concat(...reactant));
-        reactants = reactants.map((r) => ({ value: r, label: r.replace('star', '*') }));
+        reactants = reactant.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
         reactants.push({ label: 'any', value: '' });
         this.setState({
           reactant_options: [...new Set(reactants)],
@@ -82,8 +81,8 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         let products = [];
         const product = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.products)));
         products = products.concat([].concat(...product));
-        products = product.map((p) => p.join(' + '));
-        products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));
+        products = product.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
+        /* products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));*/
         products.push({ label: 'any', value: '' });
         this.setState({
           product_options: [...new Set(products)],

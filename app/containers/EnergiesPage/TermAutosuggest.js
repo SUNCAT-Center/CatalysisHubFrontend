@@ -150,13 +150,14 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       response.data.data.catapp.edges.map((edge) => {
         // suggestions.push({label: edge.node.reactants});
         if (parseField) {
-          label = JSON.parse(edge.node[responseField]).join('').replace('star', '*');
+          label = (Object.keys(JSON.parse(edge.node[responseField]))).join(' + ').replace(/star/g, '*');
         } else {
           label = edge.node[responseField];
         }
 
         return suggestions.set(label, { label });
       });
+
       this.setState({
         rawSuggestions: [...suggestions.values()],
       });
@@ -203,7 +204,6 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     this.setState({
       value: newValue,
     });
-    /* console.log(this.props);*/
     this.props.setSubstate(this.props.field, { label: newValue });
   };
 
