@@ -55,7 +55,7 @@ const styles = (theme) => ({
   },
 });
 
-function renderSuggestionsContainer(options) {
+export function renderSuggestionsContainer(options) {
   const { containerProps, children } = options;
 
   return (
@@ -65,12 +65,12 @@ function renderSuggestionsContainer(options) {
   );
 }
 
-function getSuggestionValue(suggestion) {
+export function getSuggestionValue(suggestion) {
   return suggestion.label;
 }
 
 
-function renderInput(inputProps) {
+export function renderInput(inputProps) {
   const { classes, autoFocus, value, ref, ...other } = inputProps;
 
   return (
@@ -89,7 +89,7 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion(suggestion, { query, isHighlighted }) {
+export function renderSuggestion(suggestion, { query, isHighlighted }) {
   const matches = match(suggestion.label, query);
   const parts = parse(suggestion.label, matches);
 
@@ -248,7 +248,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
           }}
         >
           <MdClear
-            onClick={() => this.clearValue()}
+            onClick={this.clearValue}
           />
         </IconButton>
       }
