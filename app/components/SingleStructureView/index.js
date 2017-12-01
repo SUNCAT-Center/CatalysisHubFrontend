@@ -47,7 +47,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(3)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>Title: {this.props.selectedSystem.PublicationTitle}</li>
+            <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
             <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
                 JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
