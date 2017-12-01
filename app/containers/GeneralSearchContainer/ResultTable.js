@@ -25,6 +25,7 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
   constructor(props) {
     super(props);
     this.fetchRow = this.fetchRow.bind(this);
+    this.rowClick = this.rowClick.bind(this);
     this.state = {
       order: 'asc',
       orderBy: 'energy',
@@ -72,6 +73,10 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
   handleChangeRowsPerPage = (event) => {
     this.setState({ rowsPerPage: event.target.value });
   };
+  rowClick = (result) => {
+    this.props.selectUUID(result.node.uniqueId);
+    this.fetchRow(result.node.uniqueId);
+  }
 
   render() {
     if (this.props.searchResults.length === 0) {
@@ -102,10 +107,7 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                       <TableRow
                         hover
                         key={`row_${i}`}
-                        onClick={() => {
-                          this.props.selectUUID(result.node.uniqueId);
-                          this.fetchRow(result.node.uniqueId);
-                        }}
+                        onClick={() => { this.rowClick(result); }}
                       >
                         <TableCell>{result.node.Formula}</TableCell>
                         <Hidden smDown>
