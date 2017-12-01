@@ -22,7 +22,7 @@ import { withStyles } from 'material-ui/styles';
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
-const prettyPrintReaction = (reactants, products) => (`${JSON.parse(reactants).join(' + ')}  ⇄  ${JSON.parse(products).join(' + ')}`
+const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
   ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
 
 
@@ -81,7 +81,6 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       };
       return axios.post(graphQLRoot, query).then((response) => {
         const node = response.data.data.systems.edges[0].node;
-        console.log(reaction);
         node.DFTCode = reaction.DFTCode;
         node.DFTFunctional = reaction.DFTFunctional;
         node.aseId = aseId;
@@ -90,9 +89,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         this.setState({
           loading: false,
         });
-      }).catch((error) => {
-        console.log(error);
-        console.log(query);
+      }).catch(() => {
         this.setState({
           loading: false,
         });

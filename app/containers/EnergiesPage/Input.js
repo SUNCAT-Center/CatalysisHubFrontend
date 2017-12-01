@@ -125,18 +125,12 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
     const filterString = filters.join(', ');
 
     const query = {
-      query: `query{catapp ( last: 500, ${filterString} ) {
-  edges {
-    node {
-      id
-      DFTCode
-      DFTFunctional
+      query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
+      dftCode
+      dftFunctional
       reactants
       products
-      #Equation
       aseIds
-      #reactantIds
-      #productIds
       facet
       chemicalComposition
       reactionEnergy
@@ -146,7 +140,10 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
 }}`,
     };
+    console.log(query);
+    console.log(JSON.stringify(query));
     axios.post(graphQLRoot, query).then((response) => {
+      console.log(response);
       this.setState({
         loading: false,
       });
