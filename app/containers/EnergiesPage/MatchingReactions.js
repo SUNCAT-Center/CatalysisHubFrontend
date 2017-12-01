@@ -53,9 +53,12 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     this.setState({
       loading: true,
     });
-    const aseIds = Object.values(JSON.parse(reaction.aseIds));
+    const catappIds = JSON.parse(reaction.aseIds);
+    const catappKeys = Object.keys(JSON.parse(reaction.aseIds));
+
     this.props.clearSystems();
-    aseIds.map((aseId) => {
+    catappKeys.map((key) => {
+      const aseId = catappIds[key];
       const query = {
         query: `query{systems(uniqueId: "${aseId}") {
   edges {
@@ -81,9 +84,13 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       };
       return axios.post(graphQLRoot, query).then((response) => {
         const node = response.data.data.systems.edges[0].node;
-        node.DFTCode = reaction.DFTCode;
-        node.DFTFunctional = reaction.DFTFunctional;
+        node.DFTCode = reaction.dftCode;
+        node.DFTFunctional = reaction.dftFunctional;
         node.aseId = aseId;
+        node.key = key
+          .replace(/.*TSstar/g, '‡')
+          .replace(/.*gas/g, '(ℊ)')
+          .replace(/.*star/g, '*');
 
         this.props.saveSystem(node);
         this.setState({
