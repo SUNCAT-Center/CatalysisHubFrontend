@@ -58,7 +58,10 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 
     this.props.clearSystems();
     catappKeys.map((key) => {
-      const aseId = catappIds[key];
+      let aseId = catappIds[key];
+      if (typeof aseId === 'object') {
+        aseId = aseId[1];
+      }
       const query = {
         query: `query{systems(uniqueId: "${aseId}") {
   edges {
@@ -89,8 +92,8 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         node.aseId = aseId;
         node.key = key
           .replace(/.*TSstar/g, '‡')
-          .replace(/.*gas/g, '(ℊ)')
-          .replace(/.*star/g, '*');
+          .replace(/(.*)gas/g, (match, p1) => `${p1}(ℊ)`)
+          .replace(/(.*)star/, (match, p1) => `${p1}@${reaction.surfaceComposition}`);
 
         this.props.saveSystem(node);
         this.setState({

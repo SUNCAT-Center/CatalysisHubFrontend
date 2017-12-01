@@ -52,7 +52,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
           fullWidth
         >
           {this.props.reactionSystems.map((system, i) =>
-            <Tab label={system.Formula + system.key} key={`reaction_tab_${i}`} />
+            <Tab label={system.key} key={`reaction_tab_${i}`} />
           )}
         </Tabs>
         <div>
