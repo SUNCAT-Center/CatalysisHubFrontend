@@ -23,11 +23,11 @@ export class PeriodicTableSelector extends React.Component { // eslint-disable-l
 }
 
 
-const mapStateToProps = (state) => ({
+export const mapStateToProps = (state) => ({
   selection: state.get('periodicTableSelector').selection,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = (dispatch) => ({
   clickElement: (element) => {
     dispatch(clickElement(element));
   },
