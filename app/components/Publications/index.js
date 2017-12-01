@@ -38,12 +38,12 @@ const prettyPrintReference = (reference) => {
     // TODO Integrate with crossref.org api
     // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
     return (<span>
-      {ref.title !== '' ? <emph>{ref.title}. </emph> : null }
+      {ref.title !== '' ? <emph>{`"${ref.title}"`}. </emph> : null }
       {typeof ref.authors !== 'undefined' ? <span>{ref.authors.join('; ').replace('\\o', 'ø')}. </span> : null }
       {ref.journal !== '' ? <i>{ref.journal}, </i> : null }
-      {ref.volume !== '' ? <span>{ref.volume}, </span> : null}
+      {ref.volume !== '' ? <span>{ref.volume} </span> : null}
+      {ref.year !== '' ? <span>({ref.year}): </span> : null}
       {ref.pages !== '' ? <span>{ref.pages}, </span> : null}
-      {ref.year !== '' ? <span>{ref.year}. </span> : null}
     </span>);
   }
   return null;
@@ -97,9 +97,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 dois: allDois,
               });
             })
-            .catch((error) => {
-              console.log(error);
-              console.log(query);
+            .catch(() => {
             })
           ;
         });
@@ -127,9 +125,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           systems: response.data.data.systems.edges,
         });
       })
-      .catch((error) => {
-        console.log(error);
-        console.log(query);
+      .catch(() => {
       });
   }
 
