@@ -171,6 +171,7 @@ class App extends React.Component {
               </ListItem>
 
 
+              {/*
               <ListItem>
                 <MenuLink to="/generalSearch" onClick={this.handleDrawerToggle}>
                   <Button dense color="primary">
@@ -178,6 +179,7 @@ class App extends React.Component {
                   </Button>
                 </MenuLink>
               </ListItem>
+            */}
             </List>
 
 
@@ -213,6 +215,14 @@ class App extends React.Component {
                 <MenuLink>
                   <Button disabled dense color="primary" >
                     AtoML
+                  </Button>
+                </MenuLink>
+              </ListItem>
+
+              <ListItem>
+                <MenuLink>
+                  <Button disabled dense color="primary" >
+                    CatMAP
                   </Button>
                 </MenuLink>
               </ListItem>
