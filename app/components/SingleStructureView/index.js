@@ -54,6 +54,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             {this.props.selectedSystem.PublicationDoi === '' ? null :
             <div>
               <li>
+                Source&nbsp;
                 <ReactGA.OutboundLink
                   eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
                   to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
