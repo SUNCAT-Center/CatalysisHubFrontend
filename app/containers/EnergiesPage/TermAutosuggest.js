@@ -182,7 +182,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
         return keep;
       });
   }
-  clearValue() {
+  clearValue = () => {
     this.setState({
       value: '',
     });
