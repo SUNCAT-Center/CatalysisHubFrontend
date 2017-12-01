@@ -43,7 +43,7 @@ const prettyPrintReference = (reference) => {
       {ref.journal !== '' ? <i>{ref.journal}, </i> : null }
       {ref.volume !== '' ? <span>{ref.volume} </span> : null}
       {ref.year !== '' ? <span>({ref.year}): </span> : null}
-      {ref.pages !== '' ? <span>{ref.pages}, </span> : null}
+      {ref.pages !== '' ? <span>{ref.pages}. </span> : null}
     </span>);
   }
   return null;
@@ -156,7 +156,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                           to={`http://dx.doi.org/${this.state.dois[year][j]}`}
                           target="_blank"
                         >
-                          DOI: {this.state.dois[year][j]}
+                          DOI: {this.state.dois[year][j]}.
                         </ReactGA.OutboundLink>
                       </span>
                     </button>
