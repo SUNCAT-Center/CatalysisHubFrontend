@@ -71,10 +71,10 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
     this.state = {
       show_table: true,
     };
-    this.toggleTable = this.toggleTable.bind(this);
+    this.toggletable = this.toggletable.bind(this);
   }
 
-  toggleTable = () => {
+  toggletable = () => {
     this.setState({
       show_table: !this.state.show_table,
     });
@@ -107,7 +107,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           </MButton>
           <MButton
             raised
-            onClick={this.toggleTable}
+            onClick={this.toggletable}
           >
             {this.state.show_table === true ?
               <span>
