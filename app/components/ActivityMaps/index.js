@@ -66,7 +66,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           </FormControl>
 
         </Flexbox>
-        <Flexbox height="500px">
+        <Flexbox minHeight="100px">
           <PeriodicTableSelector />
         </Flexbox>
         <div>
