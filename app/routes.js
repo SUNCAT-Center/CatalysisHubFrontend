@@ -47,7 +47,7 @@ export default function createRoutes(store) {
       path: 'activityMaps',
       name: 'activityMaps',
       getComponent(location, cb) {
-        import('components/ActivityMaps')
+        import('containers/ActivityMapsPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

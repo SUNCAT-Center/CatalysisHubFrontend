@@ -56,7 +56,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
 
     return (
       <div className={classes.root}>
-        <h2>Detailed Structure View</h2>
+        <h2>Detailed Structure View {`"${this.props.selectedDot.text}"`}</h2>
         <Tabs
           fullWidth
           value={this.state.value}
@@ -94,6 +94,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
 
 StructureView2.propTypes = {
   classes: PropTypes.object.isRequired,
+  selectedDot: PropTypes.object.isRequired,
 
 };
 
