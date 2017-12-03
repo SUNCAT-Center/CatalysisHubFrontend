@@ -10,7 +10,9 @@ import {
 } from './constants';
 
 const initialState = {
-  selectedDot: {},
+  selectedDot: {
+    text: 'Ti',
+  },
 };
 
 function activityMapsPageReducer(state = initialState, action) {
