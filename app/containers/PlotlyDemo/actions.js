@@ -17,8 +17,6 @@ export function clickDot(event) {
   return {
     type: CLICK_DOT,
     payload: { x: point.x, y: point.y },
-    /* payload: point,*/
-
   };
 }
 
