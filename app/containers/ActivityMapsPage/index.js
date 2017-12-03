@@ -4,33 +4,41 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import makeSelectActivityMapsPage from './selectors';
+
+import { backendRoot } from 'utils/constants';
+
+import ActivityMaps from './ActivityMaps';
+import * as actions from './actions';
 
 export class ActivityMapsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-      Explore Structures via Activity Maps!
+        <ActivityMaps {...this.props} />
       </div>
     );
   }
 }
 
 ActivityMapsPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  activityMapsPage: makeSelectActivityMapsPage(),
+const mapStateToProps = (state) => ({
+  selectedDot: state.get('activityMapsPageReducer').selectedDot,
+  cifUrls: [
+    `${backendRoot}get_cif/?path=6f_doping/${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping/addOempty/final_geo_for_db_${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping_addOempty.traj`,
+    `${backendRoot}get_cif/?path=6f_doping/${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping/addOaddOH/final_geo_for_db_${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping_addOaddOH.traj`,
+    `${backendRoot}get_cif/?path=6f_doping/${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping/addOaddO/final_geo_for_db_${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping_addOaddO.traj`,
+    `${backendRoot}get_cif/?path=6f_doping/${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping/addOaddOOH/final_geo_for_db_${state.get('activityMapsPageReducer').selectedDot.text}_6f_doping_addOaddOOH.traj`,
+  ],
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  clickDot: (dot) => {
+    dispatch(actions.clickDot(dot));
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityMapsPage);
