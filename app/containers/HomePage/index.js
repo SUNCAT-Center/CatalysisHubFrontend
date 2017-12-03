@@ -139,6 +139,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Paper>
               </Link>
             </Grid>
+            {/*
             <Grid item>
               <Link to="/generalSearch">
                 <Paper
@@ -157,6 +158,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Paper>
               </Link>
             </Grid>
+            */}
             <Grid item>
               <Link to="/publications">
                 <Paper
@@ -171,6 +173,24 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   <h3>Publications</h3>
                   <View style={{ justifyContent: 'center' }}>
                     <Chip label={this.state.publications} avatar={<FaDatabase size={24} />} />
+                  </View>
+                </Paper>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/activityMaps">
+                <Paper
+                  style={{
+                    padding: 25,
+                    minWidth: 240,
+                    maxWidth: 300,
+                    textAlign: 'center',
+                    align: 'center',
+                  }}
+                >
+                  <h3>Activity Maps</h3>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Chip label="1" avatar={<FaDatabase size={24} />} />
                   </View>
                 </Paper>
               </Link>
