@@ -8,6 +8,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 import axios from 'axios';
 
 import PropTypes from 'prop-types';
@@ -18,6 +19,16 @@ import { MdFileDownload } from 'react-icons/lib/md';
 const MButton = styled(Button)`
   margin: 12px,
 `;
+
+const styles = (xtheme) => ({
+  MuiButton: {
+    margin: '12px',
+    [xtheme.breakpoints.down('sm')]: {
+      visibility: 'hidden',
+    },
+  },
+});
+
 
 class GeometryCanvas extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -123,6 +134,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
         />
         <br />
         <MButton
+          className={this.props.classes.MuiButton}
           raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.props.cifdata); }}
           style={{
@@ -137,8 +149,8 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 }
 
 GeometryCanvas.defaultProps = {
-  height: 550,
-  width: 550,
+  height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+  width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
   color: '#fff',
   cifdata: '',
   cifurl: '',
@@ -151,6 +163,7 @@ GeometryCanvas.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
+  classes: PropTypes.object,
 };
 
-export default GeometryCanvas;
+export default (withStyles(styles, { withTheme: true }))(GeometryCanvas);
