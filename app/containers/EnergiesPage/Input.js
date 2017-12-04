@@ -116,14 +116,15 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       filters.push(`facet: "~${this.state.facet.label}"`);
     }
     if (typeof this.state.reactants.label !== 'undefined') {
-      filters.push(`reactants: "~${this.state.reactants.label.replace('*', '').replace('any', '')}"`);
+      filters.push(`reactants: "${this.state.reactants.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
     }
     if (typeof this.state.products.label !== 'undefined') {
-      filters.push(`products: "~${this.state.products.label.replace('*', '').replace('any', '')}"`);
+      filters.push(`products: "${this.state.products.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
     }
 
-    const filterString = filters.join(', ');
+    /* filters.push('distinct: true')*/
 
+    const filterString = filters.join(', ');
     const query = {
       query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
       dftCode
@@ -140,10 +141,7 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
   }
 }}`,
     };
-    console.log(query);
-    console.log(JSON.stringify(query));
     axios.post(graphQLRoot, query).then((response) => {
-      console.log(response);
       this.setState({
         loading: false,
       });
