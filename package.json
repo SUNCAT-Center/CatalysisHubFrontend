@@ -246,6 +246,7 @@
     "ndarray-unpack": "^1.0.0",
     "ngl": "^0.10.4",
     "plotly.js": "^1.31.2",
+    "rc-slider": "^8.5.0",
     "react": "15.4.1",
     "react-apollo": "^1.4.16",
     "react-autosuggest": "^9.3.2",
