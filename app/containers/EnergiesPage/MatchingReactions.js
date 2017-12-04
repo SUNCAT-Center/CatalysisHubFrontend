@@ -160,7 +160,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         }}
                       >
                         <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
-                        <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(3)} eV` }</TableCell>
+                        <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</TableCell>
                         <Hidden smDown>
                           <TableCell>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</TableCell>
                         </Hidden>
