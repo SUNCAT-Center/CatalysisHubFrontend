@@ -17,7 +17,16 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
       <div ref={(el) => { this.instance = el; }}>
         <h2 style={{ marginTop: '100px' }}>Activity Map</h2>
         <p>Data generously provided by M. Bajdich, unpublished, 2017.</p>
-        <Plot {...plotlydata} onClick={(event) => { this.props.clickDot(event); }} />
+        <Plot
+          {...plotlydata}
+          layout={{
+            hovermode: 'closest',
+            height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+            width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+            margin: { l: 20, r: 20, b: 10, t: 10 },
+          }}
+          onClick={(event) => { this.props.clickDot(event); }}
+        />
       </div>
     );
   }
