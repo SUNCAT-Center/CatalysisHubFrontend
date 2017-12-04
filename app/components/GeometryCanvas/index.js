@@ -127,7 +127,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
           height={this.props.height}
           width={this.props.width}
           style={{
-            borderWidth: 1,
+            borderWidth: 0,
             borderColor: '#000000',
             borderStyle: 'solid',
           }}

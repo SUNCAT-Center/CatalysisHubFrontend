@@ -69,7 +69,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
   constructor(props) {
     super(props);
     this.state = {
-      show_table: true,
+      show_table: false,
     };
     this.toggletable = this.toggletable.bind(this);
   }
