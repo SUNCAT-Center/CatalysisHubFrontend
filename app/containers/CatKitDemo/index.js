@@ -7,6 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ReactGA from 'react-ga';
 
 import BulkInput from './BulkInput';
 import { BulkView } from './BulkView';
@@ -19,6 +20,14 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <div>
+        <h1>CatKit Slab Generator</h1>
+        <div>Checkout full code on <ReactGA.OutboundLink
+          eventLabel="https://github.com/jboes/CatKit"
+          to="https://github.com/jboes/CatKit"
+        >
+                github/jboes/CatKit
+              </ReactGA.OutboundLink>
+        </div>
         <BulkInput {...this.props} />
         <BulkView {...this.props} />
         <SlabInput {...this.props} />

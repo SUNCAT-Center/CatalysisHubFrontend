@@ -44,14 +44,20 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   }
 
   generateBulk = () => {
-    axios.get(`${backendRoot}generate_bulk_cif/`, { params: {
+    const url = `${backendRoot}generate_bulk_cif/`;
+
+    const params = { params: {
       lattice_constant: this.state.latticeConstant,
       structure: this.state.structure,
       element1: this.state.element1,
       element2: this.state.element2,
       element3: this.state.element3,
       element4: this.state.element4,
-    } }).then((response) => {
+    } };
+    /* console.log(url) */
+    /* console.log(params) */
+
+    axios.get(url, params).then((response) => {
       this.props.receiveBulkCif(response.data.cifdata);
     });
   }
