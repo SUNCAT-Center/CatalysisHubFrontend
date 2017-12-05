@@ -132,7 +132,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     textAlign: 'center',
                   }}
                 >
-                  <h3>Reaction Energies</h3>
+                  <h3>Reaction Energetics</h3>
                   <View style={{ justifyContent: 'space-around' }}>
                     <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
                   </View>
