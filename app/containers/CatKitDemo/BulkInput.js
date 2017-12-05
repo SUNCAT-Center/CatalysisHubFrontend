@@ -54,8 +54,6 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       element3: this.state.element3,
       element4: this.state.element4,
     } };
-    /* console.log(url) */
-    /* console.log(params) */
 
     axios.get(url, params).then((response) => {
       this.props.receiveBulkCif(response.data.cifdata);
@@ -102,25 +100,25 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="element1-helper">Element 1</InputLabel>
             <Input id="element1-helper" value={this.state.element1} onChange={this.handleChange('element1')} />
-            <FormHelperText>The periodic table is your oyster</FormHelperText>
+            <FormHelperText></FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="element2-helper">Element 2</InputLabel>
             <Input id="element2-helper" value={this.state.element2} onChange={this.handleChange('element2')} />
-            <FormHelperText>The periodic table is your oyster</FormHelperText>
+            <FormHelperText></FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="element3-helper">Element 3</InputLabel>
             <Input id="element3-helper" value={this.state.element3} onChange={this.handleChange('element3')} />
-            <FormHelperText>The periodic table is your oyster</FormHelperText>
+            <FormHelperText></FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="element4-helper">Element 4</InputLabel>
             <Input id="element4-helper" value={this.state.element4} onChange={this.handleChange('element4')} />
-            <FormHelperText>The periodic table is your oyster</FormHelperText>
+            <FormHelperText></FormHelperText>
           </FormControl>
           <Button raised onClick={this.generateBulk} color="primary"><MdLoop /> Generate </Button>
         </form>

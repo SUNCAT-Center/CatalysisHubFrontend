@@ -114,7 +114,13 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
   });
 });
     `;
-      document.getElementById(`${this.props.id}_view`).appendChild(script);
+      const item = document.getElementById(`${this.props.id}_view`);
+
+      if (item.childNodes.length > 0) {
+        item.replaceChild(script, item.childNodes[0]);
+      } else {
+        item.appendChild(script);
+      }
     }
   }
 

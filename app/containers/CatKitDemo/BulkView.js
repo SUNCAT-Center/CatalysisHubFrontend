@@ -10,7 +10,7 @@ export class BulkView extends React.Component { // eslint-disable-line react/pre
         { this.props.bulkCif === '' ? null :
         <div>
           <h2>Bulk Structure</h2>
-          <GeometryCanvas cifdata={this.props.bulkCif} id="bulk_preview" x={2} y={2} z={2} />
+          <GeometryCanvas cifdata={this.props.bulkCif} id="bulk_preview" x={2} y={2} z={2} ref={(gmCanvas) => { this.gmCanvas = gmCanvas; }} />
         </div>
         }
       </div>
