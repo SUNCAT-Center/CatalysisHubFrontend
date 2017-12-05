@@ -5,8 +5,6 @@ import ReactGA from 'react-ga';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
 
-import A from 'components/A';
-/* import LocaleToggle from 'containers/LocaleToggle'; */
 import { whiteLabel } from 'utils/constants';
 import Wrapper from './Wrapper';
 import messages from './messages';
@@ -51,16 +49,19 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 to="https://github.com/mhoffman/CatAppBrowser"
                 eventLabel="https://github.com/mhoffman/CatAppBrowser"
               >
-                <ListItemText
-                  primary={<FormattedMessage
-                    {...messages.authorMessage}
-                    values={{
-                      author: <A href="https://twitter.com/maxjhoffmann">Max Hoffmann</A>,
-                      author_town: 'Menlo Park',
-                    }}
-                  />
-                  }
-                />
+                Made&nbsp;
+              </ReactGA.OutboundLink>
+              <ReactGA.OutboundLink
+                to="https://github.com/kirstenwinther/CatAppCLI"
+                eventLabel="https://github.com/kirstenwinther/CatAppCLI"
+              >
+                in&nbsp;
+              </ReactGA.OutboundLink>
+              <ReactGA.OutboundLink
+                to="https://github.com/kirstenwinther/CatAppBackend"
+                eventLabel="https://github.com/kirstenwinther/CatAppBackend"
+              >
+                Menlo Park&nbsp;
               </ReactGA.OutboundLink>
             </ListItem>
           </List>
