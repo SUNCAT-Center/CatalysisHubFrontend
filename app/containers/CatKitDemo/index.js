@@ -4,10 +4,11 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
-import { BulkInput } from './BulkInput';
+
+import BulkInput from './BulkInput';
 import { BulkView } from './BulkView';
 import { SlabInput } from './SlabInput';
 import { SlabView } from './SlabView';
@@ -16,17 +17,17 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <div>
-        <BulkInput />
-        <BulkView />
-        <SlabInput />
-        <SlabView />
+        <BulkInput {...this.props} />
+        <BulkView {...this.props} />
+        <SlabInput {...this.props} />
+        <SlabView {...this.props} />
       </div>
     );
   }
 }
 
 CatKitDemo.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  /* dispatch: PropTypes.func.isRequired,*/
 };
 
 const mapStateToProps = () => ({
