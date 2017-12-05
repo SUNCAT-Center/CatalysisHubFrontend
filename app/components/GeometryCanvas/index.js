@@ -59,7 +59,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 
   //Code
   let tfcanvas = new ChemDoodle.TransformCanvas3D('${this.props.id}_view');
-  let cif = ChemDoodle.readCIF(\`${cifdata}\`, 2, 2, 1);
+  let cif = ChemDoodle.readCIF(\`${cifdata}\`, ${this.props.x}, ${this.props.y}, ${this.props.z});
 
   tfcanvas.specs.set3DRepresentation('Ball and Stick');
   tfcanvas.specs.backgroundColor = '${this.props.color}';
@@ -101,7 +101,7 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 
   //Code
   let tfcanvas = new ChemDoodle.TransformCanvas3D('${this.props.id}_view');
-  let cif = ChemDoodle.readCIF(\`${cifdata}\`, 1, 1, 1);
+  let cif = ChemDoodle.readCIF(\`${cifdata}\`,  ${this.props.x}, ${this.props.y}, ${this.props.z});
 
   tfcanvas.specs.set3DRepresentation('Ball and Stick');
   tfcanvas.specs.backgroundColor = '${this.props.color}';
@@ -154,6 +154,9 @@ GeometryCanvas.defaultProps = {
   color: '#fff',
   cifdata: '',
   cifurl: '',
+  x: 2,
+  y: 2,
+  z: 1,
 };
 
 GeometryCanvas.propTypes = {
@@ -164,6 +167,9 @@ GeometryCanvas.propTypes = {
   width: PropTypes.number,
   color: PropTypes.string,
   classes: PropTypes.object,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  z: PropTypes.number,
 };
 
 export default (withStyles(styles, { withTheme: true }))(GeometryCanvas);
