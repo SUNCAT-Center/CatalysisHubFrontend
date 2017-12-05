@@ -4,12 +4,24 @@
  *
  */
 
-import {
-  DEFAULT_ACTION,
-} from './constants';
+import * as constants from './constants';
 
 export function defaultAction() {
   return {
-    type: DEFAULT_ACTION,
+    type: constants.DEFAULT_ACTION,
+  };
+}
+
+export function receiveBulkCif(cif) {
+  return {
+    type: constants.RECEIVE_BULK_CIF,
+    payload: cif,
+  };
+}
+
+export function receiveSlabCifs(cifs) {
+  return {
+    type: constants.RECEIVE_SLAB_CIFS,
+    payload: cifs,
   };
 }

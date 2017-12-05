@@ -4,16 +4,26 @@
  *
  */
 
-import { fromJS } from 'immutable';
-import {
-  DEFAULT_ACTION,
-} from './constants';
+import * as constants from './constants';
 
-const initialState = fromJS({});
+const initialState = {
+  bulkCif: '',
+  images: [],
+};
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
+    case constants.RECEIVE_SLAB_CIFS:
+      return {
+        ...state,
+        images: action.payload,
+      };
+    case constants.RECEIVE_BULK_CIF:
+      return {
+        ...state,
+        bulkCif: action.payload,
+      };
+    case constants.DEFAULT_ACTION:
       return state;
     default:
       return state;

@@ -33,7 +33,6 @@ const initialState = {
   element2: 'Pt',
   element3: 'Pt',
   element4: 'Pt',
-  bulkCif: '',
 };
 
 
@@ -45,17 +44,15 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   }
 
   generateBulk = () => {
-    axios.post(`${backendRoot}catkit/bulk/`, {
+    axios.get(`${backendRoot}generate_bulk_cif/`, { params: {
       lattice_constant: this.state.latticeConstant,
       structure: this.state.structure,
       element1: this.state.element1,
       element2: this.state.element2,
       element3: this.state.element3,
       element4: this.state.element4,
-    }).then((response) => {
-      this.setState({
-        bulkCif: response.data.cifdata,
-      });
+    } }).then((response) => {
+      this.props.receiveBulkCif(response.data.cifdata);
     });
   }
 
@@ -64,7 +61,6 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       this.setState({
         [name]: event.target.value,
       });
-      this.updateOptions(name);
     };
   }
 
@@ -76,8 +72,8 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="structure-simple">Structure</InputLabel>
             <Select
-              value={'fcc'}
-              onChange={this.props.handleStructureChange}
+              value={this.state.structure}
+              onChange={this.handleChange('structure')}
             >
               <MenuItem value={'fcc'}>FCC</MenuItem>
               <MenuItem value={'bcc'}>BCC</MenuItem>
@@ -96,28 +92,27 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
             <InputLabel htmlFor="lattice-constant-helper">Lattice Constant</InputLabel>
             <Input id="lattice-constant-helper" value={this.state.latticeConstant} onChange={this.handleChange('latticeConstant')} />
             <FormHelperText>Should be a number in Angstrom</FormHelperText>
-
           </FormControl>
           <FormControl className={this.props.classes.formControl} >
-            <InputLabel htmlFor="element1-helper">Name</InputLabel>
+            <InputLabel htmlFor="element1-helper">Element 1</InputLabel>
             <Input id="element1-helper" value={this.state.element1} onChange={this.handleChange('element1')} />
             <FormHelperText>The periodic table is your oyster</FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
-            <InputLabel htmlFor="element2-helper">Name</InputLabel>
+            <InputLabel htmlFor="element2-helper">Element 2</InputLabel>
             <Input id="element2-helper" value={this.state.element2} onChange={this.handleChange('element2')} />
             <FormHelperText>The periodic table is your oyster</FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
-            <InputLabel htmlFor="element3-helper">Name</InputLabel>
+            <InputLabel htmlFor="element3-helper">Element 3</InputLabel>
             <Input id="element3-helper" value={this.state.element3} onChange={this.handleChange('element3')} />
             <FormHelperText>The periodic table is your oyster</FormHelperText>
           </FormControl>
 
           <FormControl className={this.props.classes.formControl} >
-            <InputLabel htmlFor="element4-helper">Name</InputLabel>
+            <InputLabel htmlFor="element4-helper">Element 4</InputLabel>
             <Input id="element4-helper" value={this.state.element4} onChange={this.handleChange('element4')} />
             <FormHelperText>The periodic table is your oyster</FormHelperText>
           </FormControl>
@@ -130,7 +125,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
 BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleStructureChange: PropTypes.func.isRequired,
+  receiveBulkCif: PropTypes.func.isRequired,
 };
 
 
