@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { FormattedMessage } from 'react-intl';
 import ReactGA from 'react-ga';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -7,7 +6,6 @@ import { withStyles } from 'material-ui/styles';
 
 import { whiteLabel } from 'utils/constants';
 import Wrapper from './Wrapper';
-import messages from './messages';
 
 const styles = (xtheme) => ({
   footer: {
@@ -38,7 +36,6 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
         <section>
           <List>
             <ListItem>
-              <ListItemText primary={<FormattedMessage {...messages.licenseMessage} />} />
             </ListItem>
           </List>
         </section>
