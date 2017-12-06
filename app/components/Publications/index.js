@@ -39,7 +39,7 @@ const prettyPrintReference = (reference) => {
     // TODO Integrate with crossref.org api
     // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
     return (<span>
-      {ref.title !== '' ? <emph>{`"${ref.title}"`}. </emph> : null }
+      {ref.title !== '' ? <strong>{`"${ref.title}"`}. </strong> : null }
       {typeof ref.authors !== 'undefined' ? <span>{ref.authors.join('; ').replace('\\o', 'ø')}. </span> : null }
       {ref.journal !== '' ? <i>{ref.journal}, </i> : null }
       {ref.volume !== '' ? <span>{ref.volume} </span> : null}
@@ -118,6 +118,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     const count = parseInt(splitKey[2], 10);
     const doi = this.state.dois[year][count];
     /* reference = reference.split('"').join('\\"'); */
+    this.setState({
+      loading: true,
+    });
     if (this.state.openedPublication === key) {
       this.setState({
         openedPublication: null,
@@ -127,20 +130,26 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         openedPublication: key,
       });
     }
-    let query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
+    this.setState({
+      systems: [],
+      reactionEnergies: [],
+    });
+    let query = `query{systems(last:500, keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
         if (response.data.data.systems.edges.length > 0) {
           this.setState({
             systems: response.data.data.systems.edges,
+            loading: false,
           });
         }
         const title = this.state.titles[year][count];
-        query = `{catapp ( publication_Title: "${title}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
+        query = `{catapp ( last: 500, publication_Title: "${title}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
         axios.post(graphQLRoot, { query })
             .then((response1) => {
               this.setState({
                 reactionEnergies: response1.data.data.catapp.edges,
+                loading: false,
               });
             });
       })
@@ -182,6 +191,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     <div>
                       { this.state.openedPublication !== `elem_${year}_${j}` ? null :
                       <div>
+                        {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
                         {this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
