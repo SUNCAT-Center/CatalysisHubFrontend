@@ -10,6 +10,10 @@ import BarrierChart from 'components/BarrierChart';
 const styles = () => ({
 });
 
+const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
+  ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
+
+
 function TabContainer(props) {
   return <div style={{ padding: 8 * 3 }}>{props.children}</div>;
 }
@@ -37,7 +41,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
     return (<div> {/* div necessary before wrapping ternary expression */}
       {this.props.reactionSystems.length === 0 ? null :
       <div>
-        <h2>Reaction Geometries</h2>
+        <h2>{prettyPrintReaction(this.props.selectedReaction.reactants, this.props.selectedReaction.products)} - Reaction Geometries</h2>
         <Hidden smUp>
           <BarrierChart {...this.props} thumbnailSize={50} />
         </Hidden>
@@ -69,6 +73,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
 
 ReactionStructures.propTypes = {
   reactionSystems: PropTypes.array.isRequired,
+  selectedReaction: PropTypes.object,
 };
 
 exports.ReactionStructures = withStyles(styles, { withTheme: true })(ReactionStructures);
