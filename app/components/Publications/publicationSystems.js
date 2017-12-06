@@ -41,6 +41,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
   render() {
     return (
       <div>
+        <h3>Geometries</h3>
         <Table>
           <TableHead>
             <TableRow>

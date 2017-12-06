@@ -16,6 +16,7 @@ import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
 import PublicationSystems from './publicationSystems';
+import PublicationReactions from './publicationReactions';
 
 const styles = (theme) => ({
   publicationEntry: {
@@ -57,25 +58,27 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       years: [],
       references: {},
       dois: {},
+      titles: {},
       loading: false,
       openedPublication: null,
       systems: [],
+      reactionEnergies: [],
     };
     this.clickPublication = this.clickPublication.bind(this);
   }
   componentDidMount() {
-    const yearQuery = '{numberKeys(key:"publication_year") { edges { node { value } } }}';
+    const yearQuery = '{catapp(publication_Year: "~", distinct: true) { edges { node { PublicationYear } } }}';
     axios.post(graphQLRoot, {
       query: yearQuery,
     })
       .then((response) => {
-        let years = response.data.data.numberKeys.edges.map((n) => (n.node.value));
-        years = [...new Set(years)];
+        let years = response.data.data.catapp.edges.map((n) => (n.node.PublicationYear));
+        years = [...new Set(years)].sort().reverse().filter((x) => x !== null);
         this.setState({
           years,
         });
         years.map((year) => {
-          const query = `{catapp(year: ${year}) { edges { node { year publication doi dftCode dftFunctional } } }}`;
+          const query = `{catapp(year: ${year}, publication_Title:"~", distinct: true) { edges { node { year publication doi dftCode dftFunctional PublicationTitle } } }}`;
           return axios.post(graphQLRoot, {
             query,
           })
@@ -85,16 +88,22 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
               let dois = yearResponse.data.data.catapp.edges.map((n) => (n.node.doi));
               dois = [...new Set(dois)];
 
+              let titles = yearResponse.data.data.catapp.edges.map((n) => (n.node.PublicationTitle));
+              titles = [...new Set(titles)];
+
 
               const allReferences = this.state.references;
               const allDois = this.state.dois;
+              const allTitles = this.state.titles;
 
               allReferences[year] = references;
               allDois[year] = dois;
+              allTitles[year] = titles;
 
               this.setState({
                 references: allReferences,
                 dois: allDois,
+                titles: allTitles,
               });
             })
             .catch(() => {
@@ -118,12 +127,22 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         openedPublication: key,
       });
     }
-    const query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
+    let query = `query{systems(keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
-        this.setState({
-          systems: response.data.data.systems.edges,
-        });
+        if (response.data.data.systems.edges.length > 0) {
+          this.setState({
+            systems: response.data.data.systems.edges,
+          });
+        }
+        const title = this.state.titles[year][count];
+        query = `{catapp ( publication_Title: "${title}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
+        axios.post(graphQLRoot, { query })
+            .then((response1) => {
+              this.setState({
+                reactionEnergies: response1.data.data.catapp.edges,
+              });
+            });
       })
       .catch(() => {
       });
@@ -162,7 +181,15 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     </button>
                     <div>
                       { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                      <PublicationSystems {...this.state} />
+                      <div>
+
+                        {this.state.reactionEnergies.length === 0 ? null :
+                        <PublicationReactions {...this.state} />
+                            }
+                        {this.state.systems.length === 0 ? null :
+                        <PublicationSystems {...this.state} />
+                            }
+                      </div>
                       }
                     </div>
                     <br />
