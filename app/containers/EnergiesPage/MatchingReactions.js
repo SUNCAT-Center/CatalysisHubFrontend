@@ -81,6 +81,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     uniqueId
     volume
     mass
+    Facet
     }
   }
 }}`,
@@ -93,7 +94,18 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         node.key = key
           .replace(/.*TSstar/g, '‡')
           .replace(/(.*)gas/g, (match, p1) => `${p1}(ℊ)`)
-          .replace(/(.*)star/, (match, p1) => `${p1}@${reaction.surfaceComposition}`);
+          .replace(/(.+)star/, (match, p1) => `${p1}/${reaction.surfaceComposition}`)
+          .replace(/star/, reaction.surfaceComposition);
+
+        node.full_key = node.key;
+        if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
+          node.full_key = `${node.full_key} [${node.Facet}]`;
+        }
+        if (node.key.indexOf('(ℊ)') > -1) {
+          node.full_key = `Molecule ${node.full_key}`;
+        } else {
+          node.full_key = `Surface ${node.full_key}`;
+        }
 
         this.props.saveSystem(node);
         this.setState({

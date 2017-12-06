@@ -36,12 +36,21 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
   render() {
     const energy = this.props.selectedSystem.energy || this.state.energy || 0.0;
 
+    let x;
+    let y;
+    let z;
+    if (this.props.selectedSystem.full_key.startsWith('Molec')) {
+      [x, y, z] = [1, 1, 1];
+    } else {
+      [x, y, z] = [2, 2, 1];
+    }
+
     return (
       <div>
         {this.props.selectedUUID === '' ? null :
         <div>
-          <h2>Structure {this.props.selectedSystem.Formula}</h2>
-          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} />
+          <h2>{this.props.selectedSystem.full_key}</h2>
+          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>
