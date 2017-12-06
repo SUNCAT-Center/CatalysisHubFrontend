@@ -50,7 +50,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       this.props.onSubmitForm();
     }
     axios.post(graphQLRoot, {
-      query: '{catapp { edges { node { id } } }}',
+      query: '{catapp (first: 0) { totalCount }}',
     }).then((response) => {
       if (response.data.data.catapp === null) {
         this.setState({
@@ -60,7 +60,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       } else {
         this.setState({
           loading: false,
-          reactions: response.data.data.catapp.edges.length,
+          reactions: response.data.data.catapp.totalCount,
         });
       }
     });
@@ -80,7 +80,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       }
     });
     axios.post(graphQLRoot, {
-      query: '{catapp { edges { node { doi } } }}',
+      query: '{catapp(publication:"~", distinct: true) {totalCount}}',
     }).then((response) => {
       if (response.data.data.catapp === null) {
         this.setState({
@@ -88,11 +88,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           error: true,
         });
       } else {
-        const dois = [...new Set(response.data.data.catapp.edges.map(JSON.stringify).filter((x) => x.length > 20))];
-        // TODO: new Set can be removed if distinct: true filter works on API
         this.setState({
           loading: false,
-          publications: dois.length,
+          publications: response.data.data.catapp.totalCount,
         });
       }
     });
