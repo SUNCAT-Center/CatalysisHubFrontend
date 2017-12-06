@@ -190,7 +190,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
             {(this.state.references[year] || [])
                 .filter((references, j) => (
-                  this.state.dois[year][j] !== ''
+                  this.state.dois[year][j] !== '' && this.state.titles[year][j] !== null
                 ))
                 .map((reference, j) => (
                   <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
