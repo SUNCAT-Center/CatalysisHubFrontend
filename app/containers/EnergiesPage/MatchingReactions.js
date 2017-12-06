@@ -18,6 +18,7 @@ import Table, {
 import { LinearProgress } from 'material-ui/Progress';
 import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
+import FaCube from 'react-icons/lib/fa/cube';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -53,8 +54,18 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     this.setState({
       loading: true,
     });
-    const catappIds = JSON.parse(reaction.aseIds);
-    const catappKeys = Object.keys(JSON.parse(reaction.aseIds));
+    let catappKeys;
+    let catappIds;
+    if (typeof reaction.aseIds !== 'undefined' && reaction.aseIds !== null) {
+      catappIds = JSON.parse(reaction.aseIds);
+      catappKeys = Object.keys(JSON.parse(reaction.aseIds));
+    } else {
+      catappIds = {};
+      catappKeys = [];
+      this.setState({
+        loading: false,
+      });
+    }
 
     this.props.clearSystems();
     catappKeys.map((key) => {
@@ -145,6 +156,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell padding="none">Geometry</TableCell>
                 <TableCell padding="none">Reaction</TableCell>
                 <TableCell padding="none">Reaction Energy</TableCell>
                 <Hidden smDown>
@@ -171,6 +183,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                           this.fetchRow(result.node);
                         }}
                       >
+                        <TableCell padding="none">{result.node.aseIds !== null ? <FaCube /> : null}</TableCell>
                         <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
                         <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</TableCell>
                         <Hidden smDown>
