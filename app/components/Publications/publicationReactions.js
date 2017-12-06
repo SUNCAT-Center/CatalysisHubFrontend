@@ -9,7 +9,6 @@ import Table, {
   TableFooter,
   TablePagination,
 } from 'material-ui/Table';
-import Flexbox from 'flexbox-react';
 import Hidden from 'material-ui/Hidden';
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
@@ -47,37 +46,37 @@ class PublicationReactions extends React.Component { // eslint-disable-line reac
       <div>
         <h3>Reaction Energetics</h3>
         <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="none">Reaction</TableCell>
-                <TableCell padding="none">Reaction Energy</TableCell>
-                <Hidden smDown>
-                  <TableCell>Activation Energy</TableCell>
-                </Hidden>
-                <TableCell padding="none">Surface</TableCell>
-                <Hidden smDown>
-                  <TableCell>Facet</TableCell>
-                </Hidden>
-              </TableRow>
-            </TableHead>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="none">Reaction</TableCell>
+              <TableCell padding="none">Reaction Energy</TableCell>
+              <Hidden smDown>
+                <TableCell>Activation Energy</TableCell>
+              </Hidden>
+              <TableCell padding="none">Surface</TableCell>
+              <Hidden smDown>
+                <TableCell>Facet</TableCell>
+              </Hidden>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {this.props.reactionEnergies
                 .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
                 .map((result, i) => (
-                      <TableRow
-                        hover
-                        key={`row_${i}`}
-                      >
-                        <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
-                        <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</TableCell>
-                        <Hidden smDown>
-                          <TableCell>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</TableCell>
-                        </Hidden>
-                        <TableCell padding="none">{result.node.surfaceComposition}</TableCell>
-                        <Hidden smDown>
-                          <TableCell>{result.node.facet}</TableCell>
-                        </Hidden>
-                      </TableRow>
+                  <TableRow
+                    hover
+                    key={`row_${i}`}
+                  >
+                    <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
+                    <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</TableCell>
+                    <Hidden smDown>
+                      <TableCell>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</TableCell>
+                    </Hidden>
+                    <TableCell padding="none">{result.node.surfaceComposition}</TableCell>
+                    <Hidden smDown>
+                      <TableCell>{result.node.facet}</TableCell>
+                    </Hidden>
+                  </TableRow>
                 ))}
           </TableBody>
           <TableFooter>
