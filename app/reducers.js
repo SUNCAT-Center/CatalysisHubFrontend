@@ -17,6 +17,7 @@ import energiesPageReducer from 'containers/EnergiesPage/reducer';
 import plotlyDemoReducer from 'containers/PlotlyDemo/reducer';
 import activityMapsPageReducer from 'containers/ActivityMapsPage/reducer';
 import catKitDemoReducer from 'containers/CatKitDemo/reducer';
+import profileReducer from 'containers/Profile/reducer';
 
 /*
  * routeReducer
@@ -61,6 +62,7 @@ export default function createReducer(asyncReducers) {
     plotlyDemoReducer,
     activityMapsPageReducer,
     catKitDemoReducer,
+    profileReducer,
     ...asyncReducers,
   });
 }
