@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
 
-import _ from 'lodash';
 import MdStars from 'react-icons/lib/md/stars';
 import { LinearProgress } from 'material-ui/Progress';
 
@@ -89,10 +88,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
     } else { // eslint-disable-line no-else-return
       return (
         <div>
-          <h1>{toTitleFormat(this.props.routeParams.name)} <span> {
-          _.range(parseInt(Math.log10(this.state.totalCount), 10)).map((i) => (<MdStars key={`star_${i}`} />))
-        }</span>
-          </h1>
+          <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
           <ReactGA.OutboundLink
             eventLabel={`http://suncat.stanford.edu/theory/people/${this.props.routeParams.name}`}
             to={`http://suncat.stanford.edu/theory/people/${this.props.routeParams.name}`}
