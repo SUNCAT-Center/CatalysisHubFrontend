@@ -11,14 +11,60 @@ import PropTypes from 'prop-types';
 import Element from 'containers/ElementContainer';
 
 
+import { withStyles } from 'material-ui/styles';
+
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { MdClear, MdFilterList, MdArrowDropDown, MdArrowDropUp } from 'react-icons/lib/md';
 
+const styles = (xtheme) => ({
+  lowerContainer: {
+    [xtheme.breakpoints.down('md')]: {
+      visibility: 'hidden',
+    },
+  },
+  panelThree: {
+    [xtheme.breakpoints.down('md')]: {
+      /* visibility: 'hidden',*/
+      top: '400px',
+    },
+  },
+  blockThree: {
+    [xtheme.breakpoints.down('md')]: {
+      /* visibility: 'hidden',*/
+      left: '-100px',
+      top: '-40px',
+      position: 'relative',
+    },
+  },
+  blockFour: {
+    [xtheme.breakpoints.down('md')]: {
+      /* visibility: 'hidden',*/
+      left: '-500px',
+      top: '550px',
+      position: 'relative',
+    },
+  },
+  panelFour: {
+    [xtheme.breakpoints.down('md')]: {
+      position: 'relative',
+      left: '5px',
+      top: '-500px',
+    },
+  },
+  panelFive: {
+    [xtheme.breakpoints.down('md')]: {
+      position: 'relative',
+      left: '-500px',
+    },
+  },
+
+});
+
 const Section = styled.section`
     width: 900px;
     max-width: 90%;
-    margin: 0px auto;
+    margin: 0px 10px;
 `;
 
 const Container = styled.div`
@@ -47,6 +93,12 @@ const PanelFour = styled.div`
     top: 50px;
 `;
 
+const BlockThree = styled.div`
+`;
+
+const BlockFour = styled.div`
+`;
+
 const PanelFive = styled.div`
     float: left;
 `;
@@ -69,7 +121,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
   constructor(props) {
     super(props);
     this.state = {
-      show_table: false,
+      show_table: true,
     };
     this.toggletable = this.toggletable.bind(this);
   }
@@ -139,107 +191,111 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                 <Element label="Ba" />
                 <Element label="Ra" />
               </PanelTwo>
-              <PanelThree>
-                <Element label="Sc" />
-                <Element label="Y" />
-                <Element label="&nbsp;" />
-                <Element label="&nbsp;" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Ti" />
-                <Element label="Zr" />
-                <Element label="Hf" />
-                <Element label="Rf" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="V" />
-                <Element label="Nb" />
-                <Element label="Ta" />
-                <Element label="Db" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Cr" />
-                <Element label="Mo" />
-                <Element label="W" />
-                <Element label="Sg" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Mn" />
-                <Element label="Tc" />
-                <Element label="Re" />
-                <Element label="Bh" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Fe" />
-                <Element label="Ru" />
-                <Element label="Os" />
-                <Element label="Hs" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Co" />
-                <Element label="Rh" />
-                <Element label="Ir" />
-                <Element label="Mt" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Ni" />
-                <Element label="Pd" />
-                <Element label="Pt" />
-                <Element label="Ds" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Cu" />
-                <Element label="Ag" />
-                <Element label="Au" />
-                <Element label="Rg" />
-              </PanelThree>
-              <PanelThree>
-                <Element label="Zn" />
-                <Element label="Cd" />
-                <Element label="Hg" />
-                <Element label="Cn" />
-              </PanelThree>
-              <PanelFour>
-                <Element label="B" />
-                <Element label="Al" />
-                <Element label="Ga" />
-                <Element label="In" />
-                <Element label="Ti" />
-                <Element label="Nh" />
-              </PanelFour>
-              <PanelFour>
-                <Element label="C" />
-                <Element label="Si" />
-                <Element label="Ge" />
-                <Element label="Sn" />
-                <Element label="Rb" />
-                <Element label="Fl" />
-              </PanelFour>
-              <PanelFour>
-                <Element label="N" />
-                <Element label="P" />
-                <Element label="As" />
-                <Element label="Sb" />
-                <Element label="Bi" />
-                <Element label="Mc" />
-              </PanelFour>
-              <PanelFour>
-                <Element label="O" />
-                <Element label="S" />
-                <Element label="Se" />
-                <Element label="Te" />
-                <Element label="Po" />
-                <Element label="Lv" />
-              </PanelFour>
-              <PanelFour>
-                <Element label="F" />
-                <Element label="Cl" />
-                <Element label="Br" />
-                <Element label="I" />
-                <Element label="At" />
-                <Element label="Ts" />
-              </PanelFour>
-              <PanelFive>
+              <BlockThree className={this.props.classes.blockThree} >
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Sc" />
+                  <Element label="Y" />
+                  <Element label="&nbsp;" />
+                  <Element label="&nbsp;" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Ti" />
+                  <Element label="Zr" />
+                  <Element label="Hf" />
+                  <Element label="Rf" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="V" />
+                  <Element label="Nb" />
+                  <Element label="Ta" />
+                  <Element label="Db" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Cr" />
+                  <Element label="Mo" />
+                  <Element label="W" />
+                  <Element label="Sg" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Mn" />
+                  <Element label="Tc" />
+                  <Element label="Re" />
+                  <Element label="Bh" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Fe" />
+                  <Element label="Ru" />
+                  <Element label="Os" />
+                  <Element label="Hs" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Co" />
+                  <Element label="Rh" />
+                  <Element label="Ir" />
+                  <Element label="Mt" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Ni" />
+                  <Element label="Pd" />
+                  <Element label="Pt" />
+                  <Element label="Ds" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Cu" />
+                  <Element label="Ag" />
+                  <Element label="Au" />
+                  <Element label="Rg" />
+                </PanelThree>
+                <PanelThree className={this.props.classes.panelThree} >
+                  <Element label="Zn" />
+                  <Element label="Cd" />
+                  <Element label="Hg" />
+                  <Element label="Cn" />
+                </PanelThree>
+              </BlockThree>
+              <BlockFour className={this.props.classes.blockFour} >
+                <PanelFour className={this.props.classes.panelFour} >
+                  <Element label="B" />
+                  <Element label="Al" />
+                  <Element label="Ga" />
+                  <Element label="In" />
+                  <Element label="Ti" />
+                  <Element label="Nh" />
+                </PanelFour>
+                <PanelFour className={this.props.classes.panelFour} >
+                  <Element label="C" />
+                  <Element label="Si" />
+                  <Element label="Ge" />
+                  <Element label="Sn" />
+                  <Element label="Rb" />
+                  <Element label="Fl" />
+                </PanelFour>
+                <PanelFour className={this.props.classes.panelFour} >
+                  <Element label="N" />
+                  <Element label="P" />
+                  <Element label="As" />
+                  <Element label="Sb" />
+                  <Element label="Bi" />
+                  <Element label="Mc" />
+                </PanelFour>
+                <PanelFour className={this.props.classes.panelFour} >
+                  <Element label="O" />
+                  <Element label="S" />
+                  <Element label="Se" />
+                  <Element label="Te" />
+                  <Element label="Po" />
+                  <Element label="Lv" />
+                </PanelFour>
+                <PanelFour className={this.props.classes.panelFour} >
+                  <Element label="F" />
+                  <Element label="Cl" />
+                  <Element label="Br" />
+                  <Element label="I" />
+                  <Element label="At" />
+                  <Element label="Ts" />
+                </PanelFour>
+              </BlockFour>
+              <PanelFive className={this.props.classes.panelFive} >
                 <Element label="He" />
                 <Element label="Ne" />
                 <Element label="Ar" />
@@ -250,7 +306,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
               </PanelFive>
             </Container>
 
-            <LowerContainer>
+            <LowerContainer className={this.props.classes.lowerContainer} >
               <Bottom>
                 <Element label="La" />
                 <Element label="Ac" />
@@ -323,7 +379,8 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
 PeriodicTable.propTypes = {
   selection: PropTypes.string.isRequired,
   clearSelection: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 
-export default PeriodicTable;
+export default (withStyles(styles, { withTheme: true }))(PeriodicTable);
