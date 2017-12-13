@@ -171,6 +171,15 @@ class App extends React.Component {
               </ListItem>
 
 
+              <ListItem>
+                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
+                    <FormattedMessage {...messages.publications} />
+                  </Button>
+                </MenuLink>
+              </ListItem>
+
+
               {/*
               <ListItem>
                 <MenuLink to="/generalSearch" onClick={this.handleDrawerToggle}>
@@ -234,15 +243,6 @@ class App extends React.Component {
                   </Button>
                 </MenuLink>
               </ListItem>
-
-              <ListItem>
-                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.publications} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
 
               <ListItem>
                 <MenuLink to="/scalingRelations" onClick={this.handleDrawerToggle}>
@@ -340,7 +340,7 @@ class App extends React.Component {
           <AppWrapper>
             <Paper
               className={this.props.classes.mainPaper}
-              elevation={8}
+              elevation={18}
             >
               <Helmet
                 className={this.props.classes.helmet}
