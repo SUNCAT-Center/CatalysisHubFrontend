@@ -18,6 +18,24 @@ export default function createRoutes(store) {
 
   return [
     {
+      path: '/index.html',
+      name: 'home',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/HomePage/reducer'),
+          import('containers/HomePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('home', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/',
       name: 'home',
       getComponent(nextState, cb) {
