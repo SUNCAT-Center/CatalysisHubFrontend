@@ -14,6 +14,7 @@ import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
 import { LinearProgress } from 'material-ui/Progress';
 import { Link } from 'react-router';
+import Avatar from 'material-ui/Avatar';
 import { FaDatabase } from 'react-icons/lib/fa';
 import { MdWarning } from 'react-icons/lib/md';
 import View from 'flexbox-react';
@@ -132,7 +133,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 >
                   <h3>Reaction Energetics</h3>
                   <View style={{ justifyContent: 'space-around' }}>
-                    <Chip label={this.state.reactions} avatar={<FaDatabase size={24} />} />
+                    <Chip
+                      label={this.state.reactions} avatar={
+                        <Avatar>
+                          <FaDatabase size={24} />
+                        </Avatar>
+                    }
+                    />
                   </View>
                 </Paper>
               </Link>
@@ -170,7 +177,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 >
                   <h3>Publications</h3>
                   <View style={{ justifyContent: 'center' }}>
-                    <Chip label={this.state.publications} avatar={<FaDatabase size={24} />} />
+                    <Chip
+                      label={this.state.publications} avatar={
+                        <Avatar>
+                          <FaDatabase size={24} />
+                        </Avatar>
+                    }
+                    />
                   </View>
                 </Paper>
               </Link>
@@ -188,7 +201,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 >
                   <h3>Activity Maps</h3>
                   <View style={{ justifyContent: 'center' }}>
-                    <Chip label="1" avatar={<FaDatabase size={24} />} />
+                    <Chip
+                      label="1" avatar={
+                        <Avatar>
+                          <FaDatabase size={24} />
+                        </Avatar>
+                    }
+                    />
                   </View>
                 </Paper>
               </Link>
