@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
+import Paper from 'material-ui/Paper';
+import { withStyles } from 'material-ui/styles';
 
 
 import { MdSearch } from 'react-icons/lib/md';
@@ -24,6 +26,17 @@ const MButton = styled(Button)`
   marginLeft: 0;
 `;
 
+const styles = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
+  },
+  button: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+});
+
 
 const initialState = {
   reactant_options: [],
@@ -35,7 +48,7 @@ const initialState = {
   loading: false,
 };
 
-export class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -156,10 +169,10 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
 
   render() {
     return (
-      <div>
+      <Paper className={this.props.classes.paper}>
         <h2>Reactions</h2>
 
-        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus />
+        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus {...this.state} />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
         <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
@@ -168,9 +181,9 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br />
         <br />
-        <MButton raised onClick={this.submitForm} color="primary"><MdSearch /> Search </MButton>
+        <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
-      </div>
+      </Paper>
     );
   }
 }
@@ -179,7 +192,10 @@ EnergiesPageInput.propTypes = {
   receiveReactions: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   submitSearch: PropTypes.func.isRequired,
+  classes: PropTypes.object,
 };
 
 EnergiesPageInput.defaultProps = {
 };
+
+export default withStyles(styles, { withTheme: true })(EnergiesPageInput);
