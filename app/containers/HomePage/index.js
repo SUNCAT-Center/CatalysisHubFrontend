@@ -15,6 +15,7 @@ import Grid from 'material-ui/Grid';
 import { LinearProgress } from 'material-ui/Progress';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
+import { withStyles } from 'material-ui/styles';
 import { FaDatabase } from 'react-icons/lib/fa';
 import { MdWarning } from 'react-icons/lib/md';
 import View from 'flexbox-react';
@@ -30,6 +31,13 @@ import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
+
+const styles = (theme) => ({
+  textLink: {
+    textDecoration: 'none',
+  }
+
+})
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -122,7 +130,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           </CenteredSection>
           <Grid container justify="center">
             <Grid item>
-              <Link to="/energies">
+              <Link to="/energies" className={this.props.classes.textLink}>
                 <Paper
                   style={{
                     padding: 25,
@@ -146,7 +154,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </Grid>
             {/*
             <Grid item>
-              <Link to="/generalSearch">
+              <Link to="/generalSearch" className={this.props.classes.textLink}>
                 <Paper
                   style={{
                     padding: 25,
@@ -165,7 +173,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </Grid>
             */}
             <Grid item>
-              <Link to="/publications">
+              <Link to="/publications" className={this.props.classes.textLink}>
                 <Paper
                   style={{
                     padding: 25,
@@ -189,7 +197,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/activityMaps">
+              <Link to="/activityMaps" className={this.props.classes.textLink}>
                 <Paper
                   style={{
                     padding: 25,
@@ -242,4 +250,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default withStyles(styles, {withTheme: true})(connect(mapStateToProps, mapDispatchToProps)(HomePage));
