@@ -21,7 +21,7 @@ import { MdWarning } from 'react-icons/lib/md';
 import View from 'flexbox-react';
 
 import axios from 'axios';
-import { graphQLRoot, whiteLabel } from 'utils/constants';
+import { graphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
@@ -197,7 +197,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/activityMaps" className={this.props.classes.textLink}>
+              <Link to="/appsIndex" className={this.props.classes.textLink}>
                 <Paper
                   style={{
                     padding: 25,
@@ -207,10 +207,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     align: 'center',
                   }}
                 >
-                  <h3>Activity Maps</h3>
+                  <h3>Apps</h3>
                   <View style={{ justifyContent: 'center' }}>
                     <Chip
-                      label="1" avatar={
+                      label={apps.length} avatar={
                         <Avatar>
                           <FaDatabase size={24} />
                         </Avatar>
