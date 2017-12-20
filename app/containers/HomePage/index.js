@@ -32,12 +32,12 @@ import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 
-const styles = (theme) => ({
+const styles = () => ({
   textLink: {
     textDecoration: 'none',
-  }
+  },
 
-})
+});
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -230,6 +230,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 HomePage.propTypes = {
   onSubmitForm: React.PropTypes.func,
   username: React.PropTypes.string,
+  classes: React.PropTypes.object,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -250,4 +251,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 // Wrap the component to inject dispatch and state into it
-export default withStyles(styles, {withTheme: true})(connect(mapStateToProps, mapDispatchToProps)(HomePage));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(HomePage));
