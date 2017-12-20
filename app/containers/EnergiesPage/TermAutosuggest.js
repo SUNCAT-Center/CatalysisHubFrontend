@@ -204,7 +204,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     this.setState({
       value: newValue,
     });
-    this.props.setSubstate(this.props.field, { label: newValue });
+    this.props.setSubstate(this.props.field, { label: newValue, value: newValue });
   };
 
   render() {

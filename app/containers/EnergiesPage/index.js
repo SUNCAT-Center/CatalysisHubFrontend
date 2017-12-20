@@ -15,7 +15,7 @@ import { selectReaction,
   saveSystem,
   submitSearch,
 } from './actions';
-import { EnergiesPageInput } from './Input';
+import EnergiesPageInput from './Input';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
 
