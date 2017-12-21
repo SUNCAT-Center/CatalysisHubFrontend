@@ -259,7 +259,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                   <Element label="Al" />
                   <Element label="Ga" />
                   <Element label="In" />
-                  <Element label="Ti" />
+                  <Element label="Tl" />
                   <Element label="Nh" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
