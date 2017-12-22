@@ -170,7 +170,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <Paper className={this.props.classes.paper}>
-        <h2>Reactions</h2>
+        <h2>Reaction Energetics</h2>
 
         <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus {...this.state} />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
