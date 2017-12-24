@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
 
-import MdStars from 'react-icons/lib/md/stars';
 import { LinearProgress } from 'material-ui/Progress';
 
 import axios from 'axios';
@@ -20,11 +19,15 @@ import ReactionEnergies from './ReactionEnergies';
 import { ReactionStructures } from './ReactionStructures';
 
 
+/* Turn the first letter of a string into uppercase*/
+/* and the rest into lower case*/
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
 
+/* Turn the author name provided as slug in URL*/
+/* into form typically used in citation reference*/
 function toAuthorFormat(s) {
   let res;
   res = s.split('-');
@@ -33,6 +36,9 @@ function toAuthorFormat(s) {
   return res;
 }
 
+
+/* Turn the authorname provided as slug in URL*/
+/* into form presentable as title at top of page*/
 function toTitleFormat(s) {
   let res;
   res = s.split('-');
