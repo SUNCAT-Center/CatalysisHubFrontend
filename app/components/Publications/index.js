@@ -203,6 +203,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       <span> </span>
                       <span className={this.props.classes.publicationEntry}>
                         {prettyPrintReference(reference)}
+                        {(this.state.dois[year][j] === null || typeof this.state.dois[year][j] === 'undefined') ? null :
                         <ReactGA.OutboundLink
                           eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
                           to={`http://dx.doi.org/${this.state.dois[year][j]}`}
@@ -210,6 +211,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                         >
                           DOI: {this.state.dois[year][j]}.
                         </ReactGA.OutboundLink>
+                        }
                       </span>
                     </button>
                     <div>
