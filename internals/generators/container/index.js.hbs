@@ -6,6 +6,9 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+{{#if wantStyles}}
+import { withStyles } from 'material-ui/styles';
+{{/if}}
 {{#if wantHeaders}}
 import Helmet from 'react-helmet';
 {{/if}}
@@ -18,6 +21,11 @@ import makeSelect{{properCase name}} from './selectors';
 {{/if}}
 {{#if wantMessages}}
 import messages from './messages';
+{{/if}}
+
+{{#if wantStyles }}
+const styles = () => ({
+});
 {{/if}}
 
 export class {{ properCase name }} extends React.{{{ component }}} { // eslint-disable-line react/prefer-stateless-function
@@ -56,8 +64,16 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+{{#if wantStyles}}
+{{#if wantActionsAndReducer}}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true})({{ properCase name }}));
+{{else}}
+export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })({{ properCase name }}));
+{{/if}}
+{{else}}
 {{#if wantActionsAndReducer}}
 export default connect(mapStateToProps, mapDispatchToProps)({{ properCase name }});
 {{else}}
 export default connect(null, mapDispatchToProps)({{ properCase name }});
+{{/if}}
 {{/if}}
