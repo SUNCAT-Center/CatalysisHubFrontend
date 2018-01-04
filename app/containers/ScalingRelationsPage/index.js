@@ -4,17 +4,17 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
-import makeSelectScalingRelationsPage from './selectors';
+import Input from './Input';
 
 export class ScalingRelationsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
         <h2>Scaling Relations</h2>
+        <Input {...this.props} />
         <div>
         Currently under construction.
         </div>
@@ -24,17 +24,13 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
 }
 
 ScalingRelationsPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  ScalingRelationsPage: makeSelectScalingRelationsPage(),
+const mapStateToProps = () => ({
+
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = () => ({
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScalingRelationsPage);
