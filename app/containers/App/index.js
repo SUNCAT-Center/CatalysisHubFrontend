@@ -8,9 +8,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
+
+import { isIOS } from 'react-device-detect';
 
 import Flexbox from 'flexbox-react';
 import Helmet from 'react-helmet';
@@ -22,6 +25,7 @@ import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 
+import { MdArrowBack } from 'react-icons/lib/md';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -278,7 +282,7 @@ class App extends React.Component {
             <ReactGA.OutboundLink
               to="http://www.stanford.edu"
               eventLabel="http://www.stanford.edu"
-              style={{ margin: 60 }}
+              style={{ margin: 10 }}
               target="_blank"
             >
               <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
@@ -290,6 +294,12 @@ class App extends React.Component {
         <div>
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
+              { (!isIOS || this.props.history === null) ? null :
+              <IconButton onClick={browserHistory.goBack} color="contrast" aria-label="Back">
+                <MdArrowBack />
+              </IconButton>
+
+              }
               <IconButton onClick={this.handleDrawerToggle} color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
                 {/* onClick event has to be on IconButton to work w/ Firefox. */}
                 <MenuIcon />
@@ -298,13 +308,13 @@ class App extends React.Component {
               <ReactGA.OutboundLink
                 to="http://www.stanford.edu"
                 eventLabel="http://www.stanford.edu"
-                style={{ margin: 0, marginLeft: 20 }}
+                style={{ margin: 0, marginLeft: 10 }}
                 target="_blank"
               >
                 <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
               </ReactGA.OutboundLink>
               }
-              <Typography type="body1" color="inherit" style={{ marginLeft: 20 }}>
+              <Typography type="body1" color="inherit" style={{ marginLeft: 10 }}>
                 {whiteLabel ?
                   `${this.props.location.pathname}` :
                   `CatApp${this.props.location.pathname}`}
@@ -429,6 +439,13 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
   children: React.PropTypes.node,
   location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
+const mapStateToProps = (state) => ({
+  history: state.get('route').get('locationBeforeTransitions'),
+});
 
-export default (withProgressBar(withStyles(styles, { withTheme: true })(App)));
+const mapDispatchToProps = () => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withProgressBar(withStyles(styles, { withTheme: true })(App)));
