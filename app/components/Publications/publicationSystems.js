@@ -77,6 +77,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
                 onChangePage={this.handlePageChange}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 rowsPerPageOptions={[10, 25, 100, 1000]}
+                labelRowsPerPage=""
               />
             </TableRow>
           </TableFooter>
