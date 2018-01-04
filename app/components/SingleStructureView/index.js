@@ -39,7 +39,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
     let x;
     let y;
     let z;
-    if (this.props.selectedSystem.full_key.startsWith('Molec')) {
+    if (Object.prototype.hasOwnProperty.call(this.props.selectedSystem, 'full_key') && this.props.selectedSystem.full_key.startsWith('Molec')) {
       [x, y, z] = [1, 1, 1];
     } else {
       [x, y, z] = [2, 2, 1];
