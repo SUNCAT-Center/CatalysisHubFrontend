@@ -37,6 +37,6 @@ export class Welcome extends React.Component { // eslint-disable-line react/pref
 
 Welcome.propTypes = {
   classes: PropTypes.object,
-}
+};
 
 export default withStyles(styles, { withTheme: true })(Welcome);

@@ -208,6 +208,14 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/tutorial',
+      name: 'tutorial',
+      getComponent(location, cb) {
+        import('components/Tutorial')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
