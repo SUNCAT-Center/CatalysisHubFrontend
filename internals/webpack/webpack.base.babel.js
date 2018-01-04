@@ -18,6 +18,9 @@ module.exports = (options) => ({
       exclude: /node_modules/,
       query: options.babelQuery,
     }, {
+      test: /\.md$/,
+      loader: 'raw-loader',
+    }, {
       test: /.*(plotly|mapbox|gl-).*\.js$/, // Transform all .js files required somewhere with Babel
       loader: 'ify-loader',
     }, {
