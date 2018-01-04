@@ -250,6 +250,7 @@
     "react": "15.4.1",
     "react-apollo": "^1.4.16",
     "react-autosuggest": "^9.3.2",
+    "react-device-detect": "^0.1.0",
     "react-dom": "15.4.1",
     "react-ga": "^2.3.5",
     "react-helmet": "3.2.2",
