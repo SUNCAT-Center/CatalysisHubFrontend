@@ -131,6 +131,7 @@ class ResultTable extends React.Component { // eslint-disable-line react/prefer-
                   onChangePage={this.handlePageChange}
                   onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   rowsPerPageOptions={[10, 25, 100, 1000]}
+                  labelRowsPerPage=""
                 />
 
               </TableRow>
