@@ -31,6 +31,7 @@ import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
+import Welcome from './Welcome';
 
 const styles = () => ({
   textLink: {
@@ -222,6 +223,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </Grid>
           </Grid>
         </div>
+        <Welcome />
       </article>
     );
   }
