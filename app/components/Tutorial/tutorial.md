@@ -28,11 +28,11 @@ a frontend component (CatAppBrowser) and a script component (CatAppCLI).
 
 The backend routing scheme looks as follows:
 
-      /
-      -- /graphql
-      -- /apps/
-      ---- /activityMaps/
-      ---- /scalingRelations/
+          /
+          -- /graphql
+          -- /apps/
+          ---- /activityMaps/
+          ---- /scalingRelations/
 
 ### GraphQL
 
@@ -44,9 +44,9 @@ TODO
 
 ---
 
-Tip: `jq` is a neat little command line tool for processing JSON data on the command line in spirit very similar to `sed` for defining complex transformation rules. A highly useful feature is to pretty-print a stream of JSON like so
+**Tip**: `jq` is a neat little command line tool for processing JSON data on the command line in spirit very similar to `sed` for defining complex transformation rules. A highly useful feature is to pretty-print a stream of JSON like so
 
-      curl http://projectname.org | jq '.'
+        curl http://projectname.org | jq '.'
 
 ---
 
@@ -110,6 +110,21 @@ we can re-use this component directly in some other block, like so:
 
 
 Neat, isn't it? It allows us to very easily write re-usable components in a declarative fashion and use them throughout our project. Click [here](https://reactjs.org/docs/introducing-jsx.html) for further reading.
+
+---
+
+**Tip**: The project repository has some pre-commit hooks that will automatically a linter again every javascript file that is about to be commited to git history. The `eslint` linter is quite picky but ensures a consistent coding style across the project. So let's all stick to and keep the code readable. Not all but some glitches can be fitched automatically inplace with manual intervention. The following `alias`
+
+        alias ae='./node_modules/eslint/bin/eslint.js --fix'
+
+allows to automatically fix many issues when run from the root of the project like so
+
+        ae app/components/<ComponentName>/<script.js>
+
+
+It will all issues it can fix by itself and report any remaining ones.
+
+---
 
 ### Redux Quickstart
 
@@ -192,4 +207,4 @@ Second, we tie the newly defined styles to component
 
 
 ## CLI scripts
-The CLI script collection contains mostly Python scripts and is supposed to simplify common operations. The idea is to run this on many different servers
+The CLI script collection contains mostly Python scripts and is supposed to simplify common operations. The idea is to run this on many different server environments.
