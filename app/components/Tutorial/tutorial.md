@@ -74,6 +74,12 @@ touched for implementing new features, looks as follows:
 Most of the additional code goes into a corresponding folder in either
 `app/components` or `app/containers`. These folders are structured such that new components can be dropped in to the project and code-coupling with other components is minimal. Unit tests go into each folder pertaining to the component.
 
+The mapping between a URL typed into the address bar (or a clicked linked) and what content is shown is defined in `routes.js`. To define a new top level URL type
+
+        npm run generate route
+
+It will ask you for the URL and the component (or container) that should be shown. The generator is just a handy short hand. Details can always be adjusted later. A route may also contain dynamic parts like `/component/:var1/:var2`, which can be processed as a variable in the corresponding component as `this.props.routeParams`. The `/containers/Profile/index.js` container illustrates this technique.
+
 ### Component and Containers
 
 TODO
