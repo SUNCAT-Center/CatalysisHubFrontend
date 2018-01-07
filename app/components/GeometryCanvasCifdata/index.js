@@ -8,9 +8,9 @@ import React, { PropTypes } from 'react';
 import { withStyles } from 'material-ui/styles';
 import { isMobile } from 'react-device-detect';
 
-import jQuery from 'jquery';
+var jQuery = require('jquery');
 window.jQuery = jQuery;
-import { ChemDoodle } from 'utils/ChemDoodleWeb';
+var { ChemDoodle } = require('utils/ChemDoodleWeb');
 
 const styles = () => ({
 });
