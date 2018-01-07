@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 
-import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
+import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 const initialState = {
   Formula: '',
@@ -50,7 +50,10 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>{this.props.selectedSystem.full_key}</h2>
-          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} />
+          {/*
+          <ChemDoodleCanvas {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} />
+              */}
+          <GeometryCanvasCifdata {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} system={this.props.selectedSystem} />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>

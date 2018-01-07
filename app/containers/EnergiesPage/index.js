@@ -7,6 +7,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import Script from 'react-load-script';
 
 import { selectReaction,
   receiveReactions,
@@ -18,12 +19,9 @@ import { selectReaction,
 import EnergiesPageInput from './Input';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
-import Script from 'react-load-script';
-import foo from 'react-chemdoodle-web';
 
 export class EnergiesPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-  console.log(foo);
     return (
       <div>
         <Script
