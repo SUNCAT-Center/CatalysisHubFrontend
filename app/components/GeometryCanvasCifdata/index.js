@@ -68,9 +68,9 @@ function _load_lib(url, callback){
   console.log(tfcanvas_${this.props.selectedSystem.uniqueId})
   /*tf.rotationMatrix = ChemDoodle.lib.mat4.rotate(tf.rotationMatrix,.1, [0,1,0]); tf.updateScene()*/
   window.addEventListener('deviceorientation', (e) => {
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.15, tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(0, 3));
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.15,  tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(8, 11));
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.15,  tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(4, 7));
+  /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.25, tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(0, 3));*/
+  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.25,  tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(8, 11));
+  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.25,  tfcanvas_${this.props.selectedSystem.uniqueId}.rototationMatrix.slice(4, 7));
   alpha_${this.props.selectedSystem.uniqueId} = e.alpha;
   beta_${this.props.selectedSystem.uniqueId} = e.beta;
   gamma_${this.props.selectedSystem.uniqueId} = e.gamma;
