@@ -11,7 +11,7 @@ const styles = () => ({
 });
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
-  ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
+).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
 
 
 function TabContainer(props) {
@@ -22,12 +22,14 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+const initialState = {
+  tabValue: 0,
+}
+
 class ReactionStructures extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = {
-      tabValue: 0,
-    };
+    this.state = initialState;
   }
   handleChange = (event, value) => {
     this.setState({
@@ -40,31 +42,31 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
 
     return (<div> {/* div necessary before wrapping ternary expression */}
       {this.props.reactionSystems.length === 0 ? null :
-      <div>
-        <h2>{prettyPrintReaction(this.props.selectedReaction.reactants, this.props.selectedReaction.products)} - Reaction Geometries</h2>
-        <Hidden smUp>
-          <BarrierChart {...this.props} thumbnailSize={50} />
-        </Hidden>
-        <Hidden smDown>
-          <BarrierChart {...this.props} />
-        </Hidden>
-        <Tabs
-          value={tabValue}
-          onChange={this.handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          fullWidth
-        >
-          {this.props.reactionSystems.map((system, i) =>
-            <Tab label={system.key} key={`reaction_tab_${i}`} />
-          )}
-        </Tabs>
-        <div>
-          <TabContainer>
-            {typeof this.props.reactionSystems === 'undefined' || this.props.reactionSystems.length <= tabValue ? null : <SingleStructureView selectedSystem={this.props.reactionSystems[tabValue]} selectedUUID={this.props.reactionSystems[tabValue].uniqueId} /> }
-          </TabContainer>
-        </div>
-      </div>
+          <div>
+            <h2>{prettyPrintReaction(this.props.selectedReaction.reactants, this.props.selectedReaction.products)} - Reaction Geometries</h2>
+            <Hidden smUp>
+              <BarrierChart {...this.props} thumbnailSize={50} />
+            </Hidden>
+            <Hidden smDown>
+              <BarrierChart {...this.props} />
+            </Hidden>
+            <Tabs
+              value={tabValue}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              fullWidth
+            >
+              {this.props.reactionSystems.map((system, i) =>
+                <Tab label={system.key} key={`reaction_tab_${i}`} />
+              )}
+            </Tabs>
+            <TabContainer>
+              {tabValue === 0 && <SingleStructureView selectedSystem={this.props.reactionSystems[0]} selectedUUID={this.props.reactionSystems[0].uniqueId} /> }
+              {tabValue === 1 && <SingleStructureView selectedSystem={this.props.reactionSystems[1]} selectedUUID={this.props.reactionSystems[1].uniqueId} /> }
+              {tabValue === 2 && <SingleStructureView selectedSystem={this.props.reactionSystems[2]} selectedUUID={this.props.reactionSystems[2].uniqueId} /> }
+            </TabContainer>
+          </div>
       }
     </div>
     );

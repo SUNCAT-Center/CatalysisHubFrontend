@@ -18,11 +18,21 @@ import { selectReaction,
 import EnergiesPageInput from './Input';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
+import Script from 'react-load-script';
+import foo from 'react-chemdoodle-web';
 
 export class EnergiesPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
+  console.log(foo);
     return (
       <div>
+        <Script
+          url="https://code.jquery.com/jquery-3.2.1.min.js"
+        />
+        <Script
+          url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js"
+        />
+
         <EnergiesPageInput {...this.props} />
         <MatchingReactions {...this.props} />
         <ReactionStructures {...this.props} />

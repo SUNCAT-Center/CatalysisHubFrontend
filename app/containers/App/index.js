@@ -445,7 +445,7 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
   children: React.PropTypes.node,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
 };
 const mapStateToProps = (state) => ({
   history: state.get('route').get('locationBeforeTransitions'),
