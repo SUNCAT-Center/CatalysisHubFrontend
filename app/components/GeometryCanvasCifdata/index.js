@@ -7,9 +7,11 @@
 import React, { PropTypes } from 'react';
 import { withStyles } from 'material-ui/styles';
 
-var jQuery = require('jquery');
+import { isMobile } from 'react-device-detect';
+
+const jQuery = require('jquery');
 window.jQuery = jQuery;
-var { ChemDoodle } = require('utils/ChemDoodleWeb');
+const { ChemDoodle } = require('utils/ChemDoodleWeb');
 
 const styles = () => ({
 });
@@ -112,6 +114,7 @@ function _load_lib(url, callback){
   render() {
     return (
       <div>
+        {isMobile === false ? null : <p> Mobile: tilt handheld device.</p> }
         <p id={`${this.props.id}_script`} >
           <canvas
             id={`${this.props.id}_view`}
