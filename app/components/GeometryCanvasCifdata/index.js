@@ -79,12 +79,12 @@ function _load_lib(url, callback){
   /*tf.rotationMatrix = ChemDoodle.lib.mat4.rotate(tf.rotationMatrix,.1, [0,1,0]); tf.updateScene()*/
   tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.selectedSystem.uniqueId}.updateScene()
   window.addEventListener('deviceorientation', (e) => {
-  /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.05, tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(0, 3));*/
+  /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.01, tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(0, 3));*/
   if(typeof beta_${this.props.selectedSystem.uniqueId} !== 'undefined') {
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.05,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));
+  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.01,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));
   }
   if (typeof gamma_${this.props.selectedSystem.uniqueId} !== 'undefined') {
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.05,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(4, 7));
+  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.01,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(4, 7));
   }
   alpha_${this.props.selectedSystem.uniqueId} = e.alpha;
   beta_${this.props.selectedSystem.uniqueId} = e.beta;
