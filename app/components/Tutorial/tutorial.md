@@ -3,7 +3,7 @@
 
 ## Motivation 
 
-The purpose of this tutorial is to explain the architecture of the CatApp project and to give a quick start into implementing new features and applications. The project largely builds and tried and tested standard components and language. So the style of this tutorial won't go to much into reverberating implementation techniques but rather give a high-level overlook into how different parts work together and where to find more information. Furthermore, a focus is put on practical tips and tricks that 
+The purpose of this tutorial is to explain the architecture of the CatApp project and to give a quick start into implementing new features and applications. The project largely builds and tried and tested standard components and language. So the style of this tutorial won't go to much into reverberating implementation techniques but rather give a high-level overlook into how different parts work together and where to find more information. Furthermore, a focus is put on practical tips and tricks that help to accelerate common tasks.
 
 ### Prequisites
 
@@ -54,7 +54,14 @@ TODO
 
 ### Why JavaScript?
 
-TODO
+If you are the typical theory minded chemical engineer/physicist/chemist the prospect of learning a little JavaScript most likely sounds very much like a nuisance. You probably have a little Python and Bash and some other compiled language under your belt like C, C++, Fortran. And now JavaScript!? Isn't that like Java, just worse? (No) Doesn't it only run in browser? What's with all the brackets? I don't like the syntax! Don't I have a learn every bug of every browser? Isn't it super slow? 
+
+Those are all valid concerns. It is difficult to dispel all of them at the same time and I won't try to turn a complete JavaScript sceptic into a JavaScript lover, but I want to invite you to judge a programming language not only by its core feature such as syntax. If you spend a second to look beyond that and consider things like platform, community ecosystem, packaging, package management, distribution, execution model, you are quick to realize that JavaScript is in fact one of the more exciting languages these days. 
+
+Yes, it had a horrible start running (slowly) with many different implementations and a lot of idiosyncracies built in. Over time however several key development have very much changed this 'core' feature. With the initial release of jQuery (~2006) a lot of effort has gone into standardizing the language and its execution. jQuery has acted as a sort of compatibility layer between different browsers and version, helping that one version of code runs quite reliably across many browsers, operating systems, and versions. The other key development can be attributed to Node.js (~2009). Node.js is written in C++ and allows to execute JavaScript without a browser on the server-side. Node.js can be effectively thought of as interpreter very much like the Python interpreter: you can write scripts, run them, just a different ecosystem of libraries and tool :-). Having a bit of JS under the belt mean you can write code that runs on every laptop, tablet, or smart phone and can be easily distributed by plugging a URL into a browser window. Furthermore, it has a very large and growing ecosystem of developers, tool, and libraries.
+
+So, nuff said, why not give it a try?
+
 
 ### Project Structure
 
@@ -210,6 +217,12 @@ Second, we tie the newly defined styles to component
 
 
 ### Atomic Geometries with ChemDoodle Web
+
+### Testing
+
+Finally, let's talk a moment about testing and continuous integration with Jest
+
+TODO
 
 
 ## CLI scripts
