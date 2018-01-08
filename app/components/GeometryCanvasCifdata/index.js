@@ -6,7 +6,6 @@
 
 import React, { PropTypes } from 'react';
 import { withStyles } from 'material-ui/styles';
-import { isMobile } from 'react-device-detect';
 
 var jQuery = require('jquery');
 window.jQuery = jQuery;
@@ -78,16 +77,27 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.selectedSystem.uniqueId}.updateScene()
   window.addEventListener('deviceorientation', (e) => {
 
-  if(typeof beta_${this.props.selectedSystem.uniqueId} !== 'undefined') {
-    if(Math.abs(alpha_${this.props.selectedSystem.uniqueId} - e.alpha) < .5) {
-    tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));
+  /*ALPHA*/
+  /*if(typeof alpha_${this.props.selectedSystem.uniqueId} !== 'undefined') {*/
+    /*if(.01 < Math.abs(alpha_${this.props.selectedSystem.uniqueId} - e.alpha) < 1.5) {*/
+    /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));*/
+    /*}*/
+  /*}*/
+
+  /*GAMMA*/
+  /*if (typeof gamma_${this.props.selectedSystem.uniqueId} !== 'undefined') {*/
+    /*if(.01 < Math.abs(gamma_${this.props.selectedSystem.uniqueId} - e.gamma) < 1.5) {*/
+  /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));*/
+    /*}*/
+  /*}*/
+
+  /*BETA*/
+  if (typeof beta_${this.props.selectedSystem.uniqueId} !== 'undefined') {
+    if(0.01 < Math.abs(beta_${this.props.selectedSystem.uniqueId} - e.beta) < 1.5) {
+  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.03,  [1, 0, 0]);
     }
   }
 
-  if (typeof gamma_${this.props.selectedSystem.uniqueId} !== 'undefined') {
-    if(Math.abs(gamma_${this.props.selectedSystem.uniqueId} - e.gamma) < .5) {
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(4, 7));
-  }
   alpha_${this.props.selectedSystem.uniqueId} = e.alpha;
   beta_${this.props.selectedSystem.uniqueId} = e.beta;
   gamma_${this.props.selectedSystem.uniqueId} = e.gamma;
@@ -102,7 +112,6 @@ function _load_lib(url, callback){
   render() {
     return (
       <div>
-        {isMobile === false ? null : <p> Experimental: touch geometry and rotate mobile device.</p> }
         <p id={`${this.props.id}_script`} >
           <canvas
             id={`${this.props.id}_view`}
