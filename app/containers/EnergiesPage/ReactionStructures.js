@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
@@ -15,7 +16,9 @@ const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(
 
 
 function TabContainer(props) {
-  return <div style={{ padding: 8 * 3 }}>{props.children}</div>;
+  return <Typography component="div" style={{ padding: 8 * 3 }}>
+    {props.children}
+  </Typography>;
 }
 
 TabContainer.propTypes = {
@@ -64,7 +67,9 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
             <TabContainer>
               {tabValue === 0 && <SingleStructureView selectedSystem={this.props.reactionSystems[0]} selectedUUID={this.props.reactionSystems[0].uniqueId} /> }
               {tabValue === 1 && <SingleStructureView selectedSystem={this.props.reactionSystems[1]} selectedUUID={this.props.reactionSystems[1].uniqueId} /> }
-              {tabValue === 2 && <SingleStructureView selectedSystem={this.props.reactionSystems[2]} selectedUUID={this.props.reactionSystems[2].uniqueId} /> }
+                {tabValue === 2 && <SingleStructureView selectedSystem={this.props.reactionSystems[2]} selectedUUID={this.props.reactionSystems[2].uniqueId} /> }
+                {tabValue === 3 && <SingleStructureView selectedSystem={this.props.reactionSystems[3]} selectedUUID={this.props.reactionSystems[3].uniqueId} /> }
+                {tabValue === 4 && <SingleStructureView selectedSystem={this.props.reactionSystems[4]} selectedUUID={this.props.reactionSystems[4].uniqueId} /> }
             </TabContainer>
           </div>
       }
