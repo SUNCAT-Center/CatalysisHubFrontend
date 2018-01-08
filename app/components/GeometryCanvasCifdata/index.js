@@ -75,15 +75,17 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.selectedSystem.uniqueId}.specs.shapes_color = 'black';
   tfcanvas_${this.props.selectedSystem.uniqueId}.specs.shapes_lineWidth = 1;
   tfcanvas_${this.props.selectedSystem.uniqueId}.loadContent([cif_${this.props.selectedSystem.uniqueId}.molecule], [cif_${this.props.selectedSystem.uniqueId}.unitCell]);
-  console.log(tfcanvas_${this.props.selectedSystem.uniqueId})
-  /*tf.rotationMatrix = ChemDoodle.lib.mat4.rotate(tf.rotationMatrix,.1, [0,1,0]); tf.updateScene()*/
   tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.selectedSystem.uniqueId}.updateScene()
   window.addEventListener('deviceorientation', (e) => {
-  /*tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.selectedSystem.uniqueId}) * 0.03, tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(0, 3));*/
+
   if(typeof beta_${this.props.selectedSystem.uniqueId} !== 'undefined') {
-  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));
+    if(Math.abs(alpha_${this.props.selectedSystem.uniqueId} - e.alpha) < .5) {
+    tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(8, 11));
+    }
   }
+
   if (typeof gamma_${this.props.selectedSystem.uniqueId} !== 'undefined') {
+    if(Math.abs(gamma_${this.props.selectedSystem.uniqueId} - e.gamma) < .5) {
   tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.selectedSystem.uniqueId}) * 0.03,  tfcanvas_${this.props.selectedSystem.uniqueId}.rotationMatrix.slice(4, 7));
   }
   alpha_${this.props.selectedSystem.uniqueId} = e.alpha;
