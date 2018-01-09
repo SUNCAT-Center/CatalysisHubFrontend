@@ -112,7 +112,7 @@ function _load_lib(url, callback){
     item.appendChild(script);
   }
   componentDidUpdate() {
-    this.componentDidMount()
+    this.componentDidMount();
   }
   render() {
     return (
