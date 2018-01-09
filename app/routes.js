@@ -14,25 +14,40 @@ const loadModule = (cb) => (componentModule) => {
 
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
-  const { injectReducer, injectSagas } = getAsyncInjectors(store);
+  const { injectReducer } = getAsyncInjectors(store);
 
   return [
     {
-      path: '/',
+      path: '/index.html',
       name: 'home',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
-          import('containers/HomePage/sagas'),
           import('containers/HomePage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('home', reducer.default);
-          injectSagas(sagas.default);
+          renderRoute(component);
+        });
 
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/',
+      name: 'home',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/HomePage/reducer'),
+          import('containers/HomePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('home', reducer.default);
           renderRoute(component);
         });
 
@@ -50,7 +65,7 @@ export default function createRoutes(store) {
       path: 'activityMaps',
       name: 'activityMaps',
       getComponent(location, cb) {
-        import('components/ActivityMaps')
+        import('containers/ActivityMapsPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
@@ -60,15 +75,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/PourbaixDiagramsPage/reducer'),
-          import('containers/PourbaixDiagramsPage/sagas'),
           import('containers/PourbaixDiagramsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('pourbaixDiagramsPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -80,15 +93,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/EnergiesPage/reducer'),
-          import('containers/EnergiesPage/sagas'),
           import('containers/EnergiesPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('energiesPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -100,15 +111,13 @@ export default function createRoutes(store) {
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/ScalingRelationsPage/reducer'),
-          import('containers/ScalingRelationsPage/sagas'),
           import('containers/ScalingRelationsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('scalingRelationsPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -143,6 +152,66 @@ export default function createRoutes(store) {
       name: 'graphQlapi',
       getComponent(location, cb) {
         import('components/GraphQlapi')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/plotlyDemo',
+      name: 'plotlyDemo',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PlotlyDemo/reducer'),
+          import('containers/PlotlyDemo'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('plotlyDemo', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/catKitDemo(/:lattice/:latticeConstant/:composition)',
+      name: 'catKitDemo',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CatKitDemo/reducer'),
+          import('containers/CatKitDemo'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('catKitDemo', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/profile/:name',
+      name: 'profile',
+      getComponent(location, cb) {
+        import('containers/Profile')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: 'appsIndex',
+      name: 'apps',
+      getComponent(location, cb) {
+        import('components/Apps')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/tutorial',
+      name: 'tutorial',
+      getComponent(location, cb) {
+        import('components/Tutorial')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

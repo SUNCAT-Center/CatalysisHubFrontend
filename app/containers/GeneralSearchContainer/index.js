@@ -7,9 +7,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ResultTable from 'components/ResultTable';
 import SingleStructureView from 'components/SingleStructureView';
 
+import ResultTable from './ResultTable';
 import GeneralSearchInput from './Input';
 import { selectUUID, receiveResults, saveSystem } from './actions';
 

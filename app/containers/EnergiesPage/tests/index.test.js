@@ -5,6 +5,16 @@ import { EnergiesPage } from '../index';
 
 describe('<EnergiesPage />', () => {
   it('should return a div', () => {
-    expect(shallow(<EnergiesPage dispatch={() => {}} />).type()).toEqual('div');
+    expect(shallow(
+      <EnergiesPage
+        dispatch={() => {}}
+        receiveReactions={() => {}}
+        clearSystems={() => {}}
+        selectReaction={() => {}}
+        saveSystem={() => {}}
+        submitSearch={() => {}}
+        matchingReactions={[]}
+        reactionSystems={[]}
+      />).type()).toEqual('div');
   });
 });

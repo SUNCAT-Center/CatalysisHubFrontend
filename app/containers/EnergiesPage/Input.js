@@ -8,23 +8,37 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
-import { FormControl } from 'material-ui/Form';
-import { MenuItem } from 'material-ui/Menu';
-import { InputLabel } from 'material-ui/Input';
-import Select from 'material-ui/Select';
+import ReactGA from 'react-ga';
+
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
+import Paper from 'material-ui/Paper';
+import { withStyles } from 'material-ui/styles';
 
 
-import { MdClear, MdSearch } from 'react-icons/lib/md';
-import { FaArrowsH } from 'react-icons/lib/fa';
+import { MdSearch } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
+import TermAutosuggest from './TermAutosuggest';
+
+
 const MButton = styled(Button)`
-  margin: 12px;
+  margin: 25px;
+  marginLeft: 0;
 `;
+
+const styles = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
+  },
+  button: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+});
 
 
 const initialState = {
@@ -37,16 +51,23 @@ const initialState = {
   loading: false,
 };
 
-export class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = initialState;
     // Workaround, instead of calling .bind in every render
     this.submitForm = this.submitForm.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.setSubstate = this.setSubstate.bind(this);
   }
   componentDidMount() {
     this.updateOptions();
+  }
+
+  setSubstate(key, value) {
+    const newSubstate = {};
+    newSubstate[key] = value;
+    this.setState(newSubstate);
   }
 
   updateOptions(blocked = '') {
@@ -59,11 +80,10 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       }).then((response) => {
         let reactants = [];
         const reactant = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.reactants)));
-        reactants = reactants.concat([].concat(...reactant));
-        reactants = reactants.map((r) => ({ value: r, label: r.replace('star', '*') }));
+        reactants = reactant.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
         reactants.push({ label: 'any', value: '' });
         this.setState({
-          reactant_options: reactants,
+          reactant_options: [...new Set(reactants)],
         });
       });
     }
@@ -77,11 +97,11 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
         let products = [];
         const product = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.products)));
         products = products.concat([].concat(...product));
-        products = product.map((p) => p.join(' + '));
-        products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));
+        products = product.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
+        /* products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));*/
         products.push({ label: 'any', value: '' });
         this.setState({
-          product_options: products,
+          product_options: [...new Set(products)],
         });
       });
     }
@@ -102,25 +122,42 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
     this.props.clearSystems();
   }
   submitForm() {
+    this.props.clearSystems();
     this.setState({ loading: true });
+    const filters = [];
+    if (typeof this.state.surface.label !== 'undefined') {
+      filters.push(`surfaceComposition: "~${this.state.surface.label}"`);
+    }
+    if (typeof this.state.facet.label !== 'undefined') {
+      filters.push(`facet: "~${this.state.facet.label}"`);
+    }
+    if (typeof this.state.reactants.label !== 'undefined') {
+      filters.push(`reactants: "${this.state.reactants.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
+    }
+    if (typeof this.state.products.label !== 'undefined') {
+      filters.push(`products: "${this.state.products.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
+    }
 
+
+    const filterString = filters.join(', ');
+    /* filters.push('distinct: true')*/
+    ReactGA.event({
+      category: 'Search',
+      action: 'Search',
+      label: filterString,
+    })
     const query = {
-      query: `query{catapp {
-  edges {
-    node {
-      id
+      query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
       dftCode
       dftFunctional
       reactants
       products
-      #Equation
       aseIds
-      #reactantIds
-      #productIds
       facet
       chemicalComposition
       reactionEnergy
       activationEnergy
+      surfaceComposition
     }
   }
 }}`,
@@ -129,9 +166,9 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
       this.setState({
         loading: false,
       });
+      this.props.submitSearch();
       this.props.receiveReactions(response.data.data.catapp.edges);
-    }).catch((error) => {
-      console.log(`Error loading reactions: ${error}`);
+    }).catch(() => {
       this.setState({
         loading: false,
       });
@@ -140,88 +177,21 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
 
   render() {
     return (
-      <div>
-        <h2>Reactions</h2>
+      <Paper className={this.props.classes.paper}>
+        <h2>Reaction Energetics</h2>
 
-        <FormControl
-          style={{ minWidth: 220, margin: 12 }}
-        >
-          <InputLabel>Reactant</InputLabel>
-          <Select
-            onChange={this.handleChange('reactants')}
-            value={this.state.reactants}
-            renderValue={(value) => value.label}
-          >
-            {this.state.reactant_options.map((reactant, i) =>
-              <MenuItem
-                value={reactant}
-                key={`reactant_option_${i}`}
-              >{reactant.label}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-        {' '}
-        <FaArrowsH
-          size={30}
-          style={{
-            margin: 15,
-            marginTop: -25,
-          }}
-        />
-        {' '}
-        <FormControl
-          style={{ minWidth: 220, margin: 12 }}
-        >
-          <InputLabel>Products</InputLabel>
-          <Select
-            onChange={this.handleChange('products')}
-            value={this.state.products}
-            renderValue={(value) => value.label}
-          >
-            {this.state.product_options.map((product, i) =>
-              <MenuItem
-                value={product}
-                key={`product_option_${i}`}
-              >{product.label}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
+        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus {...this.state} />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
+        <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+        <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+        <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
         <br />
-        <FormControl
-          style={{ minWidth: 120, margin: 12 }}
-        >
-          <InputLabel>Surface</InputLabel>
-          <Select
-            onChange={this.handleChange('surface')}
-            value={this.state.surface}
-          >
-            <MenuItem value="Pd">Pd</MenuItem>
-            <MenuItem value="Pt">Pt</MenuItem>
-            <MenuItem value="Ag">Ag</MenuItem>
-            <MenuItem value="Cu">Cu</MenuItem>
-            <MenuItem value="Rh">Rh</MenuItem>
-            <MenuItem value="Ir">Ir</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          style={{ minWidth: 120, margin: 12 }}
-        >
-          <InputLabel>Facet</InputLabel>
-          <Select
-            onChange={this.handleChange('facet')}
-            value={this.state.facet}
-          >
-            <MenuItem value="100">(100)</MenuItem>
-            <MenuItem value="111">(111)</MenuItem>
-            <MenuItem value="211">(211)</MenuItem>
-            <MenuItem value="311">(311)</MenuItem>
-            <MenuItem value="110">(110)</MenuItem>
-          </Select>
-        </FormControl>
-        <MButton raised onClick={this.resetForm}><MdClear /> Reset </MButton>
-        <MButton raised onClick={this.submitForm} color="primary"><MdSearch /> Search </MButton>
+        <br />
+        <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
-      </div>
+      </Paper>
     );
   }
 }
@@ -229,7 +199,11 @@ export class EnergiesPageInput extends React.Component { // eslint-disable-line 
 EnergiesPageInput.propTypes = {
   receiveReactions: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
+  submitSearch: PropTypes.func.isRequired,
+  classes: PropTypes.object,
 };
 
 EnergiesPageInput.defaultProps = {
 };
+
+export default withStyles(styles, { withTheme: true })(EnergiesPageInput);

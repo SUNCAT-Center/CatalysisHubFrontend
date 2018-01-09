@@ -11,8 +11,15 @@ import {
   SELECT_REACTION,
   CLEAR_SYSTEMS,
   SAVE_SYSTEM,
+  SUBMIT_SEARCH,
 } from './constants';
 
+
+export function submitSearch() {
+  return {
+    type: SUBMIT_SEARCH,
+  };
+}
 
 export function selectReaction(element) {
   return {

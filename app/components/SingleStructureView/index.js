@@ -7,8 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import ReactGA from 'react-ga';
 
-import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
+
+import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 const initialState = {
   Formula: '',
@@ -34,24 +36,45 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
   render() {
     const energy = this.props.selectedSystem.energy || this.state.energy || 0.0;
 
+    let x;
+    let y;
+    let z;
+    if (Object.prototype.hasOwnProperty.call(this.props.selectedSystem, 'full_key') && this.props.selectedSystem.full_key.startsWith('Molec')) {
+      [x, y, z] = [1, 1, 1];
+    } else {
+      [x, y, z] = [2, 2, 1];
+    }
+
     return (
       <div>
         {this.props.selectedUUID === '' ? null :
         <div>
-          <h2>Structure {this.props.selectedSystem.Formula}</h2>
-          <GeometryCanvasUuid {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} />
+          <h2>{this.props.selectedSystem.full_key}</h2>
+          {/*
+          <ChemDoodleCanvas {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} />
+              */}
+          <GeometryCanvasCifdata {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} system={this.props.selectedSystem} />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
-            <li>Total Energy: {energy.toFixed(3)} eV</li>
-            <li>DFT Code: {this.props.selectedSystem.DftCode}</li>
-            <li>DFT Functional: {this.props.selectedSystem.DftFunctional}</li>
-            <li>Title: {this.props.selectedSystem.PublicationTitle}</li>
-            <li>Authors: {this.props.selectedSystem.PublicationAuthors}</li>
+            <li>Total Energy: {energy.toFixed(2)} eV</li>
+            <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
+            <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
+            <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
+            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
+                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
-            {this.state.PublicationDoi === '' ? null :
+            {this.props.selectedSystem.PublicationDoi === '' ? null :
             <div>
-              <li>Publication DOI: {this.props.selectedSystem.PublicationDoi}</li>
-              <li>Citation: {this.props.selectedSystem.PublicationJournal}, {this.props.selectedSystem.PublicationVolume}, {this.props.selectedSystem.PublicationVolume}</li>
+              <li>
+                Source&nbsp;
+                <ReactGA.OutboundLink
+                  eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                  to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                  target="_blank"
+                >
+                DOI: {this.props.selectedSystem.PublicationDoi}
+                </ReactGA.OutboundLink>
+              </li>
             </div>
             }
           </ul>

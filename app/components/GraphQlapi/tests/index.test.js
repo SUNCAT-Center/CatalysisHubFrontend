@@ -1,10 +1,10 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import GraphQlapi from '../index';
+import GraphQlapi from '../index';
 
 describe('<GraphQlapi />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render five divs', () => {
+    expect(shallow(<GraphQlapi />).find('div').length).toBe(5);
   });
 });

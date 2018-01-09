@@ -5,9 +5,9 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
 
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
@@ -17,9 +17,14 @@ import { download } from 'utils';
 
 import { MdFileDownload } from 'react-icons/lib/md';
 
-const MButton = styled(Button)`
-  margin: 12px,
-`;
+const styles = (xtheme) => ({
+  MuiButton: {
+    margin: '12px',
+    [xtheme.breakpoints.down('sm')]: {
+      visibility: 'hidden',
+    },
+  },
+});
 
 class GeometryCanvasUuid extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentDidUpdate() {
@@ -55,19 +60,19 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
 
   //Code
   let tfcanvas = new ChemDoodle.TransformCanvas3D('${this.props.id}_view');
-  let cif = ChemDoodle.readCIF(\`${cifdata}\`, 2, 2, 1);
+  let cif = ChemDoodle.readCIF(\`${cifdata}\`, ${this.props.x}, ${this.props.y}, ${this.props.z});
 
   tfcanvas.specs.set3DRepresentation('Ball and Stick');
   tfcanvas.specs.backgroundColor = '${this.props.color}';
   tfcanvas.specs.projectionPerspective_3D = true;
-  tfcanvas.specs.atoms_displayLabels_3D = true;
+  tfcanvas.specs.atoms_displayLabels_3D = ${this.props.showLabels};
   tfcanvas.specs.crystals_unitCellLineWidth = 5;
   tfcanvas.specs.shapes_color = 'black';
   tfcanvas.specs.shapes_lineWidth = 1;
   tfcanvas.specs.fog_mode_3D = 0;
   tfcanvas.specs.shadow_3D = false;
   tfcanvas.specs.atoms_useJMOLColors = true;
-  tfcanvas.specs.compass_display = true;
+  tfcanvas.specs.compass_display = ${this.props.showCompass};
   tfcanvas.loadContent([cif.molecule], [cif.unitCell]);
   });
 });`;
@@ -86,32 +91,38 @@ _load_lib("https://code.jquery.com/jquery-3.2.1.min.js", function(){
           height={this.props.height}
           width={this.props.width}
           style={{
-            borderWidth: 1,
+            borderWidth: this.props.borderWidth,
             borderColor: '#000000',
             borderStyle: 'solid',
           }}
         />
         <br />
-        <MButton
+        {this.props.showDownload === false ? null :
+        <Button
+          className={this.props.classes.MuiButton}
           raised
           onClick={() => { download(`structure_${this.props.id}.cif`, this.cifdata); }}
-          style={{
-            margin: 12,
-          }}
         >
           <MdFileDownload /> Download CIF
-        </MButton>
+        </Button>
+        }
       </div>
     );
   }
 }
 
 GeometryCanvasUuid.defaultProps = {
-  height: 550,
-  width: 550,
+  height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+  width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
   color: '#fff',
   uuid: '',
-
+  showDownload: true,
+  showCompass: true,
+  showLabels: true,
+  x: 2,
+  y: 2,
+  z: 1,
+  borderWidth: 0.1,
 };
 
 GeometryCanvasUuid.propTypes = {
@@ -120,6 +131,14 @@ GeometryCanvasUuid.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
+  showDownload: PropTypes.bool,
+  showCompass: PropTypes.bool,
+  showLabels: PropTypes.bool,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  z: PropTypes.number,
+  borderWidth: PropTypes.number,
+  classes: PropTypes.object,
 };
 
-export default GeometryCanvasUuid;
+export default (withStyles(styles, { withTheme: true }))(GeometryCanvasUuid);

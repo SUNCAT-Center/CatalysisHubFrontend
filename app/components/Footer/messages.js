@@ -13,7 +13,7 @@ export default defineMessages({
   authorMessage: {
     id: 'boilerplate.components.Footer.author.message',
     defaultMessage: `
-      Made with love in {author_town}.
+      Made in {author_town}.
     `,
   },
 });

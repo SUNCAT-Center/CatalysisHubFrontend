@@ -4,15 +4,24 @@
  *
  */
 
-import { fromJS } from 'immutable';
 import {
   DEFAULT_ACTION,
+  CLICK_DOT,
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = {
+  selectedDot: {
+    text: 'Ti',
+  },
+};
 
 function activityMapsPageReducer(state = initialState, action) {
   switch (action.type) {
+    case CLICK_DOT:
+      return {
+        ...state,
+        selectedDot: action.payload,
+      };
     case DEFAULT_ACTION:
       return state;
     default:
