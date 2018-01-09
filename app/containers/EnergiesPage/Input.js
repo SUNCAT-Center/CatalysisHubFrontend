@@ -8,6 +8,8 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
+import ReactGA from 'react-ga';
+
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
@@ -20,6 +22,7 @@ import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
 import TermAutosuggest from './TermAutosuggest';
+
 
 const MButton = styled(Button)`
   margin: 25px;
@@ -135,9 +138,14 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`products: "${this.state.products.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
     }
 
-    /* filters.push('distinct: true')*/
 
     const filterString = filters.join(', ');
+    /* filters.push('distinct: true')*/
+    ReactGA.event({
+      category: 'Search',
+      action: 'Search',
+      label: filterString,
+    })
     const query = {
       query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
       dftCode
