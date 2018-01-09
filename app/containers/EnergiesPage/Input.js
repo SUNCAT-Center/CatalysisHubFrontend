@@ -145,7 +145,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       category: 'Search',
       action: 'Search',
       label: filterString,
-    })
+    });
     const query = {
       query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
       dftCode
