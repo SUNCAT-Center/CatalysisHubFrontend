@@ -32,8 +32,8 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
     return (
       <div className={this.props.classes.AppWrapper} >
         <Grid container justify="center">
-          {apps.map((app) => (
-            <Grid item>
+          {apps.map((app, i) => (
+            <Grid item key={`griditem_${i}`}>
               <Link to={app.route}>
                 <Paper
                   style={{
