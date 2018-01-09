@@ -174,7 +174,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/catKitDemo',
+      path: '/catKitDemo(/:lattice/:latticeConstant/:composition)',
       name: 'catKitDemo',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
