@@ -192,7 +192,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/profile/:name',
+      path: '/profile(/:name)',
       name: 'profile',
       getComponent(location, cb) {
         import('containers/Profile')
