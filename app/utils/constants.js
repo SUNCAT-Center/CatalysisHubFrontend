@@ -12,5 +12,13 @@ module.exports = {
       title: 'Activity Maps',
       route: '/activityMaps',
     },
+    {
+      title: 'Publications',
+      route: '/publications',
+    },
+    {
+      title: 'Your Next App',
+      route: '/yourNextApp',
+    },
   ],
 };
