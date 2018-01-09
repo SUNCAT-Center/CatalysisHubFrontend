@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 
 
@@ -26,7 +27,7 @@ const styles = (theme) => ({
 });
 
 
-const initialState = {
+let initialState = {
   structure: 'fcc',
   latticeConstant: 3.93,
   element1: 'Pt',
@@ -39,6 +40,21 @@ const initialState = {
 class BulkInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+    let latticeConstant;
+    if (this.props.routeParams.latticeConstant) {
+      if (!isNaN(parseFloat(this.props.routeParams))) {
+        latticeConstant = parseFloat(this.props.routeParams);
+      } else {
+        latticeConstant = 3.99;
+      }
+    } else {
+      latticeConstant = 3.99;
+    }
+
+    initialState = _.extend(initialState, {
+      structure: this.props.routeParams.lattice || 'fcc',
+      latticeConstant,
+    });
     this.state = initialState;
     this.generateBulk = this.generateBulk.bind(this);
   }
@@ -130,6 +146,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
   receiveBulkCif: PropTypes.func.isRequired,
+  routeParams: PropTypes.object,
 };
 
 
