@@ -25,7 +25,8 @@ import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 
-import { MdArrowBack } from 'react-icons/lib/md';
+import { MdArrowBack, MdSearch } from 'react-icons/lib/md';
+import { TiDocument } from 'react-icons/lib/ti';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -107,6 +108,11 @@ const styles = (xtheme) => ({
       width: `calc(100% - ${drawerWidth}px)`,
     },
   },
+  subListHeader: {
+    marginTop: '5px',
+    paddingBottom: '20px',
+    height: '20px',
+  },
   mainPaper: {
     margin: 0,
     marginTop: (appBar ? '20px' : '20px'),
@@ -165,24 +171,13 @@ class App extends React.Component {
         <Divider />
         <div className={this.props.classes.drawerPaper}>
           <List>
-            <List subheader={<ListSubheader>SEARCH</ListSubheader>}>
-              <ListItem>
+            <List
+              subheader={<ListSubheader className={this.props.classes.subListHeader}>
                 <MenuLink to="/energies" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.energies} />
-                  </Button>
+                  <MdSearch /> SEARCH
                 </MenuLink>
-              </ListItem>
-
-
-              <ListItem>
-                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.publications} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
+              </ListSubheader>}
+            >
 
               {/*
               <ListItem>
@@ -206,8 +201,7 @@ class App extends React.Component {
             </List>
             */}
 
-            <List subheader={<ListSubheader>APPS</ListSubheader>}>
-
+            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>APPS</ListSubheader>}>
               <ListItem>
                 <MenuLink to="/yourNextApp" onClick={this.handleDrawerToggle}>
                   <Button dense color="primary" >
@@ -249,6 +243,14 @@ class App extends React.Component {
               </ListItem>
 
               <ListItem>
+                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
+                    <TiDocument /> <FormattedMessage {...messages.publications} />
+                  </Button>
+                </MenuLink>
+              </ListItem>
+
+              <ListItem>
                 <MenuLink to="/scalingRelations" onClick={this.handleDrawerToggle}>
                   <Button disabled dense color="primary" >
                     <FormattedMessage {...messages.scalingRelations} />
@@ -259,12 +261,22 @@ class App extends React.Component {
 
             </List>
 
-            <List subheader={<ListSubheader>API</ListSubheader>}>
+            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>API</ListSubheader>}>
 
               <ListItem>
                 <MenuLink to="/graphQLConsole" onClick={this.handleDrawerToggle}>
                   <Button dense color="primary" >
                     <FormattedMessage {...messages.graphqlconsole} />
+                  </Button>
+                </MenuLink>
+              </ListItem>
+            </List>
+            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>DOCS</ListSubheader>}>
+
+              <ListItem>
+                <MenuLink to="/tutorial" onClick={this.handleDrawerToggle}>
+                  <Button dense color="primary" >
+                    Developer Guide
                   </Button>
                 </MenuLink>
               </ListItem>
