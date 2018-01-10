@@ -43,6 +43,7 @@ const mapStateToProps = (state) => ({
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
   reactionSystems: state.get('energiesPageReducer').reactionSystems,
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
+  searchParams: state.get('energiesPageReducer').searchParams,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -61,8 +62,8 @@ const mapDispatchToProps = (dispatch) => ({
   saveSystem: (system) => {
     dispatch(saveSystem(system));
   },
-  submitSearch: () => {
-    dispatch(submitSearch());
+  submitSearch: (params) => {
+    dispatch(submitSearch(params));
   },
 });
 

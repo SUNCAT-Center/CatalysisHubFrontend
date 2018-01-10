@@ -166,7 +166,12 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       this.setState({
         loading: false,
       });
-      this.props.submitSearch();
+      this.props.submitSearch({
+        reactants: this.state.reactants.label,
+        products: this.state.products.label,
+        surface: this.state.surface.label,
+        facet: this.state.facet.label,
+      });
       this.props.receiveReactions(response.data.data.catapp.edges);
     }).catch(() => {
       this.setState({

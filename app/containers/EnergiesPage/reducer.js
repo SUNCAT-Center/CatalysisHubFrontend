@@ -4,6 +4,8 @@
  *
  */
 
+import _ from 'lodash';
+
 import {
   DEFAULT_ACTION,
   RECEIVE_REACTIONS,
@@ -19,6 +21,7 @@ const initialState = {
   matchingReactions: [],
   reactionSystems: [],
   searchSubmitted: false,
+  searchParams: {},
 };
 
 
@@ -28,6 +31,7 @@ function energiesPageReducer(state = initialState, action) {
       return {
         ...state,
         searchSubmitted: true,
+        searchParams: _.extend(state.searchParams, action.payload),
       };
     case DEFAULT_ACTION:
       return state;

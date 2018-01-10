@@ -15,9 +15,10 @@ import {
 } from './constants';
 
 
-export function submitSearch() {
+export function submitSearch(params) {
   return {
     type: SUBMIT_SEARCH,
+    payload: params,
   };
 }
 
