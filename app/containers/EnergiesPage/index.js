@@ -24,12 +24,8 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
   render() {
     return (
       <div>
-        <Script
-          url="https://code.jquery.com/jquery-3.2.1.min.js"
-        />
-        <Script
-          url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js"
-        />
+        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
 
         <EnergiesPageInput {...this.props} />
         <MatchingReactions {...this.props} />

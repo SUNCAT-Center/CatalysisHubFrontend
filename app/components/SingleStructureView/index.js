@@ -50,10 +50,12 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>{this.props.selectedSystem.full_key}</h2>
-          {/*
-          <ChemDoodleCanvas {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} />
-              */}
-          <GeometryCanvasCifdata {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} system={this.props.selectedSystem} />
+          <GeometryCanvasCifdata
+            uniqueId={this.props.selectedUUID}
+            id={this.props.selectedUUID}
+            x={x} y={y} z={z}
+            cifdata={this.props.selectedSystem.Cifdata}
+          />
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>
