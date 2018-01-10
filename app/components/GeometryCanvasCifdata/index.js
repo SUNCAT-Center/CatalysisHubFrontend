@@ -82,21 +82,21 @@ function _load_lib(url, callback){
   /*ALPHA*/
   /*if(typeof alpha_${this.props.uniqueId} !== 'undefined') {*/
     /*if(.01 < Math.abs(alpha_${this.props.uniqueId} - e.alpha) < 1.5) {*/
-    /*tfcanvas_${this.props.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.uniqueId}) * 0.03,  tfcanvas_${this.props.uniqueId}.rotationMatrix.slice(8, 11));*/
+    /*tfcanvas_${this.props.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix,(e.alpha -  alpha_${this.props.uniqueId}) * 0.015,  tfcanvas_${this.props.uniqueId}.rotationMatrix.slice(8, 11));*/
     /*}*/
   /*}*/
 
   /*GAMMA*/
   /*if (typeof gamma_${this.props.uniqueId} !== 'undefined') {*/
     /*if(.01 < Math.abs(gamma_${this.props.uniqueId} - e.gamma) < 1.5) {*/
-  /*tfcanvas_${this.props.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.uniqueId}) * 0.03,  tfcanvas_${this.props.uniqueId}.rotationMatrix.slice(8, 11));*/
+  /*tfcanvas_${this.props.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix,(e.gamma -  gamma_${this.props.uniqueId}) * 0.015,  tfcanvas_${this.props.uniqueId}.rotationMatrix.slice(8, 11));*/
     /*}*/
   /*}*/
 
   /*BETA*/
   if (typeof beta_${this.props.uniqueId} !== 'undefined') {
     if(0.01 < Math.abs(beta_${this.props.uniqueId} - e.beta) < 1.5) {
-  tfcanvas_${this.props.uniqueId}.rotationMatrix = ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix,(e.beta -  beta_${this.props.uniqueId}) * 0.03,  [1, 0, 0]);
+  tfcanvas_${this.props.uniqueId}.rotationMatrix =  ChemDoodle.lib.mat4.rotate(tfcanvas_${this.props.uniqueId}.rotationMatrix, -(e.beta -  beta_${this.props.uniqueId}) * 0.015,  [1, 0, 0]);
     }
   }
 
@@ -152,7 +152,6 @@ GeometryCanvasCifdata.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   color: PropTypes.string,
-  classes: PropTypes.object,
   x: PropTypes.number,
   y: PropTypes.number,
   z: PropTypes.number,
