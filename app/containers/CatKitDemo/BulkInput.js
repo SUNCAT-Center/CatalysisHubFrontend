@@ -50,10 +50,25 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       latticeConstant = 3.99;
     }
 
+    let elements;
+    if (this.props.routeParams.composition) {
+      elements = this.props.routeParams.composition.match(/[A-Z][a-z]?/g);
+    } else {
+      elements = ['Pt'];
+    }
+    while (elements.length < 4) {
+      elements.push(elements[elements.length - 1]);
+    }
+
     initialState = _.extend(initialState, {
       structure: this.props.routeParams.lattice || 'fcc',
+      element1: elements[0],
+      element2: elements[1],
+      element3: elements[2],
+      element4: elements[3],
       latticeConstant,
     });
+
     this.state = initialState;
     this.generateBulk = this.generateBulk.bind(this);
     this.handleChange = this.handleChange.bind(this);
