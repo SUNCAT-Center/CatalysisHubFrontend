@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+/* import { Link } from 'react-router';*/
 
 import Table, {
   TableBody,
@@ -145,7 +145,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <div>
             <h2>Ooops!</h2>
             No reaction energies found. Please remove one or more filters.
-            Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surface}`}>construct</Link> your own.
+            {/* Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surface}`}>construct</Link> your own.  */}
 
           </div>
         );
@@ -233,7 +233,7 @@ MatchingReactions.propTypes = {
   saveSystem: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
-  searchParams: PropTypes.object,
+  /* searchParams: PropTypes.object,*/
   classes: PropTypes.object,
 };
 
