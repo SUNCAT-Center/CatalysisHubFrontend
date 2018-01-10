@@ -1,3 +1,5 @@
+import packageJson from './package.json';
+
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
@@ -5,7 +7,7 @@ module.exports = {
   whiteLabel: false,
   suBranding: false,
   appBar: true,
-  version: '0.1.4',
+  version: packageJson.version,
   gaTrackingId: 'UA-109061730-1',
   apps: [
     {
