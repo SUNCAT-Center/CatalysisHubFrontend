@@ -25,3 +25,10 @@ export function receiveSlabCifs(cifs) {
     payload: cifs,
   };
 }
+
+export function saveLatticeConstant(latticeConstant) {
+  return {
+    type: constants.SAVE_LATTICE_CONSTANT,
+    payload: latticeConstant,
+  };
+}

@@ -15,7 +15,6 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import axios from 'axios';
 import { backendRoot } from 'utils/constants';
 
-
 const styles = (theme) => ({
   container: {
     display: 'flex',
@@ -57,6 +56,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     });
     this.state = initialState;
     this.generateBulk = this.generateBulk.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   generateBulk = () => {
@@ -78,9 +78,13 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
   handleChange(name) {
     return (event) => {
-      this.setState({
-        [name]: event.target.value,
-      });
+      if (name === 'latticeConstant') {
+        this.props.saveLatticeConstant(event.target.value);
+      } else {
+        this.setState({
+          [name]: event.target.value,
+        });
+      }
     };
   }
 
@@ -110,7 +114,11 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="lattice-constant-helper">Lattice Constant</InputLabel>
-            <Input id="lattice-constant-helper" value={this.state.latticeConstant} onChange={this.handleChange('latticeConstant')} />
+            <Input
+              id="lattice-constant-helper"
+              value={this.props.latticeConstant}
+              onChange={this.handleChange('latticeConstant')}
+            />
             <FormHelperText>Should be a number in Angstrom</FormHelperText>
           </FormControl>
           <FormControl className={this.props.classes.formControl} >
@@ -147,6 +155,9 @@ BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
   receiveBulkCif: PropTypes.func.isRequired,
   routeParams: PropTypes.object,
+  saveLatticeConstant: PropTypes.func,
+  latticeConstant: PropTypes.number,
+
 };
 
 
