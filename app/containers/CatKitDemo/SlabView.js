@@ -13,15 +13,8 @@ export class SlabView extends React.Component { // eslint-disable-line react/pre
           <h2>Unique Slab Geometries</h2>
           {this.props.images.map((image, i) => (
             <GeometryCanvasCifdata
-              selectedSystem={{
-                Cifdata: image,
-                uniqueId: 'bulk_preview',
-              }}
-              system={{
-                Cifdata: image,
-                uniqueId: 'bulk_preview',
-              }}
               cifdata={image}
+              uniqueId={`slab_preview_${i}`}
               key={`slab_preview_${i}`} id={`slab_preview_${i}`} x={2} y={2} z={1}
             />
                 ))}
