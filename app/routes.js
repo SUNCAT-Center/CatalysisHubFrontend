@@ -208,7 +208,7 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/tutorial',
+      path: '/developerGuide',
       name: 'tutorial',
       getComponent(location, cb) {
         import('components/Tutorial')

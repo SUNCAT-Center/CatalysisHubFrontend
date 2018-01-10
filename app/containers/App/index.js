@@ -274,7 +274,7 @@ class App extends React.Component {
             <List subheader={<ListSubheader className={this.props.classes.subListHeader}>DOCS</ListSubheader>}>
 
               <ListItem>
-                <MenuLink to="/tutorial" onClick={this.handleDrawerToggle}>
+                <MenuLink to="/developerGuide" onClick={this.handleDrawerToggle}>
                   <Button dense color="primary" >
                     Developer Guide
                   </Button>
