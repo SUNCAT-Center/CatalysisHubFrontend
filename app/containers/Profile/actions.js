@@ -27,3 +27,10 @@ export function selectReaction(element) {
   };
 }
 
+
+export function clickAuthor(author) {
+  return {
+    type: constants.CLICK_AUTHOR,
+    payload: author,
+  };
+}

@@ -182,7 +182,8 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                 <Link
                   to={`/profile/${toSlugFormat(author)}`}
                   onClick={() => {
-                    this.reloadData();
+                    this.props.selectedAuthor(author);
+                    /* this.reloadData();*/
                   }}
                 > {author} </Link>
               </li>
@@ -196,13 +197,15 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
 
 Profile.propTypes = {
   routeParams: PropTypes.object,
-  receiveReactions: PropTypes.function,
+  receiveReactions: PropTypes.func,
+  selectedAuthor: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   reactions: state.get('profileReducer').reactions,
   reactionSystems: state.get('profileReducer').reactionSystems,
   selectedReaction: state.get('profileReducer').selectedReaction,
+  selectedAuthor: state.get('profileReducer').selectedAuthor,
 
 });
 
