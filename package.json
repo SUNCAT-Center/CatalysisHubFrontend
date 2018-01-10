@@ -245,6 +245,7 @@
     "material-ui": "^1.0.0-beta.21",
     "material-ui-icons": "^1.0.0-beta.17",
     "minimist": "1.2.0",
+    "moment-timezone": "^0.5.14",
     "ndarray-unpack": "^1.0.0",
     "ngl": "^0.10.4",
     "plotly.js": "^1.31.2",
