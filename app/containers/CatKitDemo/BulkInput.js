@@ -41,8 +41,8 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     super(props);
     let latticeConstant;
     if (this.props.routeParams.latticeConstant) {
-      if (!isNaN(parseFloat(this.props.routeParams))) {
-        latticeConstant = parseFloat(this.props.routeParams);
+      if (!isNaN(parseFloat(this.props.routeParams.latticeConstant))) {
+        latticeConstant = parseFloat(this.props.routeParams.latticeConstant);
       } else {
         latticeConstant = 3.99;
       }
@@ -86,6 +86,8 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       element4: this.state.element4,
     } };
 
+    this.props.saveBulkParams(params.params);
+
     axios.get(url, params).then((response) => {
       this.props.receiveBulkCif(response.data.cifdata);
     });
@@ -93,13 +95,9 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
   handleChange(name) {
     return (event) => {
-      if (name === 'latticeConstant') {
-        this.props.saveLatticeConstant(event.target.value);
-      } else {
-        this.setState({
-          [name]: event.target.value,
-        });
-      }
+      this.setState({
+        [name]: event.target.value,
+      });
     };
   }
 
@@ -131,7 +129,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
             <InputLabel htmlFor="lattice-constant-helper">Lattice Constant</InputLabel>
             <Input
               id="lattice-constant-helper"
-              value={this.props.latticeConstant}
+              value={this.state.latticeConstant}
               onChange={this.handleChange('latticeConstant')}
             />
             <FormHelperText>Should be a number in Angstrom</FormHelperText>
@@ -170,7 +168,7 @@ BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
   receiveBulkCif: PropTypes.func.isRequired,
   routeParams: PropTypes.object,
-  saveLatticeConstant: PropTypes.func,
+  saveBulkParams: PropTypes.func,
   latticeConstant: PropTypes.number,
 
 };

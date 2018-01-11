@@ -43,12 +43,19 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
     const url = `${backendRoot}generate_dft/`;
     const params = {
       responseType: 'blob',
+      params: {
+        element1: this.props.bulkParams.element1,
+        element2: this.props.bulkParams.element2,
+        element3: this.props.bulkParams.element3,
+        element4: this.props.bulkParams.element4,
+        lattice_constant: this.props.bulkParams.lattice_constant,
+      },
     };
     axios.get(url, params).then((response) => {
       const tempUrl = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = tempUrl;
-      link.setAttribute('download', 'dft_input.zip');
+      link.setAttribute('download', `dft_input_${(new Date()).getTime()}.zip`);
       document.body.appendChild(link);
       link.click();
     }).catch(() => {
@@ -100,6 +107,7 @@ DftInput.propTypes = {
   /* bulkCif: PropTypes.string.isRequired,*/
   images: PropTypes.array,
   classes: PropTypes.object,
+  bulkParams: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);

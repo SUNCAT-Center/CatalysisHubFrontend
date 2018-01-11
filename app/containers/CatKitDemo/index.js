@@ -57,12 +57,16 @@ const mapDispatchToProps = (dispatch) => ({
   saveLatticeConstant: (latticeConstant) => {
     dispatch(actions.saveLatticeConstant(latticeConstant));
   },
+  saveBulkParams: (bulkParams) => {
+    dispatch(actions.saveBulkParams(bulkParams));
+  },
 });
 
 const mapStateToProps = (state) => ({
   bulkCif: state.get('catKitDemoReducer').bulkCif,
   images: state.get('catKitDemoReducer').images,
   latticeConstant: state.get('catKitDemoReducer').latticeConstant,
+  bulkParams: state.get('catKitDemoReducer').bulkParams,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatKitDemo);

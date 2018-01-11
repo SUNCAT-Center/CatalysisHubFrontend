@@ -32,3 +32,10 @@ export function saveLatticeConstant(latticeConstant) {
     payload: latticeConstant,
   };
 }
+
+export function saveBulkParams(bulkParams) {
+  return {
+    type: constants.SAVE_BULK_PARAMS,
+    payload: bulkParams,
+  };
+}

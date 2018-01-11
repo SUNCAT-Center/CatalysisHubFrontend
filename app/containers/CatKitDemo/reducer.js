@@ -10,10 +10,16 @@ const initialState = {
   bulkCif: '',
   images: [],
   latticeConstant: 3.92,
+  bulkParams: {},
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SAVE_BULK_PARAMS:
+      return {
+        ...state,
+        bulkParams: action.payload,
+      };
     case constants.RECEIVE_SLAB_CIFS:
       return {
         ...state,
