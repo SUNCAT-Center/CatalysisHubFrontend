@@ -79,7 +79,6 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.uniqueId}.updateScene()
 
   window.addEventListener('deviceorientation', (e) => {
-    console.log(JSON.stringify(e));
 
   /*ALPHA*/
   /*if(typeof alpha_${this.props.uniqueId} !== 'undefined') {*/
