@@ -7,9 +7,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import ReactGA from 'react-ga';
-import Script from 'react-load-script';
 
+import { CatKitDemoHeader } from './catKitDemoHeader';
 import BulkInput from './BulkInput';
 import { BulkView } from './BulkView';
 import SlabInput from './SlabInput';
@@ -22,17 +21,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <div>
-        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
-
-        <h1>CatKit Slab Generator</h1>
-        <div>Checkout full code on <ReactGA.OutboundLink
-          eventLabel="https://github.com/jboes/CatKit"
-          to="https://github.com/jboes/CatKit"
-        >
-                github/jboes/CatKit
-              </ReactGA.OutboundLink>
-        </div>
+        <CatKitDemoHeader {...this.props} />
         <BulkInput {...this.props} />
         <BulkView {...this.props} />
         <SlabInput {...this.props} />
