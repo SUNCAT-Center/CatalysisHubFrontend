@@ -9,6 +9,7 @@ import React, { PropTypes } from 'react';
 import { LinearProgress } from 'material-ui/Progress';
 import { MdAddCircleOutline, MdRemoveCircleOutline } from 'react-icons/lib/md';
 import ReactGA from 'react-ga';
+import Script from 'react-load-script';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -184,6 +185,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <div>
+        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
+
         {this.state.references === {} ? <LinearProgress color="primary" /> : null }
         {this.state.years.map((year, i) => (
           <div key={`div_year_${i}`}>
