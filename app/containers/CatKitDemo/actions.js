@@ -39,3 +39,10 @@ export function saveBulkParams(bulkParams) {
     payload: bulkParams,
   };
 }
+
+export function saveSlabParams(slabParams) {
+  return {
+    type: constants.SAVE_SLAB_PARAMS,
+    payload: slabParams,
+  };
+}

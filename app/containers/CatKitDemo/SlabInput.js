@@ -46,6 +46,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       layers: this.state.layers,
       vacuum: this.state.vacuum,
     };
+    this.props.saveSlabParams(params);
     axios.get(url, { params }).then((response) => {
       this.props.receiveSlabCifs(response.data.images);
     });
@@ -107,6 +108,7 @@ SlabInput.propTypes = {
   bulkCif: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   receiveSlabCifs: PropTypes.func.isRequired,
+  saveSlabParams: PropTypes.func.isRequired,
 
 };
 export default withStyles(styles, { withTheme: true })(SlabInput);

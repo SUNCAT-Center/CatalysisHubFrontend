@@ -49,6 +49,11 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
         element3: this.props.bulkParams.element3,
         element4: this.props.bulkParams.element4,
         lattice_constant: this.props.bulkParams.lattice_constant,
+        miller_x: this.props.slabParams.miller_x,
+        miller_y: this.props.slabParams.miller_y,
+        miller_z: this.props.slabParams.miller_z,
+        vacuum: this.props.slabParams.vacuum,
+        layers: this.props.slabParams.layers,
       },
     };
     axios.get(url, params).then((response) => {
@@ -108,6 +113,7 @@ DftInput.propTypes = {
   images: PropTypes.array,
   classes: PropTypes.object,
   bulkParams: PropTypes.object,
+  slabParams: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);

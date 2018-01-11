@@ -11,10 +11,16 @@ const initialState = {
   images: [],
   latticeConstant: 3.92,
   bulkParams: {},
+  slabParams: {},
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SAVE_SLAB_PARAMS:
+      return {
+        ...state,
+        slabParams: action.payload,
+      };
     case constants.SAVE_BULK_PARAMS:
       return {
         ...state,
