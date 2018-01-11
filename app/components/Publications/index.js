@@ -158,7 +158,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       systems: [],
       reactionEnergies: [],
     });
-    let query = `query{systems(last:500, keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi } } }}`;
+    let query = `query{systems(last:500, keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi Cifdata } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
         if (response.data.data.systems.edges.length > 0) {
