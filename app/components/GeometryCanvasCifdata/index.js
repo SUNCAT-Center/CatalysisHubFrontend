@@ -79,9 +79,11 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.uniqueId}.updateScene()
 
   window.addEventListener('devicemotion', (e) => {
-    console.log(JSON.stringify(e));
+    console.log(JSON.stringify(e.acceleration));
+    if(Math.abs(e.acceleration.z) > .1) {
     tfcanvas_${this.props.uniqueId}.rotationMatrix[15] = tfcanvas_${this.props.uniqueId}.rotationMatrix[15]  * (1. - e.acceleration.z * .01);
    tfcanvas_${this.props.uniqueId}.updateScene()
+    }
 
   }, true);
 
