@@ -13,6 +13,8 @@ import BulkInput from './BulkInput';
 import { BulkView } from './BulkView';
 import SlabInput from './SlabInput';
 import { SlabView } from './SlabView';
+import { AdsorbateInput } from './AdsorbateInput';
+import { AdsorbateView } from './AdsorbateView';
 import DftInput from './DftInput';
 
 import * as actions from './actions';
@@ -26,6 +28,8 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
         <BulkView {...this.props} />
         <SlabInput {...this.props} />
         <SlabView {...this.props} />
+        <AdsorbateInput {...this.props} />
+        <AdsorbateView {...this.props} />
         <DftInput {...this.props} />
       </div>
     );
