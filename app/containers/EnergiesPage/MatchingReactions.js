@@ -6,7 +6,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-/* import { Link } from 'react-router';*/
+
+import ReactGA from 'react-ga';
 
 import Table, {
   TableBody,
@@ -141,6 +142,11 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
   render() {
     if (this.props.matchingReactions.length === 0) {
       if (this.props.searchSubmitted) {
+        ReactGA.event({
+          category: 'Search',
+          action: 'Search',
+          label: `No results: ${JSON.stringify(this.props.searchParams)}`,
+        });
         return (
           <div>
             <h2>Ooops!</h2>
@@ -233,7 +239,7 @@ MatchingReactions.propTypes = {
   saveSystem: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
-  /* searchParams: PropTypes.object,*/
+  searchParams: PropTypes.object,
   classes: PropTypes.object,
 };
 
