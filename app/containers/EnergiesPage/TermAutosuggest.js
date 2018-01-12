@@ -16,7 +16,7 @@ import { MenuItem } from 'material-ui/Menu';
 import { MdClear } from 'react-icons/lib/md';
 import IconButton from 'material-ui/IconButton';
 
-const toProperCase = (str) => str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// const toProperCase = (str) => str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
 const styles = (theme) => ({
   container: {
@@ -71,14 +71,15 @@ export function getSuggestionValue(suggestion) {
 
 
 export function renderInput(inputProps) {
-  const { classes, autoFocus, value, ref, ...other } = inputProps;
-
+  const { classes, autoFocus, value, ref, helperText, label, ...other } = inputProps;
   return (
     <TextField
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}
       inputRef={ref}
+      helperText={helperText}
+      label={label}
       InputProps={{
         classes: {
           input: classes.input,
@@ -230,8 +231,10 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
           inputProps={{
             autoFocus: this.props.autofocus,
             classes,
-            placeholder: toProperCase(this.props.field),
+            placeholder: (this.props.placeholder),
             value: this.state.value,
+            helperText: this.props.helperText,
+            label: this.props.label,
             onChange: this.handleChange,
             onKeyDown: ((event) => {
               if (event.nativeEvent.keyCode === 13) {
@@ -268,10 +271,16 @@ TermAutosuggest.propTypes = {
   submitForm: PropTypes.func,
   classes: PropTypes.object,
   autofocus: PropTypes.bool,
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 TermAutosuggest.defaultProps = {
   autofocus: false,
+  helperText: '',
+  label: '',
+  placeholder: '',
 };
 
 

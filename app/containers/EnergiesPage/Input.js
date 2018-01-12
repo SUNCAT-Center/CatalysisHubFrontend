@@ -132,10 +132,10 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`facet: "~${this.state.facet.label}"`);
     }
     if (typeof this.state.reactants.label !== 'undefined') {
-      filters.push(`reactants: "${this.state.reactants.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
     if (typeof this.state.products.label !== 'undefined') {
-      filters.push(`products: "${this.state.products.label.replace(/[* +]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
 
 
@@ -185,13 +185,13 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       <Paper className={this.props.classes.paper}>
         <h2>Reaction Energetics</h2>
 
-        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} autofocus {...this.state} />
+        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus {...this.state} />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
-        <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} />
+        <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} />
+        <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface"placeholder="Pt, CoO3, ..." />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} />
+        <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
         <br />
         <br />
         <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
