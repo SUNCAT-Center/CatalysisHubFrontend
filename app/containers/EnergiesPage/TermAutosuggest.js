@@ -123,6 +123,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       value: '',
       rawSuggestions: new Set(),
       suggestions: [],
+      justFocused: false,
     };
     /* this.getSuggestions = this.getSuggestions.bind(this);*/
     this.onFocus = this.onFocus.bind(this);
@@ -131,6 +132,15 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     this.getRawSuggestions();
   }
   onFocus = () => {
+    this.setState({
+      justFocused: true,
+    });
+    this.getRawSuggestions();
+  }
+  onBlur = () => {
+    this.setState({
+      justFocused: true,
+    });
     this.getRawSuggestions();
   }
   getRawSuggestions() {
@@ -256,6 +266,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
   handleChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
+      justFocused: false,
     });
     this.props.setSubstate(this.props.field, { label: newValue, value: newValue });
     const update = {};
@@ -281,6 +292,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
           onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
           renderSuggestionsContainer={renderSuggestionsContainer}
+          shouldRenderSuggestions={(val) => val.length > 0 || !this.state.justFocused}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={{
