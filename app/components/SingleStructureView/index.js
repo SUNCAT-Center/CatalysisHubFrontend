@@ -62,7 +62,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
             <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
-            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
+            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' || this.props.selectedSystem.PublicationAuthors === '' ? null :
                 JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
             {this.props.selectedSystem.PublicationDoi === '' ? null :
@@ -89,7 +89,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
 
 SingleStructureView.propTypes = {
   selectedUUID: PropTypes.string.isRequired,
-  selectedSystem: PropTypes.object,
+  selectedSystem: PropTypes.object.isRequired,
 };
 
 export default SingleStructureView;
