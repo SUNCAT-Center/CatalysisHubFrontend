@@ -24,7 +24,7 @@ import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
 
-import axios from 'axios';
+import cachios from 'cachios';
 import { graphQLRoot } from 'utils/constants';
 
 import * as actions from './actions';
@@ -53,6 +53,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       page: 0,
       rowsPerPage: 10,
       loading: false,
+      pageInfo: {},
     };
   }
 
@@ -102,8 +103,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     }
   }
 }}`,
+        ttl: 300,
       };
-      return axios.post(graphQLRoot, query).then((response) => {
+      return cachios.post(graphQLRoot, query).then((response) => {
         const node = response.data.data.systems.edges[0].node;
         node.DFTCode = reaction.dftCode;
         node.DFTFunctional = reaction.dftFunctional;
@@ -165,7 +167,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     return (
       <div>
         <div>
-          <h2>Matching Reactions ({this.props.matchingReactions.length})</h2>
+          <h2>Matching Reactions ({this.props.resultSize})</h2>
           <Table>
             <TableHead>
               <TableRow>
@@ -218,12 +220,12 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
             >
               <TableRow>
                 <TablePagination
-                  count={this.props.matchingReactions.length}
+                  count={this.props.resultSize}
                   rowsPerPage={this.state.rowsPerPage}
                   page={this.state.page}
                   onChangePage={this.handlePageChange}
                   onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                  rowsPerPageOptions={[10, 25, 100, 1000]}
+                  rowsPerPageOptions={[10, 25, 100]}
                   className={this.props.classes.tableFooter}
                   labelRowsPerPage=""
                 />
@@ -245,6 +247,7 @@ MatchingReactions.propTypes = {
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
   classes: PropTypes.object,
+  resultSize: PropTypes.number,
 };
 
 MatchingReactions.defaultProps = {
@@ -256,6 +259,9 @@ const mapStateToProps = (state) => ({
   filter: state.get('energiesPageReducer').filter,
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
+  search: state.get('energiesPageReducer').search,
+  resultSize: state.get('energiesPageReducer').resultSize,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

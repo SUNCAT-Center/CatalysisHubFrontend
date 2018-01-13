@@ -13,3 +13,5 @@ export const SELECT_REACTION = 'app/EnergiesPage/SELECT_REACTION';
 export const SAVE_REACTION = 'app/EnergiesPage/SAVE_REACTION';
 export const SUBMIT_SEARCH = 'app/EnergiesPage/SUBMIT_SEARCH';
 export const UPDATE_FILTER = 'app/EnergiesPage/UPDATE_FILTER';
+export const SAVE_SEARCH = 'app/EnergiesPage/SAVE_SEARCH';
+export const SAVE_RESULT_SIZE = 'app/EnergiesPage/SAVE_RESULT_SIZE';

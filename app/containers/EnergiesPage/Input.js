@@ -144,14 +144,14 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
 
 
     const filterString = filters.join(', ');
-    /* filters.push('distinct: true')*/
+    this.props.saveSearch(filterString);
     ReactGA.event({
       category: 'Search',
       action: 'Search',
       label: filterString,
     });
     const query = {
-      query: `query{catapp ( first: 500, ${filterString} ) { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`,
+      query: `query{catapp ( first: 500, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`,
       ttl: 300,
     };
     cachios.post(graphQLRoot, query).then((response) => {
@@ -165,6 +165,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         facet: this.state.facet.label,
       });
       this.props.receiveReactions(response.data.data.catapp.edges);
+      this.props.saveResultSize(response.data.data.catapp.totalCount);
     }).catch(() => {
       this.setState({
         loading: false,
@@ -198,6 +199,8 @@ EnergiesPageInput.propTypes = {
   clearSystems: PropTypes.func.isRequired,
   submitSearch: PropTypes.func.isRequired,
   classes: PropTypes.object,
+  saveSearch: PropTypes.func,
+  saveResultSize: PropTypes.func,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -210,6 +213,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   receiveReactions: (reactions) => {
     dispatch(actions.receiveReactions(reactions));
+  },
+  saveSearch: (search) => {
+    dispatch(actions.saveSearch(search));
+  },
+  saveResultSize: (resultSize) => {
+    dispatch(actions.saveResultSize(resultSize));
   },
 });
 

@@ -5,17 +5,7 @@
  */
 
 import _ from 'lodash';
-
-import {
-  DEFAULT_ACTION,
-  RECEIVE_REACTIONS,
-  SELECT_REACTION,
-  RECEIVE_SYSTEMS,
-  SAVE_SYSTEM,
-  CLEAR_SYSTEMS,
-  SUBMIT_SEARCH,
-  UPDATE_FILTER,
-} from './constants';
+import * as constants from './constants';
 
 const initialState = {
   selectedReaction: {},
@@ -24,43 +14,55 @@ const initialState = {
   searchSubmitted: false,
   searchParams: {},
   filter: {},
+  search: {},
+  resultSize: 0,
 };
 
 
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
-    case UPDATE_FILTER:
+    case constants.SAVE_RESULT_SIZE:
+      return {
+        ...state,
+        resultSize: action.payload.resultSize,
+      };
+    case constants.SAVE_SEARCH:
+      return {
+        ...state,
+        search: action.payload.search,
+      };
+    case constants.UPDATE_FILTER:
       update[action.payload.field] = action.payload.value;
       return {
         ...state,
         filter: _.extend(state.filter, update),
       };
 
-    case SUBMIT_SEARCH:
+    case constants.SUBMIT_SEARCH:
       return {
         ...state,
         searchSubmitted: true,
         searchParams: _.extend(state.searchParams, action.payload),
       };
-    case DEFAULT_ACTION:
+    case constants.DEFAULT_ACTION:
       return state;
-    case SELECT_REACTION:
+    case constants.SELECT_REACTION:
       return {
         ...state,
         selectedReaction: action.payload,
       };
-    case RECEIVE_REACTIONS:
+    case constants.RECEIVE_REACTIONS:
       return {
         ...state,
         matchingReactions: action.payload,
       };
-    case RECEIVE_SYSTEMS:
+    case constants.RECEIVE_SYSTEMS:
       return {
         ...state,
         reactionSystems: action.payload,
       };
-    case SAVE_SYSTEM: {
+    case constants.SAVE_SYSTEM: {
       let reactionSystems = state.reactionSystems;
       reactionSystems = reactionSystems.concat(action.payload);
 
@@ -77,7 +79,7 @@ function energiesPageReducer(state = initialState, action) {
         reactionSystems,
       };
     }
-    case CLEAR_SYSTEMS:
+    case constants.CLEAR_SYSTEMS:
       return {
         ...state,
         reactionSystems: [],
