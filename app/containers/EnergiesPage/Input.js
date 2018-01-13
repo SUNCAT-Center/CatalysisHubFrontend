@@ -6,6 +6,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import ReactGA from 'react-ga';
@@ -18,9 +19,10 @@ import { withStyles } from 'material-ui/styles';
 
 import { MdSearch } from 'react-icons/lib/md';
 
-import axios from 'axios';
+import cachios from 'cachios';
 import { graphQLRoot } from 'utils/constants';
 
+import * as actions from './actions';
 import TermAutosuggest from './TermAutosuggest';
 
 
@@ -45,7 +47,7 @@ const initialState = {
   reactant_options: [],
   product_options: [],
   facet: '',
-  surface: '',
+  surfaceComposition: '',
   reactants: { label: 'any', value: '' },
   products: { label: 'any', value: '' },
   loading: false,
@@ -75,8 +77,9 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     // Fetch Available Reactants
     if (blocked !== 'reactants' && this.state.reactants.label === 'any') {
       query = `{catapp(products: "~${this.state.products.value || ''}", reactants: "~", distinct: true) { edges { node { reactants } } }}`;
-      axios.post(graphQLRoot, {
+      cachios.post(graphQLRoot, {
         query,
+        ttl: 300,
       }).then((response) => {
         let reactants = [];
         const reactant = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.reactants)));
@@ -91,8 +94,9 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     // Fetch Available Products
     if (blocked !== 'products' && this.state.products.label === 'any') {
       query = `{catapp(reactants: "~${this.state.reactants.value || ''}", products: "~", distinct: true) { edges { node { products } } }}`;
-      axios.post(graphQLRoot, {
+      cachios.post(graphQLRoot, {
         query,
+        ttl: 300,
       }).then((response) => {
         let products = [];
         const product = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.products)));
@@ -125,16 +129,16 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     this.props.clearSystems();
     this.setState({ loading: true });
     const filters = [];
-    if (typeof this.state.surface.label !== 'undefined') {
-      filters.push(`surfaceComposition: "~${this.state.surface.label}"`);
+    if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
+      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
     }
-    if (typeof this.state.facet.label !== 'undefined') {
+    if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
       filters.push(`facet: "~${this.state.facet.label}"`);
     }
-    if (typeof this.state.reactants.label !== 'undefined') {
+    if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
       filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
-    if (typeof this.state.products.label !== 'undefined') {
+    if (typeof this.state.products.label !== 'undefined' && this.state.products.label) {
       filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
 
@@ -147,29 +151,17 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       label: filterString,
     });
     const query = {
-      query: `query{catapp ( last: 500, ${filterString} ) { edges { node { id
-      dftCode
-      dftFunctional
-      reactants
-      products
-      aseIds
-      facet
-      chemicalComposition
-      reactionEnergy
-      activationEnergy
-      surfaceComposition
-    }
-  }
-}}`,
+      query: `query{catapp ( first: 500, ${filterString} ) { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`,
+      ttl: 300,
     };
-    axios.post(graphQLRoot, query).then((response) => {
+    cachios.post(graphQLRoot, query).then((response) => {
       this.setState({
         loading: false,
       });
       this.props.submitSearch({
         reactants: this.state.reactants.label,
         products: this.state.products.label,
-        surface: this.state.surface.label,
+        surfaceComposition: this.state.surfaceComposition.label,
         facet: this.state.facet.label,
       });
       this.props.receiveReactions(response.data.data.catapp.edges);
@@ -189,7 +181,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
         <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <TermAutosuggest field="surface" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface"placeholder="Pt, CoO3, ..." />
+        <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
         <br />
@@ -211,4 +203,18 @@ EnergiesPageInput.propTypes = {
 EnergiesPageInput.defaultProps = {
 };
 
-export default withStyles(styles, { withTheme: true })(EnergiesPageInput);
+const mapStateToProps = (state) => ({
+  filter: state.get('energiesPageReducer').filter,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  receiveReactions: (reactions) => {
+    dispatch(actions.receiveReactions(reactions));
+  },
+});
+
+
+export default withStyles(styles, { withTheme: true })(
+connect(mapStateToProps, mapDispatchToProps)(EnergiesPageInput)
+
+);

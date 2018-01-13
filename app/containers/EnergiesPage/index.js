@@ -9,13 +9,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
 
-import { selectReaction,
-  receiveReactions,
-  receiveSystems,
-  clearSystems,
-  saveSystem,
-  submitSearch,
-} from './actions';
+
+import * as actions from './actions';
 import EnergiesPageInput from './Input';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
@@ -24,11 +19,12 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
   render() {
     return (
       <div>
+        {/* Required for ChemDoodle later below */}
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
 
         <EnergiesPageInput {...this.props} />
-        <MatchingReactions {...this.props} />
+        <MatchingReactions />
         <ReactionStructures {...this.props} />
       </div>
     );
@@ -44,26 +40,30 @@ const mapStateToProps = (state) => ({
   reactionSystems: state.get('energiesPageReducer').reactionSystems,
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
   searchParams: state.get('energiesPageReducer').searchParams,
+  filter: state.get('energiesPageReducer').filter,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   selectReaction: (reaction) => {
-    dispatch(selectReaction(reaction));
+    dispatch(actions.selectReaction(reaction));
   },
   receiveReactions: (reactions) => {
-    dispatch(receiveReactions(reactions));
+    dispatch(actions.receiveReactions(reactions));
   },
   receiveSystems: (systems) => {
-    dispatch(receiveSystems(systems));
+    dispatch(actions.receiveSystems(systems));
   },
   clearSystems: () => {
-    dispatch(clearSystems());
+    dispatch(actions.clearSystems());
   },
   saveSystem: (system) => {
-    dispatch(saveSystem(system));
+    dispatch(actions.saveSystem(system));
   },
   submitSearch: (params) => {
-    dispatch(submitSearch(params));
+    dispatch(actions.submitSearch(params));
+  },
+  updateFilter: (field, value) => {
+    dispatch(actions.updateFilter(field, value));
   },
 });
 

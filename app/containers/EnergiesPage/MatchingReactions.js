@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ReactGA from 'react-ga';
@@ -25,6 +26,8 @@ import FaCube from 'react-icons/lib/fa/cube';
 
 import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
+
+import * as actions from './actions';
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
   ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
@@ -249,4 +252,29 @@ MatchingReactions.defaultProps = {
 
 };
 
-export default withStyles(styles)(MatchingReactions);
+const mapStateToProps = (state) => ({
+  filter: state.get('energiesPageReducer').filter,
+  matchingReactions: state.get('energiesPageReducer').matchingReactions,
+  searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  receiveReactions: (reactions) => {
+    dispatch(actions.receiveReactions(reactions));
+  },
+  selectReaction: (reaction) => {
+    dispatch(actions.selectReaction(reaction));
+  },
+  clearSystems: () => {
+    dispatch(actions.clearSystems());
+  },
+  receiveSystems: (systems) => {
+    dispatch(actions.receiveSystems(systems));
+  },
+  saveSystem: (system) => {
+    dispatch(actions.saveSystem(system));
+  },
+});
+
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MatchingReactions));

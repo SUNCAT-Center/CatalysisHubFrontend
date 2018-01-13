@@ -14,6 +14,7 @@ import {
   SAVE_SYSTEM,
   CLEAR_SYSTEMS,
   SUBMIT_SEARCH,
+  UPDATE_FILTER,
 } from './constants';
 
 const initialState = {
@@ -22,11 +23,20 @@ const initialState = {
   reactionSystems: [],
   searchSubmitted: false,
   searchParams: {},
+  filter: {},
 };
 
 
 function energiesPageReducer(state = initialState, action) {
+  const update = {};
   switch (action.type) {
+    case UPDATE_FILTER:
+      update[action.payload.field] = action.payload.value;
+      return {
+        ...state,
+        filter: _.extend(state.filter, update),
+      };
+
     case SUBMIT_SEARCH:
       return {
         ...state,

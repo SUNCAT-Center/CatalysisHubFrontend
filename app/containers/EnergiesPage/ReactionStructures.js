@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
@@ -83,4 +84,15 @@ ReactionStructures.propTypes = {
   selectedReaction: PropTypes.object,
 };
 
-exports.ReactionStructures = withStyles(styles, { withTheme: true })(ReactionStructures);
+const mapStateToProps = (state) => ({
+  reactionSystems: state.get('energiesPageReducer').reactionSystems,
+});
+
+const mapDispatchToProps = () => ({
+});
+
+
+exports.ReactionStructures = withStyles(styles, { withTheme: true })(
+connect(mapStateToProps, mapDispatchToProps)(ReactionStructures)
+
+);

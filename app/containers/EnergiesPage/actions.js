@@ -12,8 +12,19 @@ import {
   CLEAR_SYSTEMS,
   SAVE_SYSTEM,
   SUBMIT_SEARCH,
+  UPDATE_FILTER,
 } from './constants';
 
+
+export function updateFilter(field, value) {
+  return {
+    type: UPDATE_FILTER,
+    payload: {
+      field,
+      value,
+    },
+  };
+}
 
 export function submitSearch(params) {
   return {

@@ -12,3 +12,4 @@ export const SAVE_SYSTEM = 'app/EnergiesPage/SAVE_SYSTEM';
 export const SELECT_REACTION = 'app/EnergiesPage/SELECT_REACTION';
 export const SAVE_REACTION = 'app/EnergiesPage/SAVE_REACTION';
 export const SUBMIT_SEARCH = 'app/EnergiesPage/SUBMIT_SEARCH';
+export const UPDATE_FILTER = 'app/EnergiesPage/UPDATE_FILTER';
