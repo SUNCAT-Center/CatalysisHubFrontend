@@ -4,8 +4,9 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import { MdFileDownload } from 'react-icons/lib/md';
+import { MdFileDownload, MdSave } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 
 import axios from 'axios';
@@ -29,6 +30,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
     this.state = initialState;
     this.handleChange = this.handleChange.bind(this);
     this.downloadDft = this.downloadDft.bind(this);
+    this.saveCalculation = this.saveCalculation.bind(this);
   }
 
   handleChange(name) {
@@ -39,6 +41,20 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
     };
   }
 
+  saveCalculation() {
+    this.props.saveCalculation({
+      bulkParams: this.props.bulkParams,
+      slabParams: this.props.slabParams,
+      dftParams: {
+        calculator: this.state.calculator,
+        functional: this.state.functional,
+      },
+    });
+    this.props.clearBulkParams();
+    this.props.clearBulkCif();
+    this.props.clearSlabParams();
+    this.props.clearSlabCifs();
+  }
   downloadDft() {
     const url = `${backendRoot}generate_dft/`;
     const params = {
@@ -87,7 +103,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
             </FormControl>
 
             <FormControl className={this.props.classes.formControl}>
-              <InputLabel htmlFor="functional">XC-Functional</InputLabel>
+              <InputLabel htmlFor="functional">XC</InputLabel>
               <Select
                 value={this.state.functional}
                 onChange={this.handleChange('functional')}
@@ -97,7 +113,14 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
                 <MenuItem value="BEEF-vdW">BEEF-vdW</MenuItem>
               </Select>
             </FormControl>
-            <Button raised onClick={this.downloadDft} color="primary"><MdFileDownload /> Download </Button>
+            <Grid container justify="flex-end" direction="row">
+              <Grid item>
+                <Button raised onClick={this.saveCalculation} color="contrast"><MdSave /> Save</Button>
+              </Grid>
+              <Grid item>
+                <Button raised onClick={this.downloadDft} color="primary"><MdFileDownload /> Download </Button>
+              </Grid>
+            </Grid>
 
 
           </form>
@@ -114,6 +137,11 @@ DftInput.propTypes = {
   classes: PropTypes.object,
   bulkParams: PropTypes.object,
   slabParams: PropTypes.object,
+  saveCalculation: PropTypes.func,
+  clearBulkParams: PropTypes.func,
+  clearSlabParams: PropTypes.func,
+  clearBulkCif: PropTypes.func,
+  clearSlabCifs: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);

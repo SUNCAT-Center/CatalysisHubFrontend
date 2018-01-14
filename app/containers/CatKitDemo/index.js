@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import { CatKitDemoHeader } from './catKitDemoHeader';
 import BulkInput from './BulkInput';
+import { CalculationsView } from './CalculationsView';
 import { BulkView } from './BulkView';
 import SlabInput from './SlabInput';
 import { SlabView } from './SlabView';
@@ -24,6 +25,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
     return (
       <div>
         <CatKitDemoHeader {...this.props} />
+        <CalculationsView {...this.props} />
         <BulkInput {...this.props} />
         <BulkView {...this.props} />
         <SlabInput {...this.props} />
@@ -56,6 +58,24 @@ const mapDispatchToProps = (dispatch) => ({
   saveSlabParams: (slabParams) => {
     dispatch(actions.saveSlabParams(slabParams));
   },
+  saveCalculation: (params) => {
+    dispatch(actions.saveCalculation(params));
+  },
+  clearBulkParams: () => {
+    dispatch(actions.clearBulkParams());
+  },
+  clearSlabParams: () => {
+    dispatch(actions.clearSlabParams());
+  },
+  clearBulkCif: () => {
+    dispatch(actions.clearBulkCif());
+  },
+  clearSlabCifs: () => {
+    dispatch(actions.clearSlabCifs());
+  },
+  clearCalculations: () => {
+    dispatch(actions.clearCalculations());
+  },
 });
 
 const mapStateToProps = (state) => ({
@@ -64,6 +84,7 @@ const mapStateToProps = (state) => ({
   latticeConstant: state.get('catKitDemoReducer').latticeConstant,
   bulkParams: state.get('catKitDemoReducer').bulkParams,
   slabParams: state.get('catKitDemoReducer').slabParams,
+  calculations: state.get('catKitDemoReducer').calculations,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatKitDemo);

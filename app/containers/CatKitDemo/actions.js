@@ -6,6 +6,33 @@
 
 import * as constants from './constants';
 
+export function clearCalculations() {
+  return {
+    type: constants.CLEAR_CALCULATIONS,
+  };
+}
+
+export function clearSlabParams() {
+  return {
+    type: constants.CLEAR_SLAB_PARAMS,
+  };
+}
+
+export function clearBulkParams() {
+  return {
+    type: constants.CLEAR_BULK_PARAMS,
+  };
+}
+
+export function saveCalculation(params) {
+  return {
+    type: constants.SAVE_CALCULATION,
+    payload: {
+      calculation: params,
+    },
+  };
+}
+
 export function defaultAction() {
   return {
     type: constants.DEFAULT_ACTION,
@@ -19,10 +46,22 @@ export function receiveBulkCif(cif) {
   };
 }
 
+export function clearBulkCif() {
+  return {
+    type: constants.CLEAR_BULK_CIF,
+  };
+}
+
 export function receiveSlabCifs(cifs) {
   return {
     type: constants.RECEIVE_SLAB_CIFS,
     payload: cifs,
+  };
+}
+
+export function clearSlabCifs() {
+  return {
+    type: constants.CLEAR_SLAB_CIFS,
   };
 }
 

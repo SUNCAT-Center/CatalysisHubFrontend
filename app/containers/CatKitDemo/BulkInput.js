@@ -5,6 +5,7 @@ import React from 'react';
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
 import { MdLoop } from 'react-icons/lib/md';
 
 import PropTypes from 'prop-types';
@@ -21,6 +22,17 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
   },
   formControl: {
+    margin: theme.spacing.unit,
+  },
+  buttonList: {
+    flexGrow: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justify: 'flex-end',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
+  button: {
     margin: theme.spacing.unit,
   },
 });
@@ -157,7 +169,11 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
             <Input id="element4-helper" value={this.state.element4} onChange={this.handleChange('element4')} />
             <FormHelperText></FormHelperText>
           </FormControl>
-          <Button raised onClick={this.generateBulk} color="primary"><MdLoop /> Generate </Button>
+          <Grid container justify="flex-end" direction="row" >
+            <Grid item>
+              <Button raised onClick={this.generateBulk} color="primary"><MdLoop /> Generate </Button>
+            </Grid>
+          </Grid>
         </form>
       </div>
     );
