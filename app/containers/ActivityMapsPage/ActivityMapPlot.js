@@ -21,8 +21,8 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
           {...plotlydata}
           layout={{
             hovermode: 'closest',
-            height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
-            width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+            height: Math.max(Math.min(window.innerHeight * 0.8, Number.POSITIVE_INFINITY), 300),
+            width: Math.max(Math.min(window.innerWidth * 0.8, Number.POSITIVE_INFINITY), 300),
             margin: { l: 20, r: 20, b: 10, t: 10 },
           }}
           onClick={(event) => { this.props.clickDot(event); }}
