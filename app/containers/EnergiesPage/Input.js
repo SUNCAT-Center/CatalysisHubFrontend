@@ -15,6 +15,7 @@ import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
 
 
 import { MdSearch } from 'react-icons/lib/md';
@@ -187,7 +188,11 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
         <br />
         <br />
-        <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
+        <Grid container justify="flex-end" direction="row">
+          <Grid item>
+            <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
+          </Grid>
+        </Grid>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
       </Paper>
     );
