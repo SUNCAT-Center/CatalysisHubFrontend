@@ -116,7 +116,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   render() {
     return (
       <div>
-        <h2>Configure Bulk Structure</h2>
+        <h2>Setup Bulk Structure</h2>
         <form>
           <FormControl className={this.props.classes.formControl} >
             <InputLabel htmlFor="structure-simple">Structure</InputLabel>

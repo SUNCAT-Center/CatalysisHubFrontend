@@ -40,7 +40,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
       <div>
         {this.props.calculations.length === 0 ? null :
         <div>
-          <h2>Saved Calculations</h2>
+          <h2>Stored Calculations</h2>
           <Table>
             <TableHead>
               <TableRow>
