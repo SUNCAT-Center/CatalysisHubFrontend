@@ -115,10 +115,10 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
             </FormControl>
             <Grid container justify="flex-end" direction="row">
               <Grid item>
-                <Button raised onClick={this.saveCalculation} color="contrast"><MdSave /> Save</Button>
+                <Button raised onClick={this.downloadDft} color="contrast"><MdFileDownload /> Download </Button>
               </Grid>
               <Grid item>
-                <Button raised onClick={this.downloadDft} color="primary"><MdFileDownload /> Download </Button>
+                <Button raised onClick={this.saveCalculation} color="primary"><MdSave /> Save</Button>
               </Grid>
             </Grid>
 
