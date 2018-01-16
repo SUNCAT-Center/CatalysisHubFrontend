@@ -76,6 +76,9 @@ const mapDispatchToProps = (dispatch) => ({
   clearCalculations: () => {
     dispatch(actions.clearCalculations());
   },
+  removeCalculation: (n) => {
+    dispatch(actions.removeCalculation(n));
+  },
 });
 
 const mapStateToProps = (state) => ({

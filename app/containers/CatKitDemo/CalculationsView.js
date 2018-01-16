@@ -8,6 +8,7 @@ import Table, {
   TableHead,
   TableRow,
 } from 'material-ui/Table';
+import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
@@ -30,9 +31,13 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
   constructor(props) {
     super(props);
     this.clearCalculations = this.clearCalculations.bind(this);
+    this.removeCalculation = this.removeCalculation.bind(this);
   }
   clearCalculations() {
     this.props.clearCalculations();
+  }
+  removeCalculation(n) {
+    this.props.removeCalculation(n);
   }
 
   render() {
@@ -73,7 +78,11 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
-                  <TableCell padding="none"><MdClose /></TableCell>
+                  <TableCell padding="none">
+                    <IconButton onClick={() => { this.removeCalculation(i); }}>
+                      <MdClose />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
                 ))}
             </TableBody>
@@ -98,6 +107,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
 CalculationsView.propTypes = {
   calculations: PropTypes.array,
   clearCalculations: PropTypes.func,
+  removeCalculation: PropTypes.func,
   classes: PropTypes.object,
 };
 

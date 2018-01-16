@@ -6,6 +6,16 @@
 
 import * as constants from './constants';
 
+
+export function removeCalculation(n) {
+  return {
+    type: constants.REMOVE_CALCULATION,
+    payload: {
+      n,
+    },
+  };
+}
+
 export function clearCalculations() {
   return {
     type: constants.CLEAR_CALCULATIONS,

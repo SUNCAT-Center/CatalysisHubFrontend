@@ -97,7 +97,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
             <FormHelperText>Float in Angstrom</FormHelperText>
           </FormControl>
 
-          <Grid container justify="flex-end" directio="row">
+          <Grid container justify="flex-end" direction="row">
             <Grid item>
               <Button raised onClick={this.generateSlabs} color="primary"><MdLoop /> Generate </Button>
             </Grid>
