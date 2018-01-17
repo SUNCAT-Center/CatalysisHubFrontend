@@ -11,6 +11,11 @@ import { withStyles } from 'material-ui/styles';
 import { Element } from '@chemistry/elements';
 
 const styles = (theme) => ({
+  blockThree: {},
+  blockFour: {},
+  panelFive: {},
+  panelFour: {},
+  lowerContainer: {},
   box: {
     border: '3px solid black',
     maxWidth: 50,
@@ -26,8 +31,11 @@ const styles = (theme) => ({
   liquid: {
     backgroundColor: theme.palette.teal[500],
   },
-  artificial: {
+  solid: {
     backgroundColor: theme.palette.sandstone[500],
+  },
+  artificial: {
+    backgroundColor: theme.palette.sandhill[500],
   },
   number: {
     marginTop: -10,
@@ -65,10 +73,20 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
           <div className={this.props.classes.number}>
             {(Element.getElementByName(this.props.label) || {}).number}
           </div>
-          <div className={this.props.classes.symbol}>
+          <div
+            className={this.props.classes.symbol}
+            style={{
+              fontWeight: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? 'bolder' : 'lighter',
+            }}
+          >
             { this.props.label }
           </div>
-          <div className={this.props.classes.name}>
+          <div
+            className={this.props.classes.name}
+            style={{
+              fontWeight: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? 'bolder' : 'lighter',
+            }}
+          >
             {(Element.getElementByName(this.props.label) || {}).name}
           </div>
           <div className={this.props.classes.chemData}>
@@ -87,7 +105,7 @@ ElementBox.propTypes = {
   clickElement: PropTypes.func.isRequired,
   backgroundColor: PropTypes.string,
   classes: PropTypes.object,
-
+  selection: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(ElementBox);

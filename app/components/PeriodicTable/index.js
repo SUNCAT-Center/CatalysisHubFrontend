@@ -121,7 +121,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
   constructor(props) {
     super(props);
     this.state = {
-      show_table: false,
+      show_table: true,
     };
     this.toggletable = this.toggletable.bind(this);
   }
@@ -175,197 +175,197 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           <div>
             <Container>
               <PanelOne>
-                <Element label="H" backgroundColor="gas" />
-                <Element label="Li" />
-                <Element label="Na" />
-                <Element label="K" />
-                <Element label="Rb" />
-                <Element label="Cs" />
-                <Element label="Fr" />
+                <Element {...this.props} label="H" backgroundColor="gas" />
+                <Element {...this.props} label="Li" />
+                <Element {...this.props} label="Na" />
+                <Element {...this.props} label="K" />
+                <Element {...this.props} label="Rb" />
+                <Element {...this.props} label="Cs" />
+                <Element {...this.props} label="Fr" />
               </PanelOne>
               <PanelTwo>
-                <Element label="Be" />
-                <Element label="Mg" />
-                <Element label="Ca" />
-                <Element label="Sr" />
-                <Element label="Ba" />
+                <Element {...this.props} label="Be" />
+                <Element {...this.props} label="Mg" />
+                <Element {...this.props} label="Ca" />
+                <Element {...this.props} label="Sr" />
+                <Element {...this.props} label="Ba" />
                 <Element label="Ra" />
               </PanelTwo>
               <BlockThree className={this.props.classes.blockThree} >
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Sc" />
-                  <Element label="Y" />
-                  <Element label="&nbsp;" />
-                  <Element label="&nbsp;" />
+                  <Element {...this.props} label="Sc" />
+                  <Element {...this.props} label="Y" />
+                  <Element {...this.props} label="&nbsp;" />
+                  <Element {...this.props} label="&nbsp;" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Ti" />
-                  <Element label="Zr" />
-                  <Element label="Hf" />
-                  <Element label="Rf" backgroundColor="artificial" />
+                  <Element {...this.props} label="Ti" />
+                  <Element {...this.props} label="Zr" />
+                  <Element {...this.props} label="Hf" />
+                  <Element {...this.props} label="Rf" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="V" />
-                  <Element label="Nb" />
-                  <Element label="Ta" />
-                  <Element label="Db" backgroundColor="artificial" />
+                  <Element {...this.props} label="V" />
+                  <Element {...this.props} label="Nb" />
+                  <Element {...this.props} label="Ta" />
+                  <Element {...this.props} label="Db" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Cr" />
-                  <Element label="Mo" />
-                  <Element label="W" />
-                  <Element label="Sg" backgroundColor="artificial" />
+                  <Element {...this.props} label="Cr" />
+                  <Element {...this.props} label="Mo" />
+                  <Element {...this.props} label="W" />
+                  <Element {...this.props} label="Sg" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Mn" />
-                  <Element label="Tc" backgroundColor="artificial" />
-                  <Element label="Re" />
-                  <Element label="Bh" backgroundColor="artificial" />
+                  <Element {...this.props} label="Mn" />
+                  <Element {...this.props} label="Tc" backgroundColor="artificial" />
+                  <Element {...this.props} label="Re" />
+                  <Element {...this.props} label="Bh" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Fe" />
-                  <Element label="Ru" />
-                  <Element label="Os" />
-                  <Element label="Hs" backgroundColor="artificial" />
+                  <Element {...this.props} label="Fe" />
+                  <Element {...this.props} label="Ru" />
+                  <Element {...this.props} label="Os" />
+                  <Element {...this.props} label="Hs" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Co" />
-                  <Element label="Rh" />
-                  <Element label="Ir" />
-                  <Element label="Mt" backgroundColor="artificial" />
+                  <Element {...this.props} label="Co" />
+                  <Element {...this.props} label="Rh" />
+                  <Element {...this.props} label="Ir" />
+                  <Element {...this.props} label="Mt" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Ni" />
-                  <Element label="Pd" />
-                  <Element label="Pt" />
-                  <Element label="Ds" backgroundColor="artificial" />
+                  <Element {...this.props} label="Ni" />
+                  <Element {...this.props} label="Pd" />
+                  <Element {...this.props} label="Pt" />
+                  <Element {...this.props} label="Ds" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Cu" />
-                  <Element label="Ag" />
-                  <Element label="Au" />
-                  <Element label="Rg" backgroundColor="artificial" />
+                  <Element {...this.props} label="Cu" />
+                  <Element {...this.props} label="Ag" />
+                  <Element {...this.props} label="Au" />
+                  <Element {...this.props} label="Rg" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
-                  <Element label="Zn" />
-                  <Element label="Cd" />
-                  <Element label="Hg" backgroundColor="liquid" />
-                  <Element label="Cn" backgroundColor="artificial" />
+                  <Element {...this.props} label="Zn" />
+                  <Element {...this.props} label="Cd" />
+                  <Element {...this.props} label="Hg" backgroundColor="liquid" />
+                  <Element {...this.props} label="Cn" backgroundColor="artificial" />
                 </PanelThree>
               </BlockThree>
               <BlockFour className={this.props.classes.blockFour} >
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="B" />
-                  <Element label="Al" />
-                  <Element label="Ga" />
-                  <Element label="In" />
-                  <Element label="Tl" />
-                  <Element label="Nh" backgroundColor="artificial" />
+                  <Element {...this.props} label="B" />
+                  <Element {...this.props} label="Al" />
+                  <Element {...this.props} label="Ga" />
+                  <Element {...this.props} label="In" />
+                  <Element {...this.props} label="Tl" />
+                  <Element {...this.props} label="Nh" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="C" />
-                  <Element label="Si" />
-                  <Element label="Ge" />
-                  <Element label="Sn" />
-                  <Element label="Rb" />
-                  <Element label="Fl" backgroundColor="artificial" />
+                  <Element {...this.props} label="C" />
+                  <Element {...this.props} label="Si" />
+                  <Element {...this.props} label="Ge" />
+                  <Element {...this.props} label="Sn" />
+                  <Element {...this.props} label="Rb" />
+                  <Element {...this.props} label="Fl" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="N" backgroundColor="gas" />
-                  <Element label="P" />
-                  <Element label="As" />
-                  <Element label="Sb" />
-                  <Element label="Bi" />
-                  <Element label="Mc" backgroundColor="artificial" />
+                  <Element {...this.props} label="N" backgroundColor="gas" />
+                  <Element {...this.props} label="P" />
+                  <Element {...this.props} label="As" />
+                  <Element {...this.props} label="Sb" />
+                  <Element {...this.props} label="Bi" />
+                  <Element {...this.props} label="Mc" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="O" backgroundColor="gas" />
-                  <Element label="S" />
-                  <Element label="Se" />
-                  <Element label="Te" />
-                  <Element label="Po" />
-                  <Element label="Lv" backgroundColor="artificial" />
+                  <Element {...this.props} label="O" backgroundColor="gas" />
+                  <Element {...this.props} label="S" />
+                  <Element {...this.props} label="Se" />
+                  <Element {...this.props} label="Te" />
+                  <Element {...this.props} label="Po" />
+                  <Element {...this.props} label="Lv" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="F" backgroundColor="gas" />
-                  <Element label="Cl" backgroundColor="gas" />
-                  <Element label="Br" backgroundColor="liquid" />
-                  <Element label="I" />
-                  <Element label="At" />
-                  <Element label="Ts" backgroundColor="artificial" />
+                  <Element {...this.props} label="F" backgroundColor="gas" />
+                  <Element {...this.props} label="Cl" backgroundColor="gas" />
+                  <Element {...this.props} label="Br" backgroundColor="liquid" />
+                  <Element {...this.props} label="I" />
+                  <Element {...this.props} label="At" />
+                  <Element {...this.props} label="Ts" backgroundColor="artificial" />
                 </PanelFour>
               </BlockFour>
               <PanelFive className={this.props.classes.panelFive} >
-                <Element label="He" backgroundColor="gas" />
-                <Element label="Ne" backgroundColor="gas" />
-                <Element label="Ar" backgroundColor="gas" />
-                <Element label="Kr" backgroundColor="gas" />
-                <Element label="Xe" backgroundColor="gas" />
-                <Element label="Rn" backgroundColor="gas" />
-                <Element label="Og" backgroundColor="artificial" />
+                <Element {...this.props} label="He" backgroundColor="gas" />
+                <Element {...this.props} label="Ne" backgroundColor="gas" />
+                <Element {...this.props} label="Ar" backgroundColor="gas" />
+                <Element {...this.props} label="Kr" backgroundColor="gas" />
+                <Element {...this.props} label="Xe" backgroundColor="gas" />
+                <Element {...this.props} label="Rn" backgroundColor="gas" />
+                <Element {...this.props} label="Og" backgroundColor="artificial" />
               </PanelFive>
             </Container>
 
             <LowerContainer className={this.props.classes.lowerContainer} >
               <Bottom>
-                <Element label="La" />
-                <Element label="Ac" />
+                <Element {...this.props} label="La" />
+                <Element {...this.props} label="Ac" />
               </Bottom>
               <Bottom>
-                <Element label="Ce" />
-                <Element label="Th" />
+                <Element {...this.props} label="Ce" />
+                <Element {...this.props} label="Th" />
               </Bottom>
               <Bottom>
-                <Element label="Pr" />
-                <Element label="Pa" />
+                <Element {...this.props} label="Pr" />
+                <Element {...this.props} label="Pa" />
               </Bottom>
               <Bottom>
-                <Element label="Nd" />
-                <Element label="U" />
+                <Element {...this.props} label="Nd" />
+                <Element {...this.props} label="U" />
               </Bottom>
               <Bottom>
-                <Element label="Pm" backgroundColor="artificial" />
-                <Element label="Np" backgroundColor="artificial" />
+                <Element {...this.props} label="Pm" backgroundColor="artificial" />
+                <Element {...this.props} label="Np" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Sm" />
-                <Element label="Pu" backgroundColor="artificial" />
+                <Element {...this.props} label="Sm" />
+                <Element {...this.props} label="Pu" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Eu" />
-                <Element label="Am" backgroundColor="artificial" />
+                <Element {...this.props} label="Eu" />
+                <Element {...this.props} label="Am" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Gd" />
-                <Element label="Cm" backgroundColor="artificial" />
+                <Element {...this.props} label="Gd" />
+                <Element {...this.props} label="Cm" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Tb" />
-                <Element label="Bk" backgroundColor="artificial" />
+                <Element {...this.props} label="Tb" />
+                <Element {...this.props} label="Bk" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Dy" />
-                <Element label="Cf" backgroundColor="artificial" />
+                <Element {...this.props} label="Dy" />
+                <Element {...this.props} label="Cf" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Ho" />
-                <Element label="Es" backgroundColor="artificial" />
+                <Element {...this.props} label="Ho" />
+                <Element {...this.props} label="Es" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Er" />
-                <Element label="Fm" backgroundColor="artificial" />
+                <Element {...this.props} label="Er" />
+                <Element {...this.props} label="Fm" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Tm" />
-                <Element label="Md" backgroundColor="artificial" />
+                <Element {...this.props} label="Tm" />
+                <Element {...this.props} label="Md" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Yb" />
-                <Element label="No" backgroundColor="artificial" />
+                <Element {...this.props} label="Yb" />
+                <Element {...this.props} label="No" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
-                <Element label="Lu" />
-                <Element label="Lr" backgroundColor="artificial" />
+                <Element {...this.props} label="Lu" />
+                <Element {...this.props} label="Lr" backgroundColor="artificial" />
               </Bottom>
             </LowerContainer>
           </div>

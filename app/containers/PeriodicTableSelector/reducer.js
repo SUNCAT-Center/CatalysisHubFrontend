@@ -32,7 +32,7 @@ function periodicTableSelectorReducer(state = initialState, action) {
       } else if (state.selection.split(' & ').indexOf(action.payload) < 0) {
         newSelection = [state.selection, action.payload].join(' & ');
       } else {
-        newSelection = state.selection;
+        newSelection = state.selection.split(' & ').filter((x) => x !== action.payload).join(' & ');
       }
 
       return {

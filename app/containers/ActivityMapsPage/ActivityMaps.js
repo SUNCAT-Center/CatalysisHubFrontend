@@ -9,7 +9,7 @@ import React from 'react';
 import Flexbox from 'flexbox-react';
 
 
-// import PeriodicTableSelector from 'containers/PeriodicTableSelector';
+import PeriodicTableSelector from 'containers/PeriodicTableSelector';
 
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
@@ -67,11 +67,9 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           </FormControl>
 
         </Flexbox>
-        {/*
         <Flexbox minHeight="100px">
           <PeriodicTableSelector />
         </Flexbox>
-        */}
         <div>
           <Flexbox width="100%">
             <ActivityMapPlot {...this.props} />
