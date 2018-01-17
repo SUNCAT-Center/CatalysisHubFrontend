@@ -121,7 +121,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
   constructor(props) {
     super(props);
     this.state = {
-      show_table: true,
+      show_table: false,
     };
     this.toggletable = this.toggletable.bind(this);
   }
@@ -175,7 +175,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
           <div>
             <Container>
               <PanelOne>
-                <Element label="H" />
+                <Element label="H" backgroundColor="gas" />
                 <Element label="Li" />
                 <Element label="Na" />
                 <Element label="K" />
@@ -202,55 +202,55 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                   <Element label="Ti" />
                   <Element label="Zr" />
                   <Element label="Hf" />
-                  <Element label="Rf" />
+                  <Element label="Rf" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="V" />
                   <Element label="Nb" />
                   <Element label="Ta" />
-                  <Element label="Db" />
+                  <Element label="Db" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Cr" />
                   <Element label="Mo" />
                   <Element label="W" />
-                  <Element label="Sg" />
+                  <Element label="Sg" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Mn" />
-                  <Element label="Tc" />
+                  <Element label="Tc" backgroundColor="artificial" />
                   <Element label="Re" />
-                  <Element label="Bh" />
+                  <Element label="Bh" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Fe" />
                   <Element label="Ru" />
                   <Element label="Os" />
-                  <Element label="Hs" />
+                  <Element label="Hs" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Co" />
                   <Element label="Rh" />
                   <Element label="Ir" />
-                  <Element label="Mt" />
+                  <Element label="Mt" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Ni" />
                   <Element label="Pd" />
                   <Element label="Pt" />
-                  <Element label="Ds" />
+                  <Element label="Ds" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Cu" />
                   <Element label="Ag" />
                   <Element label="Au" />
-                  <Element label="Rg" />
+                  <Element label="Rg" backgroundColor="artificial" />
                 </PanelThree>
                 <PanelThree className={this.props.classes.panelThree} >
                   <Element label="Zn" />
                   <Element label="Cd" />
-                  <Element label="Hg" />
-                  <Element label="Cn" />
+                  <Element label="Hg" backgroundColor="liquid" />
+                  <Element label="Cn" backgroundColor="artificial" />
                 </PanelThree>
               </BlockThree>
               <BlockFour className={this.props.classes.blockFour} >
@@ -260,7 +260,7 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                   <Element label="Ga" />
                   <Element label="In" />
                   <Element label="Tl" />
-                  <Element label="Nh" />
+                  <Element label="Nh" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
                   <Element label="C" />
@@ -268,41 +268,41 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                   <Element label="Ge" />
                   <Element label="Sn" />
                   <Element label="Rb" />
-                  <Element label="Fl" />
+                  <Element label="Fl" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="N" />
+                  <Element label="N" backgroundColor="gas" />
                   <Element label="P" />
                   <Element label="As" />
                   <Element label="Sb" />
                   <Element label="Bi" />
-                  <Element label="Mc" />
+                  <Element label="Mc" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="O" />
+                  <Element label="O" backgroundColor="gas" />
                   <Element label="S" />
                   <Element label="Se" />
                   <Element label="Te" />
                   <Element label="Po" />
-                  <Element label="Lv" />
+                  <Element label="Lv" backgroundColor="artificial" />
                 </PanelFour>
                 <PanelFour className={this.props.classes.panelFour} >
-                  <Element label="F" />
-                  <Element label="Cl" />
-                  <Element label="Br" />
+                  <Element label="F" backgroundColor="gas" />
+                  <Element label="Cl" backgroundColor="gas" />
+                  <Element label="Br" backgroundColor="liquid" />
                   <Element label="I" />
                   <Element label="At" />
-                  <Element label="Ts" />
+                  <Element label="Ts" backgroundColor="artificial" />
                 </PanelFour>
               </BlockFour>
               <PanelFive className={this.props.classes.panelFive} >
-                <Element label="He" />
-                <Element label="Ne" />
-                <Element label="Ar" />
-                <Element label="Kr" />
-                <Element label="Xe" />
-                <Element label="Rn" />
-                <Element label="Og" />
+                <Element label="He" backgroundColor="gas" />
+                <Element label="Ne" backgroundColor="gas" />
+                <Element label="Ar" backgroundColor="gas" />
+                <Element label="Kr" backgroundColor="gas" />
+                <Element label="Xe" backgroundColor="gas" />
+                <Element label="Rn" backgroundColor="gas" />
+                <Element label="Og" backgroundColor="artificial" />
               </PanelFive>
             </Container>
 
@@ -324,48 +324,48 @@ class PeriodicTable extends React.Component { // eslint-disable-line react/prefe
                 <Element label="U" />
               </Bottom>
               <Bottom>
-                <Element label="Pm" />
-                <Element label="Np" />
+                <Element label="Pm" backgroundColor="artificial" />
+                <Element label="Np" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Sm" />
-                <Element label="Pu" />
+                <Element label="Pu" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Eu" />
-                <Element label="Am" />
+                <Element label="Am" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Gd" />
-                <Element label="Cm" />
+                <Element label="Cm" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Tb" />
-                <Element label="Bk" />
+                <Element label="Bk" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Dy" />
-                <Element label="Cf" />
+                <Element label="Cf" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Ho" />
-                <Element label="Es" />
+                <Element label="Es" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Er" />
-                <Element label="Fm" />
+                <Element label="Fm" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Tm" />
-                <Element label="Md" />
+                <Element label="Md" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Yb" />
-                <Element label="No" />
+                <Element label="No" backgroundColor="artificial" />
               </Bottom>
               <Bottom>
                 <Element label="Lu" />
-                <Element label="Lr" />
+                <Element label="Lr" backgroundColor="artificial" />
               </Bottom>
             </LowerContainer>
           </div>
