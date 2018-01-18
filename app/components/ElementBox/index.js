@@ -44,7 +44,7 @@ const styles = (theme) => ({
     fontSize: 8,
   },
   symbol: {
-    marginLeft: -10,
+    marginLeft: -24,
     marginTop: -2,
     fontSize: 14,
   },
@@ -85,12 +85,12 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
               || { number: '\u00A0\u00A0' }).number}
           </div>
           <div
-            className={this.props.classes.symbol}
+            className={`${this.props.classes.symbol}`}
             style={{
               fontWeight: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? 'bolder' : 'lighter',
             }}
           >
-            { this.props.label }
+            {`\u00A0\u00A0\u00A0\u00A0${this.props.label}\u00A0\u00A0\u00A0`}
           </div>
           <div
             className={this.props.classes.name}
