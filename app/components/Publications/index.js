@@ -193,7 +193,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         {this.state.references === {} ? <LinearProgress color="primary" /> : null }
         {this.state.years.map((year, i) => (
           <div key={`div_year_${i}`}>
+            {(this.state.references[year] || []).length === 0 ? null :
             <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
+            }
             {(this.state.references[year] || [])
                 .filter((references, j) => (this.state.titles[year][j] !== null))
                 .map((reference, j) => (
