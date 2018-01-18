@@ -22,7 +22,7 @@ const styles = (theme) => ({
     maxHeight: 50,
     padding: 10,
     paddingTop: 0,
-    lineHeight: '50px',
+    lineHeight: 4,
     textAlign: 'center',
     fontSize: '1.23em',
   },
@@ -66,7 +66,7 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
         key={this.props.label}
         className={`${this.props.classes.box} ${this.props.classes[this.props.backgroundColor]}`}
         style={{
-          borderWidth: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? '5px' : '1px',
+          borderWidth: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? '3px' : '1px',
         }}
       >
         <button
@@ -74,7 +74,12 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
             this.props.clickElement(this.props.label);
           }}
         >
-          <div className={this.props.classes.number}>
+          <div
+            className={this.props.classes.number}
+            style={{
+              fontWeight: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? 'bolder' : 'lighter',
+            }}
+          >
             {(Element.getElementByName(this.props.label) ||
               { Nh: { number: 113 }, Fl: { number: 114 }, Mc: { number: 115 }, Lv: { number: 116 }, Ts: { number: 117 }, Og: { number: 118 } }[this.props.label]
               || { number: '\u00A0\u00A0' }).number}
