@@ -17,7 +17,7 @@ import axios from 'axios';
 import { graphQLRoot } from 'utils/constants';
 
 import PublicationSystems from './publicationSystems';
-import PublicationReactions from './publicationReactions';
+// import PublicationReactions from './publicationReactions';
 
 const styles = (theme) => ({
   publicationEntry: {
@@ -108,7 +108,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             query,
           })
             .then((yearResponse) => {
-              let references = yearResponse.data.data.catapp.edges.map((n) => (n.node.publication));
+              let references = yearResponse.data.data.catapp.edges
+                .filter(({ node }) => node.PublicationTitle !== '')
+                .map((n) => (n.node.publication));
               references = [...new Set(references)];
               let dois = yearResponse.data.data.catapp.edges.map((n) => (n.node.doi));
               dois = [...new Set(dois)];
@@ -141,7 +143,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     const splitKey = key.split('_');
     const year = parseInt(splitKey[1], 10);
     const count = parseInt(splitKey[2], 10);
-    const doi = this.state.dois[year][count];
+    const title = JSON.parse(this.state.references[year][count]).title;
     /* reference = reference.split('"').join('\\"'); */
     this.setState({
       loading: true,
@@ -159,7 +161,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       systems: [],
       reactionEnergies: [],
     });
-    let query = `query{systems(last:500, keyValuePairs: "~doi\\": \\"${doi}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi Cifdata } } }}`;
+    let query = `query{systems(last:500, keyValuePairs: "~publication_Title\\": \\"${title}") { edges { node { natoms Formula Facet uniqueId energy DftCode DftFunctional PublicationTitle PublicationAuthors PublicationYear PublicationDoi Cifdata } } }}`;
     axios.post(graphQLRoot, { query })
       .then((response) => {
         if (response.data.data.systems.edges.length > 0) {
@@ -168,8 +170,8 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             loading: false,
           });
         }
-        const title = this.state.titles[year][count];
-        query = `{catapp ( last: 500, publication_Title: "${title}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
+        const searchTitle = this.state.titles[year][count];
+        query = `{catapp ( last: 500, publication_Title: "${searchTitle}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
         axios.post(graphQLRoot, { query })
             .then((response1) => {
               this.setState({
@@ -193,18 +195,16 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           <div key={`div_year_${i}`}>
             <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
             {(this.state.references[year] || [])
-                .filter((references, j) => (
-                  this.state.dois[year][j] !== '' && this.state.titles[year][j] !== null
-                ))
+                .filter((references, j) => (this.state.titles[year][j] !== null))
                 .map((reference, j) => (
                   <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
                     <button role="button" onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationEntry}>
                       { this.state.openedPublication !== `elem_${year}_${j}` ?
-                        <MdAddCircleOutline className={this.props.classes.publicationEntry} />
+                        <MdAddCircleOutline size={28} className={this.props.classes.publicationEntry} />
                       :
-                        <MdRemoveCircleOutline className={this.props.classes.publicationEntry} />
+                        <MdRemoveCircleOutline size={28} className={this.props.classes.publicationEntry} />
                       }
-                      <span> </span>
+                      <span> &nbsp;&nbsp;&nbsp; </span>
                       <span className={this.props.classes.publicationEntry}>
                         {prettyPrintReference(reference)}
                         {(this.state.dois[year][j] === null
@@ -226,9 +226,10 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       <div>
                         {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
-                        {this.state.reactionEnergies.length === 0 ? null :
+                        {/*
+                        true || this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
-                            }
+                        */}
                         {this.state.systems.length === 0 ? null :
                         <PublicationSystems {...this.state} />
                             }
