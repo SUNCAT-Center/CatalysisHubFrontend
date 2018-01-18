@@ -17,11 +17,11 @@ const styles = (theme) => ({
   panelFour: {},
   lowerContainer: {},
   box: {
-    border: '3px solid black',
+    border: '1px solid black',
     maxWidth: 50,
     maxHeight: 50,
-    padding: '10px',
-    /* lineHeight: 50, */
+    padding: 10,
+    lineHeight: '50px',
     textAlign: 'center',
     fontSize: '1.23em',
   },
@@ -64,6 +64,9 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
       <div
         key={this.props.label}
         className={`${this.props.classes.box} ${this.props.classes[this.props.backgroundColor]}`}
+        style={{
+          borderWidth: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? '5px' : '1px',
+        }}
       >
         <button
           onClick={() => {
@@ -71,7 +74,9 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
           }}
         >
           <div className={this.props.classes.number}>
-            {(Element.getElementByName(this.props.label) || {}).number}
+            {(Element.getElementByName(this.props.label) ||
+              { Nh: { number: 113 }, Fl: { number: 114 }, Mc: { number: 115 }, Lv: { number: 116 }, Ts: { number: 117 }, Og: { number: 118 } }[this.props.label]
+              || { number: '\u00A0\u00A0' }).number}
           </div>
           <div
             className={this.props.classes.symbol}
@@ -87,12 +92,17 @@ class ElementBox extends React.Component { // eslint-disable-line react/prefer-s
               fontWeight: this.props.selection.split(' & ').indexOf(this.props.label) > -1 ? 'bolder' : 'lighter',
             }}
           >
-            {(Element.getElementByName(this.props.label) || {}).name}
+            {(Element.getElementByName(this.props.label) ||
+              { Nh: { name: 'Nihonium' }, Fl: { name: 'Flerovium' }, Mc: { name: 'Moscovium' }, Lv: { name: 'Livermorium' }, Ts: { name: 'Tennessine' }, Og: { name: 'Oganesson' } }[this.props.label]
+              ||
+              { name: '\u00A0' }).name}
           </div>
           <div className={this.props.classes.chemData}>
-            {`
-              ${(Element.getElementByName(this.props.label) || { mass: 0.0 }).mass.toFixed(0)}
-              `}
+            {/* `
+              ${(Element.getElementByName(this.props.label) ||
+              {Nh: {mass: 286}, Fl: {mass: 289}, Mc: {mass: 290}, Lv: {mass: 293}, Ts: {mass: 294}, Og: {mass: 294}}[this.props.label]
+              || { mass: 0.0 }).mass.toFixed(0)}
+              `*/}
           </div>
         </button>
       </div>
