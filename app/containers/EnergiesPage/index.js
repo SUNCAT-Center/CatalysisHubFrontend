@@ -41,6 +41,7 @@ const mapStateToProps = (state) => ({
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
   searchParams: state.get('energiesPageReducer').searchParams,
   filter: state.get('energiesPageReducer').filter,
+  withGeometry: state.get('energiesPageReducer').withGeometry,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -64,6 +65,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   updateFilter: (field, value) => {
     dispatch(actions.updateFilter(field, value));
+  },
+  toggleGeometry: () => {
+    dispatch(actions.toggleGeometry());
   },
 });
 

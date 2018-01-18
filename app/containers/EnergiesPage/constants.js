@@ -15,3 +15,4 @@ export const SUBMIT_SEARCH = 'app/EnergiesPage/SUBMIT_SEARCH';
 export const UPDATE_FILTER = 'app/EnergiesPage/UPDATE_FILTER';
 export const SAVE_SEARCH = 'app/EnergiesPage/SAVE_SEARCH';
 export const SAVE_RESULT_SIZE = 'app/EnergiesPage/SAVE_RESULT_SIZE';
+export const TOGGLE_GEOMETRY = 'app/EnergiesPage/TOGGLE_GEOMETRY';

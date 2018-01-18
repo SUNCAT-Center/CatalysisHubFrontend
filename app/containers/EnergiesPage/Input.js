@@ -16,9 +16,14 @@ import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
+/* import Checkbox from 'material-ui/Checkbox';*/
+import Switch from 'material-ui/Switch';
+import Tooltip from 'material-ui/Tooltip';
+import { FormControlLabel } from 'material-ui/Form';
 
 
 import { MdSearch } from 'react-icons/lib/md';
+import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
 import { graphQLRoot } from 'utils/constants';
@@ -143,6 +148,10 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
 
+    if (this.props.withGeometry) {
+      filters.push('aseIds: "~star"');
+    }
+
 
     const filterString = filters.join(', ');
     this.props.saveSearch(filterString);
@@ -186,6 +195,21 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." />
         <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
         <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
+        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+        <Tooltip id="geometry-switch" title="Show only entries that have a geometry.">
+          <FormControlLabel
+            label={
+              <div><span>Geometry</span> <FaCube /></div>
+            }
+            control={
+              <Switch
+                checked={this.props.withGeometry}
+                onChange={this.props.toggleGeometry}
+              />
+            }
+          />
+        </Tooltip>
+
         <br />
         <br />
         <Grid container justify="flex-end" direction="row">
@@ -206,6 +230,8 @@ EnergiesPageInput.propTypes = {
   classes: PropTypes.object,
   saveSearch: PropTypes.func,
   saveResultSize: PropTypes.func,
+  withGeometry: PropTypes.bool,
+  toggleGeometry: PropTypes.func,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -229,6 +255,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 export default withStyles(styles, { withTheme: true })(
-connect(mapStateToProps, mapDispatchToProps)(EnergiesPageInput)
+  connect(mapStateToProps, mapDispatchToProps)(EnergiesPageInput)
 
 );

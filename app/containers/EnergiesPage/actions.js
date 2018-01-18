@@ -6,6 +6,13 @@
 
 import * as constants from './constants';
 
+
+export function toggleGeometry() {
+  return {
+    type: constants.TOGGLE_GEOMETRY,
+  };
+}
+
 export function saveResultSize(resultSize) {
   return {
     type: constants.SAVE_RESULT_SIZE,

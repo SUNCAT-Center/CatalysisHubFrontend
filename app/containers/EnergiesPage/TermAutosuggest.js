@@ -129,7 +129,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     this.onFocus = this.onFocus.bind(this);
   }
   componentDidMount() {
-    this.getRawSuggestions();
+    this.getRawSuggestions(false);
   }
   onFocus = () => {
     this.setState({
@@ -143,7 +143,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     });
     this.getRawSuggestions();
   }
-  getRawSuggestions() {
+  getRawSuggestions(withGeometry = true) {
     let query;
     let responseField;
     let parseField;
@@ -184,21 +184,28 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       facet = '';
     }
 
+    let filterGeometry;
+    if (this.props.withGeometry && withGeometry) {
+      filterGeometry = 'aseIds: "~a", ';
+    } else {
+      filterGeometry = '';
+    }
+
 
     if (this.props.field === 'reactants') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { ${this.props.field} } } }}`;
+      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { ${this.props.field} } } }}`;
       responseField = 'reactants';
       parseField = true;
     } else if (this.props.field === 'products') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { products } } }}`;
+      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { products } } }}`;
       responseField = 'products';
       parseField = true;
     } else if (this.props.field === 'surfaceComposition') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { surfaceComposition } } }}`;
+      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { surfaceComposition } } }}`;
       responseField = 'surfaceComposition';
       parseField = false;
     } else if (this.props.field === 'facet') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { facet } } }}`;
+      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { facet } } }}`;
       responseField = 'facet';
       parseField = false;
     }
@@ -344,6 +351,7 @@ TermAutosuggest.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   filter: PropTypes.object,
+  withGeometry: PropTypes.bool,
 };
 
 TermAutosuggest.defaultProps = {
@@ -356,6 +364,7 @@ TermAutosuggest.defaultProps = {
 
 const mapStateToProps = (state) => ({
   filter: state.get('energiesPageReducer').filter,
+  withGeometry: state.get('energiesPageReducer').withGeometry,
 });
 
 const mapDispatchToProps = (dispatch) => ({

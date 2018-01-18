@@ -16,12 +16,18 @@ const initialState = {
   filter: {},
   search: {},
   resultSize: 0,
+  withGeometry: true,
 };
 
 
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
+    case constants.TOGGLE_GEOMETRY:
+      return {
+        ...state,
+        withGeometry: !state.withGeometry,
+      };
     case constants.SAVE_RESULT_SIZE:
       return {
         ...state,
