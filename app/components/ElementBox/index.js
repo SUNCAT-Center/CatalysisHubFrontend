@@ -21,6 +21,7 @@ const styles = (theme) => ({
     maxWidth: 50,
     maxHeight: 50,
     padding: 10,
+    paddingTop: 0,
     lineHeight: '50px',
     textAlign: 'center',
     fontSize: '1.23em',
