@@ -15,6 +15,7 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import Grid from 'material-ui/Grid';
 
 import { MdWarning } from 'react-icons/lib/md';
 
@@ -37,12 +38,10 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
   }
   render() {
     return (
-      <Flexbox flexDirection="column" minHeight="100vh">
+      <Grid container direction="column" style={{ marginLeft: 10 }}>
         <div><MdWarning />Under construction.</div>
-        <Flexbox
-          height="75px" style={{
-            paddingLeft: '45px',
-          }}
+        <Grid
+          item
         >
           <FormControl
             style={{ minWidth: 220, margin: 12 }}
@@ -66,7 +65,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
             </Select>
           </FormControl>
 
-        </Flexbox>
+        </Grid>
         <Flexbox minHeight="100px">
           <PeriodicTableSelector />
         </Flexbox>
@@ -79,7 +78,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           </Flexbox>
 
         </div>
-      </Flexbox>
+      </Grid>
     );
   }
 }
