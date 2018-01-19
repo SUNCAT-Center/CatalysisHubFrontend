@@ -76,6 +76,9 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
               width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
               margin: { l: 20, r: 20, b: 10, t: 10 },
             }}
+            config={{
+              scrollZoom: false,
+            }}
             onClick={(event) => { this.props.clickDot(event); }}
           />
         </div>
