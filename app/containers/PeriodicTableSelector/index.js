@@ -8,7 +8,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 /* import { createStructuredSelector } from 'reselect'; */
-import PeriodicTable from 'components/PeriodicTable';
+import PeriodicTable from './PeriodicTable';
 
 import { clickElement, clearSelection } from './actions';
 
