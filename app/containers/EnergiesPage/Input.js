@@ -19,7 +19,7 @@ import Grid from 'material-ui/Grid';
 /* import Checkbox from 'material-ui/Checkbox';*/
 import Switch from 'material-ui/Switch';
 import Tooltip from 'material-ui/Tooltip';
-import { FormControlLabel } from 'material-ui/Form';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
 
 
 import { MdSearch } from 'react-icons/lib/md';
@@ -188,35 +188,37 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       <Paper className={this.props.classes.paper}>
         <h2>Reaction Energetics</h2>
 
-        <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus {...this.state} />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
-        <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
-        <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-        <Tooltip id="geometry-switch" title="Show only entries that have a geometry.">
-          <FormControlLabel
-            label={
-              <div><span>Geometry</span> <FaCube /></div>
+        <FormGroup row>
+          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus {...this.state} />
+          <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
+          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" />
+          <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." />
+          <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
+          <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
+          <Tooltip title="Show only results with slab geometry.">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.props.withGeometry}
+                  onChange={this.props.toggleGeometry}
+                />
             }
-            control={
-              <Switch
-                checked={this.props.withGeometry}
-                onChange={this.props.toggleGeometry}
-              />
+              label={
+                <span>Geometry <FaCube /></span>
             }
-          />
-        </Tooltip>
+            />
+          </Tooltip>
 
-        <br />
-        <br />
-        <Grid container justify="flex-end" direction="row">
-          <Grid item>
-            <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
+          <br />
+          <br />
+          <Grid container justify="flex-end" direction="row">
+            <Grid item>
+              <MButton raised onClick={this.submitForm} color="primary" className={this.props.classes.button}><MdSearch /> Search </MButton>
+            </Grid>
           </Grid>
-        </Grid>
+        </FormGroup>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
       </Paper>
     );
