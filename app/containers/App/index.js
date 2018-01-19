@@ -117,8 +117,12 @@ const styles = (xtheme) => ({
     margin: 0,
     marginTop: (appBar ? '20px' : '20px'),
     padding: '40px',
+    [xtheme.breakpoints.down('md')]: {
+      padding: '10px',
+      paddingBottom: '40px',
+    },
     [xtheme.breakpoints.down('sm')]: {
-      padding: '5px',
+      padding: '2px',
       paddingBottom: '40px',
     },
   },
