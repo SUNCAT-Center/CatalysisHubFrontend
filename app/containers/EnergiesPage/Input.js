@@ -21,6 +21,7 @@ import Switch from 'material-ui/Switch';
 import Tooltip from 'material-ui/Tooltip';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 
+import * as Scroll from 'react-scroll';
 
 import { MdSearch } from 'react-icons/lib/md';
 import FaCube from 'react-icons/lib/fa/cube';
@@ -165,6 +166,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       ttl: 300,
     };
     cachios.post(graphQLRoot, query).then((response) => {
+      Scroll.animateScroll.scrollMore(500);
       this.setState({
         loading: false,
       });

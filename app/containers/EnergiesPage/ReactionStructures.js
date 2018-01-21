@@ -4,12 +4,17 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
+import Grid from 'material-ui/Grid';
 
 import SingleStructureView from 'components/SingleStructureView';
 
 import BarrierChart from 'components/BarrierChart';
 
-const styles = () => ({
+const styles = (theme) => ({
+  tab: {
+    backgroundColor: theme.palette.primary[50],
+  },
+
 });
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
@@ -46,7 +51,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
 
     return (<div> {/* div necessary before wrapping ternary expression */}
       {this.props.reactionSystems.length === 0 ? null :
-      <div>
+      <Grid container direction="column" width="100%">
         <h2>{prettyPrintReaction(this.props.selectedReaction.reactants, this.props.selectedReaction.products)} - Reaction Geometries</h2>
         <Hidden smUp>
           <BarrierChart {...this.props} thumbnailSize={50} />
@@ -57,12 +62,17 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
         <Tabs
           value={tabValue}
           onChange={this.handleChange}
+          centered
           indicatorColor="primary"
           textColor="primary"
           fullWidth
+          scrollButtons="auto"
         >
           {this.props.reactionSystems.map((system, i) =>
-            <Tab label={system.key} key={`reaction_tab_${i}`} />
+            <Tab
+              label={system.key} key={`reaction_tab_${i}`}
+              className={this.props.classes.tab}
+            />
               )}
         </Tabs>
         <TabContainer>
@@ -72,7 +82,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
           {tabValue === 3 && typeof this.props.reactionSystems[3] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[3]} selectedUUID={this.props.reactionSystems[3].uniqueId} /> }
           {tabValue === 4 && typeof this.props.reactionSystems[4] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[4]} selectedUUID={this.props.reactionSystems[4].uniqueId} /> }
         </TabContainer>
-      </div>
+      </Grid>
       }
     </div>
     );
@@ -82,6 +92,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
 ReactionStructures.propTypes = {
   reactionSystems: PropTypes.array.isRequired,
   selectedReaction: PropTypes.object,
+  classes: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 import ReactGA from 'react-ga';
 import { Link } from 'react-router';
+import * as Scroll from 'react-scroll';
 
 import Table, {
   TableBody,
@@ -106,6 +107,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         ttl: 300,
       };
       return cachios.post(graphQLRoot, query).then((response) => {
+        Scroll.animateScroll.scrollMore(900);
         const node = response.data.data.systems.edges[0].node;
         node.DFTCode = reaction.dftCode;
         node.DFTFunctional = reaction.dftFunctional;
