@@ -37,6 +37,7 @@ import Button from 'material-ui/Button';
 import Hidden from 'material-ui/Hidden';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
+import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
@@ -67,6 +68,9 @@ const lightFooterWeight = 200;
 const drawerWidth = 240;
 
 const styles = (xtheme) => ({
+  textLink: {
+    color: 'white',
+  },
   root: {
     width: '100%',
     marginTop: xtheme.spacing.unit * 3,
@@ -335,6 +339,16 @@ class App extends React.Component {
                   `${this.props.location.pathname}` :
                   `CatApp${this.props.location.pathname}`}
               </Typography>
+              <Grid container direction="row" justify="flex-end">
+                <Grid item>
+              <IconButton color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
+                {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                <Link to="/energies" className={this.props.classes.textLink}>
+                <MdSearch />
+              </Link>
+              </IconButton>
+                </Grid>
+              </Grid>
             </Toolbar>
           </AppBar>
           <Hidden xlUp>
