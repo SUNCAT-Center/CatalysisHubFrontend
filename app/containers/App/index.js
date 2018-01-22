@@ -341,12 +341,12 @@ class App extends React.Component {
               </Typography>
               <Grid container direction="row" justify="flex-end">
                 <Grid item>
-              <IconButton color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
-                {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                <Link to="/energies" className={this.props.classes.textLink}>
-                <MdSearch />
-              </Link>
-              </IconButton>
+                  <IconButton color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
+                    {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                    <Link to="/energies" className={this.props.classes.textLink}>
+                      <MdSearch />
+                    </Link>
+                  </IconButton>
                 </Grid>
               </Grid>
             </Toolbar>
