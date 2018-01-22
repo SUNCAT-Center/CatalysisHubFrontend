@@ -191,13 +191,13 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         <h2>Reaction Energetics</h2>
 
         <FormGroup row>
-          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus {...this.state} />
+          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus initialValue={this.props.filter.reactants} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'⇄'} </span>
-          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" />
+          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" initialValue={this.props.filter.products} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." />
+          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." initialValue={this.props.filter.surfaceComposition} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." />
+          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
           <Tooltip title="Show only results with slab geometry.">
             <FormControlLabel
@@ -236,6 +236,7 @@ EnergiesPageInput.propTypes = {
   saveResultSize: PropTypes.func,
   withGeometry: PropTypes.bool,
   toggleGeometry: PropTypes.func,
+  filter: PropTypes.object,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -243,6 +244,7 @@ EnergiesPageInput.defaultProps = {
 
 const mapStateToProps = (state) => ({
   filter: state.get('energiesPageReducer').filter,
+  search: state.get('energiesPageReducer').search,
 });
 
 const mapDispatchToProps = (dispatch) => ({

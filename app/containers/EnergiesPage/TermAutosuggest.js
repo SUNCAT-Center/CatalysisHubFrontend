@@ -120,7 +120,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: this.props.initialValue,
       rawSuggestions: new Set(),
       suggestions: [],
       justFocused: false,
@@ -352,6 +352,7 @@ TermAutosuggest.propTypes = {
   placeholder: PropTypes.string,
   filter: PropTypes.object,
   withGeometry: PropTypes.bool,
+  initialValue: PropTypes.string,
 };
 
 TermAutosuggest.defaultProps = {
@@ -359,6 +360,7 @@ TermAutosuggest.defaultProps = {
   helperText: '',
   label: '',
   placeholder: '',
+  initialValue: '',
   filter: {},
 };
 
