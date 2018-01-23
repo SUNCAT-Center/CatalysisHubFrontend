@@ -4,6 +4,7 @@
  *
  */
 
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -149,7 +150,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 
   render() {
     if (this.props.matchingReactions.length === 0) {
-      if (this.props.searchSubmitted) {
+      if (this.props.searchSubmitted && (!_.isEmpty(this.props.searchParams) || !_.isEmpty(this.props.searchString))) {
         ReactGA.event({
           category: 'Search',
           action: 'Search',
