@@ -13,16 +13,31 @@ const initialState = {
   reactionSystems: [],
   searchSubmitted: false,
   searchParams: {},
+  searchString: '',
   filter: {},
   search: {},
   resultSize: 0,
   withGeometry: true,
+  simpleSearch: false,
+  dbError: false,
 };
 
 
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
+    case constants.SAVE_SEARCH_STRING:
+      return {
+        ...state,
+        searchString: action.payload.searchString,
+        searchSubmitted: true,
+      };
+    case constants.TOGGLE_SIMPLE_SEARCH:
+      return {
+        ...state,
+        simpleSearch: !state.simpleSearch,
+        searchSubmitted: false,
+      };
     case constants.TOGGLE_GEOMETRY:
       return {
         ...state,
@@ -89,6 +104,7 @@ function energiesPageReducer(state = initialState, action) {
       return {
         ...state,
         reactionSystems: [],
+        searchSubmitted: false,
       };
     default:
       return state;

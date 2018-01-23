@@ -7,6 +7,27 @@
 import * as constants from './constants';
 
 
+export function saveSearchString(searchString) {
+  return {
+    type: constants.SAVE_SEARCH_STRING,
+    payload: {
+      searchString,
+    },
+  };
+}
+
+export function setDbError() {
+  return {
+    type: constants.DB_ERROR,
+  };
+}
+
+export function toggleSimpleSearch() {
+  return {
+    type: constants.TOGGLE_SIMPLE_SEARCH,
+  };
+}
+
 export function toggleGeometry() {
   return {
     type: constants.TOGGLE_GEOMETRY,

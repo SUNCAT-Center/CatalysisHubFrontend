@@ -23,7 +23,7 @@ import { FormGroup, FormControlLabel } from 'material-ui/Form';
 
 import * as Scroll from 'react-scroll';
 
-import { MdSearch } from 'react-icons/lib/md';
+import { MdSearch, MdChevronLeft, MdWarning } from 'react-icons/lib/md';
 import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
@@ -46,6 +46,7 @@ const styles = (theme) => ({
   button: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
+    textTransform: 'none',
   },
 });
 
@@ -58,6 +59,7 @@ const initialState = {
   reactants: { label: 'any', value: '' },
   products: { label: 'any', value: '' },
   loading: false,
+  suggestionsReady: false,
 };
 
 class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -94,7 +96,10 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         reactants.push({ label: 'any', value: '' });
         this.setState({
           reactant_options: [...new Set(reactants)],
+          suggestionsReady: true,
         });
+      }).catch((error) => {
+        this.props.setDbError(error);
       });
     }
 
@@ -113,6 +118,9 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         products.push({ label: 'any', value: '' });
         this.setState({
           product_options: [...new Set(products)],
+          suggestionsReady: true,
+        }).catch(() => {
+          this.props.setDbError();
         });
       });
     }
@@ -188,6 +196,17 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <Paper className={this.props.classes.paper}>
+        <Grid container justify="flex-end" direction="row">
+          <Grid item>
+            <Button
+              onClick={this.props.toggleSimpleSearch}
+              className={this.props.classes.button}
+            >
+              <MdChevronLeft /> Simple Search
+            </Button>
+          </Grid>
+        </Grid>
+        {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
         <h2>Reaction Energetics</h2>
 
         <FormGroup row>
@@ -228,15 +247,18 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
 }
 
 EnergiesPageInput.propTypes = {
-  receiveReactions: PropTypes.func.isRequired,
-  clearSystems: PropTypes.func.isRequired,
-  submitSearch: PropTypes.func.isRequired,
   classes: PropTypes.object,
-  saveSearch: PropTypes.func,
-  saveResultSize: PropTypes.func,
-  withGeometry: PropTypes.bool,
-  toggleGeometry: PropTypes.func,
+  clearSystems: PropTypes.func.isRequired,
+  dbError: PropTypes.bool,
   filter: PropTypes.object,
+  receiveReactions: PropTypes.func.isRequired,
+  saveResultSize: PropTypes.func,
+  saveSearch: PropTypes.func,
+  submitSearch: PropTypes.func.isRequired,
+  toggleGeometry: PropTypes.func,
+  toggleSimpleSearch: PropTypes.func,
+  withGeometry: PropTypes.bool,
+  setDbError: PropTypes.func,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -245,6 +267,8 @@ EnergiesPageInput.defaultProps = {
 const mapStateToProps = (state) => ({
   filter: state.get('energiesPageReducer').filter,
   search: state.get('energiesPageReducer').search,
+  simpleSearch: state.get('energiesPageReducer').simpleSearch,
+  dbError: state.get('energiesPageReducer').dbError,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -256,6 +280,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveResultSize: (resultSize) => {
     dispatch(actions.saveResultSize(resultSize));
+  },
+  toggleSimpleSearch: () => {
+    dispatch(actions.toggleSimpleSearch());
+  },
+  setDbError: () => {
+    dispatch(actions.setDbError());
   },
 });
 

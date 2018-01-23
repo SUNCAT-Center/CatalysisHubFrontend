@@ -153,7 +153,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         ReactGA.event({
           category: 'Search',
           action: 'Search',
-          label: `No results: ${JSON.stringify(this.props.searchParams)}`,
+          label: `No results: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
         });
         return (
           <div>
@@ -250,11 +250,12 @@ MatchingReactions.propTypes = {
   searchParams: PropTypes.object,
   classes: PropTypes.object,
   resultSize: PropTypes.number,
+  searchString: PropTypes.string,
 };
 
 MatchingReactions.defaultProps = {
   searchResults: [],
-
+  searchString: '',
 };
 
 const mapStateToProps = (state) => ({

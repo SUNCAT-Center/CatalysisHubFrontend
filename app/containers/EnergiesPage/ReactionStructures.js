@@ -13,6 +13,7 @@ import BarrierChart from 'components/BarrierChart';
 const styles = (theme) => ({
   tab: {
     backgroundColor: theme.palette.primary[50],
+    textTransform: 'none',
   },
 
 });

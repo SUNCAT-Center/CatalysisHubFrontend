@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
@@ -12,6 +12,7 @@ import Script from 'react-load-script';
 
 import * as actions from './actions';
 import EnergiesPageInput from './Input';
+import EnergiesPageSimpleInput from './SimpleInput';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
 
@@ -23,7 +24,11 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
 
-        <EnergiesPageInput {...this.props} />
+        {this.props.simpleSearch ?
+          <EnergiesPageSimpleInput />
+            :
+          <EnergiesPageInput {...this.props} />
+        }
         <MatchingReactions />
         <ReactionStructures {...this.props} />
       </div>
@@ -32,6 +37,8 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
 }
 
 EnergiesPage.propTypes = {
+  simpleSearch: PropTypes.bool,
+
 };
 
 const mapStateToProps = (state) => ({
@@ -42,6 +49,7 @@ const mapStateToProps = (state) => ({
   searchParams: state.get('energiesPageReducer').searchParams,
   filter: state.get('energiesPageReducer').filter,
   withGeometry: state.get('energiesPageReducer').withGeometry,
+  simpleSearch: state.get('energiesPageReducer').simpleSearch,
 });
 
 const mapDispatchToProps = (dispatch) => ({
