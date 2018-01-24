@@ -20,12 +20,19 @@ const initialState = {
   withGeometry: true,
   simpleSearch: false,
   dbError: false,
+  searchQuery: '',
 };
 
 
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
+    case constants.SAVE_SEARCH_QUERY:
+      return {
+        ...state,
+        searchQuery: action.payload.searchQuery,
+      };
+
     case constants.SAVE_SEARCH_STRING:
       return {
         ...state,

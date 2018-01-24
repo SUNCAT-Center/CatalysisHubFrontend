@@ -75,6 +75,7 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
     cachios.post(graphQLRoot, query).then((response) => {
       this.props.receiveReactions(response.data.data.catapp.edges);
       this.props.saveSearchString(this.state.searchString);
+      this.props.saveSearchQuery(query.query);
       this.props.saveResultSize(response.data.data.catapp.totalCount);
       Scroll.animateScroll.scrollMore(500);
       this.setState({
@@ -153,6 +154,9 @@ const mapDispatchToProps = (dispatch) => ({
   saveSearchString: (searchString) => {
     dispatch(actions.saveSearchString(searchString));
   },
+  saveSearchQuery: (searchQuery) => {
+    dispatch(actions.saveSearchQuery(searchQuery));
+  },
 });
 
 EnergiesPageSimpleInput.propTypes = {
@@ -164,6 +168,7 @@ EnergiesPageSimpleInput.propTypes = {
   saveResultSize: PropTypes.func,
   saveSearchString: PropTypes.func,
   receiveReactions: PropTypes.func.isRequired,
+  saveSearchQuery: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(

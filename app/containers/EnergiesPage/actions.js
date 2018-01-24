@@ -7,6 +7,15 @@
 import * as constants from './constants';
 
 
+export function saveSearchQuery(searchQuery) {
+  return {
+    type: constants.SAVE_SEARCH_QUERY,
+    payload: {
+      searchQuery,
+    },
+  };
+}
+
 export function saveSearchString(searchString) {
   return {
     type: constants.SAVE_SEARCH_STRING,

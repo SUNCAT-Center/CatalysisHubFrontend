@@ -178,6 +178,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       this.setState({
         loading: false,
       });
+      this.props.saveSearchQuery(query.query);
       this.props.submitSearch({
         reactants: this.state.reactants.label,
         products: this.state.products.label,
@@ -259,6 +260,7 @@ EnergiesPageInput.propTypes = {
   toggleSimpleSearch: PropTypes.func,
   withGeometry: PropTypes.bool,
   setDbError: PropTypes.func,
+  saveSearchQuery: PropTypes.func,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -286,6 +288,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setDbError: () => {
     dispatch(actions.setDbError());
+  },
+  saveSearchQuery: (searchQuery) => {
+    dispatch(actions.saveSearchQuery(searchQuery));
   },
 });
 

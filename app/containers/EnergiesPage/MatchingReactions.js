@@ -26,6 +26,8 @@ import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
 
+import GraphQlbutton from 'components/GraphQlbutton';
+
 import cachios from 'cachios';
 import { graphQLRoot } from 'utils/constants';
 
@@ -235,6 +237,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
               </TableRow>
             </TableFooter>
           </Table>
+          <GraphQlbutton query={this.props.searchQuery} />
         </div>
         {this.state.loading ? <LinearProgress color="primary" /> : null }
       </div>
@@ -243,6 +246,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 }
 
 MatchingReactions.propTypes = {
+  searchQuery: PropTypes.string,
   selectReaction: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
@@ -266,7 +270,7 @@ const mapStateToProps = (state) => ({
   search: state.get('energiesPageReducer').search,
   resultSize: state.get('energiesPageReducer').resultSize,
   searchParams: state.get('energiesPageReducer').searchParams,
-
+  searchQuery: state.get('energiesPageReducer').searchQuery,
 });
 
 const mapDispatchToProps = (dispatch) => ({
