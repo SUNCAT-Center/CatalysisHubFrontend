@@ -7,9 +7,11 @@
 import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
-import { MdAddCircleOutline, MdRemoveCircleOutline } from 'react-icons/lib/md';
+import { MdAddCircleOutline, MdRemoveCircleOutline, MdViewList } from 'react-icons/lib/md';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
+import Button from 'material-ui/Button';
+import { FaExternalLink } from 'react-icons/lib/fa';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -20,6 +22,17 @@ import PublicationSystems from './publicationSystems';
 // import PublicationReactions from './publicationReactions';
 
 const styles = (theme) => ({
+  publicationAction: {
+    margin: theme.spacing.unit,
+    height: 6,
+    backgroundColor: theme.palette.sandhill[50],
+    '&:hover': {
+      backgroundColor: theme.palette.sandhill[300],
+    },
+  },
+  outboundLink: {
+    textDecoration: 'none',
+  },
   publicationEntry: {
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
@@ -43,19 +56,19 @@ const restoreSC = (str) => {
     res = str.join(' ');
   }
   return res
-  .replace('{\\o}', 'ø')
-  .replace('\\o', 'ø')
-  .replace('{"A}', 'Ä')
-  .replace('{"U}', 'Ü')
-  .replace('{"O}', 'Ö')
-  .replace('{"a}', 'ä')
-  .replace('{"u}', 'ü')
-  .replace('{"o}', 'ö')
-  .replace('{\\ss}', 'ß')
-  .replace('--', '–')
+    .replace('{\\o}', 'ø')
+    .replace('\\o', 'ø')
+    .replace('{"A}', 'Ä')
+    .replace('{"U}', 'Ü')
+    .replace('{"O}', 'Ö')
+    .replace('{"a}', 'ä')
+    .replace('{"u}', 'ü')
+    .replace('{"o}', 'ö')
+    .replace('{\\ss}', 'ß')
+    .replace('--', '–')
 
-  .replace('{', '')
-  .replace('}', '');
+    .replace('{', '')
+    .replace('}', '');
 };
 
 const prettyPrintReference = (reference) => {
@@ -103,7 +116,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           years,
         });
         years.map((year) => {
-          const query = `{catapp(year: ${year}, publication_Title:"~", distinct: true) { edges { node { year publication doi dftCode dftFunctional PublicationTitle } } }}`;
+          const query = `{catapp(year: ${year}, publication_Title:"~", distinct: true) { edges { node { year publication PublicationDoi dftCode dftFunctional PublicationTitle } } }}`;
           return axios.post(graphQLRoot, {
             query,
           })
@@ -112,11 +125,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 .filter(({ node }) => node.PublicationTitle !== '')
                 .map((n) => (n.node.publication));
               references = [...new Set(references)];
-              let dois = yearResponse.data.data.catapp.edges.map((n) => (n.node.doi));
-              dois = [...new Set(dois)];
+              const dois = yearResponse.data.data.catapp.edges.map((n) => (n.node.PublicationDoi));
 
-              let titles = yearResponse.data.data.catapp.edges.map((n) => (n.node.PublicationTitle));
-              titles = [...new Set(titles)];
+              const titles = yearResponse.data.data.catapp.edges.map((n) => (n.node.PublicationTitle));
 
 
               const allReferences = this.state.references;
@@ -173,12 +184,12 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         const searchTitle = this.state.titles[year][count];
         query = `{catapp ( last: 500, publication_Title: "${searchTitle}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;
         axios.post(graphQLRoot, { query })
-            .then((response1) => {
-              this.setState({
-                reactionEnergies: response1.data.data.catapp.edges,
-                loading: false,
-              });
+          .then((response1) => {
+            this.setState({
+              reactionEnergies: response1.data.data.catapp.edges,
+              loading: false,
             });
+          });
       })
       .catch(() => {
       });
@@ -200,32 +211,38 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 .filter((references, j) => (this.state.titles[year][j] !== null))
                 .map((reference, j) => (
                   <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                    <button role="button" onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationEntry}>
-                      { this.state.openedPublication !== `elem_${year}_${j}` ?
-                        <MdAddCircleOutline size={28} className={this.props.classes.publicationEntry} />
-                      :
-                        <MdRemoveCircleOutline size={28} className={this.props.classes.publicationEntry} />
+                    { this.state.openedPublication !== `elem_${year}_${j}` ?
+                      <MdAddCircleOutline size={28} className={this.props.classes.publicationEntry} />
+                        :
+                      <MdRemoveCircleOutline size={28} className={this.props.classes.publicationEntry} />
                       }
-                      <span> &nbsp;&nbsp;&nbsp; </span>
-                      <span className={this.props.classes.publicationEntry}>
-                        {prettyPrintReference(reference)}
-                        {(this.state.dois[year][j] === null
-                          || typeof this.state.dois[year][j] === 'undefined'
-                          || this.state.dois[year][j] === ''
-                        ) ? null :
-                        <ReactGA.OutboundLink
-                          eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
-                          to={`http://dx.doi.org/${this.state.dois[year][j]}`}
-                          target="_blank"
-                        >
-                          DOI: {this.state.dois[year][j]}.
-                        </ReactGA.OutboundLink>
-                        }
-                      </span>
-                    </button>
+                    <span> &nbsp;&nbsp;&nbsp; </span>
+                    <span className={this.props.classes.publicationEntry}>
+                      {prettyPrintReference(reference)}
+
+                    </span>
+                    <Button dense onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
+                      <MdViewList /> {'\u00A0\u00A0'}Load Data
+                    </Button>
+                    {(this.state.dois[year][j] === null
+                  || typeof this.state.dois[year][j] === 'undefined'
+                  || this.state.dois[year][j] === ''
+                ) ? null :
+                <ReactGA.OutboundLink
+                  eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                  to={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                  target="_blank"
+                  className={this.props.classes.outboundLink}
+                >
+                  <Button dense className={this.props.classes.publicationAction}>
+                    <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
+                    </Button>
+                </ReactGA.OutboundLink>
+                }
+
                     <div>
                       { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                      <div>
+                      <span>
                         {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
                         {/*
@@ -234,9 +251,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                         */}
                         {this.state.systems.length === 0 ? null :
                         <PublicationSystems {...this.state} />
-                            }
-                      </div>
-                      }
+                        }
+                      </span>
+                  }
                     </div>
                     <br />
                   </div>
