@@ -53,6 +53,11 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
   }
 }}' ` }</pre>
             </div>
+            <div>Or you can send the same query from a python script like so</div>
+            <pre>{'import requests\n' +
+              `requests.post(root, {'query':
+              '{systems(last: 5) { edges { node { energy PublicationTitle InputFile(format: "espresso-in") } } }}
+              }).json()`}</pre>
           </CardContent>
           <CardActions>
             <Button dense color="primary" onClick={this.handleGotit}>Got it! </Button>
