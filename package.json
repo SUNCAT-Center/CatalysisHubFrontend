@@ -243,7 +243,7 @@
     "lokka": "^1.7.0",
     "lokka-transport-http": "^1.6.1",
     "markdown-to-jsx": "^6.4.0",
-    "material-ui": "^1.0.0-beta.30",
+    "material-ui": "^1.0.0-beta.21",
     "material-ui-icons": "^1.0.0-beta.17",
     "minimist": "1.2.0",
     "moment-timezone": "^0.5.14",
