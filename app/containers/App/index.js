@@ -351,7 +351,7 @@ class App extends React.Component {
               </Grid>
             </Toolbar>
           </AppBar>
-          <Hidden xlUp>
+          <Hidden lgUp >
             <Drawer
               type="temporary"
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -365,7 +365,7 @@ class App extends React.Component {
               { drawer }
             </Drawer>
           </Hidden>
-          <Hidden xlDown implementation="css">
+          <Hidden lgDown implementation="css">
             <Drawer
               type="permanent"
               open
