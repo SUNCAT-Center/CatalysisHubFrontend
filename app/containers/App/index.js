@@ -315,12 +315,12 @@ class App extends React.Component {
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
               { (!isIOS || this.props.history === null) ? null :
-              <IconButton onClick={browserHistory.goBack} color="contrast" aria-label="Back">
+              <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back">
                 <MdArrowBack />
               </IconButton>
 
               }
-              <IconButton onClick={this.handleDrawerToggle} color="contrast" aria-label="Menu" className={this.props.classes.navIconHide}>
+              <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={this.props.classes.navIconHide}>
                 {/* onClick event has to be on IconButton to work w/ Firefox. */}
                 <MenuIcon />
               </IconButton>
@@ -341,7 +341,7 @@ class App extends React.Component {
               </Typography>
               <Grid container direction="row" justify="flex-end">
                 <Grid item>
-                  <IconButton color="contrast" aria-label="Menu">
+                  <IconButton color="secondary" aria-label="Menu">
                     {/* onClick event has to be on IconButton to work w/ Firefox. */}
                     <Link to="/energies" className={this.props.classes.textLink}>
                       <MdSearch />
@@ -356,7 +356,7 @@ class App extends React.Component {
               type="temporary"
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
               open={this.state.drawerOpen}
-              onRequestClose={this.handleDrawerToggle}
+              onClose={this.handleDrawerToggle}
               className={this.props.classes.drawerPaper}
               ModalProps={{
                 keepMounted: true, // Better open performance on mobile.
