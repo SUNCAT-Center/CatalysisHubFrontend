@@ -162,7 +162,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <div>
             <h2>Ooops!</h2>
             No reaction energies found. Please remove one or more filters.
-            Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>construct</Link> your own.
+            Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>build</Link> your own.
 
           </div>
         );
