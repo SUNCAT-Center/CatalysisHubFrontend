@@ -20,10 +20,15 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 const styles = (theme) => ({
-  flexGrow: 1,
-  width: '100%',
-  marginTop: theme.spacing.unit * 3,
-  backgroundColor: theme.palette.background.paper,
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    backgroundColor: theme.palette.background.paper,
+  },
+  tab: {
+    textTransform: 'none',
+  },
 });
 
 
@@ -53,19 +58,19 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab label="Structure One">
+          <Tab className={this.props.classes.tab} label="Structure One">
             <h2>Structure 1</h2>
             <GeometryCanvas id="structure1" />
           </Tab>
-          <Tab label="Structure Two">
+          <Tab className={this.props.classes.tab} label="Structure Two">
             <h2>Structure 2</h2>
             <GeometryCanvas id="structure2" />
           </Tab>
-          <Tab label="Structure Three">
+          <Tab className={this.props.classes.tab} label="Structure Three">
             <h2>Structure 3</h2>
             <GeometryCanvas id="structure3" />
           </Tab>
-          <Tab label="Structure Four">
+          <Tab className={this.props.classes.tab} label="Structure Four">
             <h2>Structure 4</h2>
             <GeometryCanvas id="structure4" />
           </Tab>
