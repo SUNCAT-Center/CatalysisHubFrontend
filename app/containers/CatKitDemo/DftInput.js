@@ -6,15 +6,24 @@ import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import { MdFileDownload, MdSave } from 'react-icons/lib/md';
+import { MdSave, MdCheckCircle } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 
+
 import axios from 'axios';
-import { backendRoot } from 'utils/constants';
+/* import { backendRoot } from 'utils/constants';*/
+import { flaskRoot } from 'utils/constants';
+const backendRoot = `${flaskRoot}/apps/catKitDemo`;
 
 const styles = (theme) => ({
   formControl: {
     margin: theme.spacing.unit,
+  },
+  finish: {
+    fontSize: 36,
+  },
+  textButton: {
+    textTransform: 'none',
   },
 });
 
@@ -86,45 +95,56 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
   render() {
     return (
       <div>
-        {typeof this.props.images === 'undefined' || this.props.images.length === 0 ? null :
-
-        <div>
-          <h2>Configure Calculator</h2>
-          <form>
-            <FormControl className={this.props.classes.formControl}>
-              <InputLabel htmlFor="calculator">Calculator:</InputLabel>
-              <Select
-                onChange={this.handleChange('calculator')}
-                value={this.state.calculator}
-              >
-                <MenuItem value={'espresso'}>Quantum Espresso</MenuItem>
-                <MenuItem value={'vasp'}>VASP</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl className={this.props.classes.formControl}>
-              <InputLabel htmlFor="functional">XC</InputLabel>
-              <Select
-                value={this.state.functional}
-                onChange={this.handleChange('functional')}
-              >
-                <MenuItem value="PBE">PBE</MenuItem>
-                <MenuItem value="RPBE">RPBE</MenuItem>
-                <MenuItem value="BEEF-vdW">BEEF-vdW</MenuItem>
-              </Select>
-            </FormControl>
-            <Grid container justify="flex-end" direction="row">
-              <Grid item>
-                <Button raised onClick={this.downloadDft} color="contrast"><MdFileDownload /> Download </Button>
-              </Grid>
-              <Grid item>
-                <Button raised onClick={this.saveCalculation} color="primary"><MdSave /> Save</Button>
+        {typeof this.props.images === 'undefined' || this.props.images.length === 0 ?
+          <Grid container justify="center" direction="row">
+            <Grid item>
+              <Grid container direction="column" justify="space-between">
+                <Grid item className={this.props.classes.finish}>
+                Nothing left to do here. {'\u00A0\u00A0'} <MdCheckCircle size={92} color="green" />
+                </Grid>
+                <Grid item>
+                  <div>Start new structure here:
+                    <Button dense onClick={this.props.stepperHandleReset} className={this.props.classes.textButton}> reset </Button> </div>
+                </Grid>
               </Grid>
             </Grid>
+          </Grid>
+            :
+
+          <div>
+            <h2>Configure Calculator</h2>
+            <form>
+              <FormControl className={this.props.classes.formControl}>
+                <InputLabel htmlFor="calculator">Calculator:</InputLabel>
+                <Select
+                  onChange={this.handleChange('calculator')}
+                  value={this.state.calculator}
+                >
+                  <MenuItem value={'espresso'}>Quantum Espresso</MenuItem>
+                  <MenuItem value={'vasp'}>VASP</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl className={this.props.classes.formControl}>
+                <InputLabel htmlFor="functional">XC</InputLabel>
+                <Select
+                  value={this.state.functional}
+                  onChange={this.handleChange('functional')}
+                >
+                  <MenuItem value="PBE">PBE</MenuItem>
+                  <MenuItem value="RPBE">RPBE</MenuItem>
+                  <MenuItem value="BEEF-vdW">BEEF-vdW</MenuItem>
+                </Select>
+              </FormControl>
+              <Grid container justify="flex-end" direction="row">
+                <Grid item>
+                  <Button raised onClick={this.saveCalculation} color="primary"><MdSave /> {'\u00A0\u00A0'}Save</Button>
+                </Grid>
+              </Grid>
 
 
-          </form>
-        </div>
+            </form>
+          </div>
         }
       </div>
     );
@@ -142,6 +162,7 @@ DftInput.propTypes = {
   clearSlabParams: PropTypes.func,
   clearBulkCif: PropTypes.func,
   clearSlabCifs: PropTypes.func,
+  stepperHandleReset: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);

@@ -13,6 +13,7 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
 
 const styles = (theme) => ({
   buttonList: {
@@ -25,6 +26,15 @@ const styles = (theme) => ({
   button: {
     margin: theme.spacing.unit,
   },
+  lightsandhill: {
+  },
+  paper: {
+    padding: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 1,
+    marginBottom: theme.spacing.unit * 1,
+  },
+  header: {},
+  buttongrid: {},
 });
 
 class CalculationsView extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -44,8 +54,8 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     return (
       <div>
         {this.props.calculations.length === 0 ? null :
-        <div>
-          <h2>Stored Calculations</h2>
+        <Paper className={this.props.classes.paper} height={8}>
+          <h4>Stored Calculations</h4>
           <Table>
             <TableHead>
               <TableRow>
@@ -96,9 +106,8 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             </Grid>
           </Grid>
 
-        </div>
+        </Paper>
       }
-        <hr />
       </div>
     );
   }

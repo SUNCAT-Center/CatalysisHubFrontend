@@ -14,10 +14,53 @@ const initialState = {
   bulkParams: {},
   slabParams: {},
   calculations: [],
+  adsorptionSites: [],
+  siteOccupations: [],
+  activeStep: 0,
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.STEPPER_HANDLE_RESET: {
+      return {
+        ...state,
+        activeStep: initialState.activeStep,
+      };
+    }
+    case constants.STEPPER_HANDLE_NEXT: {
+      return {
+        ...state,
+        activeStep: state.activeStep + 1,
+      };
+    }
+    case constants.STEPPER_HANDLE_BACK: {
+      return {
+        ...state,
+        activeStep: state.activeStep - 1,
+      };
+    }
+    case constants.CLEAR_SITE_OCCUPATIONS: {
+      return {
+        ...state,
+        siteOccupations: initialState.siteOccupations,
+      };
+    }
+    case constants.SAVE_SITE_OCCUPATIONS: {
+      return {
+        ...state,
+        siteOccupations: action.payload.siteOccupations,
+      };
+    }
+    case constants.CLEAR_ADSORPTION_SITES:
+      return {
+        ...state,
+        adsorptionSites: initialState.adsorptionSites,
+      };
+    case constants.SAVE_ADSORPTION_SITES:
+      return {
+        ...state,
+        adsorptionSites: action.payload.adsorptionSites,
+      };
     case constants.CLEAR_CALCULATIONS:
       return {
         ...state,
@@ -51,7 +94,7 @@ function catKitDemoReducer(state = initialState, action) {
     case constants.SAVE_BULK_PARAMS:
       return {
         ...state,
-        bulkParams: action.payload,
+        bulkParams: action.payload.bulkParams,
       };
     case constants.RECEIVE_SLAB_CIFS:
       return {

@@ -1,20 +1,23 @@
 import _ from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import { MdLoop } from 'react-icons/lib/md';
-
-import PropTypes from 'prop-types';
+import FaCube from 'react-icons/lib/fa/cube';
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
+import { MdClear } from 'react-icons/lib/md';
+
 import axios from 'axios';
-import { backendRoot } from 'utils/constants';
+/* import { backendRoot } from 'utils/constants';*/
+import { flaskRoot } from 'utils/constants';
+const backendRoot = `${flaskRoot}/apps/catKitDemo`;
 
 const styles = (theme) => ({
   container: {
@@ -24,17 +27,13 @@ const styles = (theme) => ({
   formControl: {
     margin: theme.spacing.unit,
   },
-  buttonList: {
-    flexGrow: 1,
-    flex: 1,
-    flexDirection: 'row',
-    justify: 'flex-end',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
-  },
+  buttongrid: {},
   button: {
     margin: theme.spacing.unit,
   },
+  header: {},
+  paper: {},
+  lightsandhill: {},
 });
 
 
@@ -87,17 +86,20 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   }
 
   generateBulk = () => {
-    const url = `${backendRoot}generate_bulk_cif/`;
+    const url = `${backendRoot}/generate_bulk_cif`;
 
     const params = { params: {
-      lattice_constant: this.state.latticeConstant,
-      structure: this.state.structure,
-      element1: this.state.element1,
-      element2: this.state.element2,
-      element3: this.state.element3,
-      element4: this.state.element4,
+      bulkParams: {
+        lattice_constant: this.state.latticeConstant,
+        structure: this.state.structure,
+        element1: this.state.element1,
+        element2: this.state.element2,
+        element3: this.state.element3,
+        element4: this.state.element4,
+      },
     } };
 
+    this.props.clearSlabCifs();
     this.props.saveBulkParams(params.params);
 
     axios.get(url, params).then((response) => {
@@ -171,7 +173,12 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
           </FormControl>
           <Grid container justify="flex-end" direction="row" >
             <Grid item>
-              <Button raised onClick={this.generateBulk} color="primary"><MdLoop /> Generate </Button>
+              <Button
+                disabled={_.isEmpty(this.props.bulkCif)}
+                onClick={this.props.clearBulkCif}
+                className={this.props.classes.button}
+              ><MdClear /> {'\u00A0\u00A0'}Clear </Button>
+              <Button raised onClick={this.generateBulk} color="primary" className={this.props.classes.button}><FaCube />{'\u00A0\u00A0'} Generate </Button>
             </Grid>
           </Grid>
         </form>
@@ -186,6 +193,9 @@ BulkInput.propTypes = {
   routeParams: PropTypes.object,
   saveBulkParams: PropTypes.func,
   latticeConstant: PropTypes.number,
+  clearSlabCifs: PropTypes.func,
+  bulkCif: PropTypes.string,
+  clearBulkCif: PropTypes.func,
 
 };
 

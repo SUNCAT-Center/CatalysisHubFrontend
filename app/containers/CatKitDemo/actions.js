@@ -6,6 +6,53 @@
 
 import * as constants from './constants';
 
+export function stepperHandleReset() {
+  return {
+    type: constants.STEPPER_HANDLE_RESET,
+  };
+}
+
+export function stepperHandleBack() {
+  return {
+    type: constants.STEPPER_HANDLE_BACK,
+  };
+}
+
+export function stepperHandleNext() {
+  return {
+    type: constants.STEPPER_HANDLE_NEXT,
+  };
+}
+
+export function clearSiteOccupations() {
+  return {
+    type: constants.CLEAR_SITE_OCCUPATIONS,
+  };
+}
+
+export function saveSiteOccupations(siteOccupations) {
+  return {
+    type: constants.SAVE_SITE_OCCUPATIONS,
+    payload: {
+      siteOccupations,
+    },
+  };
+}
+
+export function clearAdsorptionSites() {
+  return {
+    type: constants.CLEAR_ADSORPTION_SITES,
+  };
+}
+
+export function saveAdsorptionSites(adsorptionSites) {
+  return {
+    type: constants.SAVE_ADSORPTION_SITES,
+    payload: {
+      adsorptionSites,
+    },
+  };
+}
 
 export function removeCalculation(n) {
   return {

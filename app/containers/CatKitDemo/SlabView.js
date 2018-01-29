@@ -1,7 +1,8 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-/* import GeometryCanvas from 'components/GeometryCanvas';*/
+
+import Grid from 'material-ui/Grid';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 export class SlabView extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -10,14 +11,22 @@ export class SlabView extends React.Component { // eslint-disable-line react/pre
       <div>
         { this.props.bulkCif === '' ? null :
         <div>
-          <h2>Unique Slab Geometries</h2>
-          {this.props.images.map((image, i) => (
-            <GeometryCanvasCifdata
-              cifdata={image}
-              uniqueId={`slab_preview_${i}`}
-              key={`slab_preview_${i}`} id={`slab_preview_${i}`} x={2} y={2} z={1}
-            />
-                ))}
+          {this.props.images.length === 0 ? null : <h4>Unique Slab Geometries</h4> }
+          <Grid cotainer direction="row" justify="center">
+            <Grid item>
+              <Grid container justify="flex-start" direction="column">
+                {this.props.images.map((image, i) => (
+                  <Grid item key={`item_${i}`}>
+                    <GeometryCanvasCifdata
+                      cifdata={image}
+                      uniqueId={`slab_preview_${i}`}
+                      key={`slab_preview_${i}`} id={`slab_preview_${i}`} x={2} y={2} z={1}
+                    />
+                  </Grid>
+                    ))}
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
         }
       </div>
