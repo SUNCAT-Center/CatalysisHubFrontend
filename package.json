@@ -257,6 +257,8 @@
     "react-autosuggest": "^9.3.2",
     "react-device-detect": "^0.1.0",
     "react-dom": "15.4.1",
+    "react-file-download": "^0.3.5",
+    "react-file-drop": "^0.1.9",
     "react-ga": "^2.3.5",
     "react-helmet": "3.2.2",
     "react-icons": "^2.2.7",
