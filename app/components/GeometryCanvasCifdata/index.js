@@ -4,8 +4,11 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes, { instanceOf } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
+import { withCookies, Cookies } from 'react-cookie';
 
 import { isMobile } from 'react-device-detect';
 
@@ -16,14 +19,12 @@ const { ChemDoodle } = require('utils/ChemDoodleWeb');
 const styles = () => ({
 });
 
-const initialState = {
-};
-
 class GeometryCanvasCifdata extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
       orientation: 'test orientation',
+      perspective: (this.props.cookies.get('perspective') === 'true'),
     };
   }
   componentDidMount() {
@@ -66,9 +67,22 @@ function _load_lib(url, callback){
   let gamma_${this.props.uniqueId} = 0.;
   }
 
+  console.log(typeof altLabels )
+  console.log(typeof altLabels === 'undefined' )
+  if(typeof altLabels === 'undefined') {
+    var altLabels
+  }
+  altLabels = ${JSON.stringify(this.props.altLabels)};
+  cif_${this.props.uniqueId}.molecule.atoms.map(function(atom, i){
+    if(altLabels.hasOwnProperty(i)) {
+    atom.altLabel = altLabels[i];
+    console.log(i, atom)
+    }
+  });
+
   tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Ball and Stick');
   tfcanvas_${this.props.uniqueId}.specs.backgroundColor = '${this.props.color}';
-  tfcanvas_${this.props.uniqueId}.specs.projectionPerspective_3D = true;
+  tfcanvas_${this.props.uniqueId}.specs.projectionPerspective_3D = ${this.state.perspective};
   tfcanvas_${this.props.uniqueId}.specs.compass_display = true;
   tfcanvas_${this.props.uniqueId}.specs.compass_size_3D = 50;
   tfcanvas_${this.props.uniqueId}.specs.atoms_displayLabels_3D = true;
@@ -117,7 +131,7 @@ function _load_lib(url, callback){
   }
   render() {
     return (
-      <div>
+      <Paper>
         {isMobile === false ? null : <p> Mobile: tilt handheld device.</p> }
         <p id={`${this.props.id}_script`} >
           <canvas
@@ -125,13 +139,13 @@ function _load_lib(url, callback){
             height={this.props.height}
             width={this.props.width}
             style={{
-              borderWidth: 0,
+              borderWidth: this.props.borderWidth,
               borderColor: '#000000',
               borderStyle: 'solid',
             }}
           />
         </p>
-      </div>
+      </Paper>
     );
   }
 }
@@ -144,6 +158,9 @@ GeometryCanvasCifdata.defaultProps = {
   x: 2,
   y: 2,
   z: 1,
+  borderWidth: 0,
+  altLabels: {},
+  perspective: true,
 };
 
 GeometryCanvasCifdata.propTypes = {
@@ -156,7 +173,15 @@ GeometryCanvasCifdata.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   z: PropTypes.number,
+  borderWidth: PropTypes.number,
+  altLabels: PropTypes.object,
+  perspective: PropTypes.bool,
+  cookies: instanceOf(Cookies).isRequired,
 };
 
 
-export default withStyles(styles, { withTheme: true })(GeometryCanvasCifdata);
+export default withStyles(styles, { withTheme: true })(
+  withCookies(
+    GeometryCanvasCifdata
+  )
+);
