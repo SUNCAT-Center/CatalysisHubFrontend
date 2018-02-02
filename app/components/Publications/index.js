@@ -11,6 +11,7 @@ import { MdAddCircleOutline, MdRemoveCircleOutline, MdViewList } from 'react-ico
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
 import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
 import { FaExternalLink } from 'react-icons/lib/fa';
 
 import { withStyles } from 'material-ui/styles';
@@ -44,6 +45,11 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
+  },
+  paper: {
+    padding: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
   },
 });
 
@@ -203,7 +209,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 
         {this.state.references === {} ? <LinearProgress color="primary" /> : null }
         {this.state.years.map((year, i) => (
-          <div key={`div_year_${i}`}>
+          <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
             {(this.state.references[year] || []).length === 0 ? null :
             <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
             }
@@ -258,7 +264,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     <br />
                   </div>
                 ))}
-          </div>
+          </Paper>
         ))
         }
       </div>
