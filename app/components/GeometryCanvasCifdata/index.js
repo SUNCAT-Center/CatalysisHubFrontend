@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import { Md3dRotation } from 'react-icons/lib/md';
 import { withCookies, Cookies } from 'react-cookie';
 
 import { isMobile } from 'react-device-detect';
@@ -67,8 +68,6 @@ function _load_lib(url, callback){
   let gamma_${this.props.uniqueId} = 0.;
   }
 
-  console.log(typeof altLabels )
-  console.log(typeof altLabels === 'undefined' )
   if(typeof altLabels === 'undefined') {
     var altLabels
   }
@@ -76,7 +75,6 @@ function _load_lib(url, callback){
   cif_${this.props.uniqueId}.molecule.atoms.map(function(atom, i){
     if(altLabels.hasOwnProperty(i)) {
     atom.altLabel = altLabels[i];
-    console.log(i, atom)
     }
   });
 
@@ -131,21 +129,23 @@ function _load_lib(url, callback){
   }
   render() {
     return (
-      <Paper>
-        {isMobile === false ? null : <p> Mobile: tilt handheld device.</p> }
-        <p id={`${this.props.id}_script`} >
-          <canvas
-            id={`${this.props.id}_view`}
-            height={this.props.height}
-            width={this.props.width}
-            style={{
-              borderWidth: this.props.borderWidth,
-              borderColor: '#000000',
-              borderStyle: 'solid',
-            }}
-          />
-        </p>
-      </Paper>
+      <div>
+        {isMobile === false ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt device to rotate.</div> }
+        <Paper>
+          <p id={`${this.props.id}_script`} >
+            <canvas
+              id={`${this.props.id}_view`}
+              height={this.props.height}
+              width={this.props.width}
+              style={{
+                borderWidth: this.props.borderWidth,
+                borderColor: '#000000',
+                borderStyle: 'solid',
+              }}
+            />
+          </p>
+        </Paper>
+      </div>
     );
   }
 }
