@@ -328,8 +328,8 @@ class App extends React.Component {
                   }
               <Grid container direction="row" justify={isIOS ? 'space-around' : 'flex-start'} style={{ width: '100vw' }}>
                 <Grid item>
-                  <Typography type="body1" color="inherit" style={{ marginLeft: 10 }}>
-                    {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0 CatApp${this.props.location.pathname}`}
+                  <Typography type="body1" color="inherit" style={{ marginLeft: 30 }}>
+                    {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0\u00A0\u00A0  \u00A0\u00A0 CatApp${this.props.location.pathname}`}
                   </Typography>
                 </Grid>
               </Grid>
