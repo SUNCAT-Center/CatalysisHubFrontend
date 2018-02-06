@@ -6,9 +6,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import ReactGA from 'react-ga';
-
+import Grid from 'material-ui/Grid';
 
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
@@ -50,12 +49,16 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>{this.props.selectedSystem.full_key}</h2>
-          <GeometryCanvasCifdata
-            uniqueId={this.props.selectedUUID}
-            id={this.props.selectedUUID}
-            x={x} y={y} z={z}
-            cifdata={this.props.selectedSystem.Cifdata}
-          />
+          <Grid container direction="row" justify="space-around">
+            <Grid item>
+              <GeometryCanvasCifdata
+                uniqueId={this.props.selectedUUID}
+                id={this.props.selectedUUID}
+                x={x} y={y} z={z}
+                cifdata={this.props.selectedSystem.Cifdata}
+              />
+            </Grid>
+          </Grid>
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>
@@ -63,22 +66,22 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
             <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
             <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' || this.props.selectedSystem.PublicationAuthors === '' ? null :
-                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
+                    JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
             <li>Year: {this.props.selectedSystem.PublicationYear}</li>
             {this.props.selectedSystem.PublicationDoi === '' ? null :
             <div>
               <li>
-                Source&nbsp;
-                <ReactGA.OutboundLink
-                  eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
-                  to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
-                  target="_blank"
-                >
-                DOI: {this.props.selectedSystem.PublicationDoi}
-                </ReactGA.OutboundLink>
+                          Source&nbsp;
+                          <ReactGA.OutboundLink
+                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                            to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                            target="_blank"
+                          >
+                            DOI: {this.props.selectedSystem.PublicationDoi}
+                          </ReactGA.OutboundLink>
               </li>
             </div>
-            }
+                  }
           </ul>
         </div>
         }
