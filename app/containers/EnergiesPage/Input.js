@@ -48,6 +48,9 @@ const styles = (theme) => ({
     marginRight: theme.spacing.unit,
     textTransform: 'none',
   },
+  progress: {
+    margin: theme.spacing.unit,
+  },
 });
 
 
@@ -241,7 +244,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
             </Grid>
           </Grid>
         </FormGroup>
-        {this.state.loading ? <LinearProgress color="primary" /> : null }
+        {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
       </Paper>
     );
   }

@@ -34,15 +34,18 @@ import { graphQLRoot } from 'utils/constants';
 import * as actions from './actions';
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
-  ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
+).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
 
 
-const styles = () => ({
+const styles = (theme) => ({
   tableFooter: {
     marginLeft: '-30px',
     div: {
       marginLeft: '-30px',
     },
+  },
+  progress: {
+    margin: theme.spacing.unit,
   },
 
 });
@@ -176,15 +179,15 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="none">Geometry</TableCell>
-                <TableCell padding="none">Reaction</TableCell>
-                <TableCell padding="none">Reaction Energy</TableCell>
+                <TableCell padding="none"><div>Geometry</div></TableCell>
+                <TableCell padding="none"><div>Reaction</div></TableCell>
+                <TableCell padding="none"><div>Reaction Energy</div></TableCell>
                 <Hidden smDown>
-                  <TableCell>Activation Energy</TableCell>
+                  <TableCell><div>Activation Energy</div></TableCell>
                 </Hidden>
-                <TableCell padding="none">Surface</TableCell>
+                <TableCell padding="none"><div>Surface</div></TableCell>
                 <Hidden smDown>
-                  <TableCell>Facet</TableCell>
+                  <TableCell><div>Facet</div></TableCell>
                 </Hidden>
               </TableRow>
             </TableHead>
@@ -203,13 +206,13 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                           this.fetchRow(result.node);
                         }}
                       >
-                        <TableCell padding="none">{result.node.aseIds !== null ? <FaCube /> : null}</TableCell>
-                        <TableCell padding="dense">{prettyPrintReaction(result.node.reactants, result.node.products)}</TableCell>
-                        <TableCell padding="none">{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</TableCell>
+                        <TableCell padding="none"><div>{result.node.aseIds !== null ? <FaCube /> : null}</div></TableCell>
+                        <TableCell padding="dense"><div>{prettyPrintReaction(result.node.reactants, result.node.products)}</div></TableCell>
+                        <TableCell padding="none"><div>{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
                         <Hidden smDown>
-                          <TableCell>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</TableCell>
+                          <TableCell><div>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</div></TableCell>
                         </Hidden>
-                        <TableCell padding="none">{result.node.surfaceComposition}</TableCell>
+                        <TableCell padding="none"><div>{result.node.surfaceComposition}</div></TableCell>
                         <Hidden smDown>
                           <TableCell>{result.node.facet}</TableCell>
                         </Hidden>
@@ -239,7 +242,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           </Table>
           <GraphQlbutton query={this.props.searchQuery} />
         </div>
-        {this.state.loading ? <LinearProgress color="primary" /> : null }
+        {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
       </div>
     );
   }
@@ -292,4 +295,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MatchingReactions));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(MatchingReactions));
