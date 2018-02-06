@@ -62,10 +62,21 @@ const lightFooterWeight = 200;
 const drawerWidth = 240;
 
 const styles = (xtheme) => ({
+  backLink: {
+    color: 'white',
+    marginLeft: -xtheme.spacing.unit * 3,
+  },
   textLink: {
     color: 'white',
-    marginLeft: xtheme.spacing.unit,
-    marginRight: xtheme.spacing.unit,
+    marginLeft: -xtheme.spacing.unit * 2.5,
+    marginRight: -xtheme.spacing.unit * 2.5,
+  },
+  appBarTitle: {
+    marginLeft: 30,
+    marginTop: 13,
+    [xtheme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+    },
   },
   root: {
     width: '100%',
@@ -306,44 +317,68 @@ class App extends React.Component {
         <div>
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
-              { (!isIOS || this.props.history === null) ? null :
-              <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back">
-                <MdChevronLeft />
-              </IconButton>
+              <Grid container direction="row" justify="space-between">
+                <Grid item>
+                  { (!isIOS || this.props.history === null) ? null :
+                  <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
+                    <MdChevronLeft />
+                  </IconButton>
 
                   }
-              <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={this.props.classes.navIconHide}>
-                {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                <MenuIcon />
-              </IconButton>
-              { suBranding === false ? null :
-              <ReactGA.OutboundLink
-                to="http://www.stanford.edu"
-                eventLabel="http://www.stanford.edu"
-                style={{ margin: 0, marginLeft: 10 }}
-                target="_blank"
-              >
-                <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
-              </ReactGA.OutboundLink>
-                  }
-              <Grid container direction="row" justify={isIOS ? 'space-around' : 'flex-start'} style={{ width: '100vw' }}>
-                <Grid item>
-                  <Typography type="body1" color="inherit" style={{ marginLeft: 30 }}>
-                    {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0\u00A0\u00A0  \u00A0\u00A0 CatApp${this.props.location.pathname}`}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Grid container direction="row" justify="flex-end">
-                <Grid item>
-                  <IconButton color="secondary" aria-label="Menu">
+                  <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={[this.props.classes.navIconHide, this.props.classes.textLink]}>
                     {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                    <Link to="/settings" className={this.props.classes.textLink}>
-                      <MdSettings />
-                    </Link>
-                    <Link to="/energies" className={this.props.classes.textLink}>
-                      <MdSearch />
-                    </Link>
+                    <MenuIcon />
                   </IconButton>
+                </Grid>
+                { suBranding === false ? null :
+                <Grid item >
+                  <ReactGA.OutboundLink
+                    to="http://www.stanford.edu"
+                    eventLabel="http://www.stanford.edu"
+                    style={{ margin: 0, marginLeft: 10 }}
+                    target="_blank"
+                  >
+                    <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
+                  </ReactGA.OutboundLink>
+                </Grid>
+                    }
+                <Grid item >
+                  <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
+                    <Grid item>
+                      <Grid container direction="column" justify="center">
+                        <Grid item>
+                          <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
+                            {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0\u00A0\u00A0  \u00A0\u00A0 CatApp${this.props.location.pathname}`}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item >
+                  <Grid container direction="row" justify="space-between">
+                    <Grid item>
+                      <Link to="/energies" className={this.props.classes.textLink}>
+                        <IconButton size="small" color="inherit" aria-label="Search" >
+                          <MdSearch />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                    <Grid item >
+                      <Link to="/appsIndex" className={this.props.classes.textLink}>
+                        <IconButton size="small" color="inherit" aria-label="Menu" >
+                          <MdApps />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                    <Grid item >
+                      <Link to="/settings" className={this.props.classes.textLink}>
+                        <IconButton size="small" color="inherit" aria-label="Settings">
+                          <MdSettings />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Toolbar>
