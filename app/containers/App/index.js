@@ -6,10 +6,11 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import compose from 'recompose/compose';
 import { Link, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
@@ -25,8 +26,8 @@ import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 
-import { MdArrowBack, MdSearch } from 'react-icons/lib/md';
-import { TiDocument } from 'react-icons/lib/ti';
+import { MdChevronLeft, MdSearch, MdApps, MdSettings } from 'react-icons/lib/md';
+import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -41,17 +42,10 @@ import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
+import withWidth from 'material-ui/utils/withWidth';
 
-import { suBranding, appBar, version, whiteLabel } from 'utils/constants';
+import { apps, appBar, suBranding, version, whiteLabel } from 'utils/constants';
 import { theme } from 'utils/theme';
-
-import messages from 'components/Header/messages';
-
-const MenuLink = styled(Link)`
-  text-decoration: none;
-  cursor: pointer;
-  height: .30em;
-`;
 
 const AppWrapper = styled.div`
   max-width: calc(1200px + 16px * 2);
@@ -70,11 +64,35 @@ const drawerWidth = 240;
 const styles = (xtheme) => ({
   textLink: {
     color: 'white',
+    marginLeft: xtheme.spacing.unit,
+    marginRight: xtheme.spacing.unit,
   },
   root: {
     width: '100%',
     marginTop: xtheme.spacing.unit * 3,
     zIndex: 1,
+  },
+  topMenuLink: {
+    textDecoration: 'none',
+    textTransform: 'none',
+    cursor: 'pointer',
+    height: 15,
+    marginLeft: -xtheme.spacing.unit * 1,
+  },
+  menuLink: {
+    textDecoration: 'none',
+    textTransform: 'none',
+    cursor: 'pointer',
+    height: 15,
+    marginLeft: xtheme.spacing.unit * 4,
+  },
+  menuButton: {
+    textDecoration: 'none',
+    textTransform: 'none',
+  },
+  divider: {
+    marginTop: xtheme.spacing.unit * 3,
+    marginBottom: xtheme.spacing.unit * 0,
   },
   footer: {
     [xtheme.breakpoints.down('lg')]: {
@@ -113,9 +131,9 @@ const styles = (xtheme) => ({
     },
   },
   subListHeader: {
-    marginTop: '5px',
-    paddingBottom: '20px',
-    height: '20px',
+    marginTop: 15,
+    marginBottom: 15,
+    height: 15,
   },
   mainPaper: {
     margin: 0,
@@ -163,134 +181,108 @@ class App extends React.Component {
     const drawer = (
       <div>
         <div className={this.props.classes.drawerHeader}>
-          <Button dense color="primary" onClick={this.handleDrawerToggle}>
-            <MenuLink to="/">
+          <Button color="primary" onClick={this.handleDrawerToggle}>
+            <Link to="/" className={this.props.classes.menuLink}>
               {whiteLabel ? null :
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
               }
               {whiteLabel ?
                 <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
-                :
+                  :
                 <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
               }
-            </MenuLink>
+            </Link>
           </Button>
         </div>
-        <Divider />
-        <div className={this.props.classes.drawerPaper}>
-          <List>
-            <List
-              subheader={<ListSubheader className={this.props.classes.subListHeader}>
-                <MenuLink to="/energies" onClick={this.handleDrawerToggle}>
-                  <MdSearch /> SEARCH
-                </MenuLink>
-              </ListSubheader>}
-            >
 
-              {/*
-              <ListItem>
-                <MenuLink to="/generalSearch" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary">
-                    <FormattedMessage {...messages.generalSearch} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-            */}
-            </List>
+        <Divider className={this.props.classes.divider} />
 
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link to="/energies" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
+              <Button
+                color="primary"
+                className={this.props.classes.menuButton}
+              >
+                <MdSearch />{'\u00A0\u00A0 '}Search
+              </Button>
+            </Link>
+          </ListSubheader>}
+        >
+        </List>
 
-            {/*
-            <List subheader={<ListSubheader>GROUPS</ListSubheader>}>
-              <ListItem>
-                <Button disabled dense color="primary" >
-                  ...
+        <Divider className={this.props.classes.divider} />
+
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link to="/appsIndex" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
+              <Button
+                color="primary"
+                className={this.props.classes.menuButton}
+              >
+                <MdApps />{'\u00A0\u00A0 '}Apps
+              </Button>
+            </Link>
+          </ListSubheader>}
+        >
+          {apps.map((app, i) => (
+            <ListItem key={`app_${i}`}>
+              <Link to={app.route} onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
+                <Button
+                  disabled={_.isEmpty(app.route)}
+                  color="primary"
+                  className={this.props.classes.menuButton}
+                >
+                  {app.title}
                 </Button>
-              </ListItem>
-            </List>
-            */}
+              </Link>
+            </ListItem>
 
-            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>APPS</ListSubheader>}>
-              <ListItem>
-                <MenuLink to="/yourNextApp" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.yourNextApp} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
+          )
 
-              <ListItem>
-                <MenuLink to="/activityMaps" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.activityMaps} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
+          )}
+        </List>
 
-              <ListItem>
-                <MenuLink>
-                  <Button disabled dense color="primary" >
-                    AtoML
-                  </Button>
-                </MenuLink>
-              </ListItem>
+        <Divider className={this.props.classes.divider} />
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
+              <Button
+                color="primary"
+                className={this.props.classes.menuButton}
+              >
+                <MdSettings />{'\u00A0\u00A0 '}Settings
+              </Button>
+            </Link>
+          </ListSubheader>}
+        >
+        </List>
 
-              <ListItem>
-                <MenuLink>
-                  <Button disabled dense color="primary" >
-                    CatMAP
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
-              <ListItem>
-                <MenuLink to="/pourbaixDiagrams" onClick={this.handleDrawerToggle}>
-                  <Button disabled dense color="primary" >
-                    <FormattedMessage {...messages.pourbaixDiagrams} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
-              <ListItem>
-                <MenuLink to="/publications" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <TiDocument /> <FormattedMessage {...messages.publications} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
-              <ListItem>
-                <MenuLink to="/scalingRelations" onClick={this.handleDrawerToggle}>
-                  <Button disabled dense color="primary" >
-                    <FormattedMessage {...messages.scalingRelations} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-
-
-            </List>
-
-            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>API</ListSubheader>}>
-
-              <ListItem>
-                <MenuLink to="/graphQLConsole" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    <FormattedMessage {...messages.graphqlconsole} />
-                  </Button>
-                </MenuLink>
-              </ListItem>
-            </List>
-            <List subheader={<ListSubheader className={this.props.classes.subListHeader}>DOCS</ListSubheader>}>
-
-              <ListItem>
-                <MenuLink to="/developerGuide" onClick={this.handleDrawerToggle}>
-                  <Button dense color="primary" >
-                    Developer Guide
-                  </Button>
-                </MenuLink>
-              </ListItem>
-            </List>
-          </List>
-        </div>
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
+              <Button
+                disabled
+                color="primary"
+                className={this.props.classes.menuButton}
+              >
+                <GoBook />{'\u00A0\u00A0 '}Docs
+              </Button>
+            </Link>
+          </ListSubheader>}
+        >
+          <ListItem>
+            <Link to="/developerGuide" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
+              <Button
+                color="primary"
+                className={this.props.classes.menuButton}
+              >
+                Developer Guide
+              </Button>
+            </Link>
+          </ListItem>
+        </List>
+        <Divider className={this.props.classes.divider} />
       </div>
     );
 
@@ -316,10 +308,10 @@ class App extends React.Component {
             <Toolbar>
               { (!isIOS || this.props.history === null) ? null :
               <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back">
-                <MdArrowBack />
+                <MdChevronLeft />
               </IconButton>
 
-              }
+                  }
               <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={this.props.classes.navIconHide}>
                 {/* onClick event has to be on IconButton to work w/ Firefox. */}
                 <MenuIcon />
@@ -333,16 +325,21 @@ class App extends React.Component {
               >
                 <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
               </ReactGA.OutboundLink>
-              }
-              <Typography type="body1" color="inherit" style={{ marginLeft: 10 }}>
-                {whiteLabel ?
-                  `${this.props.location.pathname}` :
-                  `CatApp${this.props.location.pathname}`}
-              </Typography>
+                  }
+              <Grid container direction="row" justify={isIOS ? 'space-around' : 'flex-start'} style={{ width: '100vw' }}>
+                <Grid item>
+                  <Typography type="body1" color="inherit" style={{ marginLeft: 10 }}>
+                    {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0 CatApp${this.props.location.pathname}`}
+                  </Typography>
+                </Grid>
+              </Grid>
               <Grid container direction="row" justify="flex-end">
                 <Grid item>
                   <IconButton color="secondary" aria-label="Menu">
                     {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                    <Link to="/settings" className={this.props.classes.textLink}>
+                      <MdSettings />
+                    </Link>
                     <Link to="/energies" className={this.props.classes.textLink}>
                       <MdSearch />
                     </Link>
@@ -351,7 +348,7 @@ class App extends React.Component {
               </Grid>
             </Toolbar>
           </AppBar>
-          <Hidden lgUp >
+          <Hidden xlUp >
             <Drawer
               type="temporary"
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -366,13 +363,15 @@ class App extends React.Component {
             </Drawer>
           </Hidden>
           <Hidden lgDown implementation="css">
-            <Drawer
-              type="permanent"
-              open
-              className={this.props.classes.drawerPaper}
-            >
-              { drawer }
-            </Drawer>
+            <Paper >
+              <Drawer
+                type="permanent"
+                open
+                className={this.props.classes.drawerPaper}
+              >
+                { drawer }
+              </Drawer>
+            </Paper>
           </Hidden>
         </div>
         }
@@ -380,7 +379,6 @@ class App extends React.Component {
           <AppWrapper>
             <Paper
               className={this.props.classes.mainPaper}
-              elevation={18}
             >
               <Helmet
                 className={this.props.classes.helmet}
@@ -391,9 +389,9 @@ class App extends React.Component {
       Features include search for specific reaction energies, transition states, structures, exploration of scaling relations, activity maps, Pourbaix diagrams and machine learning models, as well as generation of novel bulk and surface structures. Calculations are linked to peer-review publications where available. The database can be queried via a GraphQL API that can also be accessed directly.
       All code pertaining to this project is hosted as open-source under a liberal MIT license on github to encourage derived work and collaboration. The frontend is developed using the React Javascript framework based on react boilerplate. New components (apps) can be quickly spun-off and added to the project. The backend is developed using the Flask Python framework providing the GraphQL API as well as further APIs for specific apps.
       As such CatApp Browser aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.` },
-            { name: 'robots', content: 'index,follow' },
-            { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
-            { name: 'DC.title', content: 'CatApp Browser' },
+                  { name: 'robots', content: 'index,follow' },
+                  { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
+                  { name: 'DC.title', content: 'CatApp Browser' },
                 ]}
                 link={suBranding === false && appBar === false ? [] : [
                   { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
@@ -454,7 +452,7 @@ class App extends React.Component {
                           fontWeight: lightFooterWeight,
                         }}
                       >&copy; <span className="fn org">Stanford University</span>.&nbsp;&nbsp;<span className="adr"> <span className="locality">Stanford</span>, <span className="region">California</span> <span className="postal-code">94305</span></span>.&nbsp;&nbsp;
-                        <span id="copyright-complaint"></span>
+                            <span id="copyright-complaint"></span>
                       </p>
                     </Flexbox>
                     <Flexbox height="20vh" />
@@ -484,4 +482,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = () => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withProgressBar(withStyles(styles, { withTheme: true })(App)));
+export default compose(
+  withProgressBar,
+  withWidth(),
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, { withTheme: true }),
+)(App);
