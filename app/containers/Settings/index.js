@@ -36,8 +36,8 @@ export class Settings extends React.Component { // eslint-disable-line react/pre
     this.handleChange = this.handleChange.bind(this);
     //
     // Important when loading the first time
-    this.handleChange('perspective')(true);
-    this.handleChange('tiltToRotate')(true);
+    /* this.handleChange('perspective')(true);*/
+    /* this.handleChange('tiltToRotate')(true);*/
   }
   handleChange = (key) => (value) => {
     this.props.cookies.set(key, value);

@@ -154,7 +154,7 @@ function _load_lib(url, callback){
   render() {
     return (
       <div>
-        {(isMobile === false || this.props.tiltToRotate === false) ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt phone to rotate.</div> }
+        {(isMobile === false || this.state.tiltToRotate === false) ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt phone to rotate.</div> }
         <Paper height={14}>
           <p id={`${this.props.id}_script`} >
             <canvas
