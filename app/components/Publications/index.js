@@ -227,7 +227,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       {prettyPrintReference(reference)}
 
                     </span>
-                    <Button dense onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
+                    <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
                       <MdViewList /> {'\u00A0\u00A0'}Load Data
                     </Button>
                     {(this.state.dois[year][j] === null
@@ -240,7 +240,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   target="_blank"
                   className={this.props.classes.outboundLink}
                 >
-                  <Button dense className={this.props.classes.publicationAction}>
+                  <Button className={this.props.classes.publicationAction}>
                     <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
                     </Button>
                 </ReactGA.OutboundLink>
