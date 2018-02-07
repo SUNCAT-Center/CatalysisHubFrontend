@@ -76,7 +76,7 @@ export class Settings extends React.Component { // eslint-disable-line react/pre
                   />
             }
                 label={
-                  <span>Stereographic Projection </span>
+                  <span>Tilt to rotate atoms </span>
             }
               />
             </Tooltip>
