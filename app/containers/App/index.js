@@ -325,7 +325,7 @@ class App extends React.Component {
                   </IconButton>
 
                   }
-                  <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={[this.props.classes.navIconHide, this.props.classes.textLink]}>
+                  <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
                     {/* onClick event has to be on IconButton to work w/ Firefox. */}
                     <MenuIcon />
                   </IconButton>
