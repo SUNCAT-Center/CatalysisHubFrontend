@@ -75,7 +75,7 @@ function catKitDemoReducer(state = initialState, action) {
         activeStep: state.activeStep - 1,
       };
     }
-    case constants.APPEND_SITE_OCCUPATION: {
+    case constants.APPEND_SITE_OCCUPATIONS: {
       return {
         ...state,
         siteOccupations: _.concat(state.siteOccupations, action.payload.siteOccupation),
