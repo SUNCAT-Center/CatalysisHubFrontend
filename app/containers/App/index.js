@@ -181,7 +181,6 @@ const styles = (xtheme) => ({
     },
   },
   appBar: {
-    position: 'absolute',
     [xtheme.breakpoints.up('xl')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
@@ -356,7 +355,7 @@ class App extends React.Component {
                   </ReactGA.OutboundLink>
                 </Grid>
                     }
-                <Grid item >
+                <Grid item sm={2} md={10}>
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
