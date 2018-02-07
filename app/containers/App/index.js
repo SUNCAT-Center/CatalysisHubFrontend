@@ -106,7 +106,7 @@ const styles = (xtheme) => ({
   },
   topMenuLink: {
     cursor: 'pointer',
-    color: '#333333',
+    color: xtheme.palette.cardinalred[900],
     fontSize: 15,
     fontWeight: 'bolder',
     textDecoration: 'none',
@@ -116,12 +116,12 @@ const styles = (xtheme) => ({
     marginBottom: 10,
     padding: 10,
     '&:hover': {
-      backgroundColor: '#cccccc',
+      backgroundColor: xtheme.palette.cardinalred[100],
     },
   },
   menuLink: {
     cursor: 'pointer',
-    color: '#333333',
+    color: xtheme.palette.cardinalred[900],
     fontSize: 15,
     marginLeft: xtheme.spacing.unit * 4,
     textDecoration: 'none',
@@ -129,7 +129,7 @@ const styles = (xtheme) => ({
     width: '100%',
     height: 25,
     '&:hover': {
-      backgroundColor: '#cccccc',
+      backgroundColor: xtheme.palette.cardinalred[100],
     },
   },
   inactiveLink: {
