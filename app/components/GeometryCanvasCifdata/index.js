@@ -9,11 +9,11 @@ import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
-/*import Button from 'material-ui/Button';*/
-/*import Chip from 'material-ui/Chip';*/
-/*import AddIcon from 'material-ui-icons/Add';*/
-/*import RemoveIcon from 'material-ui-icons/Remove';*/
-import { Md3dRotation, } from 'react-icons/lib/md';
+/* import Button from 'material-ui/Button';*/
+/* import Chip from 'material-ui/Chip';*/
+/* import AddIcon from 'material-ui-icons/Add';*/
+/* import RemoveIcon from 'material-ui-icons/Remove';*/
+import { Md3dRotation } from 'react-icons/lib/md';
 import { withCookies, Cookies } from 'react-cookie';
 
 import { isMobile } from 'react-device-detect';
@@ -136,17 +136,17 @@ function _load_lib(url, callback){
   componentDidUpdate() {
     this.componentDidMount();
   }
-  downloadStructure() {
-    axios.get(url, params).then((response) => {
-      const tempUrl = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = tempUrl;
-      link.setAttribute('download', `dft_input_${(new Date()).getTime()}.zip`);
-      document.body.appendChild(link);
-      link.click();
-    }).catch(() => {
-    });
-  }
+  /* downloadStructure() {*/
+  /* axios.get(url, params).then((response) => {*/
+  /* const tempUrl = window.URL.createObjectURL(new Blob([response.data]));*/
+  /* const link = document.createElement('a');*/
+  /* link.href = tempUrl;*/
+  /* link.setAttribute('download', `dft_input_${(new Date()).getTime()}.zip`);*/
+  /* document.body.appendChild(link);*/
+  /* link.click();*/
+  /* }).catch(() => {*/
+  /* });*/
+  /* }*/
   render() {
     return (
       <div>
