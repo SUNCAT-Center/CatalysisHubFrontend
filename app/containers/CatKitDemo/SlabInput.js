@@ -9,8 +9,10 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
 
-import { MdClear, MdContentCut } from 'react-icons/lib/md';
+
+import { MdClear, MdContentCut, MdFileUpload } from 'react-icons/lib/md';
 import _ from 'lodash';
 
 import axios from 'axios';
@@ -101,8 +103,8 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
         <div>
           {isMobileOnly ? null :
           <Grid container direction="row" justify="space-around">
-            <div className={this.props.classes.fileDrop}>
-            Drag a slab structure file here.
+            <Paper className={this.props.classes.fileDrop}>
+              <MdFileUpload />{'\u00A0\u00A0'}Drag a slab structure file here.
             <FileDrop
               frame={document}
               onDrop={this.handleFileDrop}
@@ -118,7 +120,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               {_.isEmpty(this.state.uploadError) ? null :
               <div className={this.props.classes.error}>{this.state.uploadError}</div>
             }
-            </div>
+            </Paper>
           </Grid>
         }
           <Grid container direction="row" justify="space-between">
