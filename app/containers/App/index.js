@@ -72,7 +72,6 @@ const styles = (xtheme) => ({
     marginRight: -xtheme.spacing.unit * 2.5,
   },
   appBarTitle: {
-    marginLeft: 30,
     marginTop: 13,
     [xtheme.breakpoints.down('sm')]: {
       marginLeft: 0,
@@ -355,13 +354,13 @@ class App extends React.Component {
                   </ReactGA.OutboundLink>
                 </Grid>
                     }
-                <Grid item sm={2} md={10}>
+                <Grid item sm={3} md={10}>
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
                           <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                            {whiteLabel ? `${this.props.location.pathname}` : `\u00A0\u00A0\u00A0\u00A0  \u00A0\u00A0 CatApp${this.props.location.pathname}`}
+                            {whiteLabel ? `${this.props.location.pathname}` : `CatApp${this.props.location.pathname}`}
                           </Typography>
                         </Grid>
                       </Grid>
