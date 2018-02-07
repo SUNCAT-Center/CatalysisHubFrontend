@@ -234,6 +234,42 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/upload',
+      name: 'upload',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Upload/reducer'),
+          import('containers/Upload'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('upload', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: 'bulkGenerator',
+      name: 'bulkGenerator',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/BulkGenerator/reducer'),
+          import('containers/BulkGenerator'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('bulkGenerator', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
