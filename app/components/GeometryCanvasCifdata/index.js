@@ -35,7 +35,7 @@ class GeometryCanvasCifdata extends React.Component { // eslint-disable-line rea
       orientation: 'test orientation',
       perspective: (this.props.cookies.get('perspective') === 'true'),
     };
-    this.downloadStructure = this.downloadStructure.bind(this);
+    /* this.downloadStructure = this.downloadStructure.bind(this);*/
   }
   componentDidMount() {
     const script = document.createElement('script');
