@@ -4,11 +4,16 @@
  *
  */
 
+import { compose } from 'recompose';
 import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
-import { Md3dRotation } from 'react-icons/lib/md';
+/*import Button from 'material-ui/Button';*/
+/*import Chip from 'material-ui/Chip';*/
+/*import AddIcon from 'material-ui-icons/Add';*/
+/*import RemoveIcon from 'material-ui-icons/Remove';*/
+import { Md3dRotation, } from 'react-icons/lib/md';
 import { withCookies, Cookies } from 'react-cookie';
 
 import { isMobile } from 'react-device-detect';
@@ -17,7 +22,10 @@ const jQuery = require('jquery');
 window.jQuery = jQuery;
 const { ChemDoodle } = require('utils/ChemDoodleWeb');
 
-const styles = () => ({
+const styles = (theme) => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 class GeometryCanvasCifdata extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -27,6 +35,7 @@ class GeometryCanvasCifdata extends React.Component { // eslint-disable-line rea
       orientation: 'test orientation',
       perspective: (this.props.cookies.get('perspective') === 'true'),
     };
+    this.downloadStructure = this.downloadStructure.bind(this);
   }
   componentDidMount() {
     const script = document.createElement('script');
@@ -127,11 +136,22 @@ function _load_lib(url, callback){
   componentDidUpdate() {
     this.componentDidMount();
   }
+  downloadStructure() {
+    axios.get(url, params).then((response) => {
+      const tempUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = tempUrl;
+      link.setAttribute('download', `dft_input_${(new Date()).getTime()}.zip`);
+      document.body.appendChild(link);
+      link.click();
+    }).catch(() => {
+    });
+  }
   render() {
     return (
       <div>
         {isMobile === false ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt device to rotate.</div> }
-        <Paper>
+        <Paper height={14}>
           <p id={`${this.props.id}_script`} >
             <canvas
               id={`${this.props.id}_view`}
@@ -145,6 +165,21 @@ function _load_lib(url, callback){
             />
           </p>
         </Paper>
+        {/*
+        <Button
+          raised
+          className={this.props.classes.button}
+        >
+          <MdFullscreen /> Fullscreen
+        </Button>
+        <Button
+          raised
+          color="primary"
+          className={this.props.classes.button}
+          onClick={this.downloadStructure}>
+          <MdFileDownload /> Download
+        </Button>
+        */}
       </div>
     );
   }
@@ -180,8 +215,13 @@ GeometryCanvasCifdata.propTypes = {
 };
 
 
-export default withStyles(styles, { withTheme: true })(
-  withCookies(
-    GeometryCanvasCifdata
-  )
-);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  withCookies,
+)(GeometryCanvasCifdata);
+
+/* withStyles(styles, { withTheme: true })(*/
+/* withCookies(*/
+/* GeometryCanvasCifdata*/
+/* )*/
+/* );*/
