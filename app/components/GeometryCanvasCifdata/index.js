@@ -34,6 +34,7 @@ class GeometryCanvasCifdata extends React.Component { // eslint-disable-line rea
     this.state = {
       orientation: 'test orientation',
       perspective: (this.props.cookies.get('perspective') === 'true'),
+      tiltToRotate: (this.props.cookies.get('tiltToRotate') === 'true'),
     };
     /* this.downloadStructure = this.downloadStructure.bind(this);*/
   }
@@ -99,6 +100,7 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.uniqueId}.loadContent([cif_${this.props.uniqueId}.molecule], [cif_${this.props.uniqueId}.unitCell]);
   tfcanvas_${this.props.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.uniqueId}.updateScene()
 
+  if(${this.state.tiltToRotate}) {
   window.addEventListener('deviceorientation', (e) => {
 
   /*ALPHA*/
@@ -127,7 +129,9 @@ function _load_lib(url, callback){
   gamma_${this.props.uniqueId} = e.gamma;
    tfcanvas_${this.props.uniqueId}.updateScene()
 
-  }, true);
+  }, true)
+  }
+  ;
     `;
     const item = document.getElementById(`${this.props.id}_view`);
 
@@ -150,7 +154,7 @@ function _load_lib(url, callback){
   render() {
     return (
       <div>
-        {isMobile === false ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt phone to rotate.</div> }
+        {(isMobile === false || this.props.tiltToRotate === false) ? null : <div> <Md3dRotation />{'\u00A0\u00A0'} Tilt phone to rotate.</div> }
         <Paper height={14}>
           <p id={`${this.props.id}_script`} >
             <canvas
@@ -196,6 +200,7 @@ GeometryCanvasCifdata.defaultProps = {
   borderWidth: 0,
   altLabels: {},
   perspective: true,
+  tiltToRotate: true,
 };
 
 GeometryCanvasCifdata.propTypes = {
@@ -211,6 +216,7 @@ GeometryCanvasCifdata.propTypes = {
   borderWidth: PropTypes.number,
   altLabels: PropTypes.object,
   perspective: PropTypes.bool,
+  tiltToRotate: PropTypes.bool,
   cookies: instanceOf(Cookies).isRequired,
 };
 

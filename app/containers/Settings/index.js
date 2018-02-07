@@ -14,6 +14,7 @@ import Switch from 'material-ui/Switch';
 import Tooltip from 'material-ui/Tooltip';
 import Paper from 'material-ui/Paper';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import { isMobile } from 'react-device-detect';
 
 
 import { createStructuredSelector } from 'reselect';
@@ -30,8 +31,13 @@ export class Settings extends React.Component { // eslint-disable-line react/pre
     super(props);
     this.state = {
       perspective: ((this.props.cookies.get('perspective') || 'true') === 'true'),
+      tiltToRotate: ((this.props.cookies.get('tiltToRotate') || 'true') === 'true'),
     };
     this.handleChange = this.handleChange.bind(this);
+    //
+    // Important when loading the first time
+    this.handleChange('perspective')(true);
+    this.handleChange('tiltToRotate')(true);
   }
   handleChange = (key) => (value) => {
     this.props.cookies.set(key, value);
@@ -60,6 +66,21 @@ export class Settings extends React.Component { // eslint-disable-line react/pre
             }
               />
             </Tooltip>
+            {!isMobile ? null :
+            <Tooltip title="Tilt the phone to turn an atoms object. May consume more battery">
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={this.state.tiltToRotate}
+                    onChange={() => { this.handleChange('tiltToRotate')(!this.state.tiltToRotate); }}
+                  />
+            }
+                label={
+                  <span>Stereographic Projection </span>
+            }
+              />
+            </Tooltip>
+            }
           </FormGroup>
         </Paper>
       </div>

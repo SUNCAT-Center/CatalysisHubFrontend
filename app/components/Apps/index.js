@@ -24,6 +24,7 @@ const styles = () => ({
     padding: '0 0px',
     flexDirection: 'column',
     fontFamily: 'Roboto, sans-serif',
+    textDecoration: 'none',
   },
 });
 
@@ -34,7 +35,12 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
         <Grid container justify="center">
           {apps.map((app, i) => (
             <Grid item key={`griditem_${i}`}>
-              <Link to={app.route}>
+              <Link
+                to={app.route}
+                style={{
+                  textDecoration: 'none',
+                }}
+              >
                 <Paper
                   style={{
                     padding: 25,
