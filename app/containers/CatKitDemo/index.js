@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
+import { isMobileOnly } from 'react-device-detect';
 
 import { withStyles } from 'material-ui/styles';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
@@ -123,7 +124,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               className={this.props.classes.buttongrid}
             >
               <Grid item>
-                <Stepper activeStep={activeStep} className={this.props.classes.lightsandhill}>
+                <Stepper activeStep={activeStep} className={this.props.classes.lightsandhill} orientation={isMobileOnly ? 'vertical' : 'horizontal'}>
                   {steps.map((label) => {
                     const props = {};
                     const labelProps = {};
