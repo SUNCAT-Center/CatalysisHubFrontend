@@ -10,6 +10,7 @@ export const CLEAR_BULK_CIF = 'app/CatKitDemo/CLEAR_BULK_CIF';
 
 export const RECEIVE_SLAB_CIFS = 'app/CatKitDemo/RECEIVE_SLAB_CIFS';
 export const CLEAR_SLAB_CIFS = 'app/CatKitDemo/CLEAR_SLAB_CIFS';
+export const SAVE_ALT_LABELS = 'app/CatKitDemo/SAVE_ALT_LABELS';
 
 export const SAVE_LATTICE_CONSTANT = 'app/CatKitDemo/SAVE_LATTICE_CONSTANT';
 export const SAVE_BULK_PARAMS = 'app/CatKitDemo/SAVE_BULK_PARAMS';
@@ -26,7 +27,14 @@ export const CLEAR_ADSORPTION_SITES = 'app/CatKitDemo/CLEAR_ADSORPTION_SITES';
 
 export const SAVE_SITE_OCCUPATIONS = 'app/CatKitDemo/SAVE_SITE_OCCUPATIONS';
 export const CLEAR_SITE_OCCUPATIONS = 'app/CatKitDemo/CLEAR_SITE_OCCUPATIONS';
+export const APPEND_SITE_OCCUPATIONS = 'app/CatKitDemo/APPEND_SITE_OCCUPATIONS';
 
 export const STEPPER_HANDLE_NEXT = 'app/CatKitDemo/STEPPER_HANDLE_NEXT';
 export const STEPPER_HANDLE_BACK = 'app/CatKitDemo/STEPPER_HANDLE_BACK';
 export const STEPPER_HANDLE_RESET = 'app/CatKitDemo/STEPPER_HANDLE_RESET';
+
+export const DROP_BULK_INPUT = 'app/CatKitDemo/DROP_BULK_INPUT';
+export const DROP_SLAB_INPUT = 'app/CatKitDemo/DROP_SLAB_INPUT';
+
+export const FORGET_CUSTOM_BULK = 'app/CatKitDemo/FORGET_CUSTOM_BULK';
+export const FORGET_CUSTOM_SLAB = 'app/CatKitDemo/FORGET_CUSTOM_SLAB';

@@ -17,10 +17,46 @@ const initialState = {
   adsorptionSites: [],
   siteOccupations: [],
   activeStep: 0,
+  altLabels: [],
+  bulkInput: '',
+  customBulkInput: false,
+  slabInput: '',
+  customSlabInput: false,
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
+
+    case constants.DROP_SLAB_INPUT: {
+      return {
+        ...state,
+        customSlabInput: true,
+      };
+    }
+    case constants.DROP_BULK_INPUT: {
+      return {
+        ...state,
+        customBulkInput: true,
+      };
+    }
+    case constants.FORGET_CUSTOM_SLAB: {
+      return {
+        ...state,
+        customSlabInput: initialState.customSlabInput,
+      };
+    }
+    case constants.FORGET_CUSTOM_BULK: {
+      return {
+        ...state,
+        customBulkInput: initialState.customBulkInput,
+      };
+    }
+    case constants.SAVE_ALT_LABELS: {
+      return {
+        ...state,
+        altLabels: action.payload.altLabels,
+      };
+    }
     case constants.STEPPER_HANDLE_RESET: {
       return {
         ...state,
@@ -37,6 +73,12 @@ function catKitDemoReducer(state = initialState, action) {
       return {
         ...state,
         activeStep: state.activeStep - 1,
+      };
+    }
+    case constants.APPEND_SITE_OCCUPATION: {
+      return {
+        ...state,
+        siteOccupations: _.concat(state.siteOccupations, action.payload.siteOccupation),
       };
     }
     case constants.CLEAR_SITE_OCCUPATIONS: {

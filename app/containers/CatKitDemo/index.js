@@ -17,7 +17,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
-import { CatKitDemoHeader } from './catKitDemoHeader';
+import CatKitDemoHeader from './catKitDemoHeader';
 import BulkInput from './BulkInput';
 import { CalculationsView } from './CalculationsView';
 import { BulkView } from './BulkView';
@@ -28,29 +28,7 @@ import { AdsorbateView } from './AdsorbateView';
 import DftInput from './DftInput';
 
 import * as actions from './actions';
-
-const styles = (theme) => ({
-  header: {
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit,
-  },
-  lightsandhill: {
-    width: '100%',
-    padding: theme.spacing.unit * 2,
-  },
-  button: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    padding: theme.spacing.unit,
-  },
-  buttongrid: {
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-});
+import { styles } from './styles';
 
 function getSteps() {
   return [
@@ -159,21 +137,20 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               </Grid>
               <Grid item>
                 <Button
+                  className={this.props.classes.button}
                   disabled={activeStep === 0}
                   onClick={this.handleBack}
-                  className={this.props.classes.button}
                 >
                   <MdChevronLeft /> Back
-                </Button>
-                <Button
-                  raised
-                  disabled={!nextStepReady(activeStep, this.props)}
-                  color="primary"
-                  onClick={this.handleNext}
-                  className={this.props.classes.button}
-                >
+                  </Button><Button
+                    raised
+                    className={this.props.classes.button}
+                    disabled={!nextStepReady(activeStep, this.props)}
+                    color="primary"
+                    onClick={this.handleNext}
+                  >
                   Next <MdChevronRight />
-                </Button>
+                  </Button>
               </Grid>
             </Grid>
           </Paper>
@@ -245,6 +222,30 @@ const mapDispatchToProps = (dispatch) => ({
   stepperHandleReset: () => {
     dispatch(actions.stepperHandleReset());
   },
+  saveAltLabels: (altLabels) => {
+    dispatch(actions.saveAltLabels(altLabels));
+  },
+  forgetCustomBulk: () => {
+    dispatch(actions.forgetCustomBulk());
+  },
+  forgetCustomSlab: () => {
+    dispatch(actions.forgetCustomSlab());
+  },
+  dropSlabInput: (file) => {
+    dispatch(actions.dropSlabInput(file));
+  },
+  dropBulkInput: (file) => {
+    dispatch(actions.dropBulkInput(file));
+  },
+  saveSiteOccupations: (siteOccupations) => {
+    dispatch(actions.saveSiteOccupations(siteOccupations));
+  },
+  clearSiteOccupations: () => {
+    dispatch(actions.clearSiteOccupations());
+  },
+  appendSiteOccupation: (siteOccupation) => {
+    dispatch(actions.appendSiteOccupation(siteOccupation));
+  },
 });
 
 const mapStateToProps = (state) => ({
@@ -256,6 +257,10 @@ const mapStateToProps = (state) => ({
   calculations: state.get('catKitDemoReducer').calculations,
   adsorptionSites: state.get('catKitDemoReducer').adsorptionSites,
   activeStep: state.get('catKitDemoReducer').activeStep,
+  altLabels: state.get('catKitDemoReducer').altLabels,
+  customBulkInput: state.get('catKitDemoReducer').customBulkInput,
+  customSlabInput: state.get('catKitDemoReducer').customSlabInput,
+  siteOccupations: state.get('catKitDemoReducer').siteOccupations,
 });
 
 export default withStyles(styles, { withTheme: true })(

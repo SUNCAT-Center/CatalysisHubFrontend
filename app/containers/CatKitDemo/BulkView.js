@@ -12,7 +12,6 @@ export class BulkView extends React.Component { // eslint-disable-line react/pre
       <div>
         { this.props.bulkCif === '' ? null :
         <div>
-          <h4>Bulk Structure</h4>
           <Grid container direction="row" justify="center">
             <Grid item>
               <GeometryCanvasCifdata

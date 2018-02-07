@@ -11,8 +11,7 @@ export class SlabView extends React.Component { // eslint-disable-line react/pre
       <div>
         { this.props.bulkCif === '' ? null :
         <div>
-          {this.props.images.length === 0 ? null : <h4>Unique Slab Geometries</h4> }
-          <Grid cotainer direction="row" justify="center">
+          <Grid container direction="row" justify="center">
             <Grid item>
               <Grid container justify="flex-start" direction="column">
                 {this.props.images.map((image, i) => (

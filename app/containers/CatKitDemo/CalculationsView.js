@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
+import FileDownload from 'react-file-download';
 
 import Table, {
   TableBody,
@@ -15,39 +17,39 @@ import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 
-const styles = (theme) => ({
-  buttonList: {
-    flex: 1,
-    flexDirection: 'row',
-    justify: 'flex-end',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  lightsandhill: {
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 1,
-    marginBottom: theme.spacing.unit * 1,
-  },
-  header: {},
-  buttongrid: {},
-});
+import * as moment from 'moment/moment';
+
+import axios from 'axios';
+import { flaskRoot } from 'utils/constants';
+import { styles } from './styles';
+
+const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const url = `${backendRoot}/generate_dft_input`;
+
 
 class CalculationsView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.clearCalculations = this.clearCalculations.bind(this);
     this.removeCalculation = this.removeCalculation.bind(this);
+    this.downloadCalculations = this.downloadCalculations.bind(this);
   }
   clearCalculations() {
     this.props.clearCalculations();
   }
   removeCalculation(n) {
     this.props.removeCalculation(n);
+  }
+
+  downloadCalculations() {
+    const params = { params: {
+      calculations: JSON.stringify(this.props.calculations),
+    },
+      responseType: 'arraybuffer',
+    };
+    axios.get(url, params).then((response) => {
+      FileDownload(response.data, `calculations_${moment().format('YYYYMMDD_HHmmss')}.zip`);
+    });
   }
 
   render() {
@@ -72,10 +74,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                 <TableRow key={`calculation_${i}`}>
                   <TableCell padding="none">{calculation.bulkParams.structure}</TableCell>
                   <TableCell padding="none">{`
-            ${calculation.bulkParams.element1}
-            ${calculation.bulkParams.element2}
-            ${calculation.bulkParams.element3}
-            ${calculation.bulkParams.element4}
+            [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>
                   <TableCell padding="none">{
               `[
@@ -84,7 +83,9 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               ${calculation.slabParams.miller_z}
             ]`
             }</TableCell>
-                  <TableCell padding="none">TBD</TableCell>
+                  <TableCell padding="none">{(
+            Object.keys(_.get(calculation, ['siteOccupations', 0], {})).filter((label) => !_.isEmpty(_.get(calculation, ['siteOccupations', 0, label], {}))).map((label, labelIndex) => _.get(calculation, ['siteOccupations', 0, label], {}).filter((occ) => occ !== 'empty').map((species) => `${species}@${label}${labelIndex}`).join(' + ')).filter((occs) => !_.isEmpty(occs)).join(' + ')
+          )}</TableCell>
                   <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
@@ -94,12 +95,12 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                     </IconButton>
                   </TableCell>
                 </TableRow>
-                ))}
+                  ))}
             </TableBody>
           </Table>
           <Grid container justify="flex-end" direction="row">
             <Grid item>
-              <Button raised onClick={this.clearCalculations} color="contrast" className={this.props.classes.button}><MdClear /> Clear All</Button>
+              <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> Clear All</Button>
             </Grid>
             <Grid item>
               <Button raised onClick={this.downloadCalculations} color="primary" className={this.props.classes.button}><MdFileDownload /> Download All</Button>
@@ -107,7 +108,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
           </Grid>
 
         </Paper>
-      }
+        }
       </div>
     );
   }

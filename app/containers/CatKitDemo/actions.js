@@ -6,6 +6,45 @@
 
 import * as constants from './constants';
 
+export function forgetCustomBulk() {
+  return {
+    type: constants.FORGET_CUSTOM_BULK,
+  };
+}
+
+export function forgetCustomSlab() {
+  return {
+    type: constants.FORGET_CUSTOM_SLAB,
+  };
+}
+
+export function dropSlabInput(file) {
+  return {
+    type: constants.DROP_SLAB_INPUT,
+    payload: {
+      file,
+    },
+  };
+}
+
+export function dropBulkInput(file) {
+  return {
+    type: constants.DROP_BULK_INPUT,
+    payload: {
+      file,
+    },
+  };
+}
+
+export function saveAltLabels(altLabels) {
+  return {
+    type: constants.SAVE_ALT_LABELS,
+    payload: {
+      altLabels,
+    },
+  };
+}
+
 export function stepperHandleReset() {
   return {
     type: constants.STEPPER_HANDLE_RESET,
@@ -27,6 +66,15 @@ export function stepperHandleNext() {
 export function clearSiteOccupations() {
   return {
     type: constants.CLEAR_SITE_OCCUPATIONS,
+  };
+}
+
+export function appendSiteOccupation(siteOccupation) {
+  return {
+    type: constants.APPEND_SITE_OCCUPATIONS,
+    payload: {
+      siteOccupation,
+    },
   };
 }
 

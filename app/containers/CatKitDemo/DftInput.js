@@ -11,25 +11,13 @@ import { withStyles } from 'material-ui/styles';
 
 
 import axios from 'axios';
-/* import { backendRoot } from 'utils/constants';*/
 import { flaskRoot } from 'utils/constants';
+import { styles } from './styles';
 const backendRoot = `${flaskRoot}/apps/catKitDemo`;
-
-const styles = (theme) => ({
-  formControl: {
-    margin: theme.spacing.unit,
-  },
-  finish: {
-    fontSize: 36,
-  },
-  textButton: {
-    textTransform: 'none',
-  },
-});
 
 
 const initialState = {
-  calculator: 'espresso',
+  calculator: 'espresso-in',
   functional: 'PBE',
 };
 
@@ -54,6 +42,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
     this.props.saveCalculation({
       bulkParams: this.props.bulkParams,
       slabParams: this.props.slabParams,
+      siteOccupations: this.props.siteOccupations,
       dftParams: {
         calculator: this.state.calculator,
         functional: this.state.functional,
@@ -103,8 +92,8 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
                 Nothing left to do here. {'\u00A0\u00A0'} <MdCheckCircle size={92} color="green" />
                 </Grid>
                 <Grid item>
-                  <div>Start new structure here:
-                    <Button dense onClick={this.props.stepperHandleReset} className={this.props.classes.textButton}> reset </Button> </div>
+                  <div>Start new structure:
+                    <Button dense onClick={this.props.stepperHandleReset} className={this.props.classes.button}> reset </Button> </div>
                 </Grid>
               </Grid>
             </Grid>
@@ -120,7 +109,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
                   onChange={this.handleChange('calculator')}
                   value={this.state.calculator}
                 >
-                  <MenuItem value={'espresso'}>Quantum Espresso</MenuItem>
+                  <MenuItem value={'espresso-in'}>Quantum Espresso</MenuItem>
                   <MenuItem value={'vasp'}>VASP</MenuItem>
                 </Select>
               </FormControl>
@@ -163,6 +152,7 @@ DftInput.propTypes = {
   clearBulkCif: PropTypes.func,
   clearSlabCifs: PropTypes.func,
   stepperHandleReset: PropTypes.func,
+  siteOccupations: PropTypes.array,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);
