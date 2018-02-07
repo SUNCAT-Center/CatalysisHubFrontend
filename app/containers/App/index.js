@@ -83,19 +83,64 @@ const styles = (xtheme) => ({
     marginTop: xtheme.spacing.unit * 3,
     zIndex: 1,
   },
-  topMenuLink: {
+  subListHeader: {
+    marginTop: 10,
+    marginBottom: 20,
+    height: 25,
+    padding: 5,
+  },
+  menuItem: {
+    padding: 5,
+  },
+  inactiveTopMenuLink: {
+    cursor: 'pointer',
+    color: '#cccccc',
+    fontSize: 15,
+    fontWeight: 'bolder',
     textDecoration: 'none',
     textTransform: 'none',
+    width: '100%',
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+  },
+  topMenuLink: {
     cursor: 'pointer',
-    height: 15,
-    marginLeft: -xtheme.spacing.unit * 1,
+    color: '#333333',
+    fontSize: 15,
+    fontWeight: 'bolder',
+    textDecoration: 'none',
+    textTransform: 'none',
+    width: '100%',
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+    '&:hover': {
+      backgroundColor: '#cccccc',
+    },
   },
   menuLink: {
+    cursor: 'pointer',
+    color: '#333333',
+    fontSize: 15,
+    marginLeft: xtheme.spacing.unit * 4,
     textDecoration: 'none',
     textTransform: 'none',
+    width: '100%',
+    height: 25,
+    '&:hover': {
+      backgroundColor: '#cccccc',
+    },
+  },
+  inactiveLink: {
     cursor: 'pointer',
-    height: 15,
+    color: '#cccccc',
+    fontSize: 15,
     marginLeft: xtheme.spacing.unit * 4,
+    textDecoration: 'none',
+    textTransform: 'none',
+    width: '100%',
+    height: 25,
   },
   menuButton: {
     textDecoration: 'none',
@@ -140,11 +185,6 @@ const styles = (xtheme) => ({
     [xtheme.breakpoints.up('xl')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
-  },
-  subListHeader: {
-    marginTop: 15,
-    marginBottom: 15,
-    height: 15,
   },
   mainPaper: {
     margin: 0,
@@ -211,12 +251,7 @@ class App extends React.Component {
         <List
           subheader={<ListSubheader className={this.props.classes.subListHeader}>
             <Link to="/energies" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <Button
-                color="primary"
-                className={this.props.classes.menuButton}
-              >
-                <MdSearch />{'\u00A0\u00A0 '}Search
-              </Button>
+              <MdSearch />{'\u00A0\u00A0 '}Search
             </Link>
           </ListSubheader>}
         >
@@ -227,25 +262,18 @@ class App extends React.Component {
         <List
           subheader={<ListSubheader className={this.props.classes.subListHeader}>
             <Link to="/appsIndex" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <Button
-                color="primary"
-                className={this.props.classes.menuButton}
-              >
-                <MdApps />{'\u00A0\u00A0 '}Apps
-              </Button>
+              <MdApps />{'\u00A0\u00A0 '}Apps
             </Link>
           </ListSubheader>}
         >
           {apps.map((app, i) => (
-            <ListItem key={`app_${i}`}>
-              <Link to={app.route} onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
-                <Button
-                  disabled={_.isEmpty(app.route)}
-                  color="primary"
-                  className={this.props.classes.menuButton}
-                >
-                  {app.title}
-                </Button>
+            <ListItem key={`app_${i}`} className={this.props.classes.menuItem}>
+              <Link
+                to={app.route}
+                onClick={this.handleDrawerToggle}
+                className={!_.isEmpty(app.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
+              >
+                {app.title}
               </Link>
             </ListItem>
 
@@ -258,12 +286,7 @@ class App extends React.Component {
         <List
           subheader={<ListSubheader className={this.props.classes.subListHeader}>
             <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <Button
-                color="primary"
-                className={this.props.classes.menuButton}
-              >
-                <MdSettings />{'\u00A0\u00A0 '}Settings
-              </Button>
+              <MdSettings />{'\u00A0\u00A0 '}Settings
             </Link>
           </ListSubheader>}
         >
@@ -271,25 +294,16 @@ class App extends React.Component {
 
         <List
           subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <Button
-                disabled
-                color="primary"
-                className={this.props.classes.menuButton}
-              >
-                <GoBook />{'\u00A0\u00A0 '}Docs
-              </Button>
+            <Link
+              className={this.props.classes.inactiveTopMenuLink}
+            >
+              <GoBook />{'\u00A0\u00A0 '}Docs
             </Link>
           </ListSubheader>}
         >
           <ListItem>
             <Link to="/developerGuide" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
-              <Button
-                color="primary"
-                className={this.props.classes.menuButton}
-              >
-                Developer Guide
-              </Button>
+              Developer Guide
             </Link>
           </ListItem>
         </List>
@@ -324,7 +338,7 @@ class App extends React.Component {
                     <MdChevronLeft />
                   </IconButton>
 
-                  }
+                      }
                   <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
                     {/* onClick event has to be on IconButton to work w/ Firefox. */}
                     <MenuIcon />
