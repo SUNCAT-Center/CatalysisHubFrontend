@@ -238,7 +238,7 @@ class App extends React.Component {
               {whiteLabel ?
                 <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
                   :
-                <div style={{ color: 'primary', textDecoration: 'none' }}>SUNCAT Browser beta v{version}</div>
+                <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis-Hub.org v{version}</div>
               }
             </Link>
           </Button>
@@ -330,7 +330,7 @@ class App extends React.Component {
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
               <Grid container direction="row" justify="space-between">
-                <Grid item sm={2} md={2} lg={1}>
+                <Grid item sm={1} md={1} lg={1}>
                   { (!isIOS || this.props.history === null) ? null :
                   <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
                     <MdChevronLeft />
@@ -354,13 +354,13 @@ class App extends React.Component {
                   </ReactGA.OutboundLink>
                 </Grid>
                     }
-                <Grid item sm={4} md={10}>
+                <Grid item sm={4} md={8}>
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
                           <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                            {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
+                            {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -432,13 +432,13 @@ class App extends React.Component {
                 titleTemplate="%s - Catalysis-Hub.org"
                 defaultTitle="Catalysis-Hub.org"
                 meta={[
-                  { name: 'description', content: `Catalysis-Hub.Org is a frontend for browsing the SUNCAT CatApp database containing thousands of first-principles calculations related to heterogeneous catalysis reactions on surface systems. Its goal is to allow comprehensive and user-friendly access to raw quantum chemical simulations guided by heterogeneous catalysis concepts and commonly used graphical representations such as scaling relations and activity maps. All reaction energies are derived from periodic plane-wave density functional theory calculations. An increasing number of calculations contain the corresponding optimized geometry as well as further calculational details such as exchange-correlation (XC) functional, basis set quality, and k-point sampling. Ultimately, the goal is to provide fully self-contained data for predicting experimental observations from electronic structure calculations and using software packages such as Quantum Espresso, GPAW, VASP, and FHI-aims. Input and output with other codes is supported through the Atomic Simulation Environment (ASE). It may also serve as a natural starting point for training and developing machine-learning based approaches accelerating quantum chemical simulations.
+                  { name: 'description', content: `Catalysis-Hub.org is a frontend for browsing the SUNCAT CatApp database containing thousands of first-principles calculations related to heterogeneous catalysis reactions on surface systems. Its goal is to allow comprehensive and user-friendly access to raw quantum chemical simulations guided by heterogeneous catalysis concepts and commonly used graphical representations such as scaling relations and activity maps. All reaction energies are derived from periodic plane-wave density functional theory calculations. An increasing number of calculations contain the corresponding optimized geometry as well as further calculational details such as exchange-correlation (XC) functional, basis set quality, and k-point sampling. Ultimately, the goal is to provide fully self-contained data for predicting experimental observations from electronic structure calculations and using software packages such as Quantum Espresso, GPAW, VASP, and FHI-aims. Input and output with other codes is supported through the Atomic Simulation Environment (ASE). It may also serve as a natural starting point for training and developing machine-learning based approaches accelerating quantum chemical simulations.
       Features include search for specific reaction energies, transition states, structures, exploration of scaling relations, activity maps, Pourbaix diagrams and machine learning models, as well as generation of novel bulk and surface structures. Calculations are linked to peer-review publications where available. The database can be queried via a GraphQL API that can also be accessed directly.
       All code pertaining to this project is hosted as open-source under a liberal MIT license on github to encourage derived work and collaboration. The frontend is developed using the React Javascript framework based on react boilerplate. New components (apps) can be quickly spun-off and added to the project. The backend is developed using the Flask Python framework providing the GraphQL API as well as further APIs for specific apps.
-      As such Catalysis-Hub.Org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.` },
+      As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.` },
                   { name: 'robots', content: 'index,follow' },
                   { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
-                  { name: 'DC.title', content: 'Catalysis-Hub.Org' },
+                  { name: 'DC.title', content: 'Catalysis-Hub.org' },
                 ]}
                 link={suBranding === false && appBar === false ? [] : [
                   { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },

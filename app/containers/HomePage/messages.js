@@ -8,7 +8,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   startProjectHeader: {
     id: 'boilerplate.containers.HomePage.start_project.header',
-    defaultMessage: 'Catalysis-Hub.Org',
+    defaultMessage: 'Catalysis-Hub.org',
   },
   startProjectMessage: {
     id: 'boilerplate.containers.HomePage.start_project.message',
