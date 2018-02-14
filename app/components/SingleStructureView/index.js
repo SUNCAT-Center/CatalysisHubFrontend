@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import Grid from 'material-ui/Grid';
 
-import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 const initialState = {
   Formula: '',
@@ -51,7 +51,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
           <h2>{this.props.selectedSystem.full_key}</h2>
           <Grid container direction="row" justify="space-around">
             <Grid item>
-              <GeometryCanvasCifdata
+              <GeometryCanvasWithOptions
                 uniqueId={this.props.selectedUUID}
                 id={this.props.selectedUUID}
                 x={x} y={y} z={z}
