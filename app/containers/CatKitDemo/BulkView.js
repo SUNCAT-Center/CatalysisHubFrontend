@@ -1,7 +1,7 @@
 import React from 'react';
 
 /* import GeometryCanvas from 'components/GeometryCanvas';*/
-import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import PropTypes from 'prop-types';
 
 import Grid from 'material-ui/Grid';
@@ -14,7 +14,7 @@ export class BulkView extends React.Component { // eslint-disable-line react/pre
         <div>
           <Grid container direction="row" justify="center">
             <Grid item>
-              <GeometryCanvasCifdata
+              <GeometryCanvasWithOptions
                 cifdata={this.props.bulkCif}
                 uniqueId="bulk_preview"
                 id="bulk_preview"

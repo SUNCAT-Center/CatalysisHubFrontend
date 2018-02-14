@@ -40,8 +40,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     this.handleFileDrop = this.handleFileDrop.bind(this);
     setTimeout(() => {
       this.generateSlabs();
-    }, 1500,
-    );
+    }, 1500);
   }
 
   handleFileDrop(files) {
@@ -81,6 +80,9 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       bulkParams: this.props.bulkParams,
       slabParams,
     } };
+    if (this.props.customBulkInput) {
+      params.bulk_cif = this.props.bulkCif;
+    }
 
     this.props.saveSlabParams(slabParams);
     axios.get(url, params).then((response) => {
@@ -105,24 +107,24 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
           <Grid container direction="row" justify="space-around">
             <Paper className={this.props.classes.fileDrop}>
               <MdFileUpload />{'\u00A0\u00A0'}Drag a slab structure file here.
-            <FileDrop
-              frame={document}
-              onDrop={this.handleFileDrop}
-              dropEffect="move"
+                      <FileDrop
+                        frame={document}
+                        onDrop={this.handleFileDrop}
+                        dropEffect="move"
 
-            >
-              <div
-                className={this.props.classes.fileDropActive}
-              >
-                Drop File Here.
-              </div>
-            </FileDrop>
+                      >
+                        <div
+                          className={this.props.classes.fileDropActive}
+                        >
+                          Drop File Here.
+                        </div>
+                      </FileDrop>
               {_.isEmpty(this.state.uploadError) ? null :
               <div className={this.props.classes.error}>{this.state.uploadError}</div>
-            }
+                      }
             </Paper>
           </Grid>
-        }
+              }
           <Grid container direction="row" justify="space-between">
             <Grid item >
               <h2>Configure Slab Geometry</h2>
@@ -135,7 +137,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               ><MdClear /> Clear </Button>
               {this.props.customSlabInput ? null :
               <Button raised onClick={this.generateSlabs} color="primary" className={this.props.classes.button}><MdContentCut />{'\u00A0\u00A0'} Cleave Slabs </Button>
-            }
+                  }
             </Grid>
           </Grid>
           {this.props.customSlabInput ? null :
@@ -219,7 +221,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
             </Grid>
 
           </Grid>
-            }
+              }
         </div>
         }
       </div>
@@ -232,6 +234,7 @@ SlabInput.propTypes = {
   bulkParams: PropTypes.object,
   classes: PropTypes.object.isRequired,
   customSlabInput: PropTypes.bool,
+  customBulkInput: PropTypes.bool,
   dropSlabInput: PropTypes.func,
   forgetCustomSlab: PropTypes.func,
   images: PropTypes.array,

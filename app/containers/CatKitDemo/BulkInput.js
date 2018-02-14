@@ -146,9 +146,11 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     this.props.clearSlabCifs();
     this.props.saveBulkParams(params.params);
 
-    axios.get(bulkUrl, params).then((response) => {
-      this.props.receiveBulkCif(response.data.cifdata);
-    });
+    if (!this.props.customBulkInput) {
+      axios.get(bulkUrl, params).then((response) => {
+        this.props.receiveBulkCif(response.data.cifdata);
+      });
+    }
   }
 
   handleChange(name) {
