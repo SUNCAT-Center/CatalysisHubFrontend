@@ -25,6 +25,7 @@ import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
+import AppSnackBar from 'containers/AppSnackBar';
 
 import { MdChevronLeft, MdSearch, MdApps, MdSettings } from 'react-icons/lib/md';
 import { GoBook } from 'react-icons/lib/go';
@@ -311,6 +312,7 @@ class App extends React.Component {
 
     return (
       <div>
+        <AppSnackBar />
         {suBranding === false || appBar === true ? null :
         <div id="brandbar">
           <div className="container">
