@@ -369,7 +369,7 @@ class App extends React.Component {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item sm={3} md={3}>
+                <Grid item sm={4} md={2} >
                   <Grid container direction="row" justify="space-between">
                     <Grid item>
                       <Link to="/energies" className={this.props.classes.textLink}>
