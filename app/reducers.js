@@ -18,6 +18,8 @@ import plotlyDemoReducer from 'containers/PlotlyDemo/reducer';
 import activityMapsPageReducer from 'containers/ActivityMapsPage/reducer';
 import catKitDemoReducer from 'containers/CatKitDemo/reducer';
 import profileReducer from 'containers/Profile/reducer';
+import bulkGeneratorReducer from 'containers/BulkGenerator/reducer';
+import appSnackBarReducer from 'containers/AppSnackBar/reducer';
 
 /*
  * routeReducer
@@ -63,6 +65,8 @@ export default function createReducer(asyncReducers) {
     activityMapsPageReducer,
     catKitDemoReducer,
     profileReducer,
+    bulkGeneratorReducer,
+    appSnackBarReducer,
     ...asyncReducers,
   });
 }
