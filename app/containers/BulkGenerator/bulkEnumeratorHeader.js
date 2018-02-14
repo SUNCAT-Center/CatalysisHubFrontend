@@ -27,6 +27,7 @@ class BulkEnumeratorDemoHeader extends React.Component { // eslint-disable-line 
             >Based on <ReactGA.OutboundLink
               eventLabel="https://gitlab.com/ankitjainmeiitk/Enumerator"
               to="https://gitlab.com/ankitjainmeiitk/Enumerator"
+              target="_blank"
             >
               gitlab/ankitjainmeiitk/Enumerator
               </ReactGA.OutboundLink>

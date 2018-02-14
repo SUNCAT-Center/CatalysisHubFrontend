@@ -27,6 +27,7 @@ class CatKitDemoHeader extends React.Component { // eslint-disable-line react/pr
             >Checkout full code on <ReactGA.OutboundLink
               eventLabel="https://github.com/jboes/CatKit"
               to="https://github.com/jboes/CatKit"
+              target="_blank"
             >
                 github/jboes/CatKit
               </ReactGA.OutboundLink>
