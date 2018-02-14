@@ -38,5 +38,15 @@ export const styles = (theme) => ({
   inputLabel: {
     padding: 0,
   },
+  fileDrop: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
+    width: '100%',
+  },
+  fileDropActive: {
+    width: 500,
+    height: 500,
+    border: '1px solid dashed',
+  },
 });
 

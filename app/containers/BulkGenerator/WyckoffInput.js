@@ -130,6 +130,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
       this.setState({
         wyckoffPoints: this.state.wyckoffPoints.filter((x, j) => i !== j),
       });
+      this.props.setWyckoffPoints(this.state.wyckoffPoints.filter((x, j) => i !== j));
     }
     return event;
   }

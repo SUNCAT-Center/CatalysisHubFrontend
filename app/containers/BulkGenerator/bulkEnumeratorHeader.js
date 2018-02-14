@@ -19,7 +19,7 @@ class BulkEnumeratorDemoHeader extends React.Component { // eslint-disable-line 
 
         <Grid container direction="row" justify="space-between">
           <Grid item>
-            <h1>Bulk Generator</h1>
+            <h1>Wyckoff Bulk Generator</h1>
           </Grid>
           <Grid>
             <div

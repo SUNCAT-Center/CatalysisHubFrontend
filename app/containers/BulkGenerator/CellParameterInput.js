@@ -12,7 +12,7 @@ import { MdLoop } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
-import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import { styles } from './styles';
 
@@ -60,6 +60,17 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
   render() {
     return (
       <div>
+        <h2>Structure Preview</h2>
+        <Grid container direction="row" justify="center">
+          <Grid item >
+            <GeometryCanvasWithOptions
+              cifdata={this.props.bulkStructure}
+              uniqueId="bulk_preview"
+              id="bulk_preview"
+              x={2} y={2} z={2}
+            />
+          </Grid>
+        </Grid>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h2>Input Cell Parameters</h2>
@@ -97,17 +108,6 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
               </FormControl>
             </Grid>
             ))}
-        </Grid>
-        <h2>Structure Preview</h2>
-        <Grid container direction="row" justify="center">
-          <Grid item >
-            <GeometryCanvasCifdata
-              cifdata={this.props.bulkStructure}
-              uniqueId="bulk_preview"
-              id="bulk_preview"
-              x={2} y={2} z={2}
-            />
-          </Grid>
         </Grid>
       </div>
     );
