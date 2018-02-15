@@ -45,9 +45,18 @@ export const styles = (theme) => ({
 
   },
   sitePanel: {
-    maxWidth: '45vw',
-    width: '45vw',
+    position: 'relative',
+    float: 'right',
+    width: '100%',
     margin: theme.spacing.unit,
+  },
+  expansionPanel: {
+    position: 'relative',
+    width: '100%',
+  },
+  ep_root: {
+    position: 'relative',
+    width: '100%',
   },
   select: {
     margin: theme.spacing.unit,

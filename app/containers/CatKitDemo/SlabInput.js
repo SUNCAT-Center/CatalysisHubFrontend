@@ -35,7 +35,9 @@ const initialState = {
 class SlabInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = _.merge(initialState,
+       _.get(props, ['slabParams']));
+
     this.generateSlabs = this.generateSlabs.bind(this);
     this.handleFileDrop = this.handleFileDrop.bind(this);
     setTimeout(() => {
@@ -69,9 +71,9 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
   generateSlabs = () => {
     const url = `${backendRoot}/generate_slab_cif`;
     const slabParams = {
-      miller_x: this.state.millerX,
-      miller_y: this.state.millerY,
-      miller_z: this.state.millerZ,
+      millerX: this.state.millerX,
+      millerY: this.state.millerY,
+      millerZ: this.state.millerZ,
       layers: this.state.layers,
       vacuum: this.state.vacuum,
     };

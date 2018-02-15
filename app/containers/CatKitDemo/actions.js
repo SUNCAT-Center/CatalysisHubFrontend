@@ -4,6 +4,7 @@
  *
  */
 
+import _ from 'lodash';
 import * as constants from './constants';
 
 export function forgetCustomBulk() {
@@ -187,6 +188,6 @@ export function saveBulkParams(bulkParams) {
 export function saveSlabParams(slabParams) {
   return {
     type: constants.SAVE_SLAB_PARAMS,
-    payload: slabParams,
+    payload: _.mapValues(slabParams, parseInt),
   };
 }

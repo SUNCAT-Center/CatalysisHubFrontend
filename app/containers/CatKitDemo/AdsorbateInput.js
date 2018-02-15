@@ -16,7 +16,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import { FormGroup, FormControl } from 'material-ui/Form';
 import { InputLabel } from 'material-ui/Input';
 
-import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
@@ -37,7 +37,7 @@ function capitalize(string) {
 const initialState = {
   siteOccupation: {},
   adsorptionSitesLoading: true,
-  siteType: 'hollow',
+  siteType: 'all',
   placeHolder: 'Cl',
 };
 
@@ -181,7 +181,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
               <Grid item key={`item_${i}`}>
                 <Grid container direction="row" justify="flex-start">
                   <Grid item>
-                    <GeometryCanvasCifdata
+                    <GeometryCanvasWithOptions
                       cifdata={this.props.images[i]}
                       uniqueId={`slab_preview_${i}`}
                       key={`slab_preview_${i}`}
