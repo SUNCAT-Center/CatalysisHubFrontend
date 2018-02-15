@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { isMobileOnly } from 'react-device-detect';
 import FileDrop from 'react-file-drop';
+import { Link } from 'react-router';
 
 
 import { MenuItem } from 'material-ui/Menu';
@@ -208,7 +209,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         {isMobileOnly ? null :
         <Grid container direction="row" justify="space-around">
           <Paper className={this.props.classes.fileDrop}>
-            <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure file here for cleaving slabs.
+            <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure file here for cleaving slabs. [TODO: Remove ]
                 <FileDrop
                   frame={document}
                   onDrop={this.handleFileDrop}
@@ -319,6 +320,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
         </form>
         }
+        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
       </div>
     );
   }

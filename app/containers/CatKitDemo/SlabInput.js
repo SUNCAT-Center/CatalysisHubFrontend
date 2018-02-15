@@ -108,7 +108,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
           {isMobileOnly ? null :
           <Grid container direction="row" justify="space-around">
             <Paper className={this.props.classes.fileDrop}>
-              <MdFileUpload />{'\u00A0\u00A0'}Drag a slab structure file here.
+              <MdFileUpload />{'\u00A0\u00A0'}Drag a slab structure file here. [TODO: Remove]
                       <FileDrop
                         frame={document}
                         onDrop={this.handleFileDrop}
