@@ -72,10 +72,16 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
           </Grid>
         </Grid>
         <h3>Synonyms</h3>
-        <div>{this.props.synonyms.length === 0 ? 'Not found.' : this.props.synonyms.join(', ')}</div>
+        <div>{this.props.synonyms.length === 0 ? 'Not found.' :
+        <ul>
+          {this.props.synonyms.map((synonym) => (
+            <li>{synonym}</li>
+                ))}
+        </ul>
+            }</div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
-            <h2>Input Cell Parameters</h2>
+            <h3>Input Cell Parameters</h3>
           </Grid>
           <Grid item >
             <Button

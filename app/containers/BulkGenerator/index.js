@@ -48,6 +48,9 @@ function nextStepReady(step, props) {
       }
       return `${JSON.stringify(props.wyckoffPoints.filter((point) => elements.indexOf(point.species) === -1).map((point) => point.species || '<empty>').join(', '))} not valid element(s).`;
 
+    case 1:
+      return 'There is not next step, yet.';
+
     default:
       return false;
   }
