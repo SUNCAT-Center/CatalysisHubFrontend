@@ -60,7 +60,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
   render() {
     return (
       <div>
-        <h2>Structure Preview</h2>
+        <h3>Structure Preview</h3>
         <Grid container direction="row" justify="center">
           <Grid item >
             <GeometryCanvasWithOptions
@@ -71,6 +71,8 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             />
           </Grid>
         </Grid>
+        <h3>Synonyms</h3>
+        <div>{this.props.synonyms.length === 0 ? 'Not found.' : this.props.synonyms.join(', ')}</div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h2>Input Cell Parameters</h2>
@@ -123,6 +125,7 @@ CellParameterInput.propTypes = {
   setCellParameters: PropTypes.func,
   receiveBulkStructure: PropTypes.func,
   classes: PropTypes.object,
+  synonyms: PropTypes.array,
 };
 
 export default(withStyles(styles, { withTheme: true }))(CellParameterInput);

@@ -17,3 +17,6 @@ export const STEPPER_HANDLE_NEXT = 'app/BulkGenerator/STEPPER_HANDLE_NEXT';
 export const STEPPER_HANDLE_BACK = 'app/BulkGenerator/STEPPER_HANDLE_BACK';
 export const STEPPER_HANDLE_RESET = 'app/BulkGenerator/STEPPER_HANDLE_RESET';
 export const UPDATE_FILTER = 'app/BulkGenerator/UPDATE_FILTER';
+
+export const SET_SYNONYMS = 'app/BulkGenerator/SET_SYNONYMS';
+export const SET_PERMUTATIONS = 'app/BulkGenerator/SET_PERMUTATIONS';

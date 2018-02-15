@@ -91,6 +91,12 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
 
       this.props.setCellParameters(cellParams);
 
+      const synonyms = response.data.synonyms.map((x) => x.split("'")[1]);
+      this.props.setSynonyms(synonyms);
+
+      const permutations = response.data.species_permutations.map((perm) => perm.split("'")[1]);
+      this.props.setPermutations(permutations);
+
       this.props.receiveBulkStructure(response.data.cif);
       this.props.setSpacegroup(response.data.spacegroup);
       this.props.receiveWyckoffList(response.data.wyckoff_list.map((point) => ({
@@ -164,7 +170,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
     return (
       <div>
         <Paper className={this.props.classes.fileDrop}>
-          <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure file here for cleaving slabs.
+          <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure here for analyzing existing structures.
                 <FileDrop
                   frame={document}
                   onDrop={this.handleFileDrop}
@@ -275,6 +281,8 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
 }
 
 WyckoffInput.propTypes = {
+  setSynonyms: PropTypes.func,
+  setPermutations: PropTypes.func,
   classes: PropTypes.object,
   setSpacegroup: PropTypes.func,
   wyckoffList: PropTypes.array,
@@ -297,6 +305,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setCellParameters: (cellParameters) => {
     dispatch(actions.setCellParameters(cellParameters));
+  },
+  setSynonyms: (synonyms) => {
+    dispatch(actions.setSynonyms(synonyms));
+  },
+  setPermutations: (permutations) => {
+    dispatch(actions.setPermutations(permutations));
   },
 });
 

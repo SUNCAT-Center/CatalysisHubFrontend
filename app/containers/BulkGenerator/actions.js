@@ -6,6 +6,23 @@
 
 import * as constants from './constants';
 
+export function setSynonyms(synonyms) {
+  return {
+    type: constants.SET_SYNONYMS,
+    payload: {
+      synonyms,
+    },
+  };
+}
+
+export function setPermutations(permutations) {
+  return {
+    type: constants.SET_PERMUTATIONS,
+    payload: {
+      permutations,
+    },
+  };
+}
 export function defaultAction() {
   return {
     type: constants.DEFAULT_ACTION,

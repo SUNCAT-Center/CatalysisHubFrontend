@@ -161,6 +161,8 @@ const mapStateToProps = (state) => ({
   cellParameters: state.get('bulkGenerator').cellParameters,
   bulkStructure: state.get('bulkGenerator').bulkStructure,
   activeStep: state.get('bulkGenerator').activeStep,
+  synonyms: state.get('bulkGenerator').synonyms,
+  permutations: state.get('bulkGenerator').permutations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

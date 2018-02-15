@@ -13,10 +13,22 @@ const initialState = {
   cellParameters: [],
   bulkStructure: '',
   activeStep: 0,
+  permutations: [],
+  synonyms: [],
 };
 
 function bulkGeneratorReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SET_PERMUTATIONS:
+      return {
+        ...state,
+        permutations: action.payload.permutations,
+      };
+    case constants.SET_SYNONYMS:
+      return {
+        ...state,
+        synonyms: action.payload.synonyms,
+      };
     case constants.RECEIVE_BULK_STRUCTURE:
       return {
         ...state,
