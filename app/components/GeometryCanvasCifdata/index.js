@@ -88,7 +88,12 @@ function _load_lib(url, callback){
     }
   });
 
+  /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Line');*/
+  /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Stick');*/
+  /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Wireframe');*/
+  /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('van der Waals Spheres');*/
   tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Ball and Stick');
+
   tfcanvas_${this.props.uniqueId}.specs.backgroundColor = '${this.props.color}';
   tfcanvas_${this.props.uniqueId}.specs.projectionPerspective_3D = ${this.state.perspective};
   tfcanvas_${this.props.uniqueId}.specs.compass_display = true;
