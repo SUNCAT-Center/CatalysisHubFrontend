@@ -18,6 +18,7 @@ import { InputLabel } from 'material-ui/Input';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
+
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
 
@@ -57,6 +58,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
 
   updateAdsorptionSites(options = {}) {
     const params = { params: {
+      bulk_cif: this.props.bulkCif,
       bulkParams: this.props.bulkParams,
       slabParams: this.props.slabParams,
       adsorbateParams: {
@@ -65,6 +67,9 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       },
     } };
     axios.get(siteUrl, params).then((response) => {
+      if (response.data.error) {
+        this.props.openSnackbar(response.data.error);
+      }
       const siteOccupation = {};
       this.props.saveAdsorptionSites(response.data.data);
 
@@ -277,6 +282,7 @@ AdsorbateInput.propTypes = {
   receiveSlabCifs: PropTypes.func,
   saveAltLabels: PropTypes.func,
   saveSiteOccupations: PropTypes.func,
+  openSnackbar: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(AdsorbateInput);

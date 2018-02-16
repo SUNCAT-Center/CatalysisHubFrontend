@@ -2,22 +2,19 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isMobileOnly } from 'react-device-detect';
-import FileDrop from 'react-file-drop';
 import { Link } from 'react-router';
 
 
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import FaCube from 'react-icons/lib/fa/cube';
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-import { MdClear, MdFileUpload } from 'react-icons/lib/md';
+import { MdClear } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
@@ -95,6 +92,10 @@ const structureData = {
 class BulkInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+    const query = JSON.parse(Object.values(props.location.query).join(''));
+    this.props.receiveBulkCif(query.bulkStructure);
+    this.props.dropBulkInput();
+
     let latticeConstant;
     if (this.props.routeParams.latticeConstant) {
       if (!isNaN(parseFloat(this.props.routeParams.latticeConstant))) {
@@ -129,7 +130,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     this.handleFileDrop = this.handleFileDrop.bind(this);
     setTimeout(() => {
       this.generateBulk();
-    }, 1500,
+    }, 2000,
     );
   }
 
@@ -206,28 +207,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   render() {
     return (
       <div>
-        {isMobileOnly ? null :
-        <Grid container direction="row" justify="space-around">
-          <Paper className={this.props.classes.fileDrop}>
-            <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure file here for cleaving slabs. [TODO: Remove ]
-                <FileDrop
-                  frame={document}
-                  onDrop={this.handleFileDrop}
-                  dropEffect="move"
-
-                >
-                  <div
-                    className={this.props.classes.fileDropActive}
-                  >
-                    Drop File Here.
-                  </div>
-                </FileDrop>
-            {_.isEmpty(this.state.uploadError) ? null :
-            <div className={this.props.classes.error}>{this.state.uploadError}</div>
-                }
-          </Paper>
-        </Grid>
-        }
+        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
         <Grid container justify="space-between" direction="row" >
           <Grid item>
             <h2>Setup Bulk Structure</h2>
@@ -320,7 +300,6 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
         </form>
         }
-        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
       </div>
     );
   }
@@ -338,6 +317,7 @@ BulkInput.propTypes = {
   receiveBulkCif: PropTypes.func.isRequired,
   routeParams: PropTypes.object,
   saveBulkParams: PropTypes.func,
+  location: PropTypes.object,
 };
 
 

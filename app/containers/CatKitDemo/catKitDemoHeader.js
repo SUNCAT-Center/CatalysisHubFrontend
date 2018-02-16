@@ -15,7 +15,7 @@ class CatKitDemoHeader extends React.Component { // eslint-disable-line react/pr
     return (
       <div>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
+        <Script url="/ChemDoodleWeb.js" />
 
         <Grid container direction="row" justify="space-between">
           <Grid item>

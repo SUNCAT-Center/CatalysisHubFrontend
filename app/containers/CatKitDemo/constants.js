@@ -38,3 +38,5 @@ export const DROP_SLAB_INPUT = 'app/CatKitDemo/DROP_SLAB_INPUT';
 
 export const FORGET_CUSTOM_BULK = 'app/CatKitDemo/FORGET_CUSTOM_BULK';
 export const FORGET_CUSTOM_SLAB = 'app/CatKitDemo/FORGET_CUSTOM_SLAB';
+
+export const SAVE_WYCKOFF_BULK_PARAMS = 'app/CatKitDemo/SAVE_WYCKOFF_BULK_PARAMS';

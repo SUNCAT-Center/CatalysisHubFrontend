@@ -18,6 +18,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
+import * as snackbarActions from 'containers/AppSnackBar/actions';
 import CatKitDemoHeader from './catKitDemoHeader';
 import BulkInput from './BulkInput';
 import { CalculationsView } from './CalculationsView';
@@ -246,6 +247,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   appendSiteOccupation: (siteOccupation) => {
     dispatch(actions.appendSiteOccupation(siteOccupation));
+  },
+  openSnackbar: (message) => {
+    dispatch(snackbarActions.open(message));
   },
 });
 

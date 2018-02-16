@@ -22,11 +22,18 @@ const initialState = {
   customBulkInput: false,
   slabInput: '',
   customSlabInput: false,
+  wyckoffBulkParams: {},
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
 
+    case constants.SAVE_WYCKOFF_BULK_PARAMS: {
+      return {
+        ...state,
+        wyckoffBulkParams: action.payload.wyckoffBulkParams,
+      };
+    }
     case constants.DROP_SLAB_INPUT: {
       return {
         ...state,

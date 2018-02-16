@@ -7,6 +7,15 @@
 import _ from 'lodash';
 import * as constants from './constants';
 
+export function saveWyckoffBulkParms(wyckoffBulkParams) {
+  return {
+    type: constants.SAVE_WYCKOFF_BULK_PARAMS,
+    payload: {
+      wyckoffBulkParams,
+    },
+  };
+}
+
 export function forgetCustomBulk() {
   return {
     type: constants.FORGET_CUSTOM_BULK,

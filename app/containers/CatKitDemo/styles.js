@@ -23,7 +23,7 @@ export const styles = (theme) => ({
     margin: theme.spacing.unit * 3,
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: 0.5 * theme.spacing.unit,
   },
   fileDrop: {
     margin: theme.spacing.unit,

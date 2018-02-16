@@ -1,18 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isMobileOnly } from 'react-device-detect';
-import FileDrop from 'react-file-drop';
-
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
 
 
-import { MdClear, MdContentCut, MdFileUpload } from 'react-icons/lib/md';
+import { MdClear, MdContentCut } from 'react-icons/lib/md';
 import _ from 'lodash';
 
 import axios from 'axios';
@@ -29,7 +25,9 @@ const initialState = {
   millerZ: 1,
   layers: 4,
   vacuum: 10.0,
+  termination: 0,
   uploadError: '',
+  n_terminations: 1,
 };
 
 class SlabInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -76,6 +74,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       millerZ: this.state.millerZ,
       layers: this.state.layers,
       vacuum: this.state.vacuum,
+      termination: this.state.termination,
     };
 
     const params = { params: {
@@ -83,12 +82,15 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       slabParams,
     } };
     if (this.props.customBulkInput) {
-      params.bulk_cif = this.props.bulkCif;
+      params.params.bulk_cif = this.props.bulkCif;
     }
 
     this.props.saveSlabParams(slabParams);
     axios.get(url, params).then((response) => {
       this.props.receiveSlabCifs(response.data.images);
+      this.setState({
+        n_terminations: parseInt(response.data.n_terminations, 10),
+      });
     });
   }
 
@@ -105,28 +107,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       <div>
         { this.props.bulkCif === '' ? null :
         <div>
-          {isMobileOnly ? null :
-          <Grid container direction="row" justify="space-around">
-            <Paper className={this.props.classes.fileDrop}>
-              <MdFileUpload />{'\u00A0\u00A0'}Drag a slab structure file here. [TODO: Remove]
-                      <FileDrop
-                        frame={document}
-                        onDrop={this.handleFileDrop}
-                        dropEffect="move"
 
-                      >
-                        <div
-                          className={this.props.classes.fileDropActive}
-                        >
-                          Drop File Here.
-                        </div>
-                      </FileDrop>
-              {_.isEmpty(this.state.uploadError) ? null :
-              <div className={this.props.classes.error}>{this.state.uploadError}</div>
-                      }
-            </Paper>
-          </Grid>
-              }
           <Grid container direction="row" justify="space-between">
             <Grid item >
               <h2>Configure Slab Geometry</h2>
@@ -142,7 +123,6 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                   }
             </Grid>
           </Grid>
-          {this.props.customSlabInput ? null :
           <Grid container direction="row" justify="flex-start">
             <Grid item>
               <FormControl className={this.props.classes.formControl} >
@@ -158,8 +138,12 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                     }
                   })}
                 />
-                <FormHelperText>Integer Number</FormHelperText>
+                <FormHelperText>Integer</FormHelperText>
               </FormControl>
+
+            </Grid>
+            <Grid item>
+
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="miller-y-helper">Miller Y</InputLabel>
                 <Input
@@ -172,8 +156,11 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                     }
                   })}
                 />
-                <FormHelperText>Integer Number</FormHelperText>
+                <FormHelperText>Integer</FormHelperText>
               </FormControl>
+
+            </Grid>
+            <Grid item>
 
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="miller-z-helper">Miller Z</InputLabel>
@@ -187,8 +174,11 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                     }
                   })}
                 />
-                <FormHelperText>Integer Number</FormHelperText>
+                <FormHelperText>Integer</FormHelperText>
               </FormControl>
+
+            </Grid>
+            <Grid item>
 
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="layers-helper">Layers</InputLabel>
@@ -202,8 +192,11 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                     }
                   })}
                 />
-                <FormHelperText>Integer Number</FormHelperText>
+                <FormHelperText>Integer</FormHelperText>
               </FormControl>
+
+            </Grid>
+            <Grid item>
 
 
               <FormControl className={this.props.classes.formControl} >
@@ -218,12 +211,35 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                     }
                   })}
                 />
-                <FormHelperText>Float in Angstrom</FormHelperText>
+                <FormHelperText>Angstrom</FormHelperText>
               </FormControl>
+
+            </Grid>
+            <Grid item>
+
+              {this.state.n_terminations > 1 ?
+                <FormControl className={this.props.classes.formControl} >
+                  <InputLabel htmlFor="termination-helper">Termination</InputLabel>
+                  <Input
+                    id="termination-helper"
+                    error={!(this.state.termination >= 0 || this.state.termination < this.state.n_terminations)}
+                    value={this.state.termination}
+                    onChange={this.handleChange('termination')}
+                    onKeyDown={((event) => {
+                      if (event.nativeEvent.keyCode === 13) {
+                        this.generateSlabs();
+                      }
+                    })}
+                  />
+                  <FormHelperText
+                    error={this.state.termination < 0 || this.state.termination >= this.state.n_terminations}
+                  >Between 0 and {this.state.n_terminations - 1}</FormHelperText>
+                </FormControl>
+                    : null
+                }
             </Grid>
 
           </Grid>
-              }
         </div>
         }
       </div>
