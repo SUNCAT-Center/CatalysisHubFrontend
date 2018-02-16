@@ -10,12 +10,13 @@ import { withStyles } from 'material-ui/styles';
 
 import { styles } from './styles';
 
+
 class BulkEnumeratorDemoHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div className={this.props.classes.header}>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
+        <Script url="/ChemDoodleWeb.js" />
 
         <Grid container direction="row" justify="space-between">
           <Grid item>

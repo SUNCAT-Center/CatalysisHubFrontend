@@ -7,6 +7,7 @@ import Button from 'material-ui/Button';
 import { FormControl } from 'material-ui/Form';
 /* import { FormControlLabel } from 'material-ui/Form';*/
 import Input, { InputLabel } from 'material-ui/Input';
+import { Link } from 'react-router';
 
 import { MdLoop } from 'react-icons/lib/md';
 
@@ -74,8 +75,10 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
         <h3>Synonyms</h3>
         <div>{this.props.synonyms.length === 0 ? 'Not found.' :
         <ul>
-          {this.props.synonyms.map((synonym) => (
-            <li>{synonym}</li>
+          {this.props.synonyms.map((synonym, i) => (
+            <li
+              key={`li_${i}`}
+            >{synonym}</li>
                 ))}
         </ul>
             }</div>
@@ -117,6 +120,20 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             </Grid>
             ))}
         </Grid>
+        <div>
+          Now you can cut slabs using <Link
+            to={{
+              pathname: '/catKitDemo/',
+              query: JSON.stringify(_.pick(this.props,
+                ['cellParameters',
+                  'bulkStructure',
+                  'wyckoffPoints',
+                ])
+              ),
+            }}
+          >
+            CatKit</Link>.
+        </div>
       </div>
     );
   }
