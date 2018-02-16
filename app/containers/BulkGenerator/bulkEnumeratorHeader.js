@@ -16,7 +16,7 @@ class BulkEnumeratorDemoHeader extends React.Component { // eslint-disable-line 
     return (
       <div className={this.props.classes.header}>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="/ChemDoodleWeb.js" />
+        <Script url="/static/ChemDoodleWeb.js" />
 
         <Grid container direction="row" justify="space-between">
           <Grid item>

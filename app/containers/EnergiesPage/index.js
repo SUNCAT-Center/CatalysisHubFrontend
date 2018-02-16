@@ -22,7 +22,7 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
       <div>
         {/* Required for ChemDoodle later below */}
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" />
+        <Script url="/static/ChemDoodleWeb.js" />
 
         {this.props.simpleSearch ?
           <EnergiesPageSimpleInput />
