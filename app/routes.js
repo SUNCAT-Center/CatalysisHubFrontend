@@ -174,6 +174,24 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/catKitDemo(/:data)',
+      name: 'catKitDemo',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CatKitDemo/reducer'),
+          import('containers/CatKitDemo'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('catKitDemo', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/catKitDemo(/:lattice/:latticeConstant/:composition)',
       name: 'catKitDemo',
       getComponent(nextState, cb) {
