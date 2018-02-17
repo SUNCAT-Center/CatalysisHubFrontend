@@ -124,39 +124,63 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button onClick={this.handleChange('x', -1)} mini fab className={this.props.classes.iconButton}>-</Button>
+                <Button
+                  onClick={this.handleChange('x', -1)}
+                  disabled={this.state.x < 2}
+                  mini fab className={this.props.classes.iconButton}
+                >-</Button>
               </Grid>
               <Grid item>
                 <IconButton size="small" className={this.props.classes.avatar}>x={this.state.x}</IconButton>
               </Grid>
               <Grid item>
-                <Button onClick={this.handleChange('x', +1)} mini fab className={this.props.classes.iconButton}>+</Button>
+                <Button
+                  onClick={this.handleChange('x', +1)}
+                  disabled={this.state.x >= 10}
+                  mini fab className={this.props.classes.iconButton}
+                >+</Button>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button onClick={this.handleChange('y', -1)} mini fab className={this.props.classes.iconButton}>-</Button>
+                <Button
+                  onClick={this.handleChange('y', -1)}
+                  disabled={this.state.y < 2}
+                  mini fab className={this.props.classes.iconButton}
+                >-</Button>
               </Grid>
               <Grid item>
                 <IconButton className={this.props.classes.avatar}>y={this.state.y}</IconButton>
               </Grid>
               <Grid item>
-                <Button onClick={this.handleChange('y', +1)} mini fab className={this.props.classes.iconButton}>+</Button>
+                <Button
+                  onClick={this.handleChange('y', +1)}
+                  disabled={this.state.y >= 10}
+                  mini fab className={this.props.classes.iconButton}
+                >+</Button>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button onClick={this.handleChange('z', -1)} mini fab className={this.props.classes.iconButton}>-</Button>
+                <Button
+                  onClick={this.handleChange('z', -1)}
+                  disabled={this.state.z < 2}
+                  mini fab className={this.props.classes.iconButton}
+                >-</Button>
               </Grid>
               <Grid item>
                 <IconButton className={this.props.classes.avatar} >z={this.state.z}</IconButton>
               </Grid>
               <Grid item>
-                <Button onClick={this.handleChange('z', +1)} mini fab className={this.props.classes.iconButton}>+</Button>
+                <Button
+                  onClick={this.handleChange('z', +1)}
+                  disabled={this.state.z >= 10}
+                  mini fab className={this.props.classes.iconButton}
+                >+</Button>
               </Grid>
             </Grid>
           </Grid>
