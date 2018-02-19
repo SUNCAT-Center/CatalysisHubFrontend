@@ -136,7 +136,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               <Grid item>
                 <Button
                   onClick={this.handleChange('x', +1)}
-                  disabled={this.state.x >= 10}
+                  disabled={this.state.x >= 20}
                   mini fab className={this.props.classes.iconButton}
                 >+</Button>
               </Grid>
@@ -157,7 +157,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               <Grid item>
                 <Button
                   onClick={this.handleChange('y', +1)}
-                  disabled={this.state.y >= 10}
+                  disabled={this.state.y >= 20}
                   mini fab className={this.props.classes.iconButton}
                 >+</Button>
               </Grid>
@@ -178,7 +178,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               <Grid item>
                 <Button
                   onClick={this.handleChange('z', +1)}
-                  disabled={this.state.z >= 10}
+                  disabled={this.state.z >= 20}
                   mini fab className={this.props.classes.iconButton}
                 >+</Button>
               </Grid>
