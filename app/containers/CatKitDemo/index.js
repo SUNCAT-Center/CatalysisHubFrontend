@@ -25,7 +25,7 @@ import { CalculationsView } from './CalculationsView';
 import { BulkView } from './BulkView';
 import SlabInput from './SlabInput';
 import { SlabView } from './SlabView';
-import AdsorbateInput from './AdsorbateInput';
+import AdsorbateInput from './SimpleAdsorbateInput';
 import { AdsorbateView } from './AdsorbateView';
 import DftInput from './DftInput';
 

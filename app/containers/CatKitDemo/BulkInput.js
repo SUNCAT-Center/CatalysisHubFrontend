@@ -92,9 +92,12 @@ const structureData = {
 class BulkInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    const query = JSON.parse(Object.values(props.location.query).join(''));
-    this.props.receiveBulkCif(query.bulkStructure);
-    this.props.dropBulkInput();
+    const rawQuery = Object.values(props.location.query).join('');
+    if (rawQuery) {
+      const query = JSON.parse(Object.values(props.location.query).join(''));
+      this.props.receiveBulkCif(query.bulkStructure);
+      this.props.dropBulkInput();
+    }
 
     let latticeConstant;
     if (this.props.routeParams.latticeConstant) {

@@ -61,6 +61,8 @@ export const styles = (theme) => ({
   select: {
     margin: theme.spacing.unit,
   },
-
+  flipButton: {
+    height: '100%',
+  },
 });
 
