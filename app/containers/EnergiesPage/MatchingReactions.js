@@ -33,7 +33,7 @@ import { graphQLRoot } from 'utils/constants';
 
 import * as actions from './actions';
 
-const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  ⇄  ${Object.keys(JSON.parse(products)).join(' + ')}`
+const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  →  ${Object.keys(JSON.parse(products)).join(' + ')}`
 ).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
 
 
