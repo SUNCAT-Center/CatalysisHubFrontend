@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Flexbox from 'flexbox-react';
 
 
@@ -15,12 +15,22 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import { withStyles } from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
 import { MdWarning } from 'react-icons/lib/md';
 
 import ActivityMapPlot from './ActivityMapPlot';
 import StructureView from './StructureView';
+
+const styles = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit,
+    marginTop: 2 * theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+  },
+});
 
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -39,52 +49,40 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <Grid container direction="column" style={{ marginLeft: 10 }}>
-        <div><MdWarning />Under construction.</div>
-        <Grid
-          item
-        >
-          <FormControl
-            style={{ minWidth: 220, margin: 12 }}
+        <Paper className={this.props.classes.paper}>
+          <div><MdWarning />Under construction.</div>
+          <Grid
+            item
           >
-            <InputLabel>Chemical Reaction</InputLabel>
-            <Select
-              onChange={this.handleChange('chemicalReaction')}
-              value={this.state.chemicalReaction}
+            <FormControl
+              style={{ minWidth: 220, margin: 12 }}
             >
-              <MenuItem value="OER-2">OER (2 descriptors)</MenuItem>
-              {/*
-              <MenuItem value="HER">HER (1 descriptor)</MenuItem>
-              <MenuItem value="OER-1">OER (1 descriptor)</MenuItem>
-              <MenuItem value="ORR-1">ORR (1 descriptors)</MenuItem>
-              <MenuItem value="ORR-2">ORR (2 desescriptor)</MenuItem>
-              <MenuItem value="CO2RR">CO reduction (2 descriptors)</MenuItem>
-              <MenuItem value="Ammonia">Ammonia Synthesis</MenuItem>
-              <MenuItem value="COx">CO oxidation (2 descriptors)</MenuItem>
-              <MenuItem value="deNOx">NO reduction (2 descriptors)</MenuItem>
-              */}
-            </Select>
-          </FormControl>
+              <InputLabel>Chemical Reaction</InputLabel>
+              <Select
+                onChange={this.handleChange('chemicalReaction')}
+                value={this.state.chemicalReaction}
+              >
+                <MenuItem value="OER-2">OER (2 descriptors)</MenuItem>
+              </Select>
+            </FormControl>
 
-        </Grid>
-        <Flexbox minHeight="100px">
-          <PeriodicTableSelector />
-        </Flexbox>
-        <div>
-          <Flexbox width="100%">
-            <ActivityMapPlot {...this.props} />
+          </Grid>
+          <Flexbox minHeight="100px">
+            <PeriodicTableSelector />
           </Flexbox>
-          <Flexbox height="1000px">
-            <StructureView {...this.props} />
-          </Flexbox>
+        </Paper>
+        <ActivityMapPlot {...this.props} />
+        <StructureView {...this.props} />
 
-        </div>
       </Grid>
     );
   }
 }
 
 ActivityMaps.propTypes = {
+  classes: PropTypes.object,
 
 };
 
-export default ActivityMaps;
+export default withStyles(styles, { withTheme: true })(ActivityMaps);
+

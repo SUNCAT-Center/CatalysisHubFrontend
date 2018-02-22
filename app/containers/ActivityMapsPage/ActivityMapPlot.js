@@ -10,143 +10,170 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import axios from 'axios';
-import { graphQLRoot } from 'utils/constants';
 
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+
+import { withStyles } from 'material-ui/styles';
+import Paper from 'material-ui/Paper';
+import { LinearProgress } from 'material-ui/Progress';
+import { flaskRoot, newGraphQLRoot } from 'utils/constants';
+
+
+import * as actions from './actions';
 import plotlydata from './plot_data/OER.json';
 
-/* function sortedObject(obj) {*/
-/* return _(obj).toPairs().sortBy(0).fromPairs().value();*/
-/* }*/
+const styles = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+  },
 
-async function getExactReactions({ reactants, products }) {
-  const query = `{catapp( publication_Title:"~", reactants:"${Object.keys(reactants).join('+')}", products:"${Object.keys(products).join('+')}",) { totalCount edges { node { reactants products chemicalComposition PublicationTitle PublicationAuthors Reaction reactionEnergy aseIds } } }}`;
-  /* console.log(query);*/
-  return new Promise((resolve, reject) => {
-    axios.post(graphQLRoot, { query })
-      .then((response) => {
-        resolve(
-          response.data.data.catapp.edges
-          .filter(({ node }) => {
-            const nodeReactants = JSON.parse(node.reactants);
-            const nodeProducts = JSON.parse(node.products);
-            return (_.isEqual((nodeReactants), reactants) &&
-              _.isEqual((nodeProducts), products));
-          })
-          .map(({ node }) => node)
-          .map((node) => node)
-        );
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
+});
 
-
-let a = getExactReactions;
-let b = getExactReactions;
-a = b;
-b = a;
+const initialState = {
+  plotlyData: plotlydata,
+  loading: false,
+};
 
 
 class ActivityMapOer extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  async componentDidMount() {
-    /* const reactionSystems = {};*/
-    /* const reactantsProducts = [*/
-    /* { reactants: { Ostar: 1.0 }, products: { H2gas: -1.0, H2Ogas: 1.0, star: 1.0 } },*/
-    /* { reactants: { OHstar: 1.0 }, products: { H2gas: -0.5, H2Ogas: 1.0, star: 1.0 } },*/
-    /* { reactants: { OOHstar: 1.0 }, products: { H2gas: -1.5, H2Ogas: 2.0, star: 1.0 } },*/
-    /* ];*/
-
-    /* console.log('GETTING EXACT REACTIONS');*/
-    /* console.log(getExactReactions);*/
-    /* const reactions0 = await getExactReactions(reactantsProducts[0]);*/
-    /* console.log(`Reactions0 ${reactions0}`);*/
-    /* const reactions1 = await getExactReactions(reactantsProducts[1]);*/
-    /* console.log(`Reaction1 ${reactions1}`);*/
-    /* const reactions2 = await getExactReactions(reactantsProducts[2]);*/
-    /* console.log(`Reaction2 ${reactions2}`);*/
-
-    /* console.log(JSON.stringify(reactions0[0].aseIds));*/
-    /* console.log((JSON.parse(reactions0[0].aseIds).star))*/
-
-    /* [reactions0, reactions1, reactions2].map((reactions) =>*/
-      /* console.log(reactions.length);*/
-    /* null);*/
-    /* [reactions0, reactions1, reactions2].map((reactions) => {*/
-    /* reactions.map((reaction) => {*/
-    /* const key = reaction.chemicalComposition;*/
-    /* reactionSystems[key] = (reactionSystems[key] || [])*/
-    /* return reactionSystems[key].push(reaction)*/
-    /* })*/
-    /* })*/
-
-    /* reactions0.map((reaction) => {*/
-    /* const key = reaction.chemicalComposition;*/
-    /* reactionSystems[key] = (reactionSystems[key] || [])*/
-    /* return reactionSystems[key].push(reaction)*/
-    /* })*/
-
-    /* reactions1.map((reaction) => {*/
-    /* const key = reaction.chemicalComposition;*/
-    /* reactionSystems[key] = (reactionSystems[key] || [])*/
-    /* return reactionSystems[key].push(reaction)*/
-    /* })*/
-
-    /* reactions2.map((reaction) => {*/
-    /* const key = reaction.chemicalComposition;*/
-    /* reactionSystems[key] = (reactionSystems[key] || [])*/
-    /* return reactionSystems[key].push(reaction)*/
-    /* })*/
-
-    /* console.log(reactionSystems);*/
-
-
-    /* const reactions = await Promise.all([*/
-    /* () => {return getExactReactions(reactantsProducts[0])},*/
-    /* () => {return getExactReactions(reactantsProducts[1])},*/
-    /* () => {return getExactReactions(reactantsProducts[2])},*/
-    /* ])*/
-    /* console.log('GOT EXACT REACTIONS');*/
-    /* console.log(reactions)*/
-    /* console.log(reactionSystems);*/
-
-    /* reactantsProducts.map(({ reactants, products }) => getExactReactions(reactants, products)*/
-    /* .then((reactions) => {*/
-    /* reactions.map((reaction) => {*/
-    /* _.set(*/
-    /* reactionSystems*/
-    /* [JSON.parse(reaction.aseIds).star, Object.keys(reactants)[0]],*/
-    /* reaction*/
-    /* );*/
-    /* })*/
-    /* })*/
-    /* .catch(() => {*/
-    /* }));*/
-    /* console.log(reactionSystems);*/
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    this.getSystems = this.getSystems.bind(this);
+    this.clickDot = this.clickDot.bind(this);
+    this.getStructures = this.getStructures.bind(this);
   }
+  async componentDidMount() {
+    this.getSystems();
+  }
+
+  getSystems() {
+    const backendRoot = `${flaskRoot}/apps/activityMaps`;
+    const url = `${backendRoot}/systems`;
+    const params = { params: {} };
+    axios.get(url, params).then((response) => {
+      const systems = response.data.systems;
+      this.props.saveSystems(systems);
+
+      const scatterData = {
+        type: 'scatter',
+        mode: 'markers',
+        name: '',
+        customdata: [],
+        text: [],
+        x: [],
+        y: [],
+        uid: [],
+        marker: { size: 12 },
+      };
+      systems.map((system) => {
+        /* scatterData.name.push(`${system.formula} ${system.facet}`)*/
+        scatterData.customdata.push({
+          uid: system.uid,
+          text: `${system.formula} [${system.facet}]`,
+        });
+        scatterData.text.push(`${system.formula} [${system.facet}]`);
+        scatterData.x.push(system.x.toFixed(2));
+        scatterData.y.push(system.y.toFixed(2));
+        return null;
+      });
+      this.setState({
+        plotlyData: {
+          ...this.state.plotlyData,
+          data: [
+            scatterData,
+            this.state.plotlyData.data[0],
+          ],
+        },
+      });
+    });
+  }
+  getStructures(event) {
+    if (_.isEmpty(event.points[0].data.customdata)) {
+      return {};
+    }
+
+    this.setState({
+      loading: true,
+    });
+
+    const pointEvent = event.points[0];
+    const query = `{reactionSystems(aseId: "${pointEvent.customdata.uid}") {
+  edges {
+    node{
+        reactions {
+          dftFunctional
+          dftCode
+          reactionSystems{
+          name
+          systems {
+            Formula
+            energy
+            InputFile(format: "cif")
+            publication {
+              authors
+              title
+              journal
+              doi
+              pages
+              year
+            }
+          }
+          }
+        } 
+  }
+}}} `;
+    this.props.clearStructures();
+    return axios.post(newGraphQLRoot, { query }).then((response) => response.data.data.reactionSystems.edges.map((edge) => edge.node.reactions.reactionSystems.map(({ systems, name }) => {
+      const system = {
+        ...systems,
+        name,
+        dftFunctional: edge.node.reactions.dftFunctional,
+        dftCode: edge.node.reactions.dftCode,
+      };
+      this.props.saveStructure(system);
+      return this.setState({
+        loading: false,
+      });
+    })));
+  }
+
+  clickDot(event) {
+    if (!_.isEmpty(event.points[0].data.customdata)) {
+      this.props.clickDot(event);
+    }
+  }
+
 
   render() {
     return (
       <div>
-        <div ref={(el) => { this.instance = el; }}>
-          <h2>Activity Map</h2>
-          <p>Data generously provided by M. Bajdich, unpublished, 2017.</p>
-          <Plot
-            {...plotlydata}
-            layout={{
-              hovermode: 'closest',
-              height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
-              width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
-              margin: { l: 20, r: 20, b: 10, t: 10 },
-            }}
-            config={{ scrollZoom: false,
-              displayModeBar: false,
-              legendPosition: true,
-              showTips: false }}
-            onClick={(event) => { this.props.clickDot(event); }}
-          />
-        </div>
+        <Paper className={this.props.classes.paper}>
+          <div ref={(el) => { this.instance = el; }}>
+            <h2>Activity Map</h2>
+            <Plot
+              {...this.state.plotlyData}
+              layout={{
+                hovermode: 'closest',
+                height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
+                width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
+                margin: { l: 20, r: 20, b: 10, t: 10 },
+              }}
+              config={{ scrollZoom: false,
+                displayModeBar: false,
+                legendPosition: true,
+                showTips: false }}
+              onClick={(event) => {
+                this.getStructures(event);
+                this.clickDot(event);
+              }}
+            />
+          </div>
+        </Paper>
+        {this.state.loading ? <LinearProgress /> : null }
       </div>
     );
   }
@@ -154,7 +181,30 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
 
 
 ActivityMapOer.propTypes = {
-  clickDot: PropTypes.func,
+  clickDot: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  saveStructure: PropTypes.func.isRequired,
+  saveSystems: PropTypes.func.isRequired,
+  clearStructures: PropTypes.func.isRequired,
 };
 
-export default ActivityMapOer;
+const mapStateToProps = () => ({
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  clickDot: (dot) => {
+    dispatch(actions.clickDot(dot));
+  },
+  saveStructure: (structure) => {
+    dispatch(actions.saveStructure(structure));
+  },
+  clearStructures: () => {
+    dispatch(actions.clearStructures());
+  },
+});
+
+
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  connect(mapStateToProps, mapDispatchToProps),
+)(ActivityMapOer);

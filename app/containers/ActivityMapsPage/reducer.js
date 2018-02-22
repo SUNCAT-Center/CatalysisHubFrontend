@@ -4,25 +4,54 @@
  *
  */
 
-import {
-  DEFAULT_ACTION,
-  CLICK_DOT,
-} from './constants';
+import _ from 'lodash';
+import * as constants from './constants';
 
 const initialState = {
-  selectedDot: {
-    text: 'Ti',
-  },
+  selectedSystem: '',
+  systems: [],
+  structures: [],
 };
 
 function activityMapsPageReducer(state = initialState, action) {
   switch (action.type) {
-    case CLICK_DOT:
+    case constants.SAVE_STRUCTURE:
       return {
         ...state,
-        selectedDot: action.payload,
+        structures:
+        _.sortBy(
+          _.uniqBy(
+            _.concat(state.structures,
+              action.payload.structure), (x) => typeof x === 'undefined' ? '' : x.Formula).filter((x) => !_.isEmpty(x))
+          , (x) => x.energy),
+
       };
-    case DEFAULT_ACTION:
+
+    case constants.CLEAR_STRUCTURES:
+      return {
+        ...state,
+        structures: initialState.structures,
+      };
+
+    case constants.SAVE_STRUCTURES:
+      return {
+        ...state,
+        structures: action.payload.structures,
+      };
+
+    case constants.SAVE_SYSTEMS:
+      return {
+        ...state,
+        systems: action.payload.systems,
+      };
+
+    case constants.CLICK_DOT:
+      return {
+        ...state,
+        selectedDot: action.payload.point.system,
+        structures: action.payload.structures,
+      };
+    case constants.DEFAULT_ACTION:
       return state;
     default:
       return state;
