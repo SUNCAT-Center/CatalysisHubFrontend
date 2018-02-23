@@ -19,9 +19,6 @@ module.exports = {
     }, {
       title: 'AtoML',
     }, {
-      title: 'Wyckoff Bulk Generator',
-      route: '/bulkGenerator',
-    }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
     }, {
@@ -38,6 +35,9 @@ module.exports = {
       /* title: 'Upload Datasets',*/
       /* route: '/upload',*/
       /* }, {*/
+      title: 'Wyckoff Bulk Generator',
+      route: '/bulkGenerator',
+    }, {
       title: 'Your Next App ...',
       route: '/yourNextApp',
     },
