@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import axios from 'axios';
+import { flaskRoot, newGraphQLRoot } from 'utils/constants';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -17,20 +18,12 @@ import { compose } from 'recompose';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import { LinearProgress } from 'material-ui/Progress';
-import { flaskRoot, newGraphQLRoot } from 'utils/constants';
 
 
 import * as actions from './actions';
 import plotlydata from './plot_data/OER.json';
 
-const styles = (theme) => ({
-  paper: {
-    padding: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-  },
-
-});
+import { styles } from './styles';
 
 const initialState = {
   plotlyData: plotlydata,
@@ -56,6 +49,8 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
     const params = { params: {} };
     axios.get(url, params).then((response) => {
       const systems = response.data.systems;
+
+
       this.props.saveSystems(systems);
 
       const scatterData = {

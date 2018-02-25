@@ -22,15 +22,10 @@ import Grid from 'material-ui/Grid';
 import { MdWarning } from 'react-icons/lib/md';
 
 import ActivityMapPlot from './ActivityMapPlot';
+import TopSystems from './TopSystems';
 import StructureView from './StructureView';
 
-const styles = (theme) => ({
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: 2 * theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-});
+import { styles } from './styles';
 
 class ActivityMaps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -72,6 +67,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
           </Flexbox>
         </Paper>
         <ActivityMapPlot {...this.props} />
+        <TopSystems {...this.props} />
         <StructureView {...this.props} />
 
       </Grid>

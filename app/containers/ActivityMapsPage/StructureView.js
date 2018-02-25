@@ -19,6 +19,8 @@ import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
+import { styles } from './styles';
+
 
 function TabContainer(props) {
   return <div style={{ padding: 8 * 3 }}>{props.children}</div>;
@@ -27,25 +29,6 @@ function TabContainer(props) {
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
-const styles = (theme) => ({
-  flipButton: {
-    height: '100%',
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    backgroundColor: theme.palette.background.paper,
-  },
-  tab: {
-    textTransform: 'none',
-  },
-});
 
 
 const initialState = {
