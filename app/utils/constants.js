@@ -2,8 +2,8 @@ import packageJson from './package.json';
 
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
-  flaskRoot: 'http://localhost:5000',
-  /* flaskRoot: 'http://catapp-staging.herokuapp.com/',*/
+  /* flaskRoot: 'http://localhost:5000',*/
+  flaskRoot: 'http://catapp-staging.herokuapp.com/',
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
   newGraphQLRoot: '//catappdatabase2.herokuapp.com/graphql',
