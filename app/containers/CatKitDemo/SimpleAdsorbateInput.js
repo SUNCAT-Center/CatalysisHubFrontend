@@ -37,6 +37,7 @@ const initialState = {
   placeHolder: 'Cl',
   adsorbate: 'O',
   activeImage: 0,
+  siteNames: [],
 };
 
 class AdsorbateInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -53,8 +54,15 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     this.updateAdsorptionSites();
   }
   handlePageFlip(delta) {
+    const n = this.props.images.length;
     this.setState({
-      activeImage: this.state.activeImage + delta,
+      activeImage: (((this.state.activeImage + delta) % n) + n) % n,
+    });
+  }
+
+  resetPageFlip() {
+    this.setState({
+      activeImage: 0,
     });
   }
 
@@ -77,6 +85,10 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       }
       const siteOccupation = {};
       this.props.saveAdsorptionSites(response.data.data);
+
+      this.setState({
+        siteNames: response.data.site_names,
+      });
 
       response.data.data.map((imageSites, i) => {
         siteOccupation[i] = {};
@@ -221,7 +233,6 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                     <Button
                       fab
                       mini
-                      disabled={this.state.activeImage < 1}
                       onClick={() => this.handlePageFlip(-1)}
                     >
                       <MdChevronLeft size={30} />
@@ -230,7 +241,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                 </Grid>
               </Grid>
               <Grid item key={`item_${this.state.activeImage}`}>
-                <div>Site {this.state.activeImage + 1} out of {this.props.images.length}</div>
+                <h4>{`Site "${this.state.siteNames[this.state.activeImage]}" -- (${this.state.activeImage + 1}/${this.props.images.length}).`}</h4>
                 <GeometryCanvasWithOptions
                   cifdata={this.props.images[this.state.activeImage]}
                   uniqueId={`slab_preview_${this.state.activeImage}`}
@@ -247,7 +258,6 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                       fab
                       mini
                       onClick={() => this.handlePageFlip(+1)}
-                      disabled={this.state.activeImage >= this.props.images.length - 1}
                     >
                       <MdChevronRight size={30} />
                     </Button>
