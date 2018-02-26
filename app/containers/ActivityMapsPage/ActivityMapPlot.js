@@ -27,7 +27,11 @@ import { styles } from './styles';
 
 const initialState = {
   plotlyData: plotlydata,
+  initialLoading: false,
   loading: false,
+  xlabel: '',
+  ylabel: '',
+  zlabel: '',
 };
 
 
@@ -44,12 +48,14 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
   }
 
   getSystems() {
+    this.setState({
+      initialLoading: true,
+    });
     const backendRoot = `${flaskRoot}/apps/activityMaps`;
     const url = `${backendRoot}/systems`;
     const params = { params: {} };
     axios.get(url, params).then((response) => {
       const systems = response.data.systems;
-
 
       this.props.saveSystems(systems);
 
@@ -76,13 +82,20 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
         return null;
       });
       this.setState({
+        xlabel: response.data.xlabel,
+        ylabel: response.data.ylabel,
+        zlabel: response.data.zlabel,
         plotlyData: {
           ...this.state.plotlyData,
           data: [
-            scatterData,
             this.state.plotlyData.data[0],
+            scatterData,
           ],
         },
+      });
+
+      this.setState({
+        initialLoading: false,
       });
     });
   }
@@ -146,6 +159,7 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
   render() {
     return (
       <div>
+        {this.state.initialLoading ? <LinearProgress /> : null }
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
             <h2>Activity Map</h2>
@@ -155,7 +169,21 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
                 hovermode: 'closest',
                 height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
                 width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
-                margin: { l: 20, r: 20, b: 10, t: 10 },
+                margin: { l: 40, r: 10, b: 40, t: 10 },
+                xaxis: {
+                  title: this.state.xlabel,
+                  range: [
+                    Math.min(...this.state.plotlyData.data[0].x),
+                    Math.max(...this.state.plotlyData.data[0].x),
+                  ],
+                },
+                yaxis: {
+                  title: this.state.ylabel,
+                  range: [
+                    Math.min(...this.state.plotlyData.data[0].y),
+                    Math.max(...this.state.plotlyData.data[0].y),
+                  ],
+                },
               }}
               config={{ scrollZoom: false,
                 displayModeBar: false,
