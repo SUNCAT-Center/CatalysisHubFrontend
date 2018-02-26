@@ -57,6 +57,8 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     const n = this.props.images.length;
     this.setState({
       activeImage: (((this.state.activeImage + delta) % n) + n) % n,
+      // javascript version of modulo that works for positive and negative
+      // input.
     });
   }
 
