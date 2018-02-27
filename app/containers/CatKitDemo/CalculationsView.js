@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import FileDownload from 'react-file-download';
 
@@ -15,6 +14,7 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
+import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 
 import * as moment from 'moment/moment';
@@ -26,10 +26,15 @@ import { styles } from './styles';
 const backendRoot = `${flaskRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/generate_dft_input`;
 
+const initialState = {
+  loading: false,
+};
+
 
 class CalculationsView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+    this.state = initialState;
     this.clearCalculations = this.clearCalculations.bind(this);
     this.removeCalculation = this.removeCalculation.bind(this);
     this.downloadCalculations = this.downloadCalculations.bind(this);
@@ -42,6 +47,9 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
   }
 
   downloadCalculations() {
+    this.setState({
+      loading: true,
+    });
     const params = { params: {
       calculations: JSON.stringify(this.props.calculations),
     },
@@ -50,6 +58,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     axios.get(url, params).then((response) => {
       FileDownload(response.data, `calculations_${moment().format('YYYYMMDD_HHmmss')}.zip`);
     });
+    this.setState({ loading: false });
   }
 
   render() {
@@ -78,14 +87,13 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               `}</TableCell>
                   <TableCell padding="none">{
               `[
-              ${calculation.slabParams.miller_x},
-              ${calculation.slabParams.miller_y},
-              ${calculation.slabParams.miller_z}
+              ${calculation.slabParams.millerX},
+              ${calculation.slabParams.millerY},
+              ${calculation.slabParams.millerZ}
             ]`
             }</TableCell>
-                  <TableCell padding="none">{(
-            Object.keys(_.get(calculation, ['siteOccupations', 0], {})).filter((label) => !_.isEmpty(_.get(calculation, ['siteOccupations', 0, label], {}))).map((label, labelIndex) => _.get(calculation, ['siteOccupations', 0, label], {}).filter((occ) => occ !== 'empty').map((species) => `${species}@${label}${labelIndex}`).join(' + ')).filter((occs) => !_.isEmpty(occs)).join(' + ')
-          )}</TableCell>
+                  <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
+                  </TableCell>
                   <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
@@ -103,12 +111,18 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> Clear All</Button>
             </Grid>
             <Grid item>
-              <Button raised onClick={this.downloadCalculations} color="primary" className={this.props.classes.button}><MdFileDownload /> Download All</Button>
+              <Button
+                raised
+                onClick={this.downloadCalculations}
+                color="primary"
+                className={this.props.classes.button}
+              ><MdFileDownload /> Download All</Button>
             </Grid>
           </Grid>
 
         </Paper>
         }
+        {this.state.loading ? <LinearProgress className={this.state.classes.progress} /> : null }
       </div>
     );
   }

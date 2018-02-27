@@ -43,6 +43,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
       bulkParams: this.props.bulkParams,
       slabParams: this.props.slabParams,
       siteOccupations: this.props.siteOccupations,
+      adsorbateParams: this.props.adsorbateParams,
       dftParams: {
         calculator: this.state.calculator,
         functional: this.state.functional,
@@ -93,7 +94,7 @@ class DftInput extends React.Component {  // eslint-disable-line react/prefer-st
                 </Grid>
                 <Grid item>
                   <div>Start new structure:
-                    <Button dense onClick={this.props.stepperHandleReset} className={this.props.classes.button}> reset </Button> </div>
+                    <Button onClick={this.props.stepperHandleReset} className={this.props.classes.button}> Start Over </Button> </div>
                 </Grid>
               </Grid>
             </Grid>
@@ -153,6 +154,7 @@ DftInput.propTypes = {
   clearSlabCifs: PropTypes.func,
   stepperHandleReset: PropTypes.func,
   siteOccupations: PropTypes.array,
+  adsorbateParams: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(DftInput);

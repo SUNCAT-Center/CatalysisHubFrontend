@@ -70,7 +70,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       if (response.data.error) {
         this.props.openSnackbar(response.data.error);
       }
-      const siteOccupation = {};
+      const siteOccupation = [];
       this.props.saveAdsorptionSites(response.data.data);
 
       response.data.data.map((imageSites, i) => {

@@ -8,26 +8,33 @@ import _ from 'lodash';
 import * as constants from './constants';
 
 const initialState = {
+  activeStep: 0,
+  adsorbateParams: {},
+  adsorptionSites: [],
+  altLabels: [],
   bulkCif: '',
+  bulkInput: '',
+  bulkParams: {},
+  calculations: [],
+  customBulkInput: false,
+  customSlabInput: false,
   images: [],
   latticeConstant: 3.92,
-  bulkParams: {},
-  slabParams: {},
-  calculations: [],
-  adsorptionSites: [],
-  siteOccupations: [],
-  activeStep: 0,
-  altLabels: [],
-  bulkInput: '',
-  customBulkInput: false,
+  siteOccupations: {},
   slabInput: '',
-  customSlabInput: false,
+  slabParams: {},
   wyckoffBulkParams: {},
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
 
+    case constants.SAVE_ADSORBATE_PARAMS: {
+      return {
+        ...state,
+        adsorbateParams: action.payload.adsorbateParams,
+      };
+    }
     case constants.SAVE_WYCKOFF_BULK_PARAMS: {
       return {
         ...state,

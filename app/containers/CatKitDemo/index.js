@@ -140,7 +140,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               <Grid item>
                 <Button
                   className={this.props.classes.button}
-                  disabled={activeStep === 0}
+                  disabled={activeStep === 0 || activeStep === 3}
                   onClick={this.handleBack}
                 >
                   <MdChevronLeft /> Back
@@ -251,6 +251,9 @@ const mapDispatchToProps = (dispatch) => ({
   openSnackbar: (message) => {
     dispatch(snackbarActions.open(message));
   },
+  saveAdsorbateParams: (adsorbateParams) => {
+    dispatch(actions.saveAdsorbateParams(adsorbateParams));
+  },
 });
 
 const mapStateToProps = (state) => ({
@@ -266,6 +269,7 @@ const mapStateToProps = (state) => ({
   customBulkInput: state.get('catKitDemoReducer').customBulkInput,
   customSlabInput: state.get('catKitDemoReducer').customSlabInput,
   siteOccupations: state.get('catKitDemoReducer').siteOccupations,
+  adsorbateParams: state.get('catKitDemoReducer').adsorbateParams,
 });
 
 export default withStyles(styles, { withTheme: true })(

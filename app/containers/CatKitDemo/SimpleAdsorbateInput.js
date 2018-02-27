@@ -38,6 +38,7 @@ const initialState = {
   adsorbate: 'O',
   activeImage: 0,
   siteNames: [],
+  siteTypes: [],
 };
 
 class AdsorbateInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -72,24 +73,28 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     this.setState({
       loading: true,
     });
+    const adsorbateParams = {
+      siteType: options.siteType || this.state.siteType,
+      placeHolder: options.placeHolder || this.state.placeHolder,
+      adsorbate: options.adsorbate || this.state.adsorbate,
+    };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
       bulkParams: this.props.bulkParams,
       slabParams: this.props.slabParams,
-      adsorbateParams: {
-        siteType: options.siteType || this.state.siteType,
-        placeHolder: options.placeHolder || this.state.placeHolder,
-      },
+      adsorbateParams,
     } };
     axios.get(siteUrl, params).then((response) => {
       if (response.data.error) {
         this.props.openSnackbar(response.data.error);
       }
-      const siteOccupation = {};
+      const siteOccupation = [];
+      this.props.saveAdsorbateParams(adsorbateParams);
       this.props.saveAdsorptionSites(response.data.data);
 
       this.setState({
         siteNames: response.data.site_names,
+        siteTypes: response.data.site_types,
       });
 
       response.data.data.map((imageSites, i) => {
@@ -132,6 +137,8 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
         this.updateAdsorptionSites({ placeHolder: event.target.value });
       } else if (name === 'siteType') {
         this.updateAdsorptionSites({ siteType: event.target.value });
+      } else if (name === 'adsorbate') {
+        this.updateAdsorptionSites({ adsorbate: event.target.value });
       }
     };
   }
@@ -183,26 +190,9 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                                 </FormControl>
 
                               </FormGroup>
-
-                              <FormGroup row className={this.props.classes.formGroup} >
-
-                                <FormControl >
-                                  <InputLabel>Placeholder</InputLabel>
-                                  <Select
-                                    className={this.props.classes.select}
-                                    value={this.state.placeHolder}
-                                    onChange={this.handleChange('placeHolder')}
-                                  >
-                                    <MenuItem value="Cl">Cl</MenuItem>
-                                    <MenuItem value="F">F</MenuItem>
-                                    <MenuItem value="B">B</MenuItem>
-                                    <MenuItem value="H">H</MenuItem>
-                                    <MenuItem value="Ne">Ne</MenuItem>
-                                    <MenuItem value="Br">Br</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </FormGroup>
                             </Grid>
+
+
                             <Grid item>
                               <FormGroup row className={this.props.classes.formGroup} >
                                 <FormControl >
@@ -213,13 +203,37 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                                     onChange={this.handleChange('siteType')}
                                   >
                                     <MenuItem value="all">all</MenuItem>
-                                    {Object.keys(_.get(this.props.adsorptionSites, 0, {})).map((siteType) => (
+                                    {this.state.siteTypes.map((siteType) => (
                                       <MenuItem key={`siteType_${siteType}`} value={siteType}>{siteType}</MenuItem>
-                                    ))}
+                                      )
+                                    )}
                                   </Select>
                                 </FormControl>
                               </FormGroup>
                             </Grid>
+
+                            <Grid item>
+                              <FormGroup row className={this.props.classes.formGroup} >
+                                <FormControl >
+                                  <InputLabel>Placeholder</InputLabel>
+                                  <Select
+                                    className={this.props.classes.select}
+                                    value={this.state.placeHolder}
+                                    onChange={this.handleChange('placeHolder')}
+                                  >
+                                    <MenuItem value="empty">empty</MenuItem>
+                                    <MenuItem value="Cl">Cl</MenuItem>
+                                    <MenuItem value="F">F</MenuItem>
+                                    <MenuItem value="B">B</MenuItem>
+                                    <MenuItem value="H">H</MenuItem>
+                                    <MenuItem value="Ne">Ne</MenuItem>
+                                    <MenuItem value="Br">Br</MenuItem>
+                                  </Select>
+                                </FormControl>
+                              </FormGroup>
+                            </Grid>
+
+
                           </Grid>
                         </Grid>
                       </Grid>
@@ -250,7 +264,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                   key={`slab_preview_${this.state.activeImage}`}
                   id={`slab_preview_${this.state.activeImage}`}
                   x={1} y={1} z={1}
-                  altLabels={this.props.altLabels[this.state.activeImage]}
+                  altLabels={this.props.altLabels[0]}
                 />
               </Grid>
               <Grid item >
@@ -287,6 +301,7 @@ AdsorbateInput.propTypes = {
   images: PropTypes.array,
   altLabels: PropTypes.array,
   saveAdsorptionSites: PropTypes.func,
+  saveAdsorbateParams: PropTypes.func.isRequired,
   slabParams: PropTypes.object,
   receiveSlabCifs: PropTypes.func,
   saveAltLabels: PropTypes.func,
@@ -294,4 +309,5 @@ AdsorbateInput.propTypes = {
   openSnackbar: PropTypes.func,
 };
 
-export default withStyles(styles, { withTheme: true })(AdsorbateInput);
+
+export default withStyles(styles, { withTheme: true })((AdsorbateInput));

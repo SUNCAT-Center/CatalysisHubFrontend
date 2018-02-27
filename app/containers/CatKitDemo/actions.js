@@ -7,6 +7,15 @@
 import _ from 'lodash';
 import * as constants from './constants';
 
+export function saveAdsorbateParams(adsorbateParams) {
+  return {
+    type: constants.SAVE_ADSORBATE_PARAMS,
+    payload: {
+      adsorbateParams,
+    },
+  };
+}
+
 export function saveWyckoffBulkParms(wyckoffBulkParams) {
   return {
     type: constants.SAVE_WYCKOFF_BULK_PARAMS,

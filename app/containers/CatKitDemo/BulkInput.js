@@ -12,6 +12,7 @@ import Grid from 'material-ui/Grid';
 import FaCube from 'react-icons/lib/fa/cube';
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
+import { LinearProgress } from 'material-ui/Progress';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
 import { MdClear } from 'react-icons/lib/md';
@@ -32,6 +33,7 @@ let initialState = {
   u: 1,
   elements: ['Pt', 'Pt', 'Pt', 'Pt'],
   uploadError: '',
+  loading: false,
 };
 
 
@@ -131,9 +133,15 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     this.generateBulk = this.generateBulk.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileDrop = this.handleFileDrop.bind(this);
+    this.setState({
+      loading: true,
+    });
     setTimeout(() => {
       this.generateBulk();
-    }, 2000,
+      this.setState({
+        loading: false,
+      });
+    }, 1000,
     );
   }
 
@@ -303,6 +311,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
         </form>
         }
+        {this.state.loading === true ? <LinearProgress className={this.props.classes.progress} /> : null }
       </div>
     );
   }

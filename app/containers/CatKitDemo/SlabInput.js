@@ -40,7 +40,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     this.handleFileDrop = this.handleFileDrop.bind(this);
     setTimeout(() => {
       this.generateSlabs();
-    }, 1500);
+    }, 1000);
   }
 
   handleFileDrop(files) {
