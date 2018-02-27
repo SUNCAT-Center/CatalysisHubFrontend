@@ -24,7 +24,7 @@ class CatKitDemoHeader extends React.Component { // eslint-disable-line react/pr
           <Grid>
             <div
               className={this.props.classes.infoText}
-            >Checkout full code on <ReactGA.OutboundLink
+            >Powered by <ReactGA.OutboundLink
               eventLabel="https://github.com/jboes/CatKit"
               to="https://github.com/jboes/CatKit"
               target="_blank"

@@ -25,7 +25,7 @@ class BulkEnumeratorDemoHeader extends React.Component { // eslint-disable-line 
           <Grid>
             <div
               className={this.props.classes.infoText}
-            >Based on <ReactGA.OutboundLink
+            >Powered by <ReactGA.OutboundLink
               eventLabel="https://gitlab.com/ankitjainmeiitk/Enumerator"
               to="https://gitlab.com/ankitjainmeiitk/Enumerator"
               target="_blank"
