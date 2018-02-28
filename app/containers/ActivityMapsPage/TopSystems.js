@@ -117,7 +117,7 @@ class TopSystems extends React.Component { // eslint-disable-line react/prefer-s
                   }}
                 >
                   <ListItemText className={this.props.classes.itemText} primary={`${i + 1}`} />
-                  <ListItemText className={this.props.classes.itemText} primary={`${system.formula.padEnd(20)}`} />
+                  <ListItemText className={this.props.classes.itemText} primary={`${system.formula.padEnd(15)}`} />
                   <ListItemText className={this.props.classes.itemText} primary={`${system.z.toFixed(2)}`} />
                 </ListItem>
                     ))}
