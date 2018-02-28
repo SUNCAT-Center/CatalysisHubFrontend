@@ -198,7 +198,7 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
             />
           </div>
           {_.isEmpty(this.state.reference) ? null :
-          <div>{`Activity map based on "${this.state.reference}".`}</div>
+          <div>{`${this.state.reference}`}</div>
           }
         </Paper>
         {this.state.loading ? <LinearProgress /> : null }
