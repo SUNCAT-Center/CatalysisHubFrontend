@@ -288,6 +288,14 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/feedback',
+      name: 'feedBackForm',
+      getComponent(location, cb) {
+        import('components/FeedBackForm')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

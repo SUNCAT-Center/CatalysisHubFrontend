@@ -27,7 +27,13 @@ import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 import AppSnackBar from 'containers/AppSnackBar';
 
-import { MdChevronLeft, MdSearch, MdApps, MdSettings } from 'react-icons/lib/md';
+import { MdChevronLeft,
+  MdSearch,
+  MdApps,
+  MdSettings,
+  MdFeedback,
+} from 'react-icons/lib/md';
+
 import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
@@ -303,6 +309,11 @@ class App extends React.Component {
           <ListItem>
             <Link to="/developerGuide" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
               Developer Guide
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link to="/feedback" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
+              <MdFeedback /> Feedback
             </Link>
           </ListItem>
         </List>
