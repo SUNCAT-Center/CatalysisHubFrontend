@@ -9,9 +9,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ReactGA from 'react-ga';
 import { Link } from 'react-router';
 import * as Scroll from 'react-scroll';
+import IFrame from 'react-iframe';
+import ReactGA from 'react-ga';
 
 import Table, {
   TableBody,
@@ -22,6 +23,7 @@ import Table, {
   TablePagination,
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
+import Button from 'material-ui/Button';
 import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
@@ -61,6 +63,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       rowsPerPage: 10,
       loading: false,
       pageInfo: {},
+      requestFormOpen: false,
     };
   }
 
@@ -166,6 +169,28 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
             <h2>Ooops!</h2>
             No reaction energies found. Please remove one or more filters.
             Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>build</Link> your own.
+            Or <Button
+              color="primary"
+              onClick={() => {
+                this.setState({ requestFormOpen: true });
+                ReactGA.event({
+                  category: 'Search',
+                  action: 'Search',
+                  label: `Open Request Form: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
+                });
+              }}
+
+            > request </Button> a new calculation.
+            {this.state.requestFormOpen === false ? null :
+            <IFrame
+              url={`https://docs.google.com/forms/d/e/1FAIpQLSdmRjKDJd3S5dLeqLrKr6xQIf2ehGHqkX9Q3SI0LpgxCwQfXA/viewform?usp=pp_url&entry.1106005645&entry.182105476&entry.1888744323=${this.props.searchParams.reactants || ''}&entry.1594900128&entry.79296069=${this.props.searchParams.surfaceComposition || ''}&entry.2134412490=${this.props.searchParams.facet || ''}&entry.194204757`}
+              width="100%"
+              height="80vh"
+              position="relative"
+              display="initial"
+              allowFullScreen
+            />
+            }
 
           </div>
         );
