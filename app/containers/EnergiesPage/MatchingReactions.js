@@ -40,6 +40,13 @@ const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(
 
 
 const styles = (theme) => ({
+  iframe: {
+    marginTop: 20,
+  },
+  emptyText: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
   tableFooter: {
     marginLeft: '-30px',
     div: {
@@ -167,10 +174,12 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         return (
           <div>
             <h2>Ooops!</h2>
+            <div className={this.props.classes.emptyText}>
             No reaction energies found. Please remove one or more filters.
             Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>build</Link> your own.
             Or <Button
               color="primary"
+              raised
               onClick={() => {
                 this.setState({ requestFormOpen: true });
                 ReactGA.event({
@@ -181,8 +190,10 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
               }}
 
             > request </Button> a new calculation.
+            </div>
             {this.state.requestFormOpen === false ? null :
             <IFrame
+              className={this.props.classes.iframe}
               url={`https://docs.google.com/forms/d/e/1FAIpQLSdmRjKDJd3S5dLeqLrKr6xQIf2ehGHqkX9Q3SI0LpgxCwQfXA/viewform?usp=pp_url&entry.1106005645&entry.182105476&entry.1888744323=${this.props.searchParams.reactants || ''}&entry.1594900128&entry.79296069=${this.props.searchParams.surfaceComposition || ''}&entry.2134412490=${this.props.searchParams.facet || ''}&entry.194204757`}
               width="100%"
               height="80vh"
