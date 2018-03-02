@@ -11,10 +11,16 @@ const initialState = {
   selectedSystem: '',
   systems: [],
   structures: [],
+  structureQuery: '',
 };
 
 function activityMapsPageReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SAVE_STRUCTURE_QUERY:
+      return {
+        ...state,
+        structureQuery: action.payload.structureQuery,
+      };
     case constants.SAVE_STRUCTURE:
       return {
         ...state,

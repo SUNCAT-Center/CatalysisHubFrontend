@@ -17,6 +17,7 @@ import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
+import GraphQlbutton from 'components/GraphQlbutton';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import { styles } from './styles';
@@ -150,6 +151,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
               </Paper>
             </Grid>
           </Grid>
+          <GraphQlbutton newSchema query={this.props.structureQuery} />
         </Paper>
         }
       </div>
@@ -160,12 +162,12 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
 StructureView2.propTypes = {
   classes: PropTypes.object.isRequired,
   structures: PropTypes.array,
-
-
+  structureQuery: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   structures: state.get('activityMapsPageReducer').structures,
+  structureQuery: state.get('activityMapsPageReducer').structureQuery,
 });
 
 const mapDispatchToProps = () => ({

@@ -64,6 +64,7 @@ class TopSystems extends React.Component { // eslint-disable-line react/prefer-s
   }
 }}} `;
     this.props.clearStructures();
+    this.props.saveStructureQuery(query);
     return axios.post(newGraphQLRoot, { query }).then((response) => response.data.data.reactionSystems.edges.map((edge) => edge.node.reactions.reactionSystems.map(({ systems, name }) => {
       const system = {
         ...systems,
@@ -141,8 +142,10 @@ TopSystems.propTypes = {
   systems: PropTypes.array.isRequired,
   clickDot: PropTypes.func.isRequired,
   saveStructure: PropTypes.func.isRequired,
+  saveStructureQuery: PropTypes.func.isRequired,
   clearStructures: PropTypes.func.isRequired,
 };
+
 
 const mapStateToProps = (state) => ({
   systems: state.get('activityMapsPageReducer').systems,
@@ -157,6 +160,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveStructure: (structure) => {
     dispatch(actions.saveStructure(structure));
+  },
+  saveStructureQuery: (query) => {
+    dispatch(actions.saveStructureQuery(query));
   },
 });
 

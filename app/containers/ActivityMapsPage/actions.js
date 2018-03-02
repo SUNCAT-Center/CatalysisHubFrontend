@@ -8,6 +8,15 @@ import _ from 'lodash';
 
 import * as constants from './constants';
 
+export function saveStructureQuery(structureQuery) {
+  return {
+    type: constants.SAVE_STRUCTURE_QUERY,
+    payload: {
+      structureQuery,
+    },
+  };
+}
+
 export function saveStructure(structure) {
   return {
     type: constants.SAVE_STRUCTURE,

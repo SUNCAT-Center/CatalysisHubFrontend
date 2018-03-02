@@ -137,6 +137,7 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
   }
 }}} `;
     this.props.clearStructures();
+    this.props.saveStructureQuery(query);
     return axios.post(newGraphQLRoot, { query }).then((response) => response.data.data.reactionSystems.edges.map((edge) => edge.node.reactions.reactionSystems.map(({ systems, name }) => {
       const system = {
         ...systems,
@@ -214,6 +215,7 @@ ActivityMapOer.propTypes = {
   saveStructure: PropTypes.func.isRequired,
   saveSystems: PropTypes.func.isRequired,
   clearStructures: PropTypes.func.isRequired,
+  saveStructureQuery: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = () => ({
@@ -228,6 +230,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   clearStructures: () => {
     dispatch(actions.clearStructures());
+  },
+  saveStructureQuery: (query) => {
+    dispatch(actions.saveStructureQuery(query));
   },
 });
 
