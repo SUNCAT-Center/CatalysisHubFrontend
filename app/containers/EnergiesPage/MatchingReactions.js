@@ -218,8 +218,20 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                       <Link
                         className={this.props.classes.buttonLink}
                         to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
-                      >build</Link>
-                    </Button> your own calculation.
+                      >construct</Link>
+                    </Button> your own slab calculation.
+                  </li>
+                  <li className={this.props.classes.li}>
+                    <Button
+                      color="primary"
+                      raised
+                      className={this.props.classes.button}
+                    >
+                      <Link
+                        className={this.props.classes.buttonLink}
+                        to={'/bulkGenerator'}
+                      >import</Link>
+                    </Button> your own bulk structure.
                   </li>
                   <li className={this.props.classes.li}>
                     <Button
