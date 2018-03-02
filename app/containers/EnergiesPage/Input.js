@@ -151,7 +151,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
     }
     if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
-      filters.push(`facet: "~${this.state.facet.label}"`);
+      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1')}"`);
     }
     if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
       filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
