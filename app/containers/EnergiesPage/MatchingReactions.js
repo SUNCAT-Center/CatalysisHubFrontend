@@ -207,7 +207,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                     Remove one or more filters.
                   </li>
                   <li>
-                    Try to flip reactants and products.
+                    Flip reactants and products.
                   </li>
                   <li className={this.props.classes.li}>
                     <Button
