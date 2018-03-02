@@ -73,7 +73,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
           </Grid>
         </Grid>
         <h3>Synonyms</h3>
-        <div>{this.props.synonyms.length === 0 ? 'Not found.' :
+        <div>{this.props.synonyms.length === 0 ? 'Synonyms not supported for more than 8 Wyckoff positions.' :
         <ul>
           {this.props.synonyms.map((synonym, i) => (
             <li
