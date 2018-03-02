@@ -25,6 +25,7 @@ import Table, {
 import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Hidden from 'material-ui/Hidden';
+import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
 
@@ -42,6 +43,12 @@ const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(
 const styles = (theme) => ({
   iframe: {
     marginTop: 20,
+  },
+  paper: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    padding: theme.spacing.unit,
+
   },
   emptyText: {
     marginTop: 20,
@@ -173,8 +180,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         });
         return (
           <div>
-            <h2>Ooops!</h2>
-            <div className={this.props.classes.emptyText}>
+            <Paper className={this.props.classes.paper}>
+              <h2>Ooops!</h2>
+              <div className={this.props.classes.emptyText}>
             No reaction energies found. Please remove one or more filters.
             Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>build</Link> your own.
             Or <Button
@@ -191,25 +199,28 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 
             > request </Button> a new calculation.
             </div>
-            {this.state.requestFormOpen === false ? null :
-            <IFrame
-              className={this.props.classes.iframe}
-              url={`https://docs.google.com/forms/d/e/1FAIpQLSdmRjKDJd3S5dLeqLrKr6xQIf2ehGHqkX9Q3SI0LpgxCwQfXA/viewform?usp=pp_url&entry.1106005645&entry.182105476&entry.1888744323=${this.props.searchParams.reactants || ''}&entry.1594900128&entry.79296069=${this.props.searchParams.surfaceComposition || ''}&entry.2134412490=${this.props.searchParams.facet || ''}&entry.194204757`}
-              width="100%"
-              height="80vh"
-              position="relative"
-              display="initial"
-              allowFullScreen
-            />
+            </Paper>
+            <Paper className={this.props.classes.paper} >
+              {this.state.requestFormOpen === false ? null :
+              <IFrame
+                className={this.props.classes.iframe}
+                url={`https://docs.google.com/forms/d/e/1FAIpQLSdmRjKDJd3S5dLeqLrKr6xQIf2ehGHqkX9Q3SI0LpgxCwQfXA/viewform?usp=pp_url&entry.1106005645&entry.182105476&entry.1888744323=${this.props.searchParams.reactants || ''}&entry.1594900128&entry.79296069=${this.props.searchParams.surfaceComposition || ''}&entry.2134412490=${this.props.searchParams.facet || ''}&entry.194204757`}
+                width="100%"
+                height="80vh"
+                position="relative"
+                display="initial"
+                allowFullScreen
+              />
             }
 
+            </Paper>
           </div>
         );
       }
       return null;
     }
     return (
-      <div>
+      <Paper className={this.props.classes.paper}>
         <div>
           <h2>Matching Reactions ({this.props.resultSize})</h2>
           <Table>
@@ -279,7 +290,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <GraphQlbutton query={this.props.searchQuery} />
         </div>
         {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
-      </div>
+      </Paper>
     );
   }
 }
