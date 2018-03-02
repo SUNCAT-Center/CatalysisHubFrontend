@@ -44,11 +44,28 @@ const styles = (theme) => ({
   iframe: {
     marginTop: 20,
   },
+  buttonLink: {
+    textTransformation: 'none',
+    textDecoration: 'none',
+    fontColor: 'white',
+    color: 'white',
+    fontWeight: 'bold',
+
+  },
+  button: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+
+  },
   paper: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
     padding: theme.spacing.unit,
 
+  },
+  li: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
   },
   emptyText: {
     marginTop: 20,
@@ -181,27 +198,50 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         return (
           <div>
             <Paper className={this.props.classes.paper}>
-              <h2>Ooops!</h2>
+              <h2>Ooops! :-(</h2>
               <div className={this.props.classes.emptyText}>
-            No reaction energies found. Please remove one or more filters.
-            Or <Link to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}>build</Link> your own.
-            Or <Button
-              color="primary"
-              raised
-              onClick={() => {
-                this.setState({ requestFormOpen: true });
-                ReactGA.event({
-                  category: 'Search',
-                  action: 'Search',
-                  label: `Open Request Form: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
-                });
-              }}
+                No reaction energies found.
+                Here are a couple of things you could try.
+                <ul>
+                  <li className={this.props.classes.li}>
+                    Remove one or more filters.
+                  </li>
+                  <li>
+                    Try to flip reactants and products.
+                  </li>
+                  <li className={this.props.classes.li}>
+                    <Button
+                      color="primary"
+                      raised
+                      className={this.props.classes.button}
+                    >
+                      <Link
+                        className={this.props.classes.buttonLink}
+                        to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
+                      >build</Link>
+                    </Button> your own calculation.
+                  </li>
+                  <li className={this.props.classes.li}>
+                    <Button
+                      color="primary"
+                      raised
+                      className={this.props.classes.button}
+                      onClick={() => {
+                        this.setState({ requestFormOpen: true });
+                        ReactGA.event({
+                          category: 'Search',
+                          action: 'Search',
+                          label: `Open Request Form: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
+                        });
+                      }}
 
-            > request </Button> a new calculation.
-            </div>
+                    > request </Button> a calculation.
+                  </li>
+                </ul>
+              </div>
             </Paper>
+            {this.state.requestFormOpen === false ? null :
             <Paper className={this.props.classes.paper} >
-              {this.state.requestFormOpen === false ? null :
               <IFrame
                 className={this.props.classes.iframe}
                 url={`https://docs.google.com/forms/d/e/1FAIpQLSdmRjKDJd3S5dLeqLrKr6xQIf2ehGHqkX9Q3SI0LpgxCwQfXA/viewform?usp=pp_url&entry.1106005645&entry.182105476&entry.1888744323=${this.props.searchParams.reactants || ''}&entry.1594900128&entry.79296069=${this.props.searchParams.surfaceComposition || ''}&entry.2134412490=${this.props.searchParams.facet || ''}&entry.194204757`}
@@ -211,9 +251,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                 display="initial"
                 allowFullScreen
               />
+            </Paper>
             }
 
-            </Paper>
           </div>
         );
       }
