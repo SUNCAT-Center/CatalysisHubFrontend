@@ -9,7 +9,7 @@ import ReactGA from 'react-ga';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import { FaDatabase } from 'react-icons/lib/fa';
-import { graphQLRoot } from 'utils/constants';
+import { graphQLRoot, newGraphQLRoot } from 'utils/constants';
 
 
 const styles = (theme) => ({
@@ -28,8 +28,8 @@ class GraphQlbutton extends React.Component { // eslint-disable-line react/prefe
     return (
       <div>
         <ReactGA.OutboundLink
-          eventLabel={`GraphQL ${graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
-          to={`${graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
+          eventLabel={`GraphQL ${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
+          to={`${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
           target="_blank"
           className={this.props.classes.button}
         >
@@ -45,6 +45,12 @@ class GraphQlbutton extends React.Component { // eslint-disable-line react/prefe
 GraphQlbutton.propTypes = {
   query: PropTypes.string,
   classes: PropTypes.object,
+  newSchema: PropTypes.bool,
+};
+
+GraphQlbutton.defaultProps = {
+  newSchema: false,
+  query: '{systems(first: 10) { edges { node { id energy InputFile(format: "cif") Positions Cell Formula } } }}',
 };
 
 
