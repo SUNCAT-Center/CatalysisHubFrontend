@@ -18,6 +18,7 @@ import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
 import { FaDatabase } from 'react-icons/lib/fa';
 import { MdWarning } from 'react-icons/lib/md';
+import Slide from 'material-ui/transitions/Slide';
 import View from 'flexbox-react';
 
 import axios from 'axios';
@@ -135,31 +136,33 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             {this.state.loading ? <div>Contacting database ... <LinearProgress color="primary" /></div> : null }
             {this.state.error ? <div><MdWarning />Failed to contact database. </div> : null }
           </CenteredSection>
-          <Grid container justify="center">
-            <Grid item>
-              <Link to="/energies" className={this.props.classes.textLink}>
-                <Paper
-                  style={{
-                    padding: 25,
-                    minWidth: 240,
-                    maxWidth: 300,
-                    textAlign: 'center',
-                  }}
-                >
-                  <h3>Reaction Energetics</h3>
-                  <View style={{ justifyContent: 'space-around' }}>
-                    <Chip
-                      label={this.state.reactions} avatar={
-                        <Avatar>
-                          <FaDatabase size={24} />
-                        </Avatar>
+          <Slide mountOnEnter unmountOnExit in direction="left">
+            <div>
+              <Grid container justify="center">
+                <Grid item>
+                  <Link to="/energies" className={this.props.classes.textLink}>
+                    <Paper
+                      style={{
+                        padding: 25,
+                        minWidth: 240,
+                        maxWidth: 300,
+                        textAlign: 'center',
+                      }}
+                    >
+                      <h3>Reaction Energetics</h3>
+                      <View style={{ justifyContent: 'space-around' }}>
+                        <Chip
+                          label={this.state.reactions} avatar={
+                            <Avatar>
+                              <FaDatabase size={24} />
+                            </Avatar>
                     }
-                    />
-                  </View>
-                </Paper>
-              </Link>
-            </Grid>
-            {/*
+                        />
+                      </View>
+                    </Paper>
+                  </Link>
+                </Grid>
+                {/*
             <Grid item>
               <Link to="/generalSearch" className={this.props.classes.textLink}>
                 <Paper
@@ -179,55 +182,57 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Link>
             </Grid>
             */}
-            <Grid item>
-              <Link to="/publications" className={this.props.classes.textLink}>
-                <Paper
-                  style={{
-                    padding: 25,
-                    minWidth: 240,
-                    maxWidth: 300,
-                    textAlign: 'center',
-                    align: 'center',
-                  }}
-                >
-                  <h3>Publications</h3>
-                  <View style={{ justifyContent: 'center' }}>
-                    <Chip
-                      label={this.state.publications} avatar={
-                        <Avatar>
-                          <FaDatabase size={24} />
-                        </Avatar>
+                <Grid item>
+                  <Link to="/publications" className={this.props.classes.textLink}>
+                    <Paper
+                      style={{
+                        padding: 25,
+                        minWidth: 240,
+                        maxWidth: 300,
+                        textAlign: 'center',
+                        align: 'center',
+                      }}
+                    >
+                      <h3>Publications</h3>
+                      <View style={{ justifyContent: 'center' }}>
+                        <Chip
+                          label={this.state.publications} avatar={
+                            <Avatar>
+                              <FaDatabase size={24} />
+                            </Avatar>
                     }
-                    />
-                  </View>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="/appsIndex" className={this.props.classes.textLink}>
-                <Paper
-                  style={{
-                    padding: 25,
-                    minWidth: 240,
-                    maxWidth: 300,
-                    textAlign: 'center',
-                    align: 'center',
-                  }}
-                >
-                  <h3>Apps</h3>
-                  <View style={{ justifyContent: 'center' }}>
-                    <Chip
-                      label={apps.length} avatar={
-                        <Avatar>
-                          <FaDatabase size={24} />
-                        </Avatar>
+                        />
+                      </View>
+                    </Paper>
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link to="/appsIndex" className={this.props.classes.textLink}>
+                    <Paper
+                      style={{
+                        padding: 25,
+                        minWidth: 240,
+                        maxWidth: 300,
+                        textAlign: 'center',
+                        align: 'center',
+                      }}
+                    >
+                      <h3>Apps</h3>
+                      <View style={{ justifyContent: 'center' }}>
+                        <Chip
+                          label={apps.length} avatar={
+                            <Avatar>
+                              <FaDatabase size={24} />
+                            </Avatar>
                     }
-                    />
-                  </View>
-                </Paper>
-              </Link>
-            </Grid>
-          </Grid>
+                        />
+                      </View>
+                    </Paper>
+                  </Link>
+                </Grid>
+              </Grid>
+            </div>
+          </Slide>
         </div>
         <Welcome />
       </article>

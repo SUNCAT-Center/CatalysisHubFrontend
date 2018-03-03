@@ -12,6 +12,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import Slide from 'material-ui/transitions/Slide';
 
 import { withStyles } from 'material-ui/styles';
 import { withCookies, Cookies } from 'react-cookie';
@@ -41,39 +42,45 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
   }
   render() {
     return (
-      <div>
-        <Grid container direction="row" justify="space-between">
-          <Grid item>
-            <h2>CatApp Database API</h2>
-          </Grid>
-          <Grid item>
-            {this.state.graphqlShowInfo === true ? null :
-            <Button className={this.props.classes.button} color="primary" onClick={() => { this.handleGotit(true); }}>Help!</Button>
-        }
-          </Grid>
-        </Grid>
-        {this.state.graphqlShowInfo === false ? null :
-        <Card style={{ marginBottom: 20 }}>
-          <CardContent>
-            <Grid container direction="row" justify="space-between">
-              <Grid item >
-                <h3>Welcome to the GraphQL API</h3>
-              </Grid>
-              <Grid item >
-                <CardActions>
-                  <Button color="primary" onClick={() => { this.handleGotit(false); }}>Got it! </Button>
-                </CardActions>
-              </Grid>
+      <Slide
+        mountOnEnter
+        unmountOnExit
+        in
+        direction="left"
+      >
+        <div>
+          <Grid container direction="row" justify="space-between">
+            <Grid item>
+              <h2>CatApp Database API</h2>
             </Grid>
-            <div>You can write you own queries and submit them with<br /> <pre>Command + Enter</pre></div>
-            <div>Some examples are</div>
-            <ul>
-              <li> <pre>{'{systems}'}</pre> </li>
-              <li><pre>{'{catapp { edges { node { reactants products reactionEnergy } } }}'}</pre></li>
-              <li><pre>{'{systems(last: 5) { edges { node { id energy PublicationTitle keyValuePairs } } }}'}</pre></li>
-            </ul>
-            <div>{"Open the 'Docs' tab on the right to find a full documentation."}</div>
-            <div>Alternatively you query from the command line using <pre style={{ display: 'inline' }}>curl</pre>:
+            <Grid item>
+              {this.state.graphqlShowInfo === true ? null :
+              <Button className={this.props.classes.button} color="primary" onClick={() => { this.handleGotit(true); }}>Help!</Button>
+        }
+            </Grid>
+          </Grid>
+          {this.state.graphqlShowInfo === false ? null :
+          <Card style={{ marginBottom: 20 }}>
+            <CardContent>
+              <Grid container direction="row" justify="space-between">
+                <Grid item >
+                  <h3>Welcome to the GraphQL API</h3>
+                </Grid>
+                <Grid item >
+                  <CardActions>
+                    <Button color="primary" onClick={() => { this.handleGotit(false); }}>Got it! </Button>
+                  </CardActions>
+                </Grid>
+              </Grid>
+              <div>You can write you own queries and submit them with<br /> <pre>Command + Enter</pre></div>
+              <div>Some examples are</div>
+              <ul>
+                <li> <pre>{'{systems}'}</pre> </li>
+                <li><pre>{'{catapp { edges { node { reactants products reactionEnergy } } }}'}</pre></li>
+                <li><pre>{'{systems(last: 5) { edges { node { id energy PublicationTitle keyValuePairs } } }}'}</pre></li>
+              </ul>
+              <div>{"Open the 'Docs' tab on the right to find a full documentation."}</div>
+              <div>Alternatively you query from the command line using <pre style={{ display: 'inline' }}>curl</pre>:
                   <pre>{ `curl -XPOST http://catappdatabase.herokuapp.com/graphql --data 'query={systems(last: 10 ) {
   edges {
     node {
@@ -81,34 +88,35 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
           }
   }
 }}' ` }</pre>
-            </div>
-            <div>Or you can send the same query from a python script like so</div>
-            <pre>{'import requests\n' +
+              </div>
+              <div>Or you can send the same query from a python script like so</div>
+              <pre>{'import requests\n' +
                 `requests.post(root, {'query':
               '{systems(last: 5) { edges { node { energy PublicationTitle InputFile(format: "espresso-in") } } }}
               }).json()`}</pre>
-            <Grid container direction="row" justify="flex-end">
-              <Grid item >
-                <CardActions>
-                  <Button color="primary" onClick={() => { this.handleGotit(false); }}>Got it! </Button>
-                </CardActions>
+              <Grid container direction="row" justify="flex-end">
+                <Grid item >
+                  <CardActions>
+                    <Button color="primary" onClick={() => { this.handleGotit(false); }}>Got it! </Button>
+                  </CardActions>
+                </Grid>
               </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
         }
 
-        <Paper>
-          <IFrame
-            url={graphQLRoot}
-            width="100%"
-            height="80vh"
-            position="relative"
-            display="initial"
-            allowFullScreen
-          />
-        </Paper>
-      </div>
+          <Paper>
+            <IFrame
+              url={graphQLRoot}
+              width="100%"
+              height="80vh"
+              position="relative"
+              display="initial"
+              allowFullScreen
+            />
+          </Paper>
+        </div>
+      </Slide>
     );
   }
 }

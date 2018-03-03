@@ -16,7 +16,6 @@ import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-/* import Checkbox from 'material-ui/Checkbox';*/
 import Switch from 'material-ui/Switch';
 import Tooltip from 'material-ui/Tooltip';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';

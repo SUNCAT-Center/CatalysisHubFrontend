@@ -12,6 +12,7 @@ import { Link } from 'react-router';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import Slide from 'material-ui/transitions/Slide';
 
 
 const styles = () => ({
@@ -32,29 +33,39 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
   render() {
     return (
       <div className={this.props.classes.AppWrapper} >
-        <Grid container justify="center">
-          {apps.map((app, i) => (
-            <Grid item key={`griditem_${i}`}>
-              <Link
-                to={app.route}
-                style={{
-                  textDecoration: 'none',
-                }}
-              >
-                <Paper
-                  style={{
-                    padding: 25,
-                    minWidth: 240,
-                    maxWidth: 300,
-                    textAlign: 'center',
-                  }}
-                >
-                  <h3>{app.title}</h3>
-                </Paper>
-              </Link>
-            </Grid>
+
+        <Slide
+          in
+          mountOnEnter
+          unmountOnExit
+          direction="left"
+        >
+          <div>
+            <Grid container justify="center">
+              {apps.map((app, i) => (
+                <Grid item key={`griditem_${i}`}>
+                  <Link
+                    to={app.route}
+                    style={{
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <Paper
+                      style={{
+                        padding: 25,
+                        minWidth: 240,
+                        maxWidth: 300,
+                        textAlign: 'center',
+                      }}
+                    >
+                      <h3>{app.title}</h3>
+                    </Paper>
+                  </Link>
+                </Grid>
               )) }
-        </Grid>
+            </Grid>
+          </div>
+        </Slide>
       </div>
     );
   }

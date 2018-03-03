@@ -12,6 +12,7 @@ import ReactGA from 'react-ga';
 import Script from 'react-load-script';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
+import Slide from 'material-ui/transitions/Slide';
 import { FaExternalLink } from 'react-icons/lib/fa';
 
 import { withStyles } from 'material-ui/styles';
@@ -209,11 +210,20 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 
         {this.state.references === {} ? <LinearProgress color="primary" /> : null }
         {this.state.years.map((year, i) => (
-          <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
-            {(this.state.references[year] || []).length === 0 ? null :
-            <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
+          <Slide
+            key={`slide_${i}`}
+            in
+            mountOnEnter
+            unmountOnExit
+            timeout={200 * i}
+            direction="left"
+          >
+            <div>
+              <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
+                {(this.state.references[year] || []).length === 0 ? null :
+                <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
             }
-            {(this.state.references[year] || [])
+                {(this.state.references[year] || [])
                 .filter((references, j) => (this.state.titles[year][j] !== null))
                 .map((reference, j) => (
                   <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
@@ -264,7 +274,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     <br />
                   </div>
                 ))}
-          </Paper>
+              </Paper>
+            </div>
+          </Slide>
         ))
         }
       </div>

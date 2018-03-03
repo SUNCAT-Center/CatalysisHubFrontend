@@ -8,6 +8,7 @@ import React, { PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
+import Slide from 'material-ui/transitions/Slide';
 
 
 import * as actions from './actions';
@@ -19,19 +20,26 @@ import { ReactionStructures } from './ReactionStructures';
 export class EnergiesPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
-        {/* Required for ChemDoodle later below */}
-        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="/static/ChemDoodleWeb.js" />
+      <Slide
+        onMountEnter
+        onUnmountExit
+        in
+        direction="left"
+      >
+        <div>
+          {/* Required for ChemDoodle later below */}
+          <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+          <Script url="/static/ChemDoodleWeb.js" />
 
-        {this.props.simpleSearch ?
-          <EnergiesPageSimpleInput />
+          {this.props.simpleSearch ?
+            <EnergiesPageSimpleInput />
             :
-          <EnergiesPageInput {...this.props} />
+            <EnergiesPageInput {...this.props} />
         }
-        <MatchingReactions />
-        <ReactionStructures {...this.props} />
-      </div>
+          <MatchingReactions />
+          <ReactionStructures {...this.props} />
+        </div>
+      </Slide>
     );
   }
 }

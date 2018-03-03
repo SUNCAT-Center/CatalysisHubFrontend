@@ -12,6 +12,7 @@ import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import Slide from 'material-ui/transitions/Slide';
 
 import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 import { isMobileOnly } from 'react-device-detect';
@@ -97,35 +98,41 @@ export class BulkGenerator extends React.Component { // eslint-disable-line reac
   render() {
     const steps = getSteps();
     return (
-      <div>
-        <BulkEnumeratorHeader />
-        <Paper className={this.props.classes.stepperPaper}>
-          <Grid
-            container
-            justify="space-between"
-            direction="row"
-            className={this.props.classes.buttongrid}
-          >
-            <Grid item>
-              <Stepper activeStep={this.props.activeStep} className={this.props.classes.stepper} orientation={isMobileOnly ? 'vertical' : 'horizontal'}>
-                {steps.map((label) => {
-                  const props = {};
-                  const labelProps = {};
-                  return (
-                    <Step key={label} {...props}>
-                      <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
-            </Grid>
-            <Grid item>
-              <Button
-                className={this.props.classes.button}
-                disabled={this.props.activeStep === 0}
-                onClick={this.handleBack}
-              >
-                <MdChevronLeft /> Back
+      <Slide
+        onMountEnter
+        onUnmountExit
+        in
+        direction="left"
+      >
+        <div>
+          <BulkEnumeratorHeader />
+          <Paper className={this.props.classes.stepperPaper}>
+            <Grid
+              container
+              justify="space-between"
+              direction="row"
+              className={this.props.classes.buttongrid}
+            >
+              <Grid item>
+                <Stepper activeStep={this.props.activeStep} className={this.props.classes.stepper} orientation={isMobileOnly ? 'vertical' : 'horizontal'}>
+                  {steps.map((label) => {
+                    const props = {};
+                    const labelProps = {};
+                    return (
+                      <Step key={label} {...props}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+              </Grid>
+              <Grid item>
+                <Button
+                  className={this.props.classes.button}
+                  disabled={this.props.activeStep === 0}
+                  onClick={this.handleBack}
+                >
+                  <MdChevronLeft /> Back
                 </Button><Button
                   raised
                   className={this.props.classes.button}
@@ -134,15 +141,16 @@ export class BulkGenerator extends React.Component { // eslint-disable-line reac
                 >
                 Next <MdChevronRight />
                 </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </Paper>
-        <Paper className={this.props.classes.paper} height={12}>
-          {getStepContent(this.props.activeStep, this.props)}
-        </Paper>
+          </Paper>
+          <Paper className={this.props.classes.paper} height={12}>
+            {getStepContent(this.props.activeStep, this.props)}
+          </Paper>
 
 
-      </div>
+        </div>
+      </Slide>
     );
   }
 }

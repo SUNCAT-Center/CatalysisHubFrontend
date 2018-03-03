@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Script from 'react-load-script';
+import Slide from 'material-ui/transitions/Slide';
 
 import ActivityMaps from './ActivityMaps';
 import * as actions from './actions';
@@ -17,7 +18,14 @@ export class ActivityMapsPage extends React.Component { // eslint-disable-line r
     return (
       <div>
         <Script url="/static/ChemDoodleWeb.js" />
-        <ActivityMaps {...this.props} />
+        <Slide
+          onMountEnter
+          onUnmountExit
+          in
+          direction="left"
+        >
+          <ActivityMaps {...this.props} />
+        </Slide>
       </div>
     );
   }

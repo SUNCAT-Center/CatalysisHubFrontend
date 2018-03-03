@@ -9,6 +9,7 @@ import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
 import FaCube from 'react-icons/lib/fa/cube';
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
@@ -24,6 +25,8 @@ import { styles } from './styles';
 const backendRoot = `${flaskRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/convert_atoms/`;
 const bulkUrl = `${backendRoot}/generate_bulk_cif`;
+
+const wyckoffUrl = `${flaskRoot}/apps/bulkEnumerator/get_wyckoff_from_cif`;
 
 
 let initialState = {
@@ -157,11 +160,18 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     } };
 
     this.props.clearSlabCifs();
-    this.props.saveBulkParams(params.params);
+    /* this.props.saveBulkParams(params.params);*/
 
     if (!this.props.customBulkInput) {
       axios.get(bulkUrl, params).then((response) => {
         this.props.receiveBulkCif(response.data.cifdata);
+        const wyckoffParams = {
+          cif: response.data.cifdata,
+        };
+        axios.get(wyckoffUrl, { params: wyckoffParams }).then((wyckoffResponse) => {
+          params.params.bulkParams.wyckoff = wyckoffResponse.data;
+          this.props.saveBulkParams(params.params);
+        });
       });
     }
   }
@@ -217,7 +227,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
   render() {
     return (
-      <div>
+      <Paper className={this.props.classes.paper}>
         <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
         <Grid container justify="space-between" direction="row" >
           <Grid item>
@@ -312,7 +322,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         </form>
         }
         {this.state.loading === true ? <LinearProgress className={this.props.classes.progress} /> : null }
-      </div>
+      </Paper>
     );
   }
 }

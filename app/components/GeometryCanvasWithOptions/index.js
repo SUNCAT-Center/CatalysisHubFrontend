@@ -1,4 +1,4 @@
-/**
+/** ={this.state.in}
  *
  * GeometryCanvasWithOptions
  *
@@ -65,6 +65,7 @@ const initialState = {
   altLabels: {},
   perspective: true,
   tiltToRotate: true,
+  in: false,
 };
 
 class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -72,6 +73,13 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     super(props);
     this.state = initialState;
   }
+  componentWillReceiveProps() {
+    this.setState({ in: false });
+    setTimeout(() => {
+      this.setState({ in: true });
+    }, 10);
+  }
+
   handleOpen() {
     this.setState({ open: true });
   }

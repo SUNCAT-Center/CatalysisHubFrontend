@@ -15,6 +15,7 @@ import Tooltip from 'material-ui/Tooltip';
 import Paper from 'material-ui/Paper';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import { isMobile } from 'react-device-detect';
+import Slide from 'material-ui/transitions/Slide';
 
 
 import { createStructuredSelector } from 'reselect';
@@ -47,43 +48,50 @@ export class Settings extends React.Component { // eslint-disable-line react/pre
   }
   render() {
     return (
-      <div>
-        <h2>Settings</h2>
-        <Paper className={this.props.classes.paper}>
-          <h3>View </h3>
-          <FormGroup >
+      <Slide
+        onMountEnter
+        onUnmountExit
+        in
+        direction="left"
+      >
+        <div>
+          <h2>Settings</h2>
+          <Paper className={this.props.classes.paper}>
+            <h3>View </h3>
+            <FormGroup >
 
-            <Tooltip title="Show interactive structures with parallel or stereographic projection">
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.state.perspective}
-                    onChange={() => { this.handleChange('perspective')(!this.state.perspective); }}
-                  />
+              <Tooltip title="Show interactive structures with parallel or stereographic projection">
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.state.perspective}
+                      onChange={() => { this.handleChange('perspective')(!this.state.perspective); }}
+                    />
             }
-                label={
-                  <span>Stereographic Projection </span>
+                  label={
+                    <span>Stereographic Projection </span>
             }
-              />
-            </Tooltip>
-            {!isMobile ? null :
-            <Tooltip title="Tilt the phone to turn an atoms object. May consume more battery">
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.state.tiltToRotate}
-                    onChange={() => { this.handleChange('tiltToRotate')(!this.state.tiltToRotate); }}
-                  />
+                />
+              </Tooltip>
+              {!isMobile ? null :
+              <Tooltip title="Tilt the phone to turn an atoms object. May consume more battery">
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.state.tiltToRotate}
+                      onChange={() => { this.handleChange('tiltToRotate')(!this.state.tiltToRotate); }}
+                    />
             }
-                label={
-                  <span>Tilt to rotate atoms </span>
+                  label={
+                    <span>Tilt to rotate atoms </span>
             }
-              />
-            </Tooltip>
+                />
+              </Tooltip>
             }
-          </FormGroup>
-        </Paper>
-      </div>
+            </FormGroup>
+          </Paper>
+        </div>
+      </Slide>
     );
   }
 }

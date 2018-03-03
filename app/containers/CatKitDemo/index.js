@@ -17,6 +17,7 @@ import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import Slide from 'material-ui/transitions/Slide';
 
 import * as snackbarActions from 'containers/AppSnackBar/actions';
 import CatKitDemoHeader from './catKitDemoHeader';
@@ -61,33 +62,41 @@ function getStepContent(step, props) {
     case 0:
       /* return 'Make choices for bulk cell'*/
       return (
-        <div>
-          <BulkInput {...props} />
-          <BulkView {...props} />
-        </div>
+        <Slide direction="left" in mountOnEnter unmountOnExit>
+          <div>
+            <BulkInput {...props} />
+            <BulkView {...props} />
+          </div>
+        </Slide>
       );
     case 1:
       /* return 'Make choices for surface slab'*/
       return (
-        <div>
-          <SlabInput {...props} />
-          <SlabView {...props} />
-        </div>
+        <Slide direction="left" in mountOnEnter unmountOnExit>
+          <div>
+            <SlabInput {...props} />
+            <SlabView {...props} />
+          </div>
+        </Slide>
       );
     case 2:
       /* return 'Add some adsorbates'*/
       return (
-        <div>
-          <AdsorbateInput {...props} />
-          <AdsorbateView {...props} />
-        </div>
+        <Slide direction="left" in mountOnEnter unmountOnExit>
+          <div>
+            <AdsorbateInput {...props} />
+            <AdsorbateView {...props} />
+          </div>
+        </Slide>
       );
     case 3:
       /* return 'Configure calculator'*/
       return (
-        <div>
-          <DftInput {...props} />
-        </div>
+        <Slide direction="left" in mountOnEnter unmountOnExit>
+          <div>
+            <DftInput {...props} />
+          </div>
+        </Slide>
       );
     default:
       return `Unkown step ${typeof activeStep}`;

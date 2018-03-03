@@ -16,6 +16,8 @@ import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
+import Slide from 'material-ui/transitions/Slide';
+
 
 import * as moment from 'moment/moment';
 
@@ -65,62 +67,69 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     return (
       <div>
         {this.props.calculations.length === 0 ? null :
-        <Paper className={this.props.classes.paper} height={8}>
-          <h4>Stored Calculations</h4>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="none">Lattice</TableCell>
-                <TableCell padding="none">Composition</TableCell>
-                <TableCell padding="none">Facet</TableCell>
-                <TableCell padding="none">Adsorbates</TableCell>
-                <TableCell padding="none">Calculator</TableCell>
-                <TableCell padding="none"><MdEdit /></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.calculations.map((calculation, i) => (
-                <TableRow key={`calculation_${i}`}>
-                  <TableCell padding="none">{calculation.bulkParams.structure}</TableCell>
-                  <TableCell padding="none">{`
+        <Slide
+          in
+          mountOnEnter
+          unmountOnExit
+          direction="up"
+        >
+          <Paper className={this.props.classes.paper} height={8}>
+            <h4>Stored Calculations</h4>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="none">Lattice</TableCell>
+                  <TableCell padding="none">Composition</TableCell>
+                  <TableCell padding="none">Facet</TableCell>
+                  <TableCell padding="none">Adsorbates</TableCell>
+                  <TableCell padding="none">Calculator</TableCell>
+                  <TableCell padding="none"><MdEdit /></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.props.calculations.map((calculation, i) => (
+                  <TableRow key={`calculation_${i}`}>
+                    <TableCell padding="none">{calculation.bulkParams.structure}</TableCell>
+                    <TableCell padding="none">{`
             [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>
-                  <TableCell padding="none">{
+                    <TableCell padding="none">{
               `[
               ${calculation.slabParams.millerX},
               ${calculation.slabParams.millerY},
               ${calculation.slabParams.millerZ}
             ]`
             }</TableCell>
-                  <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
-                  </TableCell>
-                  <TableCell padding="none">{`
+                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
+                    </TableCell>
+                    <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
-                  <TableCell padding="none">
-                    <IconButton onClick={() => { this.removeCalculation(i); }}>
-                      <MdClose />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                    <TableCell padding="none">
+                      <IconButton onClick={() => { this.removeCalculation(i); }}>
+                        <MdClose />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
                   ))}
-            </TableBody>
-          </Table>
-          <Grid container justify="flex-end" direction="row">
-            <Grid item>
-              <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> Clear All</Button>
+              </TableBody>
+            </Table>
+            <Grid container justify="flex-end" direction="row">
+              <Grid item>
+                <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> Clear All</Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  raised
+                  onClick={this.downloadCalculations}
+                  color="primary"
+                  className={this.props.classes.button}
+                ><MdFileDownload /> Download All</Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Button
-                raised
-                onClick={this.downloadCalculations}
-                color="primary"
-                className={this.props.classes.button}
-              ><MdFileDownload /> Download All</Button>
-            </Grid>
-          </Grid>
 
-        </Paper>
+          </Paper>
+        </Slide>
         }
         {this.state.loading ? <LinearProgress className={this.state.classes.progress} /> : null }
       </div>

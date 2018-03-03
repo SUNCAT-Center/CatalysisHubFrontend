@@ -21,7 +21,6 @@ const styles = (theme) => ({
   paper: {
     padding: theme.spacing.unit * 3,
     marginTop: theme.spacing.unit * 3,
-    transition: 'left 800ms slide-in',
   },
   button: {
     marginLeft: theme.spacing.unit,
@@ -90,6 +89,7 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
   }
   render() {
     return (
+
 
       <Paper className={this.props.classes.paper}>
         <Grid container justify="flex-end" direction="row">
