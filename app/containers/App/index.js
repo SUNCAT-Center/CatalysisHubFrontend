@@ -83,6 +83,10 @@ const styles = (xtheme) => ({
     [xtheme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
+    color: 'white',
+    decoration: 'none',
+    textDecoration: 'none',
+    textDecorationStyle: 'none',
   },
   root: {
     width: '100%',
@@ -372,9 +376,11 @@ class App extends React.Component {
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
-                          <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                            {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
-                          </Typography>
+                          <Link to="/" className={this.props.classes.appBarTitle} >
+                            <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
+                              {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
+                            </Typography>
+                          </Link>
                         </Grid>
                       </Grid>
                     </Grid>
