@@ -65,7 +65,7 @@ function getStepContent(step, props) {
       );
     case 1: {
       return (
-        <CellParameterInput {...props} />
+        <CellParameterInput />
       );
     }
     default:
@@ -99,8 +99,8 @@ export class BulkGenerator extends React.Component { // eslint-disable-line reac
     const steps = getSteps();
     return (
       <Slide
-        onMountEnter
-        onUnmountExit
+        mountOnEnter
+        unmountOnExit
         in
         direction="left"
       >
@@ -166,14 +166,14 @@ BulkGenerator.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  spacegroup: state.get('bulkGenerator').spacegroup,
-  wyckoffList: state.get('bulkGenerator').wyckoffList,
-  wyckoffPoints: state.get('bulkGenerator').wyckoffPoints,
-  cellParameters: state.get('bulkGenerator').cellParameters,
-  bulkStructure: state.get('bulkGenerator').bulkStructure,
-  activeStep: state.get('bulkGenerator').activeStep,
-  synonyms: state.get('bulkGenerator').synonyms,
-  permutations: state.get('bulkGenerator').permutations,
+  spacegroup: state.get('bulkGeneratorReducer').spacegroup,
+  wyckoffList: state.get('bulkGeneratorReducer').wyckoffList,
+  wyckoffPoints: state.get('bulkGeneratorReducer').wyckoffPoints,
+  cellParameters: state.get('bulkGeneratorReducer').cellParameters,
+  bulkStructure: state.get('bulkGeneratorReducer').bulkStructure,
+  activeStep: state.get('bulkGeneratorReducer').activeStep,
+  synonyms: state.get('bulkGeneratorReducer').synonyms,
+  permutations: state.get('bulkGeneratorReducer').permutations,
 });
 
 const mapDispatchToProps = (dispatch) => ({

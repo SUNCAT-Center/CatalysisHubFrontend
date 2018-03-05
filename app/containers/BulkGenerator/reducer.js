@@ -10,7 +10,7 @@ const initialState = {
   spacegroup: 1,
   wyckoffList: [],
   wyckoffPoints: [],
-  cellParameters: [],
+  cellParameters: {},
   bulkStructure: '',
   activeStep: 0,
   permutations: [],

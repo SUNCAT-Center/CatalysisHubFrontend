@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -15,6 +16,7 @@ import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
+import * as actions from './actions';
 import { styles } from './styles';
 
 const backendRoot = `${flaskRoot}/apps/bulkEnumerator`;
@@ -36,6 +38,8 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
   componentDidMount() {
     this.getStructure();
   }
+
+
   getStructure() {
     const params = { params: {
       spacegroup: this.props.spacegroup,
@@ -55,6 +59,9 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
       const cellParameters = this.props.cellParameters;
       cellParameters[key] = event.target.value;
       this.props.setCellParameters(cellParameters);
+      this.setState({
+        cellParameters,
+      });
     };
   }
 
@@ -98,7 +105,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
           </Grid>
         </Grid>
         <Grid container direction="row">
-          {Object.keys(this.props.cellParameters).map((name, i) => (
+          {Object.keys(this.state.cellParameters).map((name, i) => (
             <Grid
               key={`fc_input_${i}`}
               item
@@ -107,13 +114,13 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
                 className={this.props.classes.formControl}
               >
                 <InputLabel
-                  htmlFor={`species-${i}`}
+                  htmlFor={`parameter-${i}`}
                   className={this.props.classes.inputLabel}
                 >{name}</InputLabel>
                 <Input
-                  id={`species_${i}`}
-                  name={`species_${i}`}
-                  value={this.props.cellParameters[name].toFixed(5)}
+                  id={`parameter_${i}`}
+                  name={`parameter_${i}`}
+                  value={this.state.cellParameters[name]}
                   onChange={this.handleCellParameterChange(name)}
                 />
               </FormControl>
@@ -151,5 +158,22 @@ CellParameterInput.propTypes = {
   synonyms: PropTypes.array,
 };
 
-export default(withStyles(styles, { withTheme: true }))(CellParameterInput);
+const mapStateToProps = (state) => ({
+  cellParameters: state.get('bulkGeneratorReducer').cellParameters,
+  synonyms: state.get('bulkGeneratorReducer').synonyms,
+  spacegroup: state.get('bulkGeneratorReducer').spacegroup,
+  wyckoffPoints: state.get('bulkGeneratorReducer').wyckoffPoints,
+  bulkStructure: state.get('bulkGeneratorReducer').bulkStructure,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCellParameters: (cellParameters) => {
+    dispatch(actions.setCellParameters(cellParameters));
+  },
+  receiveBulkStructure: (bulkStructure) => {
+    dispatch(actions.receiveBulkStructure(bulkStructure));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(CellParameterInput));
 
