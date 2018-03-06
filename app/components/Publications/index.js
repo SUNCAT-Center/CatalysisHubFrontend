@@ -108,6 +108,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       openedPublication: null,
       systems: [],
       reactionEnergies: [],
+      publicationQuery: '',
     };
     this.clickPublication = this.clickPublication.bind(this);
   }
@@ -195,6 +196,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             this.setState({
               reactionEnergies: response1.data.data.catapp.edges,
               loading: false,
+              publicationQuery: query,
             });
           });
       })

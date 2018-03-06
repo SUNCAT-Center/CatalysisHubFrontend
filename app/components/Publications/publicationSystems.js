@@ -12,6 +12,7 @@ import Table, {
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import SingleStructureView from 'components/SingleStructureView';
+import GraphQlbutton from 'components/GraphQlbutton';
 
 const styles = (theme) => ({
   paper: {
@@ -90,6 +91,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
               </TableRow>
             </TableFooter>
           </Table>
+          <GraphQlbutton query={this.props.publicationQuery} />
         </Paper>
         <div>
           {this.state.uuid === null ? null :
@@ -106,6 +108,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
 PublicationSystems.propTypes = {
   systems: PropTypes.array,
   classes: PropTypes.object,
+  publicationQuery: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(PublicationSystems);
