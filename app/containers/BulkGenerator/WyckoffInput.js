@@ -3,9 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import IFrame from 'react-iframe';
 
 import FileDrop from 'react-file-drop';
 import { withStyles } from 'material-ui/styles';
+import Modal from 'material-ui/Modal';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
@@ -17,7 +19,6 @@ import Tooltip from 'material-ui/Tooltip';
 import { LinearProgress } from 'material-ui/Progress';
 
 import { MdAdd, MdFileUpload } from 'react-icons/lib/md';
-import { FaExternalLink } from 'react-icons/lib/fa';
 
 
 import axios from 'axios';
@@ -38,6 +39,7 @@ const initialState = {
   spacegroup: 1,
   loading: false,
   wyckoffPoints: [],
+  open: false,
 };
 
 export class WyckoffInput extends React.Component {  // eslint-disable-line react/prefer-stateless-function
@@ -159,6 +161,14 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
     };
   }
 
+  handleOpen() {
+    this.setState({ open: true });
+  }
+
+  handleClose() {
+    this.setState({ open: false });
+  }
+
   selectWyckoffPoint(point) {
     const wyckoffPoints = _.concat(this.state.wyckoffPoints, _.cloneDeep([point]));
     this.setState({
@@ -169,6 +179,21 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
   render() {
     return (
       <div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={() => { this.handleClose(); }}
+        >
+          <IFrame
+            url={`http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list?gnum=${this.props.spacegroup}`}
+            width="95vw"
+            height="95vh"
+            position="relative"
+            top="50px"
+            display="initial"
+          />
+        </Modal>
         <Paper className={this.props.classes.fileDrop}>
           <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure here for analyzing existing structures.
                 <FileDrop
@@ -222,9 +247,12 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
               <h2>Select Wyckoff Points</h2>
             </Grid>
             <Grid item>
-              <a target="_blank" href={`http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list?gnum=${this.props.spacegroup}`} className={this.props.classes.menuLink}>
-                <FaExternalLink /> About Spacegroup {this.props.spacegroup}
-              </a>
+              <Button
+                onClick={() => { this.setState({ open: true }); }}
+                className={this.props.classes.menuLink}
+              >
+                About Spacegroup {this.props.spacegroup}
+              </Button>
             </Grid>
           </Grid>
 
