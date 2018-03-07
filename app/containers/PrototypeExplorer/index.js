@@ -139,7 +139,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                   <Button
                     className={this.props.classes.button}
                     onClick={this.handleDiff('nrAtoms', -1)}
-                    disabled={this.state.nrAtoms < 2}
+                    disabled={this.state.nrAtoms <= this.state.nrSpecies}
                     mini fab
                   >-</Button>
                 </Grid>
@@ -152,15 +152,15 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                   <Button
                     className={this.props.classes.button}
                     onClick={this.handleDiff('nrAtoms', +1)}
-                    disabled={this.state.nrAtoms >= 6}
+                    disabled={this.state.nrAtoms >= 5}
                     mini fab
                   >+</Button>
                 </Grid>
               </Grid>
             </Grid>
+
             <Grid item >
               <Grid container direction="row" justify="space-between">
-
                 <Grid item className={this.props.classes.label} > # Species </Grid>
                 <Grid item>
                   <Button
@@ -185,6 +185,8 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                 </Grid>
               </Grid>
             </Grid>
+          </Grid>
+          <Grid container direction="row" justify="center">
             <Grid item>
               {prototypes[this.state.nrAtoms - 1][this.state.nrSpecies - 1].map((proto, i) => (
                 <Button
@@ -196,7 +198,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                 >
                   {proto}
                 </Button>
-                ))}
+              ))}
             </Grid>
           </Grid>
         </Paper>
@@ -219,7 +221,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                       {column.label}
                     </TableSortLabel>
                   </TableCell>
-                  ))}
+                ))}
 
               </TableRow>
             </TableHead>
@@ -238,7 +240,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                   <TableCell numeric>{n.icsdStructures}</TableCell>
                   <TableCell numeric>{n.links}</TableCell>
                 </TableRow>
-                ))}
+              ))}
             </TableBody>
             <TableFooter>
               <TableRow>
