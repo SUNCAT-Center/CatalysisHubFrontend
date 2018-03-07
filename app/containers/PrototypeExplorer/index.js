@@ -16,8 +16,8 @@ import Table, {
   TableCell,
   TableHead,
   TableRow,
-  /* TableFooter,*/
-  /* TablePagination,*/
+  TableFooter,
+  TablePagination,
   TableSortLabel,
 } from 'material-ui/Table';
 
@@ -66,15 +66,32 @@ const columnData = [
   { id: 'spacegroup', numeric: true, disablePadding: true, label: 'Spacegroup' },
   { id: 'synonyms', numeric: true, disablePadding: true, label: 'Synonyms' },
   { id: 'wyckoffPoints', numeric: true, disablePadding: true, label: 'Wyckoff Points' },
+  { id: 'icsdStructures', numeric: true, disablePadding: true, label: '#ICSD' },
   { id: 'links', numeric: true, disablePadding: true, label: 'Links' },
 
 ];
+
+const data = [];
+_.range(10000).map((i) => data.push({
+  id: i,
+  spacegroup: getRandomInt(1, 230),
+  synonyms: 'AB3C',
+  wyckoffPoints: 'A, ...',
+  icsdStructures: getRandomInt(1, 100),
+  links: 'http://...',
+}));
 
 const initialState = {
   nrAtoms: 1,
   nrSpecies: 1,
   prototypeComposition: 'A',
+  rowsPerPage: 10,
+  page: 0,
 };
+
+function getRandomInt(min, max) {
+  return Math.floor((Math.random() * ((max - min) + 1)) + min);
+}
 
 export class PrototypeExplorer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -102,6 +119,13 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
       });
     };
   }
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
   render() {
     return (
       <div>
@@ -200,16 +224,40 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
               </TableRow>
             </TableHead>
             <TableBody>
-              {_.range(10).map((index, i) => (
-                <TableRow key={`row_${i}`}>
-                  <TableCell> {i} </TableCell>
-                  <TableCell> {this.state.prototypeComposition} </TableCell>
-                  <TableCell> HERE BE DRAGONS </TableCell>
-                  <TableCell> HERE BE DRAGONS </TableCell>
-                  <TableCell> HERE BE DRAGONS </TableCell>
+              {data.slice(this.state.page * this.state.rowsPerPage, (this.state.page * this.state.rowsPerPage) + this.state.rowsPerPage).map((n) => (
+                <TableRow
+                  hover
+                  onClick={(event) => this.handleClick(event, n.id)}
+                  tabIndex={-1}
+                  key={n.id}
+                >
+                  <TableCell padding="none">{n.id}</TableCell>
+                  <TableCell padding="none">{n.spacegroup}</TableCell>
+                  <TableCell numeric>{this.state.prototypeComposition}</TableCell>
+                  <TableCell numeric>{n.wyckoffPoints}</TableCell>
+                  <TableCell numeric>{n.icsdStructures}</TableCell>
+                  <TableCell numeric>{n.links}</TableCell>
                 </TableRow>
                 ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  colSpan={6}
+                  count={data.length}
+                  rowsPerPage={this.state.rowsPerPage}
+                  page={this.state.page}
+                  backIconButtonProps={{
+                    'aria-label': 'Previous Page',
+                  }}
+                  nextIconButtonProps={{
+                    'aria-label': 'Next Page',
+                  }}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
           </Table>
         </Paper>
       </div>
