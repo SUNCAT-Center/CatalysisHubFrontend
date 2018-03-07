@@ -296,6 +296,24 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/prototypeExplorer',
+      name: 'prototypeExplorer',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PrototypeExplorer/reducer'),
+          import('containers/PrototypeExplorer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('prototypeExplorer', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
