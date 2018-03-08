@@ -7,7 +7,7 @@
 import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
-import { MdAddCircleOutline, MdRemoveCircleOutline, MdViewList } from 'react-icons/lib/md';
+import { MdAddCircleOutline, MdPanoramaFishEye, MdViewList } from 'react-icons/lib/md';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
 import Button from 'material-ui/Button';
@@ -230,9 +230,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 .map((reference, j) => (
                   <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
                     { this.state.openedPublication !== `elem_${year}_${j}` ?
-                      <MdAddCircleOutline size={28} className={this.props.classes.publicationEntry} />
+                      <MdAddCircleOutline onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} size={28} className={this.props.classes.publicationEntry} />
                         :
-                      <MdRemoveCircleOutline size={28} className={this.props.classes.publicationEntry} />
+                      <MdPanoramaFishEye size={28} className={this.props.classes.publicationEntry} />
                       }
                     <span> &nbsp;&nbsp;&nbsp; </span>
                     <span className={this.props.classes.publicationEntry}>
