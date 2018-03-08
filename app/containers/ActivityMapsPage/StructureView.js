@@ -46,8 +46,9 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
     this.setState({ value });
   };
   handleStructureFlip(delta) {
+    const n = this.props.structures.length;
     this.setState({
-      activeStructure: this.state.activeStructure + delta,
+      activeStructure: (((this.state.activeStructure + delta) % n) + n) % n,
     });
   }
 
@@ -83,7 +84,6 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                       <Button
                         fab
                         mini
-                        disabled={activeStructure < 1}
                         onClick={() => this.handleStructureFlip(-1)}
                       >
                         <MdChevronLeft size={30} />
@@ -111,7 +111,6 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                         fab
                         mini
                         onClick={() => this.handleStructureFlip(+1)}
-                        disabled={activeStructure >= this.props.structures.length - 1}
                       >
                         <MdChevronRight />
                       </Button>
