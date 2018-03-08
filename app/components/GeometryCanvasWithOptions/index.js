@@ -126,7 +126,10 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
       format,
       cif: this.props.cifdata,
     } };
-    axios.get(url, params).then((response) => {
+    axios.post(url, params, { headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*' },
+    }).then((response) => {
       FileDownload(response.data.image, !_.isEmpty(this.props.extraSlug) ? `${this.props.extraSlug}_${response.data.filename}` : response.data.filename);
     });
     this.props.cookies.set('preferredFormat', format);
