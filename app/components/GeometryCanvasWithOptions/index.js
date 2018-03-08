@@ -6,9 +6,10 @@
 
 import { compose } from 'recompose';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withCookies } from 'react-cookie';
+import PropTypes, { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 import FileDownload from 'react-file-download';
+import _ from 'lodash';
 
 import { withStyles } from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
@@ -17,7 +18,7 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import { MdFullscreen, MdFileDownload } from 'react-icons/lib/md';
+import { MdFullscreen, MdFileDownload, MdBookmarkOutline } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
@@ -126,8 +127,9 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
       cif: this.props.cifdata,
     } };
     axios.get(url, params).then((response) => {
-      FileDownload(response.data.image, response.data.filename);
+      FileDownload(response.data.image, !_.isEmpty(this.props.extraSlug) ? `${this.props.extraSlug}_${response.data.filename}` : response.data.filename);
     });
+    this.props.cookies.set('preferredFormat', format);
   }
 
   handleChange(axis, diff) {
@@ -259,6 +261,12 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
                     Choose Format
                   </DialogTitle>
                   <List>
+                    {typeof this.props.cookies.get('preferredFormat') === 'undefined' ? null :
+                    <ListItem button onClick={() => this.handleDownload(this.props.cookies.get('preferredFormat'))}>
+                      <ListItemText primary={this.props.cookies.get('preferredFormat')} /> <MdBookmarkOutline />
+                    </ListItem>
+
+                    }
                     {outputFormats.map((format, i) => (
                       <ListItem button key={`format_${i}`} onClick={() => this.handleDownload(format)}>
                         <ListItemText primary={format} />
@@ -276,11 +284,17 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
   }
 }
 
+GeometryCanvasWithOptions.defaultProps = {
+  extraSlug: '',
+};
+
 GeometryCanvasWithOptions.propTypes = {
   classes: PropTypes.object,
   uniqueId: PropTypes.string.isRequired,
   cifdata: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  extraSlug: PropTypes.string,
+  cookies: instanceOf(Cookies).isRequired,
 };
 
 
