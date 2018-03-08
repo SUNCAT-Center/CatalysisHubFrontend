@@ -75,9 +75,9 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
         /* scatterData.name.push(`${system.formula} ${system.facet}`)*/
         scatterData.customdata.push({
           uid: system.uid,
-          text: `${system.formula} [${system.facet}]`,
+          text: `${system.formula} [${system.facet}] =>`,
         });
-        scatterData.text.push(`${system.formula} [${system.facet}]`);
+        scatterData.text.push(`Composition: ${system.formula} | Facet: ${system.facet} | z = ${system.z.toFixed(2)}`);
         scatterData.x.push(system.x.toFixed(2));
         scatterData.y.push(system.y.toFixed(2));
         return null;
