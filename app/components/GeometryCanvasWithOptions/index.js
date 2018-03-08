@@ -8,16 +8,25 @@ import { compose } from 'recompose';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withCookies } from 'react-cookie';
+import FileDownload from 'react-file-download';
 
 import { withStyles } from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import { MdFullscreen } from 'react-icons/lib/md';
+import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import { MdFullscreen, MdFileDownload } from 'react-icons/lib/md';
 
-
+import axios from 'axios';
+import { flaskRoot } from 'utils/constants';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+
+
+const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
+  'gen', 'gromos', 'json', 'jsv', 'nwchem', 'proteindatabank', 'py', 'turbomole', 'v-sim', 'vasp', 'xsf', 'xyz'];
+
 
 const styles = (theme) => ({
   avatar: {
@@ -31,6 +40,9 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: 12,
     },
+  },
+  button: {
+    margin: theme.spacing.unit,
   },
   iconButton: {
     fontColor: '#000000',
@@ -66,12 +78,16 @@ const initialState = {
   perspective: true,
   tiltToRotate: true,
   in: false,
+  downloadOpen: false,
 };
 
 class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = initialState;
+    this.handleDownloadOpen = this.handleDownloadOpen.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
+    this.handleDownloadClose = this.handleDownloadClose.bind(this);
   }
   componentWillReceiveProps() {
     this.setState({ in: false });
@@ -86,6 +102,32 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 
   handleClose() {
     this.setState({ open: false });
+  }
+
+  handleDownloadOpen() {
+    this.setState({
+      downloadOpen: true,
+    });
+  }
+
+  handleDownloadClose() {
+    this.setState({
+      downloadOpen: false,
+    });
+  }
+
+  handleDownload(format) {
+    this.setState({
+      downloadOpen: false,
+    });
+    const url = `${flaskRoot}/apps/catKitDemo/convert_atoms/`;
+    const params = { params: {
+      format,
+      cif: this.props.cifdata,
+    } };
+    axios.get(url, params).then((response) => {
+      FileDownload(response.data.image, response.data.filename);
+    });
   }
 
   handleChange(axis, diff) {
@@ -195,7 +237,35 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           <Grid>
             <Grid container direction="row">
               <Grid item>
-                <Button mini fab className={this.props.classes.iconButtonIcon} onClick={() => { this.setState({ open: true }); }} ><MdFullscreen /></Button>
+                <Button
+                  raised
+                  mini
+                  fab
+                  className={this.props.classes.iconButtonIcon}
+                  onClick={() => { this.setState({ open: true }); }}
+                ><MdFullscreen /></Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  mini fab
+                  className={this.props.classes.iconButtonIcon}
+                  onClick={this.handleDownloadOpen}
+                ><MdFileDownload /> </Button>
+                <Dialog
+                  open={this.state.downloadOpen}
+                  onClose={this.handleDownloadClose}
+                >
+                  <DialogTitle>
+                    Choose Format
+                  </DialogTitle>
+                  <List>
+                    {outputFormats.map((format, i) => (
+                      <ListItem button key={`format_${i}`} onClick={() => this.handleDownload(format)}>
+                        <ListItemText primary={format} />
+                      </ListItem>
+                      ))}
+                  </List>
+                </Dialog>
               </Grid>
             </Grid>
           </Grid>
