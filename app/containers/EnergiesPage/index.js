@@ -21,8 +21,8 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
   render() {
     return (
       <Slide
-        onMountEnter
-        onUnmountExit
+        mountOnEnter
+        unmountOnExit
         in
         direction="left"
       >
