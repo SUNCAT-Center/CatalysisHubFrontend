@@ -314,6 +314,14 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/plotlyFoo',
+      name: 'plotlyFoo',
+      getComponent(location, cb) {
+        import('components/PlotlyFoo')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
