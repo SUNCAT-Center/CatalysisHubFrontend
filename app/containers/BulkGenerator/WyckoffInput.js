@@ -12,7 +12,7 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
-import { FormControl } from 'material-ui/Form';
+import { FormControl, FormHelperText } from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
@@ -216,7 +216,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
         <Grid container direction="row" justify="space-between">
           <Grid item>
             <FormControl className={this.props.classes.formControl} >
-              <InputLabel htmlFor="spacegroup-simple">Spacegroup</InputLabel>
+              <InputLabel htmlFor="spacegroup-simple">Spacegroup Number</InputLabel>
               <Input
                 id="spacegroup-helper"
                 value={this.state.spacegroup}
@@ -227,6 +227,8 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
                   }
                 })}
               />
+              <FormHelperText id="name-helper-text">Between 1 and 230</FormHelperText>
+
             </FormControl>
           </Grid>
           <Grid item>
