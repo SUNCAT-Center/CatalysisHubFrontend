@@ -20,3 +20,4 @@ export const TOGGLE_SIMPLE_SEARCH = 'app/EnergiesPage/TOGGLE_SIMPLE_SEARCH';
 export const DB_ERROR = 'app/EnergiesPage/DB_ERROR';
 export const SAVE_SEARCH_STRING = 'app/EnergiesPage/SAVE_SEARCH_STRING';
 export const SAVE_SEARCH_QUERY = 'app/EnergiesPage/SAVE_QUERY';
+export const HANDLE_REQUEST_SORT = 'app/EnergiesPage/HANDLE_REQUEST_SORT';

@@ -7,6 +7,18 @@
 import * as constants from './constants';
 
 
+export function handleRequestSort(event, property) {
+  return {
+    type: constants.HANDLE_REQUEST_SORT,
+    payload: {
+      event,
+      property,
+    },
+
+
+  };
+}
+
 export function saveSearchQuery(searchQuery) {
   return {
     type: constants.SAVE_SEARCH_QUERY,

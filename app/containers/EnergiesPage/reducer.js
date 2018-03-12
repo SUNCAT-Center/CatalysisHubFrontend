@@ -21,12 +21,35 @@ const initialState = {
   simpleSearch: false,
   dbError: false,
   searchQuery: '',
+  order: 'desc',
+  orderBy: '',
 };
+
+let order = 'desc';
+let matchingReactions;
+let orderBy;
 
 
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
+    case constants.HANDLE_REQUEST_SORT:
+      orderBy = action.payload.property;
+      if (state.orderBy === orderBy && state.order === 'desc') {
+        order = 'asc';
+      }
+
+      if (order === 'desc') {
+        matchingReactions = state.matchingReactions.sort((a, b) => (b.node[orderBy] < a.node[orderBy] ? -1 : 1));
+      } else {
+        matchingReactions = state.matchingReactions.sort((a, b) => (b.node[orderBy] > a.node[orderBy] ? -1 : 1));
+      }
+      return {
+        ...state,
+        order,
+        orderBy,
+        matchingReactions,
+      };
     case constants.SAVE_SEARCH_QUERY:
       return {
         ...state,

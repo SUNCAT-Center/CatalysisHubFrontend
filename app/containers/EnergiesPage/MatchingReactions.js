@@ -21,6 +21,7 @@ import Table, {
   TableRow,
   TableFooter,
   TablePagination,
+  TableSortLabel,
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
@@ -186,6 +187,20 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  createSortHandler = (property) => (event) => {
+    this.handleRequestSort(event, property);
+  }
+
+  handleRequestSort(event, property) {
+    this.setState({
+      loading: true,
+    });
+    this.props.handleRequestSort(event, property);
+    this.setState({
+      loading: false,
+    });
+  }
+
 
   render() {
     if (this.props.matchingReactions.length === 0) {
@@ -278,15 +293,47 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="none"><div>Geometry</div></TableCell>
-                <TableCell padding="none"><div>Reaction</div></TableCell>
-                <TableCell padding="none"><div>Reaction Energy</div></TableCell>
+                <TableCell padding="none"> <div>Geometry</div></TableCell>
+                <TableCell padding="none"> <div>Reaction</div> </TableCell>
+                <TableCell padding="none">
+                  <TableSortLabel
+                    active={this.props.orderBy === 'reactionEnergy'}
+                    direction={this.props.order}
+                    onClick={this.createSortHandler('reactionEnergy')}
+                  >
+                    <div>Reaction Energy</div>
+                  </TableSortLabel>
+                </TableCell>
                 <Hidden smDown>
-                  <TableCell><div>Activation Energy</div></TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={this.props.orderBy === 'activationEnergy'}
+                      direction={this.props.order}
+                      onClick={this.createSortHandler('activationEnergy')}
+                    >
+                      <div>Activation Energy</div>
+                    </TableSortLabel>
+                  </TableCell>
                 </Hidden>
-                <TableCell padding="none"><div>Surface</div></TableCell>
+                <TableCell padding="none">
+                  <TableSortLabel
+                    active={this.props.orderBy === 'surfaceComposition'}
+                    direction={this.props.order}
+                    onClick={this.createSortHandler('surfaceComposition')}
+                  >
+                    <div>Surface</div>
+                  </TableSortLabel>
+                </TableCell>
                 <Hidden smDown>
-                  <TableCell><div>Facet</div></TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={this.props.orderBy === 'facet'}
+                      direction={this.props.order}
+                      onClick={this.createSortHandler('facet')}
+                    >
+                      <div>Surface</div>
+                    </TableSortLabel>
+                    <div>Facet</div></TableCell>
                 </Hidden>
               </TableRow>
             </TableHead>
@@ -358,6 +405,9 @@ MatchingReactions.propTypes = {
   classes: PropTypes.object,
   resultSize: PropTypes.number,
   searchString: PropTypes.string,
+  handleRequestSort: PropTypes.func,
+  order: PropTypes.string,
+  orderBy: PropTypes.string,
 };
 
 MatchingReactions.defaultProps = {
@@ -373,6 +423,8 @@ const mapStateToProps = (state) => ({
   resultSize: state.get('energiesPageReducer').resultSize,
   searchParams: state.get('energiesPageReducer').searchParams,
   searchQuery: state.get('energiesPageReducer').searchQuery,
+  order: state.get('energiesPageReducer').order,
+  orderBy: state.get('energiesPageReducer').orderBy,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -390,6 +442,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(actions.saveSystem(system));
+  },
+  handleRequestSort: (event, property) => {
+    dispatch(actions.handleRequestSort(event, property));
   },
 });
 
