@@ -25,6 +25,7 @@ import Table, {
 import { createStructuredSelector } from 'reselect';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
+import { LinearProgress } from 'material-ui/Progress';
 
 
 import makeSelectPrototypeExplorer from './selectors';
@@ -71,8 +72,8 @@ const columnData = [
 
 ];
 
-const data = [];
-_.range(10000).map((i) => data.push({
+const rawData = [];
+_.range(10000).map((i) => rawData.push({
   id: i,
   spacegroup: getRandomInt(1, 230),
   synonyms: 'AB3C',
@@ -82,11 +83,14 @@ _.range(10000).map((i) => data.push({
 }));
 
 const initialState = {
+  loading: false,
   nrAtoms: 1,
   nrSpecies: 1,
   prototypeComposition: 'A',
   rowsPerPage: 10,
   page: 0,
+  data: rawData,
+  selectedPrototype: null,
 };
 
 function getRandomInt(min, max) {
@@ -101,8 +105,34 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
 
   createSortHandler(property) {
     return (event) => {
-      this.props.onRequestSort(event, property);
+      this.handleRequestSort(event, property);
     };
+  }
+
+  handleRequestSort(event, property) {
+    this.setState({
+      loading: true,
+    });
+
+    const orderBy = property;
+    let order = 'desc';
+    if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+
+    let data;
+    if (order === 'desc') {
+      data = this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1));
+    } else {
+      data = this.state.data.sort((a, b) => (b[orderBy] > a[orderBy] ? -1 : 1));
+    }
+
+    this.setState({
+      data,
+      order,
+      orderBy,
+      loading: false,
+    });
   }
 
   handleDiff(axis, diff) {
@@ -111,6 +141,12 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
         [axis]: Math.max(1, this.state[axis] + diff),
       });
     };
+  }
+
+  handleClick(event, selectedElement) {
+    this.setState({
+      selectedElement,
+    });
   }
   handleChange(key, value) {
     return () => {
@@ -129,6 +165,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
   render() {
     return (
       <div>
+        <h1>Prototype Explorer</h1>
         <Paper className={this.props.classes.paper}>
           <Grid container direction="row" justify="space-between">
             <Grid item >
@@ -152,7 +189,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
                   <Button
                     className={this.props.classes.button}
                     onClick={this.handleDiff('nrAtoms', +1)}
-                    disabled={this.state.nrAtoms >= 5}
+                    disabled={this.state.nrAtoms >= 6}
                     mini fab
                   >+</Button>
                 </Grid>
@@ -204,6 +241,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
         </Paper>
         <Paper className={this.props.classes.paper}>
           <h2>{this.state.prototypeComposition}</h2>
+          {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
           <Table>
             <TableHead>
               <TableRow>
@@ -226,17 +264,17 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.slice(this.state.page * this.state.rowsPerPage, (this.state.page * this.state.rowsPerPage) + this.state.rowsPerPage).map((n) => (
+              {this.state.data.slice(this.state.page * this.state.rowsPerPage, (this.state.page * this.state.rowsPerPage) + this.state.rowsPerPage).map((n) => (
                 <TableRow
                   hover
-                  onClick={(event) => this.handleClick(event, n.id)}
+                  onClick={(event) => this.handleClick(event, n)}
                   tabIndex={-1}
                   key={n.id}
                 >
                   <TableCell padding="none">{n.id}</TableCell>
-                  <TableCell padding="none">{n.spacegroup}</TableCell>
+                  <TableCell numeric padding="none">{n.spacegroup}</TableCell>
                   <TableCell numeric>{this.state.prototypeComposition}</TableCell>
-                  <TableCell numeric>{n.wyckoffPoints}</TableCell>
+                  <TableCell >{n.wyckoffPoints}</TableCell>
                   <TableCell numeric>{n.icsdStructures}</TableCell>
                   <TableCell numeric>{n.links}</TableCell>
                 </TableRow>
@@ -246,7 +284,7 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
               <TableRow>
                 <TablePagination
                   colSpan={6}
-                  count={data.length}
+                  count={this.state.data.length}
                   rowsPerPage={this.state.rowsPerPage}
                   page={this.state.page}
                   backIconButtonProps={{
@@ -262,6 +300,14 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
             </TableFooter>
           </Table>
         </Paper>
+        {_.isEmpty(this.state.selectedElement) ? null :
+        <Paper>
+          <h2>{`${this.state.selectedElement.synonyms}_${this.state.selectedElement.spacegroup}`}</h2>
+          <div>
+                Here be dragons about {`${this.state.selectedElement.synonyms}_${this.state.selectedElement.spacegroup}`}.
+              </div>
+        </Paper>
+        }
       </div>
     );
   }
@@ -269,7 +315,6 @@ export class PrototypeExplorer extends React.Component { // eslint-disable-line 
 
 PrototypeExplorer.propTypes = {
   classes: PropTypes.object,
-  onRequestSort: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({

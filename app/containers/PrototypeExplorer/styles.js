@@ -11,6 +11,9 @@ export const styles = (theme) => ({
   button: {
     margin: theme.spacing.unit,
   },
+  progress: {
+    margin: theme.spacing.unit,
+  },
 
 });
 
