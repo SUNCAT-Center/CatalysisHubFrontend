@@ -245,7 +245,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         {this.props.customBulkInput ? null :
         <form>
           <FormControl className={this.props.classes.formControl} >
-            <InputLabel htmlFor="structure-simple">Structure</InputLabel>
+            <InputLabel htmlFor="structure-simple">Lattice like</InputLabel>
             <Select
               value={this.state.structure}
               onKeyDown={((event) => {

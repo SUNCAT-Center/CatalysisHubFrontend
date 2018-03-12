@@ -24,6 +24,7 @@ export const styles = (theme) => ({
   },
   formControl: {
     margin: 0.5 * theme.spacing.unit,
+    minWidth: 100,
   },
   fileDrop: {
     margin: theme.spacing.unit,
