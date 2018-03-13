@@ -8,6 +8,7 @@ import Table, {
   TableRow,
   TableFooter,
   TablePagination,
+  TableSortLabel,
 } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
@@ -18,17 +19,24 @@ const styles = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
   },
+  clickableRow: {
+    cursor: 'pointer',
+  },
 });
 
 class PublicationSystems extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.fetchRow = this.fetchRow.bind(this);
+    this.handleRequestSort = this.handleRequestSort.bind(this);
     this.state = {
       rowsPerPage: 10,
       page: 0,
       uuid: null,
       system: {},
+      order: 'asc',
+      orderBy: '',
+      systems: this.props.systems,
     };
   }
   fetchRow(system) {
@@ -46,6 +54,30 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
     this.setState({ rowsPerPage: event.target.value });
   }
 
+  createSortHandler = (property) => (event) => {
+    this.handleRequestSort(event, property);
+  }
+
+  handleRequestSort(event, property) {
+    let order = 'desc';
+    let systems;
+    const orderBy = property;
+
+    if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+    if (order === 'desc') {
+      systems = this.state.systems.sort((a, b) => (b.node[orderBy] < a.node[orderBy] ? -1 : 1));
+    } else {
+      systems = this.state.systems.sort((a, b) => (b.node[orderBy] > a.node[orderBy] ? -1 : 1));
+    }
+    this.setState({
+      systems,
+      order,
+      orderBy,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -54,13 +86,37 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="none">#Atoms</TableCell>
-                <TableCell padding="none">Composition</TableCell>
-                <TableCell padding="none">Facet</TableCell>
+                <TableCell padding="none">
+                  <TableSortLabel
+                    active={this.state.orderBy === 'natoms'}
+                    direction={this.state.order}
+                    onClick={this.createSortHandler('natoms')}
+                  >
+                  #Atoms
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell padding="none">
+                  <TableSortLabel
+                    active={this.state.orderBy === 'formula'}
+                    direction={this.state.order}
+                    onClick={this.createSortHandler('formula')}
+                  >
+                  Composition
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell padding="none">
+                  <TableSortLabel
+                    active={this.state.orderBy === 'facet'}
+                    direction={this.state.order}
+                    onClick={this.createSortHandler('facet')}
+                  >
+                  Facet
+                  </TableSortLabel>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.systems
+              {this.state.systems
                   .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
                   .map((system, i) => (
                     <TableRow
@@ -70,6 +126,7 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
                         /* this.props.selectReaction(result.node); */
                         this.fetchRow(system.node);
                       }}
+                      className={this.props.classes.clickableRow}
                     >
                       <TableCell padding="none">{JSON.stringify(system.node.natoms)}</TableCell>
                       <TableCell padding="none">{system.node.Formula}</TableCell>
