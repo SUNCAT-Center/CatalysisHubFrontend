@@ -17,12 +17,12 @@ module.exports = {
       title: 'Activity Maps',
       route: '/activityMaps',
     }, {
-      title: 'AtoML',
+      title: 'AtoML / Machine Learning',
     }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
     }, {
-      title: 'GraphiQL  Console',
+      title: 'GraphiQL API Console',
       route: '/graphQLConsole',
     }, {
       title: 'Pourbaix Diagrams',
