@@ -25,7 +25,7 @@ const initialState = {
   orderBy: '',
 };
 
-let order = 'desc';
+let order;
 let matchingReactions;
 let orderBy;
 
@@ -34,6 +34,7 @@ function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
     case constants.HANDLE_REQUEST_SORT:
+      order = 'desc';
       orderBy = action.payload.property;
       if (state.orderBy === orderBy && state.order === 'desc') {
         order = 'asc';
