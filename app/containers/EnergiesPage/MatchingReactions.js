@@ -30,11 +30,12 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
 
-import GraphQlbutton from 'components/GraphQlbutton';
 
 import cachios from 'cachios';
 import { graphQLRoot } from 'utils/constants';
 
+import GraphQlbutton from 'components/GraphQlbutton';
+import * as snackbarActions from 'containers/AppSnackBar/actions';
 import * as actions from './actions';
 
 const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  →  ${Object.keys(JSON.parse(products)).join(' + ')}`
@@ -78,6 +79,9 @@ const styles = (theme) => ({
       marginLeft: '-30px',
     },
   },
+  clickableRow: {
+    cursor: 'pointer',
+  },
   progress: {
     margin: theme.spacing.unit,
   },
@@ -114,6 +118,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       this.setState({
         loading: false,
       });
+      snackbarActions.open('Scroll down for detailed structure.');
     }
 
     this.props.clearSystems();
@@ -351,6 +356,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                           this.props.selectReaction(result.node);
                           this.fetchRow(result.node);
                         }}
+                        className={this.props.classes.clickableRow}
                       >
                         <TableCell padding="none"><div>{result.node.aseIds !== null ? <FaCube /> : null}</div></TableCell>
                         <TableCell padding="dense"><div>{prettyPrintReaction(result.node.reactants, result.node.products)}</div></TableCell>
