@@ -34,7 +34,7 @@ const initialState = {
   adsorptionSitesLoading: true,
   loading: false,
   siteType: 'all',
-  placeHolder: 'Cl',
+  placeHolder: 'empty',
   adsorbate: 'O',
   activeImage: 0,
   siteNames: [],
