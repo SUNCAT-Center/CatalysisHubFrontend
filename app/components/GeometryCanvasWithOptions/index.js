@@ -8,6 +8,7 @@ import { compose } from 'recompose';
 import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
+import ReactGA from 'react-ga';
 import FileDownload from 'react-file-download';
 import _ from 'lodash';
 
@@ -131,6 +132,11 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
       'Access-Control-Allow-Origin': '*' },
     }).then((response) => {
       FileDownload(response.data.image, !_.isEmpty(this.props.extraSlug) ? `${this.props.extraSlug}_${response.data.filename}` : response.data.filename);
+      ReactGA.event({
+        category: 'Download',
+        action: 'Download',
+        label: response.data.filename,
+      });
     });
     this.props.cookies.set('preferredFormat', format);
   }
