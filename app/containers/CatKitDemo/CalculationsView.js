@@ -78,7 +78,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="none">Lattice</TableCell>
+                  <TableCell padding="none">Prototype</TableCell>
                   <TableCell padding="none">Composition</TableCell>
                   <TableCell padding="none">Facet</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
@@ -89,16 +89,16 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               <TableBody>
                 {this.props.calculations.map((calculation, i) => (
                   <TableRow key={`calculation_${i}`}>
-                    <TableCell padding="none">{calculation.bulkParams.structure}</TableCell>
+                    <TableCell padding="none">{calculation.bulkParams.wyckoff.synonyms[0]}</TableCell>
                     <TableCell padding="none">{`
             [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>
                     <TableCell padding="none">{
-              `[
+              `(
               ${calculation.slabParams.millerX},
               ${calculation.slabParams.millerY},
               ${calculation.slabParams.millerZ}
-            ]`
+            )`
             }</TableCell>
                     <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
                     </TableCell>
