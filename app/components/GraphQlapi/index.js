@@ -17,7 +17,7 @@ import Slide from 'material-ui/transitions/Slide';
 import { withStyles } from 'material-ui/styles';
 import { withCookies, Cookies } from 'react-cookie';
 
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
 
 const styles = (theme) => ({
   button: {
@@ -107,7 +107,7 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
 
           <Paper>
             <IFrame
-              url={graphQLRoot}
+              url={newGraphQLRoot}
               width="100%"
               height="80vh"
               position="relative"
