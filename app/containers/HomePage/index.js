@@ -22,7 +22,7 @@ import Slide from 'material-ui/transitions/Slide';
 import View from 'flexbox-react';
 
 import axios from 'axios';
-import { graphQLRoot, whiteLabel, apps } from 'utils/constants';
+import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
@@ -60,22 +60,21 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     if (this.props.username && this.props.username.trim().length > 0) {
       this.props.onSubmitForm();
     }
-    axios.post(graphQLRoot, {
-      query: '{catapp (first: 0) { totalCount }}',
-    }).then((response) => {
-      if (response.data.data.catapp === null) {
-        this.setState({
-          loading: false,
-          error: true,
-        });
-      } else {
-        this.setState({
-          loading: false,
-          reactions: response.data.data.catapp.totalCount,
-        });
-      }
-    });
-    axios.post(graphQLRoot, {
+    axios.post(newGraphQLRoot, {
+      query: '{reactions(first: 0) { totalCount edges { node { id } } }}' }).then((response) => {
+        if (response.data.data.reactions === null) {
+          this.setState({
+            loading: false,
+            error: true,
+          });
+        } else {
+          this.setState({
+            loading: false,
+            reactions: response.data.data.reactions.totalCount,
+          });
+        }
+      });
+    axios.post(newGraphQLRoot, {
       query: '{systems { edges { node { id } } }}',
     }).then((response) => {
       if (response.data.data.systems === null) {
@@ -90,21 +89,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         });
       }
     });
-    axios.post(graphQLRoot, {
-      query: '{catapp(publication:"~", distinct: true) {totalCount}}',
-    }).then((response) => {
-      if (response.data.data.catapp === null) {
-        this.setState({
-          loading: false,
-          error: true,
-        });
-      } else {
-        this.setState({
-          loading: false,
-          publications: response.data.data.catapp.totalCount,
-        });
-      }
-    });
+    axios.post(newGraphQLRoot, {
+      query: '{publications { totalCount edges { node { id } } }}' }).then((response) => {
+        if (response.data.data.reactions === null) {
+          this.setState({
+            loading: false,
+            error: true,
+          });
+        } else {
+          this.setState({
+            loading: false,
+            publications: response.data.data.publications.totalCount,
+          });
+        }
+      });
   }
 
   render() {
@@ -162,26 +160,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     </Paper>
                   </Link>
                 </Grid>
-                {/*
-            <Grid item>
-              <Link to="/generalSearch" className={this.props.classes.textLink}>
-                <Paper
-                  style={{
-                    padding: 25,
-                    minWidth: 240,
-                    maxWidth: 300,
-                    textAlign: 'center',
-                    align: 'center',
-                  }}
-                >
-                  <h3>Geometries</h3>
-                  <View style={{ justifyContent: 'center' }}>
-                    <Chip label={this.state.geometries} avatar={<FaDatabase size={24} />} />
-                  </View>
-                </Paper>
-              </Link>
-            </Grid>
-            */}
+
                 <Grid item>
                   <Link to="/publications" className={this.props.classes.textLink}>
                     <Paper
