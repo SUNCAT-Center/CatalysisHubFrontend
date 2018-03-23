@@ -210,24 +210,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
               publication,
             })),
             loading: false,
+            publicationQuery: query,
           });
         }
-        /* const searchTitle = this.state.titles[year][count];*/
-        /* query = `{reactions ( last: 500, publication_Title: "${searchTitle}") { edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`;*/
-        /* console.log(query)*/
-        /* axios.post(newGraphQLRoot, { query })*/
-        /* .then((response1) => {*/
-        /* this.setState({*/
-        /* reactionEnergies: response1.data.data.catapp.edges,*/
-        /* loading: false,*/
-        /* publicationQuery: query,*/
-        /* });*/
-        /* });*/
-        /* })*/
-        /* .catch((error) => {*/
-        /* console.log(error)*/
-        /* console.log(query)*/
-        /* });*/
       });
   }
 
