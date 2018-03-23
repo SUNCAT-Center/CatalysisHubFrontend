@@ -202,7 +202,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 `;
     axios.post(newGraphQLRoot, { query })
       .then((response) => {
-        const publication = [_.pick(response.data.data.publications.edges[0].node, ['title', 'year', 'doi', 'authors'])];
+        const publication = [_.pick(response.data.data.publications.edges[0].node, ['title', 'year', 'doi', 'authors', 'journal', 'pages'])];
         if (response.data.data.publications.edges[0].node.systems.length > 0) {
           this.setState({
             systems: response.data.data.publications.edges[0].node.systems.map((system) => ({
