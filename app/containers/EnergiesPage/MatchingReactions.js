@@ -32,15 +32,11 @@ import FaCube from 'react-icons/lib/fa/cube';
 
 
 import cachios from 'cachios';
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
 import * as actions from './actions';
-
-const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')}  →  ${Object.keys(JSON.parse(products)).join(' + ')}`
-).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
-
 
 const styles = (theme) => ({
   iframe: {
@@ -107,14 +103,11 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     this.setState({
       loading: true,
     });
-    let catappKeys;
     let catappIds;
-    if (typeof reaction.aseIds !== 'undefined' && reaction.aseIds !== null) {
-      catappIds = JSON.parse(reaction.aseIds);
-      catappKeys = Object.keys(JSON.parse(reaction.aseIds));
+    if (typeof reaction.reactionSystems !== 'undefined' && reaction.reactionSystems !== null) {
+      catappIds = (reaction.reactionSystems.map((x) => x.aseId));
     } else {
       catappIds = {};
-      catappKeys = [];
       this.setState({
         loading: false,
       });
@@ -122,8 +115,8 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     }
 
     this.props.clearSystems();
-    catappKeys.map((key) => {
-      let aseId = catappIds[key];
+    catappIds.map((key) => {
+      let aseId = key;
       if (typeof aseId === 'object') {
         aseId = aseId[1];
       }
@@ -131,28 +124,27 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         query: `query{systems(uniqueId: "${aseId}") {
   edges {
     node {
-    Formula
-    energy
-    Cifdata
-    PublicationYear
-    PublicationDoi
-    PublicationAuthors
-    PublicationTitle
-    PublicationVolume
-    PublicationUrl
-    PublicationNumber
-    PublicationJournal
-    PublicationPages
-    uniqueId
-    volume
-    mass
-    Facet
+      Formula
+      energy
+      Cifdata
+      volume
+      mass
+      Facet
+      publication {
+        year
+        doi
+        authors
+        title
+        number
+        journal
+        pages
+      }
     }
   }
 }}`,
         ttl: 300,
       };
-      return cachios.post(graphQLRoot, query).then((response) => {
+      return cachios.post(newGraphQLRoot, query).then((response) => {
         Scroll.animateScroll.scrollMore(900);
         const node = response.data.data.systems.edges[0].node;
         node.DFTCode = reaction.dftCode;
@@ -164,7 +156,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           .replace(/(.+)star/, (match, p1) => `${p1}/${reaction.surfaceComposition}`)
           .replace(/star/, reaction.surfaceComposition);
 
-        node.full_key = node.key;
+        node.full_key = node.Formula;
         if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
           node.full_key = `${node.full_key} [${node.Facet}]`;
         }
@@ -291,6 +283,11 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       }
       return null;
     }
+    ReactGA.event({
+      category: 'Search',
+      action: 'Search',
+      label: `Successful search: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
+    });
     return (
       <Paper className={this.props.classes.paper}>
         <div>
@@ -359,7 +356,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         className={this.props.classes.clickableRow}
                       >
                         <TableCell padding="none"><div>{result.node.aseIds !== null ? <FaCube /> : null}</div></TableCell>
-                        <TableCell padding="dense"><div>{prettyPrintReaction(result.node.reactants, result.node.products)}</div></TableCell>
+                        <TableCell padding="dense"><div>{result.node.Equation.replace('->', '→')}</div></TableCell>
                         <TableCell padding="none"><div>{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
                         <Hidden smDown>
                           <TableCell><div>{!result.node.activationEnergy || `${result.node.activationEnergy.toFixed(2)} eV`}</div></TableCell>
@@ -392,7 +389,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
               </TableRow>
             </TableFooter>
           </Table>
-          <GraphQlbutton query={this.props.searchQuery} />
+          <GraphQlbutton query={this.props.searchQuery} newSchema />
         </div>
         {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
       </Paper>

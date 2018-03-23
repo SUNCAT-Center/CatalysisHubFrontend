@@ -16,17 +16,14 @@ import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import Switch from 'material-ui/Switch';
-import Tooltip from 'material-ui/Tooltip';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import { FormGroup } from 'material-ui/Form';
 
 import * as Scroll from 'react-scroll';
 
 import { MdSearch, MdChevronLeft, MdWarning } from 'react-icons/lib/md';
-import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
 
 import * as actions from './actions';
 import TermAutosuggest from './TermAutosuggest';
@@ -43,8 +40,7 @@ const styles = (theme) => ({
     marginTop: theme.spacing.unit * 3,
   },
   button: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    margin: theme.spacing.unit,
     textTransform: 'none',
   },
   progress: {
@@ -87,13 +83,13 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     let query = '';
     // Fetch Available Reactants
     if (blocked !== 'reactants' && this.state.reactants.label === 'any') {
-      query = `{catapp(products: "~${this.state.products.value || ''}", reactants: "~", distinct: true) { edges { node { reactants } } }}`;
-      cachios.post(graphQLRoot, {
+      query = `{reactions(products: "~${this.state.products.value || ''}", reactants: "~", distinct: true) { edges { node { reactants } } }}`;
+      cachios.post(newGraphQLRoot, {
         query,
         ttl: 300,
       }).then((response) => {
         let reactants = [];
-        const reactant = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.reactants)));
+        const reactant = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.reactants)));
         reactants = reactant.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
         reactants.push({ label: 'any', value: '' });
         this.setState({
@@ -107,13 +103,13 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
 
     // Fetch Available Products
     if (blocked !== 'products' && this.state.products.label === 'any') {
-      query = `{catapp(reactants: "~${this.state.reactants.value || ''}", products: "~", distinct: true) { edges { node { products } } }}`;
-      cachios.post(graphQLRoot, {
+      query = `{reactions(reactants: "~${this.state.reactants.value || ''}", products: "~", distinct: true) { edges { node { products } } }}`;
+      cachios.post(newGraphQLRoot, {
         query,
         ttl: 300,
       }).then((response) => {
         let products = [];
-        const product = (response.data.data.catapp.edges.map((elem) => JSON.parse(elem.node.products)));
+        const product = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.products)));
         products = products.concat([].concat(...product));
         products = product.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
         /* products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));*/
@@ -159,10 +155,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
 
-    if (this.props.withGeometry) {
-      filters.push('aseIds: "~star"');
-    }
-
 
     const filterString = filters.join(', ');
     this.props.saveSearch(filterString);
@@ -172,10 +164,37 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       label: filterString,
     });
     const query = {
-      query: `query{catapp ( first: 500, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`,
       ttl: 300,
+      query: `query{reactions ( first: 500, ${filterString} ) {
+    totalCount
+    edges {
+      node {
+        Equation
+        id
+        dftCode
+        dftFunctional
+        reactants
+        products
+        facet
+        chemicalComposition
+        facet
+        reactionEnergy
+        surfaceComposition
+        chemicalComposition
+        reactionSystems {
+          name
+          aseId
+          reactionId
+          systems {
+            id
+            calculatorParameters
+          }
+        }
+      }
+    }
+  }}`,
     };
-    cachios.post(graphQLRoot, query).then((response) => {
+    cachios.post(newGraphQLRoot, query).then((response) => {
       Scroll.animateScroll.scrollMore(500);
       this.setState({
         loading: false,
@@ -187,8 +206,8 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         surfaceComposition: this.state.surfaceComposition.label,
         facet: this.state.facet.label,
       });
-      this.props.receiveReactions(response.data.data.catapp.edges);
-      this.props.saveResultSize(response.data.data.catapp.totalCount);
+      this.props.receiveReactions(response.data.data.reactions.edges);
+      this.props.saveResultSize(response.data.data.reactions.totalCount);
     }).catch(() => {
       this.setState({
         loading: false,
@@ -221,19 +240,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
           <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <Tooltip title="Show only results with slab geometry.">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.props.withGeometry}
-                  onChange={this.props.toggleGeometry}
-                />
-            }
-              label={
-                <span>Geometry <FaCube /></span>
-            }
-            />
-          </Tooltip>
 
           <br />
           <br />
@@ -258,9 +264,7 @@ EnergiesPageInput.propTypes = {
   saveResultSize: PropTypes.func,
   saveSearch: PropTypes.func,
   submitSearch: PropTypes.func.isRequired,
-  toggleGeometry: PropTypes.func,
   toggleSimpleSearch: PropTypes.func,
-  withGeometry: PropTypes.bool,
   setDbError: PropTypes.func,
   saveSearchQuery: PropTypes.func,
 };

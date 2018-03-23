@@ -77,7 +77,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
           >
             {this.props.reactionSystems.map((system, i) =>
               <Tab
-                label={system.key} key={`reaction_tab_${i}`}
+                label={system.Formula} key={`reaction_tab_${i}`}
                 className={this.props.classes.tab}
               />
               )}

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import cachios from 'cachios';
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
 
 // Requirements for autoComplete
 import Autosuggest from 'react-autosuggest';
@@ -143,7 +143,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     });
     this.getRawSuggestions();
   }
-  getRawSuggestions(withGeometry = true) {
+  getRawSuggestions() {
     let query;
     let responseField;
     let parseField;
@@ -184,39 +184,31 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       facet = '';
     }
 
-    let filterGeometry;
-    if (this.props.withGeometry && withGeometry) {
-      filterGeometry = 'aseIds: "~a", ';
-    } else {
-      filterGeometry = '';
-    }
-
-
     if (this.props.field === 'reactants') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { ${this.props.field} } } }}`;
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { ${this.props.field} } } }}`;
       responseField = 'reactants';
       parseField = true;
     } else if (this.props.field === 'products') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { products } } }}`;
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { products } } }}`;
       responseField = 'products';
       parseField = true;
     } else if (this.props.field === 'surfaceComposition') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { surfaceComposition } } }}`;
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { surfaceComposition } } }}`;
       responseField = 'surfaceComposition';
       parseField = false;
     } else if (this.props.field === 'facet') {
-      query = `{catapp(${reactants}${products}${surfaceComposition}${facet}${filterGeometry}distinct: true) { edges { node { facet } } }}`;
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { facet } } }}`;
       responseField = 'facet';
       parseField = false;
     }
 
     let label = '';
-    cachios.post(graphQLRoot, {
+    cachios.post(newGraphQLRoot, {
       query,
       ttl: 300,
     }).then((response) => {
       const suggestions = new Map();
-      response.data.data.catapp.edges.map((edge) => {
+      response.data.data.reactions.edges.map((edge) => {
         // suggestions.push({label: edge.node.reactants});
         if (parseField) {
           label = (Object.keys(JSON.parse(edge.node[responseField]))).join(' + ').replace(/star/g, '*');
@@ -351,7 +343,6 @@ TermAutosuggest.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   filter: PropTypes.object,
-  withGeometry: PropTypes.bool,
   initialValue: PropTypes.string,
 };
 
@@ -366,7 +357,6 @@ TermAutosuggest.defaultProps = {
 
 const mapStateToProps = (state) => ({
   filter: state.get('energiesPageReducer').filter,
-  withGeometry: state.get('energiesPageReducer').withGeometry,
 });
 
 const mapDispatchToProps = (dispatch) => ({

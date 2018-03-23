@@ -12,7 +12,7 @@ import { FormGroup } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 
 import cachios from 'cachios';
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
 
 import * as actions from './actions';
 
@@ -67,15 +67,15 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
 
     const filterString = `search: "${this.state.searchString}", `;
     const query = {
-      query: `query{catapp ( first: 500, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products aseIds facet chemicalComposition reactionEnergy activationEnergy surfaceComposition } } }}`,
+      query: `query{reactions ( first: 500, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products facet chemicalComposition reactionEnergy activationEnergy surfaceComposition reactionSystems { name aseId reactionId systems { id calculatorParameters }} } } }}`,
       ttl: 300,
     };
 
-    cachios.post(graphQLRoot, query).then((response) => {
-      this.props.receiveReactions(response.data.data.catapp.edges);
+    cachios.post(newGraphQLRoot, query).then((response) => {
+      this.props.receiveReactions(response.data.data.reactions.edges);
       this.props.saveSearchString(this.state.searchString);
       this.props.saveSearchQuery(query.query);
-      this.props.saveResultSize(response.data.data.catapp.totalCount);
+      this.props.saveResultSize(response.data.data.reactions.totalCount);
       Scroll.animateScroll.scrollMore(500);
       this.setState({
         loading: false,
