@@ -4,6 +4,7 @@
  *
  */
 
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
@@ -64,20 +65,20 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
-            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' || this.props.selectedSystem.PublicationAuthors === '' ? null :
-                    JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
-            <li>Year: {this.props.selectedSystem.PublicationYear}</li>
-            {this.props.selectedSystem.PublicationDoi === '' ? null :
+            <li>{`Title: "${this.props.selectedSystem.publication[0].title}"`}</li>
+            <li>Authors: {typeof this.props.selectedSystem.publication === 'undefined' || this.props.selectedSystem.publication === '' ? null :
+                    JSON.parse(this.props.selectedSystem.publication[0].authors).join('; ').replace('\\o', 'ø')}</li>
+            <li>Year: {this.props.selectedSystem.publication[0].year}</li>
+            {_.isEmpty(this.props.selectedSystem.publication[0].doi) ? null :
             <div>
               <li>
                           Source&nbsp;
                           <ReactGA.OutboundLink
-                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
-                            to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
+                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
+                            to={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
                             target="_blank"
                           >
-                            DOI: {this.props.selectedSystem.PublicationDoi}
+                            DOI: {this.props.selectedSystem.publication[0].doi}
                           </ReactGA.OutboundLink>
               </li>
             </div>
