@@ -46,7 +46,7 @@ export class AppSnackBar extends React.Component { // eslint-disable-line react/
             horizontal: 'center',
           }}
           open={this.props.isOpen}
-          autoHideDuration={5000}
+          autoHideDuration={3000}
           onClose={this.props.close}
           SnackbarContentProps={{
             'aria-describedby': 'message-id',
