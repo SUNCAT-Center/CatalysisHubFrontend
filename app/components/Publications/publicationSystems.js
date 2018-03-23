@@ -124,13 +124,13 @@ class PublicationSystems extends React.Component { // eslint-disable-line react/
                       key={`publicationsystems_row_${i}`}
                       onClick={() => {
                         /* this.props.selectReaction(result.node); */
-                        this.fetchRow(system.node);
+                        this.fetchRow(system);
                       }}
                       className={this.props.classes.clickableRow}
                     >
-                      <TableCell padding="none">{JSON.stringify(system.node.natoms)}</TableCell>
-                      <TableCell padding="none">{system.node.Formula}</TableCell>
-                      <TableCell padding="none">{system.node.Facet}</TableCell>
+                      <TableCell padding="none">{JSON.stringify(system.natoms)}</TableCell>
+                      <TableCell padding="none">{system.Formula}</TableCell>
+                      <TableCell padding="none">{system.Facet}</TableCell>
                     </TableRow>
                   ))}
             </TableBody>
