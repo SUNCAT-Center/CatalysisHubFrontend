@@ -26,7 +26,9 @@ import plotlyData from './plot_data/index';
 import { styles } from './styles';
 
 const initialState = {
-  plotlyData: {},
+  plotlyData: {
+    data: [{}], //  stub
+  },
   initialLoading: false,
   loading: false,
   xlabel: '',
