@@ -62,7 +62,7 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: 'activityMaps',
+      path: '/activityMaps(/:reaction)',
       name: 'activityMaps',
       getComponent(location, cb) {
         import('containers/ActivityMapsPage')
