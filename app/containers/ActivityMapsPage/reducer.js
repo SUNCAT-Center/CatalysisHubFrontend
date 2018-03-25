@@ -12,10 +12,16 @@ const initialState = {
   systems: [],
   structures: [],
   structureQuery: '',
+  reaction: 'OER',
 };
 
 function activityMapsPageReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SAVE_REACTION:
+      return {
+        ...state,
+        reaction: action.payload.reaction,
+      };
     case constants.SAVE_STRUCTURE_QUERY:
       return {
         ...state,

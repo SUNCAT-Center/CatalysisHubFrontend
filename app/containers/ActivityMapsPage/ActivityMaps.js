@@ -5,21 +5,23 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+/* import PropTypes from 'prop-types';*/
+import { withStyles } from 'material-ui/styles';
+
+
+/*
 import Flexbox from 'flexbox-react';
-
-
 import PeriodicTableSelector from 'containers/PeriodicTableSelector';
-
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
-import { withStyles } from 'material-ui/styles';
+import { MdWarning } from 'react-icons/lib/md';
 import Paper from 'material-ui/Paper';
+*/
+
 import Grid from 'material-ui/Grid';
 
-import { MdWarning } from 'react-icons/lib/md';
 
 import ActivityMapPlot from './ActivityMapPlot';
 import TopSystems from './TopSystems';
@@ -44,6 +46,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <Grid container direction="column" style={{ marginLeft: 10 }}>
+        {/*
         <Paper className={this.props.classes.paper}>
           <div><MdWarning />Under construction.</div>
           <Grid
@@ -66,6 +69,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
             <PeriodicTableSelector />
           </Flexbox>
         </Paper>
+        */}
         <ActivityMapPlot {...this.props} />
         <TopSystems {...this.props} />
         <StructureView {...this.props} />
@@ -76,8 +80,7 @@ class ActivityMaps extends React.Component { // eslint-disable-line react/prefer
 }
 
 ActivityMaps.propTypes = {
-  classes: PropTypes.object,
-
+  /* classes: PropTypes.object,*/
 };
 
 export default withStyles(styles, { withTheme: true })(ActivityMaps);

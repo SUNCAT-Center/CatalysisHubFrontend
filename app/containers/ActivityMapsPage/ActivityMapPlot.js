@@ -1,6 +1,6 @@
 /**
  *
- * ActivityMapOer
+ * ActivitMapPlot
  *
  */
 
@@ -21,12 +21,12 @@ import { LinearProgress } from 'material-ui/Progress';
 
 
 import * as actions from './actions';
-import plotlydata from './plot_data/OER.json';
+import plotlyData from './plot_data/index';
 
 import { styles } from './styles';
 
 const initialState = {
-  plotlyData: plotlydata,
+  plotlyData: {},
   initialLoading: false,
   loading: false,
   xlabel: '',
@@ -36,7 +36,7 @@ const initialState = {
 };
 
 
-class ActivityMapOer extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class ActivitMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -44,8 +44,12 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
     this.clickDot = this.clickDot.bind(this);
     this.getStructures = this.getStructures.bind(this);
   }
-  async componentDidMount() {
+
+  async componentWillReceiveProps(props) {
     this.getSystems();
+    this.setState({
+      plotlyData: plotlyData[props.reaction],
+    });
   }
 
   getSystems() {
@@ -54,12 +58,12 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
     });
     const backendRoot = `${flaskRoot}/apps/activityMaps`;
     const url = `${backendRoot}/systems`;
-    const params = { params: {} };
+    const params = { params: {
+      activityMap: this.props.reaction,
+    } };
     axios.get(url, params).then((response) => {
       const systems = response.data.systems;
-
       this.props.saveSystems(systems);
-
       const scatterData = {
         type: 'scatter',
         mode: 'markers',
@@ -165,14 +169,14 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
         {this.state.initialLoading ? <LinearProgress /> : null }
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
-            <h2>Activity Map</h2>
+            <h2>Activity Map {this.props.reaction}</h2>
             <Plot
               {...this.state.plotlyData}
               layout={{
                 hovermode: 'closest',
                 height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
                 width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
-                margin: { l: 40, r: 10, b: 40, t: 10 },
+                margin: { l: 50, r: 10, b: 40, t: 10 },
                 xaxis: {
                   title: this.state.xlabel,
                   range: [
@@ -185,6 +189,9 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
                   range: [
                     Math.min(...this.state.plotlyData.data[0].y),
                     Math.max(...this.state.plotlyData.data[0].y),
+                  ],
+                  margin: [
+
                   ],
                 },
               }}
@@ -209,13 +216,14 @@ class ActivityMapOer extends React.Component { // eslint-disable-line react/pref
 }
 
 
-ActivityMapOer.propTypes = {
+ActivitMapPlot.propTypes = {
   clickDot: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   saveStructure: PropTypes.func.isRequired,
   saveSystems: PropTypes.func.isRequired,
   clearStructures: PropTypes.func.isRequired,
   saveStructureQuery: PropTypes.func.isRequired,
+  reaction: PropTypes.string,
 };
 
 const mapStateToProps = () => ({
@@ -240,4 +248,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   withStyles(styles, { withTheme: true }),
   connect(mapStateToProps, mapDispatchToProps),
-)(ActivityMapOer);
+)(ActivitMapPlot);

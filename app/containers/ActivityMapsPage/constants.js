@@ -13,3 +13,5 @@ export const SAVE_STRUCTURE = 'app/ActivityMapsPage/SAVE_STRUCTURE';
 
 export const SAVE_STRUCTURE_QUERY = 'app/ActivityMapsPage/SAVE_STRUCTURE_QUERY';
 
+export const SAVE_REACTION = 'app/ActivityMapsPage/SAVE_REACTION';
+

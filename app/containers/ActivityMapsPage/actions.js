@@ -8,6 +8,15 @@ import _ from 'lodash';
 
 import * as constants from './constants';
 
+export function saveReaction(reaction) {
+  return {
+    type: constants.SAVE_REACTION,
+    payload: {
+      reaction,
+    },
+  };
+}
+
 export function saveStructureQuery(structureQuery) {
   return {
     type: constants.SAVE_STRUCTURE_QUERY,
