@@ -47,11 +47,13 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     this.getStructures = this.getStructures.bind(this);
   }
 
-  async componentWillReceiveProps(props) {
-    this.getSystems();
-    this.setState({
-      plotlyData: plotlyData[props.reaction],
-    });
+  async componentDidMount() {
+    setTimeout(() => {
+      this.getSystems();
+      this.setState({
+        plotlyData: plotlyData[this.props.reaction],
+      });
+    }, 1500);
   }
 
   getSystems() {
@@ -59,7 +61,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
       initialLoading: true,
     });
     const backendRoot = `${flaskRoot}/apps/activityMaps`;
-    const url = `${backendRoot}/systems`;
+    const url = `${backendRoot}/systems/`;
     const params = { params: {
       activityMap: this.props.reaction,
     } };
@@ -172,7 +174,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
             <h2>Activity Map {this.props.reaction}</h2>
-          {_.isEmpty(this.state.plotlyData) ? null :
+            {_.isEmpty(this.state.plotlyData) ? null :
             <Plot
               {...this.state.plotlyData}
               layout={{
@@ -183,15 +185,15 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
                 xaxis: {
                   title: this.state.xlabel,
                   range: [
-                    Math.min(...this.state.plotlyData.data[0].x),
-                    Math.max(...this.state.plotlyData.data[0].x),
+                    Math.min(...(this.state.plotlyData.data[0].x || [])),
+                    Math.max(...(this.state.plotlyData.data[0].x || [])),
                   ],
                 },
                 yaxis: {
                   title: this.state.ylabel,
                   range: [
-                    Math.min(...this.state.plotlyData.data[0].y),
-                    Math.max(...this.state.plotlyData.data[0].y),
+                    Math.min(...(this.state.plotlyData.data[0].y || [])),
+                    Math.max(...(this.state.plotlyData.data[0].y || [])),
                   ],
                   margin: [
 
