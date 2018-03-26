@@ -1,6 +1,6 @@
 /**
  *
- * ActivitMapPlot
+ * ActivityMapPlot
  *
  */
 
@@ -38,7 +38,7 @@ const initialState = {
 };
 
 
-class ActivitMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class ActivityMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -172,6 +172,7 @@ class ActivitMapPlot extends React.Component { // eslint-disable-line react/pref
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
             <h2>Activity Map {this.props.reaction}</h2>
+          {_.isEmpty(this.state.plotlyData) ? null :
             <Plot
               {...this.state.plotlyData}
               layout={{
@@ -206,6 +207,7 @@ class ActivitMapPlot extends React.Component { // eslint-disable-line react/pref
                 this.clickDot(event);
               }}
             />
+          }
           </div>
           {_.isEmpty(this.state.reference) ? null :
           <div>{`${this.state.reference}`}</div>
@@ -218,7 +220,7 @@ class ActivitMapPlot extends React.Component { // eslint-disable-line react/pref
 }
 
 
-ActivitMapPlot.propTypes = {
+ActivityMapPlot.propTypes = {
   clickDot: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   saveStructure: PropTypes.func.isRequired,
@@ -250,4 +252,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   withStyles(styles, { withTheme: true }),
   connect(mapStateToProps, mapDispatchToProps),
-)(ActivitMapPlot);
+)(ActivityMapPlot);
