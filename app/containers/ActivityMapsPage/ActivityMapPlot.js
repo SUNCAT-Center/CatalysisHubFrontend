@@ -14,10 +14,13 @@ import { flaskRoot, newGraphQLRoot } from 'utils/constants';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
 import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import { LinearProgress } from 'material-ui/Progress';
+import Grid from 'material-ui/Grid';
 
 
 import * as actions from './actions';
@@ -29,12 +32,16 @@ const initialState = {
   plotlyData: {
     data: [{}], //  stub
   },
+  scatterData: [],
+  heatmapData: {},
   initialLoading: false,
   loading: false,
   xlabel: '',
   ylabel: '',
   zlabel: '',
   reference: '',
+  plotPage: 0,
+
 };
 
 
@@ -45,8 +52,8 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     this.getSystems = this.getSystems.bind(this);
     this.clickDot = this.clickDot.bind(this);
     this.getStructures = this.getStructures.bind(this);
+    this.handlePageFlip = this.handlePageFlip.bind(this);
   }
-
   async componentDidMount() {
     setTimeout(() => {
       this.getSystems();
@@ -80,7 +87,6 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
         marker: { size: 12 },
       };
       systems.map((system) => {
-        /* scatterData.name.push(`${system.formula} ${system.facet}`)*/
         scatterData.customdata.push({
           uid: system.uid,
           text: `${system.formula} [${system.facet}] =>`,
@@ -95,12 +101,10 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
         ylabel: response.data.ylabel,
         zlabel: response.data.zlabel,
         reference: response.data.reference,
+        scatterData,
+        heatmapData: this.state.plotlyData.data[this.state.plotPage],
         plotlyData: {
           ...this.state.plotlyData,
-          data: [
-            this.state.plotlyData.data[0],
-            scatterData,
-          ],
         },
       });
 
@@ -160,6 +164,17 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     })));
   }
 
+  handlePageFlip(delta) {
+    const n = this.state.plotlyData.data.length;
+    const plotPage = (((this.state.plotPage + delta) % n) + n) % n;
+    this.setState({
+      plotPage,
+      heatmapData: this.state.plotlyData.data[plotPage],
+      // javascript version of modulo that works for positive and negative
+      // input.
+    });
+  }
+
   clickDot(event) {
     if (!_.isEmpty(event.points[0].data.customdata)) {
       this.props.clickDot(event);
@@ -175,41 +190,105 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
           <div ref={(el) => { this.instance = el; }}>
             <h2>Activity Map {this.props.reaction.replace('_', ' ')}</h2>
             {_.isEmpty(this.state.plotlyData) ? null :
-            <Plot
-              {...this.state.plotlyData}
-              layout={{
-                hovermode: 'closest',
-                height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
-                width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
-                margin: { l: 50, r: 10, b: 40, t: 10 },
-                xaxis: {
-                  title: this.state.xlabel,
-                  range: [
-                    Math.min(...(this.state.plotlyData.data[0].x || [])),
-                    Math.max(...(this.state.plotlyData.data[0].x || [])),
-                  ],
-                },
-                yaxis: {
-                  title: this.state.ylabel,
-                  range: [
-                    Math.min(...(this.state.plotlyData.data[0].y || [])),
-                    Math.max(...(this.state.plotlyData.data[0].y || [])),
-                  ],
-                  margin: [
+            <Grid container direction="row" justify="center">
+              <Grid item >
+                <Grid container direction="row" justify="center" >
+                  <Grid item>
+                    <Grid container direction="row" justify="center">
+                      <Grid item >
+                      </Grid>
+                    </Grid>
 
-                  ],
-                },
-              }}
-              config={{ scrollZoom: false,
-                displayModeBar: false,
-                legendPosition: true,
-                showTips: false }}
-              onClick={(event) => {
-                this.getStructures(event);
-                this.clickDot(event);
-              }}
-            />
-          }
+                    <Grid container direction="column" justify="center">
+                      {this.state.plotlyData.data.length === 1 ? null :
+                      <Grid container direction="row" justify="center">
+                        <Grid item >
+                          <Button
+                            fab
+                            mini
+                            onClick={() => this.handlePageFlip(-1)}
+                          >
+                            <MdChevronLeft size={30} />
+                          </Button>
+                          {'\u00A0\u00A0'}
+                          <Button
+                            fab
+                            mini
+                            onClick={() => this.handlePageFlip(+1)}
+                          >
+                            <MdChevronRight size={30} />
+                          </Button>
+                        </Grid>
+                      </Grid>
+                          }
+                      <Grid item>
+                        <Plot
+                          {...this.state.plotlyData}
+                          data={[
+                            this.state.heatmapData,
+                            this.state.scatterData,
+                          ]}
+                          layout={{
+                            hovermode: 'closest',
+                            height: Math.max(Math.min(window.innerHeight * 0.6, Number.POSITIVE_INFINITY), 120),
+                            width: Math.max(Math.min(window.innerWidth * 0.8, 1150), 320),
+                            margin: { l: 50, r: 10, b: 40, t: 10 },
+                            xaxis: {
+                              title: this.state.xlabel,
+                              range: [
+                                Math.min(...(this.state.heatmapData.x || [])),
+                                Math.max(...(this.state.heatmapData.x || [])),
+                              ],
+                            },
+                            yaxis: {
+                              title: this.state.ylabel,
+                              range: [
+                                Math.min(...(this.state.heatmapData.y || [])),
+                                Math.max(...(this.state.heatmapData.y || [])),
+                              ],
+                              margin: [
+
+                              ],
+                            },
+                          }}
+                          config={{ scrollZoom: false,
+                            displayModeBar: false,
+                            legendPosition: true,
+                            showTips: false }}
+                          onClick={(event) => {
+                            this.getStructures(event);
+                            this.clickDot(event);
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+
+                    {this.state.plotlyData.data.length === 1 ? null :
+                    <Grid container direction="row" justify="center">
+                      <Grid item >
+                        <Button
+                          fab
+                          mini
+                          onClick={() => this.handlePageFlip(-1)}
+                        >
+                          <MdChevronLeft size={30} />
+                        </Button>
+                        {'\u00A0\u00A0'}
+                        <Button
+                          fab
+                          mini
+                          onClick={() => this.handlePageFlip(+1)}
+                        >
+                          <MdChevronRight size={30} />
+                        </Button>
+                      </Grid>
+                    </Grid>
+                          }
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            }
           </div>
           {_.isEmpty(this.state.reference) ? null :
           <div>{`${this.state.reference}`}</div>
