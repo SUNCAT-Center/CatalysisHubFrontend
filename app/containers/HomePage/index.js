@@ -75,22 +75,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         }
       });
     axios.post(newGraphQLRoot, {
-      query: '{systems { edges { node { id } } }}',
-    }).then((response) => {
-      if (response.data.data.systems === null) {
-        this.setState({
-          loading: false,
-          error: true,
-        });
-      } else {
-        this.setState({
-          loading: false,
-          geometries: response.data.data.systems.edges.length,
-        });
-      }
-    });
-    axios.post(newGraphQLRoot, {
-      query: '{publications { totalCount edges { node { id } } }}' }).then((response) => {
+      query: '{publications(first: 0) { totalCount edges { node { id } } }}' }).then((response) => {
         if (response.data.data.reactions === null) {
           this.setState({
             loading: false,
