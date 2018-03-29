@@ -2,11 +2,12 @@ import packageJson from './package.json';
 
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
-  /* flaskRoot: 'http://localhost:5000',*/
+  /* flaskRoot: 'http://localhost:5001',*/
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
+  docRoot: '//docs.catalysis-hub.org',
   whiteLabel: false,
   suBranding: false,
   appBar: true,
@@ -17,6 +18,25 @@ module.exports = {
       title: 'Activity Maps',
       route: '/activityMaps',
       tooltip: 'Interactive activity maps.',
+      children: [
+        {
+          title: 'CO Hydrogenation',
+          route: 'CO_Hydrogenation',
+        },
+        {
+          title: 'NRR',
+          route: 'NRR',
+        },
+        {
+          title: 'OER',
+          route: 'OER',
+        },
+        {
+          title: 'ORR',
+          route: 'ORR',
+        },
+
+      ],
     }, {
       title: 'AtoML / Machine Learning',
       tooltip: 'Machine learning based predictions -- Work in Progress.',
