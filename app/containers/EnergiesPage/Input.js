@@ -46,6 +46,9 @@ const styles = (theme) => ({
   progress: {
     margin: theme.spacing.unit,
   },
+  hint: {
+    color: '#aaa',
+  },
 });
 
 
@@ -165,7 +168,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 500, ${filterString} ) {
+      query: `query{reactions ( first: 20, ${filterString} ) {
     totalCount
     edges {
       node {
@@ -249,7 +252,9 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
             </Grid>
           </Grid>
         </FormGroup>
-        {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> : null }
+        {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> :
+        <div className={this.props.classes.hint}>Partial input sufficient.</div>
+        }
       </Paper>
     );
   }

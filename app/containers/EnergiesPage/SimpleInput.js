@@ -65,9 +65,9 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
     this.props.clearSystems();
     this.props.receiveReactions([]);
 
-    const filterString = `search: "${this.state.searchString}", `;
+    const filterString = `textsearch: "${this.state.searchString}", `;
     const query = {
-      query: `query{reactions ( first: 500, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products facet chemicalComposition reactionEnergy activationEnergy surfaceComposition reactionSystems { name aseId reactionId systems { id calculatorParameters }} } } }}`,
+      query: `query{reactions ( first: 10, ${filterString} ) { totalCount edges { node { id dftCode dftFunctional reactants products facet chemicalComposition reactionEnergy activationEnergy surfaceComposition reactionSystems { name aseId reactionId systems { id calculatorParameters }} } } }}`,
       ttl: 300,
     };
 

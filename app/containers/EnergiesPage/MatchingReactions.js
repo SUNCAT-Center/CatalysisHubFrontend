@@ -27,6 +27,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Hidden from 'material-ui/Hidden';
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import FaCube from 'react-icons/lib/fa/cube';
 
@@ -210,8 +211,10 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         return (
           <div>
             <Paper className={this.props.classes.paper}>
-              <h2>Ooops! :-(</h2>
-              <div className={this.props.classes.emptyText}>
+              <Grid container direction="row" justify="center">
+                <Grid item>
+                  <h2>Ooops! :-(</h2>
+                  <div className={this.props.classes.emptyText}>
                 No reaction energies found.
                 Here are a couple of things you could try.
                 <ul>
@@ -261,8 +264,13 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 
                     > request </Button> a calculation.
                   </li>
+                  <li>
+                    Open <GraphQlbutton query={this.props.searchQuery} newSchema /> to interact with the database directly.
+                  </li>
                 </ul>
-              </div>
+                  </div>
+                </Grid>
+              </Grid>
             </Paper>
             {this.state.requestFormOpen === false ? null :
             <Paper className={this.props.classes.paper} >
