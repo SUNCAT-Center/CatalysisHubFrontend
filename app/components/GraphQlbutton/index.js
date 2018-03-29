@@ -7,6 +7,7 @@
 import React, { PropTypes } from 'react';
 import ReactGA from 'react-ga';
 import { withStyles } from 'material-ui/styles';
+import Tooltip from 'material-ui/Tooltip';
 import Button from 'material-ui/Button';
 import { FaDatabase } from 'react-icons/lib/fa';
 import { graphQLRoot, newGraphQLRoot } from 'utils/constants';
@@ -32,9 +33,11 @@ class GraphQlbutton extends React.Component { // eslint-disable-line react/prefe
         target="_blank"
         className={this.props.classes.button}
       >
-        <Button className={this.props.classes.button}>
-          <FaDatabase />{'\u00A0\u00A0'} GraphQL Query
+        <Tooltip title="Open GraphQL query interface in new tab.">
+          <Button className={this.props.classes.button}>
+            <FaDatabase />{'\u00A0\u00A0'} GraphQL Query
         </Button>
+        </Tooltip>
       </ReactGA.OutboundLink>
     );
   }
