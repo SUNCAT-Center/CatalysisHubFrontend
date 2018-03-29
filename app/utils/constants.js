@@ -6,7 +6,7 @@ module.exports = {
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
-  newGraphQLRoot: '//catappdatabase2.herokuapp.com/graphql',
+  newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   whiteLabel: false,
   suBranding: false,
   appBar: true,
