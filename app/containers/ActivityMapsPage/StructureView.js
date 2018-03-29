@@ -14,6 +14,7 @@ import { compose } from 'recompose';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
+import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
@@ -81,13 +82,15 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                 <Grid item >
                   <Grid container direction="column" justify="center" className={this.props.classes.flipButton}>
                     <Grid item>
-                      <Button
-                        fab
-                        mini
-                        onClick={() => this.handleStructureFlip(-1)}
-                      >
-                        <MdChevronLeft size={30} />
-                      </Button>
+                      <Tooltip title="Flip to previous structure">
+                        <Button
+                          fab
+                          mini
+                          onClick={() => this.handleStructureFlip(-1)}
+                        >
+                          <MdChevronLeft size={30} />
+                        </Button>
+                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -107,13 +110,15 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                     className={this.props.classes.flipButton}
                   >
                     <Grid item >
-                      <Button
-                        fab
-                        mini
-                        onClick={() => this.handleStructureFlip(+1)}
-                      >
-                        <MdChevronRight />
-                      </Button>
+                      <Tooltip title="Flip to next structure">
+                        <Button
+                          fab
+                          mini
+                          onClick={() => this.handleStructureFlip(+1)}
+                        >
+                          <MdChevronRight />
+                        </Button>
+                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Grid>
