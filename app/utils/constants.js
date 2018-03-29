@@ -19,7 +19,7 @@ module.exports = {
       tooltip: 'Interactive activity maps.',
     }, {
       title: 'AtoML / Machine Learning',
-      tooltip: 'Machine learning based predictions.',
+      tooltip: 'Machine learning based predictions -- Work in Progress.',
     }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
