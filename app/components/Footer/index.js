@@ -3,6 +3,7 @@ import ReactGA from 'react-ga';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
+import Tooltip from 'material-ui/Tooltip';
 
 import { whiteLabel } from 'utils/constants';
 import Wrapper from './Wrapper';
@@ -42,24 +43,33 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
         <section>
           <List>
             <ListItem>
-              <ReactGA.OutboundLink
-                to="https://github.com/mhoffman/CatAppBrowser"
-                eventLabel="https://github.com/mhoffman/CatAppBrowser"
-              >
+              <Tooltip title="Checkout frontend code on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/mhoffman/CatAppBrowser"
+                  eventLabel="https://github.com/mhoffman/CatAppBrowser"
+                  target="_blank"
+                >
                 Made&nbsp;
               </ReactGA.OutboundLink>
-              <ReactGA.OutboundLink
-                to="https://github.com/kirstenwinther/CatAppCLI"
-                eventLabel="https://github.com/kirstenwinther/CatAppCLI"
-              >
+              </Tooltip>
+              <Tooltip title="Checkout command line tools on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/kirstenwinther/CatAppCLI"
+                  eventLabel="https://github.com/kirstenwinther/CatAppCLI"
+                  target="_blank"
+                >
                 in&nbsp;
               </ReactGA.OutboundLink>
-              <ReactGA.OutboundLink
-                to="https://github.com/kirstenwinther/CatAppBackend"
-                eventLabel="https://github.com/kirstenwinther/CatAppBackend"
-              >
+              </Tooltip>
+              <Tooltip title="Checkout backend code on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/kirstenwinther/CatAppBackend"
+                  eventLabel="https://github.com/kirstenwinther/CatAppBackend"
+                  target="_blank"
+                >
                 Menlo Park&nbsp;
               </ReactGA.OutboundLink>
+              </Tooltip>
             </ListItem>
           </List>
         </section>
