@@ -36,6 +36,7 @@ import { MdChevronLeft,
 
 import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
+import Tooltip from 'material-ui/Tooltip';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -354,10 +355,12 @@ class App extends React.Component {
                   </IconButton>
 
                       }
-                  <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
-                    {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                    <MenuIcon />
-                  </IconButton>
+                  <Tooltip title="Open menu">
+                    <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
+                      {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                      <MenuIcon />
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
                 { suBranding === false ? null :
                 <Grid item >
@@ -376,11 +379,13 @@ class App extends React.Component {
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
-                          <Link to="/" className={this.props.classes.appBarTitle} >
-                            <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                              {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
-                            </Typography>
-                          </Link>
+                          <Tooltip title="Open main site">
+                            <Link to="/" className={this.props.classes.appBarTitle} >
+                              <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
+                                {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
+                              </Typography>
+                            </Link>
+                          </Tooltip>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -390,23 +395,29 @@ class App extends React.Component {
                   <Grid container direction="row" justify="space-between">
                     <Grid item>
                       <Link to="/energies" className={this.props.classes.textLink}>
-                        <IconButton size="small" color="inherit" aria-label="Search" >
-                          <MdSearch />
-                        </IconButton>
+                        <Tooltip title="Search reaction energetics">
+                          <IconButton size="small" color="inherit" aria-label="Search" >
+                            <MdSearch />
+                          </IconButton>
+                        </Tooltip>
                       </Link>
                     </Grid>
                     <Grid item >
                       <Link to="/appsIndex" className={this.props.classes.textLink}>
-                        <IconButton size="small" color="inherit" aria-label="Menu" >
-                          <MdApps />
-                        </IconButton>
+                        <Tooltip title="Open apps index">
+                          <IconButton size="small" color="inherit" aria-label="Menu" >
+                            <MdApps />
+                          </IconButton>
+                        </Tooltip>
                       </Link>
                     </Grid>
                     <Grid item >
                       <Link to="/settings" className={this.props.classes.textLink}>
-                        <IconButton size="small" color="inherit" aria-label="Settings">
-                          <MdSettings />
-                        </IconButton>
+                        <Tooltip title="Open settings">
+                          <IconButton size="small" color="inherit" aria-label="Settings">
+                            <MdSettings />
+                          </IconButton>
+                        </Tooltip>
                       </Link>
                     </Grid>
                   </Grid>
@@ -440,7 +451,7 @@ class App extends React.Component {
             </Paper>
           </Hidden>
         </div>
-        }
+}
         <main className={this.props.classes.content}>
           <AppWrapper>
             <Paper
@@ -455,13 +466,13 @@ class App extends React.Component {
       Features include search for specific reaction energies, transition states, structures, exploration of scaling relations, activity maps, Pourbaix diagrams and machine learning models, as well as generation of novel bulk and surface structures. Calculations are linked to peer-review publications where available. The database can be queried via a GraphQL API that can also be accessed directly.
       All code pertaining to this project is hosted as open-source under a liberal MIT license on github to encourage derived work and collaboration. The frontend is developed using the React Javascript framework based on react boilerplate. New components (apps) can be quickly spun-off and added to the project. The backend is developed using the Flask Python framework providing the GraphQL API as well as further APIs for specific apps.
       As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.` },
-                  { name: 'robots', content: 'index,follow' },
-                  { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
-                  { name: 'DC.title', content: 'Catalysis-Hub.org' },
+          { name: 'robots', content: 'index,follow' },
+          { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
+          { name: 'DC.title', content: 'Catalysis-Hub.org' },
                 ]}
                 link={suBranding === false && appBar === false ? [] : [
-                  { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
-                  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' },
+          { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
+          { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' },
                 ]}
               />
               <Header />
@@ -518,7 +529,7 @@ class App extends React.Component {
                           fontWeight: lightFooterWeight,
                         }}
                       >&copy; <span className="fn org">Stanford University</span>.&nbsp;&nbsp;<span className="adr"> <span className="locality">Stanford</span>, <span className="region">California</span> <span className="postal-code">94305</span></span>.&nbsp;&nbsp;
-                            <span id="copyright-complaint"></span>
+                    <span id="copyright-complaint"></span>
                       </p>
                     </Flexbox>
                     <Flexbox height="20vh" />
@@ -529,11 +540,11 @@ class App extends React.Component {
             </Flexbox>
           </Flexbox>
         </div>
-        }
+}
       </div>
     );
   }
-}
+      }
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -549,8 +560,8 @@ const mapDispatchToProps = () => ({
 });
 
 export default compose(
-  withProgressBar,
-  withWidth(),
-  connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles, { withTheme: true }),
-)(App);
+      withProgressBar,
+      withWidth(),
+      connect(mapStateToProps, mapDispatchToProps),
+      withStyles(styles, { withTheme: true }),
+      )(App);
