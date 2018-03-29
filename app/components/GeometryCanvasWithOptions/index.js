@@ -17,9 +17,10 @@ import Modal from 'material-ui/Modal';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
+import Tooltip from 'material-ui/Tooltip';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import { MdFullscreen, MdFileDownload, MdBookmarkOutline } from 'react-icons/lib/md';
+import { MdClose, MdFullscreen, MdFileDownload, MdBookmarkOutline } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
@@ -158,16 +159,31 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           open={this.state.open}
           onClose={() => { this.handleClose(); }}
         >
-          <GeometryCanvasCifdata
-            uniqueId={`fs_${this.props.uniqueId}`}
-            cifdata={this.props.cifdata}
-            id={`fs_${this.props.id}`}
-            x={this.state.x}
-            y={this.state.y}
-            z={this.state.z}
-            height={window.innerHeight - 50}
-            width={window.innerWidth - 50}
-          />
+          <div>
+            <Grid container direction="row" justify="flex-end">
+              <Grid item>
+                <Tooltip title="Exit fullscreen.">
+                  <Button
+                    mini
+                    fab
+                    onClick={() => { this.handleClose(); }}
+                  >
+                    <MdClose />
+                  </Button>
+                </Tooltip>
+              </Grid>
+            </Grid>
+            <GeometryCanvasCifdata
+              uniqueId={`fs_${this.props.uniqueId}`}
+              cifdata={this.props.cifdata}
+              id={`fs_${this.props.id}`}
+              x={this.state.x}
+              y={this.state.y}
+              z={this.state.z}
+              height={window.innerHeight}
+              width={window.innerWidth}
+            />
+          </div>
         </Modal>
         <GeometryCanvasCifdata
           uniqueId={this.props.uniqueId}
@@ -185,83 +201,99 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button
-                  onClick={this.handleChange('x', -1)}
-                  disabled={this.state.x < 2}
-                  mini fab className={this.props.classes.iconButton}
-                >-</Button>
+                <Tooltip title="Show fewer repetitions in x-directions">
+                  <Button
+                    onClick={this.handleChange('x', -1)}
+                    disabled={this.state.x < 2}
+                    mini fab className={this.props.classes.iconButton}
+                  >-</Button>
+                </Tooltip>
               </Grid>
               <Grid item>
                 <IconButton size="small" className={this.props.classes.avatar}>x={this.state.x}</IconButton>
               </Grid>
               <Grid item>
-                <Button
-                  onClick={this.handleChange('x', +1)}
-                  disabled={this.state.x >= 20}
-                  mini fab className={this.props.classes.iconButton}
-                >+</Button>
+                <Tooltip title="Show more repetition in x-direction">
+                  <Button
+                    onClick={this.handleChange('x', +1)}
+                    disabled={this.state.x >= 20}
+                    mini fab className={this.props.classes.iconButton}
+                  >+</Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button
-                  onClick={this.handleChange('y', -1)}
-                  disabled={this.state.y < 2}
-                  mini fab className={this.props.classes.iconButton}
-                >-</Button>
+                <Tooltip title="Show fewer repetitions in y-direction">
+                  <Button
+                    onClick={this.handleChange('y', -1)}
+                    disabled={this.state.y < 2}
+                    mini fab className={this.props.classes.iconButton}
+                  >-</Button>
+                </Tooltip>
               </Grid>
               <Grid item>
                 <IconButton className={this.props.classes.avatar}>y={this.state.y}</IconButton>
               </Grid>
               <Grid item>
-                <Button
-                  onClick={this.handleChange('y', +1)}
-                  disabled={this.state.y >= 20}
-                  mini fab className={this.props.classes.iconButton}
-                >+</Button>
+                <Tooltip title="Show more repetitions in y-direction">
+                  <Button
+                    onClick={this.handleChange('y', +1)}
+                    disabled={this.state.y >= 20}
+                    mini fab className={this.props.classes.iconButton}
+                  >+</Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row">
               <Grid item>
-                <Button
-                  onClick={this.handleChange('z', -1)}
-                  disabled={this.state.z < 2}
-                  mini fab className={this.props.classes.iconButton}
-                >-</Button>
+                <Tooltip title="Show fewer repetitions in z-direction.">
+                  <Button
+                    onClick={this.handleChange('z', -1)}
+                    disabled={this.state.z < 2}
+                    mini fab className={this.props.classes.iconButton}
+                  >-</Button>
+                </Tooltip>
               </Grid>
               <Grid item>
                 <IconButton className={this.props.classes.avatar} >z={this.state.z}</IconButton>
               </Grid>
               <Grid item>
-                <Button
-                  onClick={this.handleChange('z', +1)}
-                  disabled={this.state.z >= 20}
-                  mini fab className={this.props.classes.iconButton}
-                >+</Button>
+                <Tooltip title="Show more repetitions in z-direction">
+                  <Button
+                    onClick={this.handleChange('z', +1)}
+                    disabled={this.state.z >= 20}
+                    mini fab className={this.props.classes.iconButton}
+                  >+</Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
           <Grid>
             <Grid container direction="row">
               <Grid item>
-                <Button
-                  raised
-                  mini
-                  fab
-                  className={this.props.classes.iconButtonIcon}
-                  onClick={() => { this.setState({ open: true }); }}
-                ><MdFullscreen /></Button>
+                <Tooltip title="Show structure in full screen">
+                  <Button
+                    raised
+                    mini
+                    fab
+                    className={this.props.classes.iconButtonIcon}
+                    onClick={() => { this.setState({ open: true }); }}
+                  ><MdFullscreen /></Button>
+                </Tooltip>
               </Grid>
               <Grid item>
-                <Button
-                  mini fab
-                  className={this.props.classes.iconButtonIcon}
-                  onClick={this.handleDownloadOpen}
-                ><MdFileDownload /> </Button>
+                <Tooltip title="Download structure file.">
+                  <Button
+                    mini fab
+                    className={this.props.classes.iconButtonIcon}
+                    onClick={this.handleDownloadOpen}
+                  ><MdFileDownload /> </Button>
+                </Tooltip>
                 <Dialog
                   open={this.state.downloadOpen}
                   onClose={this.handleDownloadClose}
