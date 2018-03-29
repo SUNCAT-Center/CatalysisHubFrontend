@@ -26,18 +26,16 @@ const styles = (theme) => ({
 class GraphQlbutton extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
-        <ReactGA.OutboundLink
-          eventLabel={`GraphQL ${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
-          to={`${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
-          target="_blank"
-          className={this.props.classes.button}
-        >
-          <Button className={this.props.classes.button}>
-            <FaDatabase />{'\u00A0\u00A0'} GraphQL Query
+      <ReactGA.OutboundLink
+        eventLabel={`GraphQL ${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
+        to={`${this.props.newSchema ? newGraphQLRoot : graphQLRoot}?query=${encodeURIComponent(this.props.query)}`}
+        target="_blank"
+        className={this.props.classes.button}
+      >
+        <Button className={this.props.classes.button}>
+          <FaDatabase />{'\u00A0\u00A0'} GraphQL Query
         </Button>
-        </ReactGA.OutboundLink>
-      </div>
+      </ReactGA.OutboundLink>
     );
   }
 }
