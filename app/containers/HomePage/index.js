@@ -20,6 +20,7 @@ import { FaDatabase } from 'react-icons/lib/fa';
 import { MdWarning } from 'react-icons/lib/md';
 import Slide from 'material-ui/transitions/Slide';
 import View from 'flexbox-react';
+import Tooltip from 'material-ui/Tooltip';
 
 import axios from 'axios';
 import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
@@ -132,7 +133,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         textAlign: 'center',
                       }}
                     >
-                      <h3>Reaction Energetics</h3>
+                      <Tooltip title="Search reaction energetics">
+                        <h3>Reaction Energetics</h3>
+                      </Tooltip>
                       <View style={{ justifyContent: 'space-around' }}>
                         <Chip
                           label={this.state.reactions} avatar={
@@ -157,7 +160,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         align: 'center',
                       }}
                     >
-                      <h3>Publications</h3>
+                      <Tooltip title="Browse list of publications with atomic geometries">
+                        <h3>Publications</h3>
+                      </Tooltip>
                       <View style={{ justifyContent: 'center' }}>
                         <Chip
                           label={this.state.publications} avatar={
@@ -181,7 +186,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         align: 'center',
                       }}
                     >
-                      <h3>Apps</h3>
+                      <Tooltip title="Browse apps">
+                        <h3>Apps</h3>
+                      </Tooltip>
                       <View style={{ justifyContent: 'center' }}>
                         <Chip
                           label={apps.length} avatar={
