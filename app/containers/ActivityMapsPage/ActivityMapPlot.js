@@ -21,6 +21,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import { LinearProgress } from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
+import Tooltip from 'material-ui/Tooltip';
 
 
 import * as actions from './actions';
@@ -203,21 +204,25 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
                       {this.state.plotlyData.data.length === 1 ? null :
                       <Grid container direction="row" justify="center">
                         <Grid item >
-                          <Button
-                            fab
-                            mini
-                            onClick={() => this.handlePageFlip(-1)}
-                          >
-                            <MdChevronLeft size={30} />
-                          </Button>
+                          <Tooltip title="Previous">
+                            <Button
+                              fab
+                              mini
+                              onClick={() => this.handlePageFlip(-1)}
+                            >
+                              <MdChevronLeft size={30} />
+                            </Button>
+                          </Tooltip>
                           {'\u00A0\u00A0'}
-                          <Button
-                            fab
-                            mini
-                            onClick={() => this.handlePageFlip(+1)}
-                          >
-                            <MdChevronRight size={30} />
-                          </Button>
+                          <Tooltip title="Next">
+                            <Button
+                              fab
+                              mini
+                              onClick={() => this.handlePageFlip(+1)}
+                            >
+                              <MdChevronRight size={30} />
+                            </Button>
+                          </Tooltip>
                         </Grid>
                       </Grid>
                           }
@@ -266,21 +271,25 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
                     {this.state.plotlyData.data.length === 1 ? null :
                     <Grid container direction="row" justify="center">
                       <Grid item >
-                        <Button
-                          fab
-                          mini
-                          onClick={() => this.handlePageFlip(-1)}
-                        >
-                          <MdChevronLeft size={30} />
-                        </Button>
+                        <Tooltip title="Previous">
+                          <Button
+                            fab
+                            mini
+                            onClick={() => this.handlePageFlip(-1)}
+                          >
+                            <MdChevronLeft size={30} />
+                          </Button>
+                        </Tooltip>
                         {'\u00A0\u00A0'}
-                        <Button
-                          fab
-                          mini
-                          onClick={() => this.handlePageFlip(+1)}
-                        >
-                          <MdChevronRight size={30} />
-                        </Button>
+                        <Tooltip title="Next">
+                          <Button
+                            fab
+                            mini
+                            onClick={() => this.handlePageFlip(+1)}
+                          >
+                            <MdChevronRight size={30} />
+                          </Button>
+                        </Tooltip>
                       </Grid>
                     </Grid>
                           }
