@@ -10,6 +10,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import { FormGroup } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
+import Tooltip from 'material-ui/Tooltip';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -94,10 +95,12 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
       <Paper className={this.props.classes.paper}>
         <Grid container justify="flex-end" direction="row">
           <Grid item>
-            <Button
-              onClick={this.props.toggleSimpleSearch}
-              className={this.props.classes.button}
-            > Detail Search <MdChevronRight /></Button>
+            <Tooltip title="Detailed input of reactants, products, surface, facet.">
+              <Button
+                onClick={this.props.toggleSimpleSearch}
+                className={this.props.classes.button}
+              > Detail Search <MdChevronRight /></Button>
+            </Tooltip>
           </Grid>
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }

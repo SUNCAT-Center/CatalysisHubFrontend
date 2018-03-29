@@ -17,6 +17,7 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import { FormGroup } from 'material-ui/Form';
+import Tooltip from 'material-ui/Tooltip';
 
 import * as Scroll from 'react-scroll';
 
@@ -223,12 +224,14 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       <Paper className={this.props.classes.paper}>
         <Grid container justify="flex-end" direction="row">
           <Grid item>
-            <Button
-              onClick={this.props.toggleSimpleSearch}
-              className={this.props.classes.button}
-            >
-              <MdChevronLeft /> Simple Search
+            <Tooltip title="Try free text search.">
+              <Button
+                onClick={this.props.toggleSimpleSearch}
+                className={this.props.classes.button}
+              >
+                <MdChevronLeft /> Simple Search
             </Button>
+            </Tooltip>
           </Grid>
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
