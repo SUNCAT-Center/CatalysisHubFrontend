@@ -13,6 +13,7 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Slide from 'material-ui/transitions/Slide';
+import Tooltip from 'material-ui/Tooltip';
 
 
 const styles = () => ({
@@ -58,7 +59,9 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                         textAlign: 'center',
                       }}
                     >
-                      <h3>{app.title}</h3>
+                      <Tooltip title={app.tooltip} placement="top">
+                        <h3>{app.title}</h3>
+                      </Tooltip>
                     </Paper>
                   </Link>
                 </Grid>
