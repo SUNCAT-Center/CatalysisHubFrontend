@@ -33,7 +33,7 @@ const initialState = {
   plotlyData: {
     data: [{}], //  stub
   },
-  scatterData: [],
+  scatterData: {},
   heatmapData: {},
   initialLoading: false,
   loading: false,
@@ -55,6 +55,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     this.getStructures = this.getStructures.bind(this);
     this.handlePageFlip = this.handlePageFlip.bind(this);
   }
+
   async componentDidMount() {
     setTimeout(() => {
       this.getSystems();
@@ -62,6 +63,21 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
         plotlyData: plotlyData[this.props.reaction],
       });
     }, 1500);
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    let { reaction } = nextProps.routeParams;
+    if (_.isEmpty(reaction)) {
+      reaction = 'OER';
+    }
+    if (reaction !== this.props.reaction) {
+      setTimeout(() => {
+        this.setState({
+          plotlyData: plotlyData[reaction],
+        });
+        this.getSystems();
+      }, 1500);
+    }
   }
 
   getSystems() {

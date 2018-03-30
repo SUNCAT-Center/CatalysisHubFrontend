@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,11 +16,15 @@ import ActivityMaps from './ActivityMaps';
 import * as actions from './actions';
 
 export class ActivityMapsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    const reaction = this.props.routeParams.reaction;
-    if (['OER', 'NRR', 'CO_Hydrogenation', 'ORR', 'CO2RR'].includes(reaction)) {
-      this.props.saveReaction(reaction);
+  componentWillReceiveProps() {
+    let { reaction } = this.props.routeParams;
+    if (_.isEmpty(reaction)) {
+      reaction = 'OER';
+    }
+    if (reaction !== this.props.reaction) {
+      if (['OER', 'NRR', 'CO_Hydrogenation', 'ORR', 'CO2RR'].includes(reaction)) {
+        this.props.saveReaction(reaction);
+      }
     }
   }
 
@@ -43,6 +48,7 @@ export class ActivityMapsPage extends React.Component { // eslint-disable-line r
 ActivityMapsPage.propTypes = {
   saveReaction: PropTypes.func,
   routeParams: PropTypes.object,
+  reaction: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
