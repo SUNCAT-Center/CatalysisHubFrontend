@@ -52,7 +52,7 @@ import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import withWidth from 'material-ui/utils/withWidth';
 
-import { apps, appBar, suBranding, version, whiteLabel } from 'utils/constants';
+import { apps, appBar, suBranding, version, whiteLabel, docRoot } from 'utils/constants';
 import { theme } from 'utils/theme';
 
 const AppWrapper = styled.div`
@@ -277,15 +277,34 @@ class App extends React.Component {
           </ListSubheader>}
         >
           {apps.map((app, i) => (
-            <ListItem key={`app_${i}`} className={this.props.classes.menuItem}>
-              <Link
-                to={app.route}
-                onClick={this.handleDrawerToggle}
-                className={!_.isEmpty(app.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
-              >
-                {app.title}
-              </Link>
-            </ListItem>
+            <div key={`app_${i}`}>
+              <ListItem className={this.props.classes.menuItem}>
+                <Link
+                  to={app.route}
+                  onClick={this.handleDrawerToggle}
+                  className={!_.isEmpty(app.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
+                >
+                  {app.title}
+
+                </Link>
+              </ListItem>
+              {_.isEmpty(app.children) ? null :
+              <List>
+                {app.children.map((child, j) => (
+                  <ListItem key={`child_${i}_${j}`}>
+                    <Link
+                      to={`${app.route}/${child.route}`}
+                      onClick={this.handleDrawerToggle}
+                      className={!_.isEmpty(child.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
+                    >
+                      {child.title}
+                    </Link>
+                  </ListItem>
+                        )
+                    )}
+              </List>
+                }
+            </div>
 
           )
 
@@ -305,7 +324,9 @@ class App extends React.Component {
         <List
           subheader={<ListSubheader className={this.props.classes.subListHeader}>
             <Link
-              className={this.props.classes.inactiveTopMenuLink}
+              className={this.props.classes.topMenuLink}
+              to={docRoot}
+              target="_blank"
             >
               <GoBook />{'\u00A0\u00A0 '}Docs
             </Link>
