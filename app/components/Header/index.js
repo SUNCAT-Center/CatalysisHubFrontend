@@ -18,7 +18,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     return (
       <HeaderBar>
         <Link to="/">
-          { whiteLabel === false ? null :
+          { whiteLabel === true ? null :
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
           }
         </Link>
