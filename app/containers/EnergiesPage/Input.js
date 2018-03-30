@@ -188,7 +188,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         reactionSystems {
           name
           aseId
-          reactionId
           systems {
             id
             calculatorParameters
