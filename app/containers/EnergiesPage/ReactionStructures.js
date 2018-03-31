@@ -23,9 +23,6 @@ const styles = (theme) => ({
   },
 });
 
-const prettyPrintReaction = (reactants, products) => (`${Object.keys(JSON.parse(reactants)).join(' + ')} → ${Object.keys(JSON.parse(products)).join(' + ')}`
-).replace(/star/g, '*').replace(/gas/g, '(ℊ)');
-
 
 function TabContainer(props) {
   return (<Typography component="div" style={{ padding: 8 * 3 }}>
@@ -59,7 +56,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
       {this.props.reactionSystems.length === 0 ? null :
       <Paper className={this.props.classes.paper}>
         <Grid container direction="column" width="100%">
-          <h2>{prettyPrintReaction(this.props.selectedReaction.reactants, this.props.selectedReaction.products)} - Reaction Geometries</h2>
+          <h2>{this.props.selectedReaction.Equation} - Reaction Geometries</h2>
           <Hidden smUp>
             <BarrierChart {...this.props} thumbnailSize={50} />
           </Hidden>
