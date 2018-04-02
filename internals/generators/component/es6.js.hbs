@@ -5,12 +5,20 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
+{{#if wantStyles}}
+import { withStyles } from 'material-ui/styles';
+{{/if}}
 
 {{#if wantMessages}}
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 {{/if}}
+
+{{#if wantStyles }}
+const styles = () => ({
+});
+{{/if}}
+
 
 class {{ properCase name }} extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -28,4 +36,9 @@ class {{ properCase name }} extends React.Component { // eslint-disable-line rea
 
 };
 
+
+{{#if wantStyles}}
+export default withStyles(styles, { withTheme: true})({{ properCase name }});
+{{else}}
 export default {{ properCase name }};
+{{/if}}

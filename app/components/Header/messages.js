@@ -12,7 +12,7 @@ export default defineMessages({
   },
   energies: {
     id: 'boilerplate.components.Header.energies',
-    defaultMessage: 'Energies',
+    defaultMessage: 'Reaction Energies',
   },
   features: {
     id: 'boilerplate.components.Header.features',
@@ -26,12 +26,28 @@ export default defineMessages({
     id: 'boilerplate.components.Header.scalingRelations',
     defaultMessage: 'Scaling Relations',
   },
+  catKit: {
+    id: 'boilerplate.components.Header.catKit',
+    defaultMessage: 'CatKit',
+  },
   pourbaixDiagrams: {
     id: 'boilerplate.components.Header.pourbaixDiagrams',
     defaultMessage: 'Pourbaix Diagrams',
   },
   generalSearch: {
     id: 'boilerplate.components.Header.generalSearch',
+    defaultMessage: 'Structure Search',
+  },
+  publications: {
+    id: 'boilerplate.components.Header.publications',
+    defaultMessage: 'Publications',
+  },
+  graphqlconsole: {
+    id: 'boilerplate.components.Header.graphqlconsole',
+    defaultMessage: 'GraphQL API',
+  },
+  yourNextApp: {
+    id: 'boilerplate.components.Header.yourNextApp',
     defaultMessage: 'Your Next App ...',
   },
 });

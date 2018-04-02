@@ -10,7 +10,6 @@ import 'babel-polyfill';
 
 /* import injectTapEventPlugin from 'react-tap-event-plugin'; */
 /* injectTapEventPlugin(); */
-
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -21,16 +20,25 @@ import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider } from 'material-ui/styles';
 
 // Import root app
 import App from 'containers/App';
+
+// Import App Theme
+import { theme } from 'utils/theme';
 
 // Import selector for `syncHistoryWithStore`
 import { makeSelectLocationState } from 'containers/App/selectors';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
+
+// Google Analytics
+import ReactGA from 'react-ga';
+import { gaTrackingId } from 'utils/constants';
+
+import { CookiesProvider } from 'react-cookie';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -49,6 +57,14 @@ import './global-styles';
 
 // Import routes
 import createRoutes from './routes';
+
+ReactGA.initialize(gaTrackingId);
+
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
+
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -81,22 +97,27 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+// Initialize Google Analytics
+
 const render = (messages) => {
   ReactDOM.render(
-    <MuiThemeProvider>
-      <Provider store={store}>
-        <LanguageProvider messages={messages}>
-          <Router
-            history={history}
-            routes={rootRoute}
-            render={
-              // Scroll to top when going to a new page, imitating default browser
-              // behaviour
-              applyRouterMiddleware(useScroll())
-            }
-          />
-        </LanguageProvider>
-      </Provider>
+    <MuiThemeProvider theme={theme}>
+      <CookiesProvider>
+        <Provider store={store}>
+          <LanguageProvider messages={messages}>
+            <Router
+              history={history}
+              routes={rootRoute}
+              render={
+                // Scroll to top when going to a new page, imitating default browser
+                // behaviour
+                applyRouterMiddleware(useScroll())
+              }
+              onUpdate={logPageView} // Google Analytics
+            />
+          </LanguageProvider>
+        </Provider>
+      </CookiesProvider>
     </MuiThemeProvider>,
     document.getElementById('app')
   );

@@ -1,32 +1,85 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { PropTypes } from 'react';
+import ReactGA from 'react-ga';
 
-import A from 'components/A';
-import LocaleToggle from 'containers/LocaleToggle';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import { withStyles } from 'material-ui/styles';
+import Tooltip from 'material-ui/Tooltip';
+
+import { whiteLabel } from 'utils/constants';
 import Wrapper from './Wrapper';
-import messages from './messages';
 
-function Footer() {
-  return (
-    <Wrapper>
-      <section>
-        <FormattedMessage {...messages.licenseMessage} />
-      </section>
-      <section>
-        <LocaleToggle />
-      </section>
-      <section>
-        <FormattedMessage
-          {...messages.authorMessage}
-          values={{
-            author: <A href="https://twitter.com/maxjhoffmann">Max Hoffmann</A>,
-            author_town: "Menlo Park",
+const styles = (xtheme) => ({
+  footer: {
+    [xtheme.breakpoints.down('sm')]: {
+      visibility: 'hidden',
+    },
+  },
+});
 
-          }}
-        />
-      </section>
-    </Wrapper>
-  );
+class Footer extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  render() {
+    return (
+      <Wrapper className={this.props.classes.footer}>
+        <section>
+          <List>
+            <ListItem>
+              {whiteLabel ? null :
+              <ReactGA.OutboundLink
+                eventLabel="http://suncat.slac.stanford.edu/"
+                to="http://suncat.slac.stanford.edu/"
+              >
+                <ListItemText primary="SUNCAT" />
+              </ReactGA.OutboundLink>
+              }
+            </ListItem>
+          </List>
+        </section>
+        <section>
+          <List>
+            <ListItem>
+            </ListItem>
+          </List>
+        </section>
+        <section>
+          <List>
+            <ListItem>
+              <Tooltip title="Checkout frontend code on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/mhoffman/CatAppBrowser"
+                  eventLabel="https://github.com/mhoffman/CatAppBrowser"
+                  target="_blank"
+                >
+                Made&nbsp;
+              </ReactGA.OutboundLink>
+              </Tooltip>
+              <Tooltip title="Checkout command line tools on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/kirstenwinther/CatAppCLI"
+                  eventLabel="https://github.com/kirstenwinther/CatAppCLI"
+                  target="_blank"
+                >
+                in&nbsp;
+              </ReactGA.OutboundLink>
+              </Tooltip>
+              <Tooltip title="Checkout backend code on GitHub">
+                <ReactGA.OutboundLink
+                  to="https://github.com/kirstenwinther/CatAppBackend"
+                  eventLabel="https://github.com/kirstenwinther/CatAppBackend"
+                  target="_blank"
+                >
+                Menlo Park&nbsp;
+              </ReactGA.OutboundLink>
+              </Tooltip>
+            </ListItem>
+          </List>
+        </section>
+      </Wrapper>
+    );
+  }
 }
 
-export default Footer;
+Footer.propTypes = {
+  classes: PropTypes.object,
+};
+
+export default withStyles(styles, { withTheme: true })(Footer);

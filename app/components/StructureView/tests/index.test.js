@@ -1,10 +1,10 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import StructureView from '../index';
+import StructureView2 from '../index';
 
-describe('<StructureView />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+describe('<StructureView2 />', () => {
+  it('should render a div', () => {
+    expect(shallow(<StructureView2 />).find('div').length).toBe(0);
   });
 });

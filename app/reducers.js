@@ -12,6 +12,14 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 
 import periodicTableSelector from 'containers/PeriodicTableSelector/reducer';
 import elementContainerReducer from 'containers/ElementContainer/reducer';
+import generalSearchReducer from 'containers/GeneralSearchContainer/reducer';
+import energiesPageReducer from 'containers/EnergiesPage/reducer';
+import plotlyDemoReducer from 'containers/PlotlyDemo/reducer';
+import activityMapsPageReducer from 'containers/ActivityMapsPage/reducer';
+import catKitDemoReducer from 'containers/CatKitDemo/reducer';
+import profileReducer from 'containers/Profile/reducer';
+import bulkGeneratorReducer from 'containers/BulkGenerator/reducer';
+import appSnackBarReducer from 'containers/AppSnackBar/reducer';
 
 /*
  * routeReducer
@@ -50,7 +58,15 @@ export default function createReducer(asyncReducers) {
     global: globalReducer,
     language: languageProviderReducer,
     periodicTableSelector,
+    generalSearchReducer,
     elementContainerReducer,
+    energiesPageReducer,
+    plotlyDemoReducer,
+    activityMapsPageReducer,
+    catKitDemoReducer,
+    profileReducer,
+    bulkGeneratorReducer,
+    appSnackBarReducer,
     ...asyncReducers,
   });
 }

@@ -18,6 +18,12 @@ module.exports = (options) => ({
       exclude: /node_modules/,
       query: options.babelQuery,
     }, {
+      test: /\.md$/,
+      loader: 'raw-loader',
+    }, {
+      test: /.*(plotly|mapbox|gl-).*\.js$/, // Transform all .js files required somewhere with Babel
+      loader: 'ify-loader',
+    }, {
       // Do not transform vendor's CSS with CSS-modules
       // The point is that they remain in global scope.
       // Since we require these CSS files in our JS or CSS files,
@@ -92,4 +98,7 @@ module.exports = (options) => ({
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
   performance: options.performance || {},
+  node: {
+    fs: 'empty',
+  },
 });

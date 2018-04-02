@@ -5,9 +5,9 @@ import Header from '../index';
 
 describe('<Header />', () => {
   it('should render a div', () => {
-    const renderedComponent = shallow(
+    const tree = shallow(
       <Header />
     );
-    expect(renderedComponent.find('div').length).toEqual(1);
+    expect(tree.root.node.type.target).toEqual('div');
   });
 });

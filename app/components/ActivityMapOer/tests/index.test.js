@@ -1,10 +1,11 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import ActivityMapOer from '../index';
+import ActivityMapOer from '../index';
 
 describe('<ActivityMapOer />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render a nested div', () => {
+    const rc = shallow(<ActivityMapOer />);
+    expect(rc.find('div').length).toEqual(2);
   });
 });

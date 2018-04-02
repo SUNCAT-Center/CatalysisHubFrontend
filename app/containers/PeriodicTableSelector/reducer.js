@@ -27,10 +27,12 @@ function periodicTableSelectorReducer(state = initialState, action) {
     case ELEMENT_CLICKED:
       if (state.selection.trim() === '') {
         newSelection = action.payload;
-      } else if (action.payload.trim() === '') {
+      } else if (typeof action.payload === 'undefined' || action.payload.trim() === '') {
         newSelection = state.selection;
-      } else {
+      } else if (state.selection.split(' & ').indexOf(action.payload) < 0) {
         newSelection = [state.selection, action.payload].join(' & ');
+      } else {
+        newSelection = state.selection.split(' & ').filter((x) => x !== action.payload).join(' & ');
       }
 
       return {

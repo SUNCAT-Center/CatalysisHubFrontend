@@ -28,6 +28,8 @@ const ReactBoilerplate = {
         'ip',
         'minimist',
         'sanitize.css',
+        'react-icons',
+        'autosuggest-highlight',
       ],
 
       /**

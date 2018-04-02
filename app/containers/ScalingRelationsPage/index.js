@@ -4,36 +4,33 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
-import makeSelectScalingRelationsPage from './selectors';
-import messages from './messages';
-import Iframe from 'react-iframe'
+
+import Input from './Input';
 
 export class ScalingRelationsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <Iframe url="https://web.stanford.edu/~ctsai89/cgi-bin/apps/catapp/plot" />
+        <h2>Scaling Relations</h2>
+        <Input {...this.props} />
+        <div>
+        Currently under construction.
+        </div>
       </div>
     );
   }
 }
 
 ScalingRelationsPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  ScalingRelationsPage: makeSelectScalingRelationsPage(),
+const mapStateToProps = () => ({
+
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = () => ({
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScalingRelationsPage);

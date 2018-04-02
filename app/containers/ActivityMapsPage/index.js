@@ -4,35 +4,73 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { createStructuredSelector } from 'reselect';
-import makeSelectActivityMapsPage from './selectors';
-import messages from './messages';
+
+import Script from 'react-load-script';
+import Slide from 'material-ui/transitions/Slide';
+
+import ActivityMaps from './ActivityMaps';
+import * as actions from './actions';
 
 export class ActivityMapsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentWillReceiveProps() {
+    let { reaction } = this.props.routeParams;
+    if (_.isEmpty(reaction)) {
+      reaction = 'OER';
+    }
+    if (reaction !== this.props.reaction) {
+      if (['OER', 'NRR', 'CO_Hydrogenation', 'ORR', 'CO2RR'].includes(reaction)) {
+        this.props.saveReaction(reaction);
+      }
+    }
+  }
+
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <Script url="/static/ChemDoodleWeb.js" />
+        <Slide
+          onMountEnter
+          onUnmountExit
+          in
+          direction="left"
+        >
+          <ActivityMaps {...this.props} />
+        </Slide>
       </div>
     );
   }
 }
 
 ActivityMapsPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  saveReaction: PropTypes.func,
+  routeParams: PropTypes.object,
+  reaction: PropTypes.string,
 };
 
-const mapStateToProps = createStructuredSelector({
-  activityMapsPage: makeSelectActivityMapsPage(),
+const mapStateToProps = (state) => ({
+  selectedSystem: state.get('activityMapsPageReducer').selectedSystem,
+  systems: state.get('activityMapsPageReducer').systems,
+  structures: state.get('activityMapsPageReducer').structures,
+  reaction: state.get('activityMapsPageReducer').reaction,
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  clickDot: (dot) => {
+    dispatch(actions.clickDot(dot));
+  },
+  saveSystems: (systems) => {
+    dispatch(actions.saveSystems(systems));
+  },
+  saveStructures: (structures) => {
+    dispatch(actions.saveStructures(structures));
+  },
+  saveReaction: (reaction) => {
+    dispatch(actions.saveReaction(reaction));
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityMapsPage);

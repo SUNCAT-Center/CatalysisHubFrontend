@@ -1,10 +1,13 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import ElementBox from '../index';
+import ElementBox from '../index';
 
 describe('<ElementBox />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('it should render a styled div', () => {
+    const renderedComponent = shallow(
+      <ElementBox label="test" clickElement={() => {}} />
+    );
+    expect(renderedComponent.text()).toContain('div');
   });
 });

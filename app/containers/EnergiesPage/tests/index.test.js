@@ -1,10 +1,20 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import { EnergiesPage } from '../index';
+import { EnergiesPage } from '../index';
 
 describe('<EnergiesPage />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should return a div', () => {
+    expect(shallow(
+      <EnergiesPage
+        dispatch={() => {}}
+        receiveReactions={() => {}}
+        clearSystems={() => {}}
+        selectReaction={() => {}}
+        saveSystem={() => {}}
+        submitSearch={() => {}}
+        matchingReactions={[]}
+        reactionSystems={[]}
+      />).type()).toEqual('div');
   });
 });
