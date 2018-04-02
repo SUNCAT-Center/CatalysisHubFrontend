@@ -51,6 +51,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     axios.get(url, params).then((response) => {
       this.props.setCellParameters(response.data.cell_params);
       this.props.receiveBulkStructure(response.data.std_cif);
+      this.props.setSynonyms(response.data.synonyms);
     });
   }
 
@@ -154,6 +155,7 @@ CellParameterInput.propTypes = {
   bulkStructure: PropTypes.string,
   setCellParameters: PropTypes.func,
   receiveBulkStructure: PropTypes.func,
+  setSynonyms: PropTypes.func,
   classes: PropTypes.object,
   synonyms: PropTypes.array,
 };
@@ -172,6 +174,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   receiveBulkStructure: (bulkStructure) => {
     dispatch(actions.receiveBulkStructure(bulkStructure));
+  },
+  setSynonyms: (synonyms) => {
+    dispatch(actions.setSynonyms(synonyms));
   },
 });
 

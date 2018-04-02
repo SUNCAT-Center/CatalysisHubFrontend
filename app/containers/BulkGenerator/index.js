@@ -148,6 +148,44 @@ export class BulkGenerator extends React.Component { // eslint-disable-line reac
             {getStepContent(this.props.activeStep, this.props)}
           </Paper>
 
+          <Paper className={this.props.classes.stepperPaper}>
+            <Grid
+              container
+              justify="space-between"
+              direction="row"
+              className={this.props.classes.buttongrid}
+            >
+              <Grid item>
+                <Stepper activeStep={this.props.activeStep} className={this.props.classes.stepper} orientation={isMobileOnly ? 'vertical' : 'horizontal'}>
+                  {steps.map((label) => {
+                    const props = {};
+                    const labelProps = {};
+                    return (
+                      <Step key={label} {...props}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+              </Grid>
+              <Grid item>
+                <Button
+                  className={this.props.classes.button}
+                  disabled={this.props.activeStep === 0}
+                  onClick={this.handleBack}
+                >
+                  <MdChevronLeft /> Back
+                </Button><Button
+                  raised
+                  className={this.props.classes.button}
+                  color="primary"
+                  onClick={this.handleNext}
+                >
+                Next <MdChevronRight />
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper>
 
         </div>
       </Slide>

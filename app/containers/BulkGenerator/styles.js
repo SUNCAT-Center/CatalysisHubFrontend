@@ -6,6 +6,7 @@ export const styles = (theme) => ({
   stepperPaper: {
     padding: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
   },
   stepper: {
   },

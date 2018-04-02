@@ -22,6 +22,7 @@ import { MdAdd, MdFileUpload } from 'react-icons/lib/md';
 
 
 import axios from 'axios';
+import cachios from 'cachios';
 import { flaskRoot } from 'utils/constants';
 
 import * as actions from './actions';
@@ -64,8 +65,10 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
     this.props.setSpacegroup(parseInt(this.state.spacegroup, 10));
     const params = { params: {
       spacegroup: this.state.spacegroup,
-    } };
-    axios.get(url, params).then((response) => {
+    },
+      ttl: 300,
+    };
+    cachios.get(url, params).then((response) => {
       this.props.receiveWyckoffList(response.data.wyckoff_list);
       this.props.setWyckoffPoints([]);
       this.setState({
