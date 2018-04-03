@@ -183,6 +183,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         chemicalComposition
         facet
         reactionEnergy
+        activationEnergy
         surfaceComposition
         chemicalComposition
         reactionSystems {
