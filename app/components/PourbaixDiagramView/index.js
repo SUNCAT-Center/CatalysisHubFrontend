@@ -4,6 +4,8 @@
  *
  */
 import React from 'react';
+import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 import axios from 'axios';
 import Button from 'material-ui/Button';
@@ -13,6 +15,19 @@ import Select from 'material-ui/Select';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles';
+
+import { flaskRoot } from 'utils/constants';
+
+const styles = (theme) => ({
+  textField: {
+    margin: theme.spacing.unit,
+  },
+  headerBar: {
+    marginTop: theme.spacing.unit,
+  },
+});
 
 const initialState = {
   element1: '',
@@ -99,7 +114,7 @@ class PourbaixDiagramView extends React.Component {
     });
 
     axios
-      .post('http://127.0.0.1:5000/apps/spacieslist', {
+      .post(`${flaskRoot}apps/pourbaix/`, {
         element1: this.state.element1,
         element2: this.state.element2,
         temperature: this.state.temperature,
@@ -109,7 +124,6 @@ class PourbaixDiagramView extends React.Component {
         checkedPymatgen: this.state.checkedPymatgen,
       })
       .then((response) => {
-        console.log(response);
         this.setState({
           loading: false,
           ionList: response.data[0].ion_list,
@@ -126,7 +140,6 @@ class PourbaixDiagramView extends React.Component {
           });
           return [`conc_${listValue[0]}`];
         });
-        console.log(this.state.ionsConc);
       });
   }
 
@@ -142,9 +155,8 @@ class PourbaixDiagramView extends React.Component {
       });
       return this.state.ionsConc;
     });
-    console.log(this.state.ionsConc);
     axios
-      .post('http://127.0.0.1:5000/apps/pourbaix', {
+      .post(`${flaskRoot}apps/pourbaix`, {
         element1: this.state.element1,
         element2: this.state.element2,
         elem1_compo: this.state.elem1_compo,
@@ -156,7 +168,6 @@ class PourbaixDiagramView extends React.Component {
         checkedML: this.state.checkedML,
       })
       .then((response) => {
-        console.log(response);
         this.setState({
           loading: false,
           completed: 100,
@@ -176,13 +187,12 @@ class PourbaixDiagramView extends React.Component {
       (parseInt(this.state.elem1_compo, 10) + parseInt(this.state.elem2_compo, 10));
 
     axios
-      .post('http://127.0.0.1:5000/apps/pourbaix_pymatgen', {
+      .post(`${flaskRoot}apps/pourbaix_pymatgen`, {
         element1: this.state.element1,
         element2: this.state.element2,
         compositionElem1,
       })
       .then((response) => {
-        console.log(response);
         this.setState({
           imagePymatgen: response.data[0].data_url,
           h_line_x: response.data[0].h_line_x,
@@ -204,11 +214,10 @@ class PourbaixDiagramView extends React.Component {
 
   submitSurfacePourbaix() {
     axios
-      .post('http://127.0.0.1:5000/apps/pourbaix_surface', {
+      .post(`${flaskRoot}apps/pourbaix_surface`, {
         surface1: this.state.surface,
       })
       .then((response) => {
-        console.log(response);
         this.setState({
           imageSurface: response.data[0].data_url,
         });
@@ -290,26 +299,48 @@ class PourbaixDiagramView extends React.Component {
 
     lineData.push(hLine, oLine, neutralLine, V0Line, labelsLoc);
 
-    console.log(
-      lineData.map((elem) => elem)
-    );
+    /* console.log( lineData.map((elem) => elem));*/
 
     return (
       <div>
-        <h2> Pourbaix Diagram </h2>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          className={this.props.classes.headerBar}
+        >
+          <Grid item>
+            <h2> Pourbaix Diagram </h2>
+          </Grid>
+          <Grid>
+            <div
+              className={this.props.classes.infoText}
+            >Powered by <ReactGA.OutboundLink
+              eventLabel="https://github.com/MengZ188/CatalysisHubBackend"
+              to="https://github.com/MengZ188/CatalysisHubBackend"
+              target="_blank"
+            >
+                github/MengZ188/CatalysisHubBackend
+              </ReactGA.OutboundLink>
+            </div>
+          </Grid>
+        </Grid>
         <h3>For Bulk Systems:</h3>
         <form>
           <TextField
+            className={this.props.classes.textField}
             label="Element#1"
             value={this.state.element1.value}
             onChange={this.handleChange('element1')}
           />
           <TextField
+            className={this.props.classes.textField}
             label="Element#2"
             value={this.state.element2.value}
             onChange={this.handleChange('element2')}
           />
           <TextField
+            className={this.props.classes.textField}
             label="Temperature"
             value={this.state.temperature.value}
             onChange={this.handleChange('temperature')}
@@ -521,6 +552,8 @@ class PourbaixDiagramView extends React.Component {
   }
 }
 
-PourbaixDiagramView.propTypes = {};
+PourbaixDiagramView.propTypes = {
+  classes: PropTypes.object,
+};
 
-export default PourbaixDiagramView;
+export default withStyles(styles, { withTheme: true })(PourbaixDiagramView);
