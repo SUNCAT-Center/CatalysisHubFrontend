@@ -14,6 +14,12 @@ export const styles = (theme) => ({
     margin: theme.spacing.unit,
     textTransform: 'none',
   },
+  buttonLink: {
+    textDecoration: 'none',
+    textTransform: 'none',
+    color: 'white',
+    fontWeight: 'bold',
+  },
   header: {
     marginTop: theme.spacing.unit,
   },

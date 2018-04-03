@@ -16,6 +16,7 @@ import axios from 'axios';
 import { flaskRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
+import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as actions from './actions';
 import { styles } from './styles';
 
@@ -34,6 +35,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
       _.pick(props, ['cellParameters']));
     this.getStructure = this.getStructure.bind(this);
     this.handleCellParameterChange = this.handleCellParameterChange.bind(this);
+    this.handoffBulkStructure = this.handoffBulkStructure.bind(this);
   }
   componentDidMount() {
     this.getStructure();
@@ -66,6 +68,19 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     };
   }
 
+  handoffBulkStructure() {
+    const bulkParams = {
+      wyckoff: {
+        synonyms: this.props.synonyms,
+        spacegroup: this.props.spacegroup,
+      },
+    };
+
+    this.props.receiveBulkCif(this.props.bulkStructure);
+    this.props.saveBulkParams(bulkParams);
+    this.props.dropBulkInput();
+  }
+
   render() {
     return (
       <div>
@@ -87,9 +102,9 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             <li
               key={`li_${i}`}
             >{synonym}</li>
-                ))}
+              ))}
         </ul>
-            }</div>
+        }</div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h3>Input Cell Parameters</h3>
@@ -126,22 +141,24 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
                 />
               </FormControl>
             </Grid>
-            ))}
+        ))}
         </Grid>
         <div>
-          Now you can cut slabs using <Link
-            to={{
-              pathname: '/catKitDemo/',
-              query: JSON.stringify(_.pick(this.props,
-                ['cellParameters',
-                  'bulkStructure',
-                  'wyckoffPoints',
-                ])
-              ),
-            }}
+        Now you can cut slabs using <Button
+          color="primary"
+          raised
+          onClick={this.handoffBulkStructure}
+          className={this.props.classes.button}
+        >
+          <Link
+            className={this.props.classes.buttonLink}
+            to={'/catkitDemo'}
           >
-            CatKit</Link>.
-        </div>
+          CatKit
+        </Link>
+        </Button>
+      .
+    </div>
       </div>
     );
   }
@@ -155,6 +172,9 @@ CellParameterInput.propTypes = {
   bulkStructure: PropTypes.string,
   setCellParameters: PropTypes.func,
   receiveBulkStructure: PropTypes.func,
+  receiveBulkCif: PropTypes.func,
+  dropBulkInput: PropTypes.func,
+  saveBulkParams: PropTypes.func,
   setSynonyms: PropTypes.func,
   classes: PropTypes.object,
   synonyms: PropTypes.array,
@@ -177,6 +197,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setSynonyms: (synonyms) => {
     dispatch(actions.setSynonyms(synonyms));
+  },
+  receiveBulkCif: (bulkCif) => {
+    dispatch(catKitActions.receiveBulkCif(bulkCif));
+  },
+  dropBulkInput: () => {
+    dispatch(catKitActions.dropBulkInput());
+  },
+  saveBulkParams: (bulkParams) => {
+    dispatch(catKitActions.saveBulkParams(bulkParams));
   },
 });
 

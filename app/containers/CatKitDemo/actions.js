@@ -199,7 +199,9 @@ export function saveLatticeConstant(latticeConstant) {
 export function saveBulkParams(bulkParams) {
   return {
     type: constants.SAVE_BULK_PARAMS,
-    payload: bulkParams,
+    payload: {
+      bulkParams,
+    },
   };
 }
 

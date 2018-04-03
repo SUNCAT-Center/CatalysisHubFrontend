@@ -28,7 +28,7 @@ export class BulkView extends React.Component { // eslint-disable-line react/pre
               />
             </Grid>
           </Grid>
-          { typeof (this.props.bulkParams.wyckoff) === 'undefined' ? null :
+          { _.isEmpty(this.props.bulkParams) || _.isEmpty(this.props.bulkParams.wyckoff) ? null :
           <div>
             <h2>Wyckoff Parameters</h2>
             <Grid container direction="row" justify="space-between">

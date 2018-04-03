@@ -3,16 +3,21 @@ import PropTypes from 'prop-types';
 
 import FileDownload from 'react-file-download';
 
+/* import IconButton from 'material-ui/IconButton';*/
+
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from 'material-ui/Table';
-import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import { MdClear, MdEdit, MdClose, MdFileDownload } from 'react-icons/lib/md';
+import { MdClear,
+  MdEdit,
+  MdClose,
+  MdAccessTime,
+  MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
@@ -28,6 +33,9 @@ import { styles } from './styles';
 const backendRoot = `${flaskRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/generate_dft_input`;
 
+const fireworksRoot = `${flaskRoot}/apps/fireworks`;
+const fireworksUrl = `${fireworksRoot}/schedule_workflows`;
+
 const initialState = {
   loading: false,
 };
@@ -40,6 +48,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.clearCalculations = this.clearCalculations.bind(this);
     this.removeCalculation = this.removeCalculation.bind(this);
     this.downloadCalculations = this.downloadCalculations.bind(this);
+    this.queueCalculations = this.queueCalculations.bind(this);
   }
   clearCalculations() {
     this.props.clearCalculations();
@@ -63,6 +72,14 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.setState({ loading: false });
   }
 
+  queueCalculations() {
+    const params = { params: {
+      calculations: JSON.stringify(this.props.calculations),
+    } };
+    axios.get(fireworksUrl, params).then(() => {
+    });
+  }
+
   render() {
     return (
       <div>
@@ -84,6 +101,8 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   <TableCell padding="none">Adsorbates</TableCell>
                   <TableCell padding="none">Calculator</TableCell>
                   <TableCell padding="none"><MdEdit /></TableCell>
+                  <TableCell padding="none">Status</TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -106,9 +125,13 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
                     <TableCell padding="none">
-                      <IconButton onClick={() => { this.removeCalculation(i); }}>
-                        <MdClose />
-                      </IconButton>
+                      <MdClose onClick={() => { this.removeCalculation(i); }} />
+                    </TableCell>
+                    <TableCell>
+                      <div className={this.props.classes.statusUnfinished}>
+                        <MdAccessTime />
+                      </div>
+
                     </TableCell>
                   </TableRow>
                   ))}
@@ -116,16 +139,25 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             </Table>
             <Grid container justify="flex-end" direction="row">
               <Grid item>
-                <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> Clear All</Button>
+                <Button raised onClick={this.clearCalculations} color="inherit" className={this.props.classes.button}><MdClear /> {'\u00A0'}Clear</Button>
               </Grid>
               <Grid item>
                 <Button
                   raised
                   onClick={this.downloadCalculations}
+                  className={this.props.classes.button}
+                ><MdFileDownload />{'\u00A0'} Download</Button>
+              </Grid>
+              {/*
+              <Grid item>
+                <Button
+                  raised
+                  onClick={() => {this.queueCalculations()}}
                   color="primary"
                   className={this.props.classes.button}
-                ><MdFileDownload /> Download All</Button>
+                ><MdCloud />{'\u00A0'} Queue</Button>
               </Grid>
+              */}
             </Grid>
 
           </Paper>

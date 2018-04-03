@@ -75,6 +75,7 @@ function catKitDemoReducer(state = initialState, action) {
       return {
         ...state,
         activeStep: initialState.activeStep,
+        customBulkInput: initialState.customBulkInput,
       };
     }
     case constants.STEPPER_HANDLE_NEXT: {

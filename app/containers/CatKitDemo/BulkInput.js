@@ -97,12 +97,6 @@ const structureData = {
 class BulkInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    const rawQuery = Object.values(props.location.query).join('');
-    if (rawQuery) {
-      const query = JSON.parse(Object.values(props.location.query).join(''));
-      this.props.receiveBulkCif(query.bulkStructure);
-      this.props.dropBulkInput();
-    }
 
     let latticeConstant;
     if (this.props.routeParams.latticeConstant) {
@@ -156,21 +150,26 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         elements: this.state.elements.slice(0, structureData[this.state.structure].nspecies),
         u: this.state.u,
         covera: this.state.covera,
+        wyckoff: this.props.bulkParams.wyckoff,
       },
     } };
 
     this.props.clearSlabCifs();
-    /* this.props.saveBulkParams(params.params);*/
+    this.props.saveBulkParams(params.params.bulkParams);
 
     if (!this.props.customBulkInput) {
       axios.get(bulkUrl, params).then((response) => {
         this.props.receiveBulkCif(response.data.cifdata);
+        this.setState({
+          latticeConstant: response.data.lattice_constant.toFixed(3),
+        });
         const wyckoffParams = {
           cif: response.data.cifdata,
         };
+        params.params.bulkParams.lattice_constant = response.data.lattice_constant;
         axios.get(wyckoffUrl, { params: wyckoffParams }).then((wyckoffResponse) => {
           params.params.bulkParams.wyckoff = wyckoffResponse.data;
-          this.props.saveBulkParams(params.params);
+          this.props.saveBulkParams(params.params.bulkParams);
         });
       });
     }
@@ -263,23 +262,6 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
                   ))}
             </Select>
           </FormControl>
-
-          <FormControl className={this.props.classes.formControl} >
-            <InputLabel
-              htmlFor="lattice-constant-helper"
-            >Lattice Constant</InputLabel>
-            <Input
-              id="lattice-constant-helper"
-              value={this.state.latticeConstant}
-              onChange={this.handleChange('latticeConstant')}
-              onKeyDown={((event) => {
-                if (event.nativeEvent.keyCode === 13) {
-                  this.generateBulk();
-                }
-              })}
-            />
-            <FormHelperText>Should be a number in Angstrom</FormHelperText>
-          </FormControl>
           {
                 Object.keys(_.get(structureData, [this.state.structure, 'extraParams'], {})).map((extraParam) => (
                   <FormControl className={this.props.classes.formControl} key={`extraParam_${extraParam}`}>
@@ -318,6 +300,24 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
               ))
               }
 
+          <FormControl className={this.props.classes.formControl} >
+            <InputLabel
+              htmlFor="lattice-constant-helper"
+            >Lattice Constant</InputLabel>
+            <Input
+              id="lattice-constant-helper"
+              disabled
+              value={this.state.latticeConstant}
+              onChange={this.handleChange('latticeConstant')}
+              onKeyDown={((event) => {
+                if (event.nativeEvent.keyCode === 13) {
+                  this.generateBulk();
+                }
+              })}
+            />
+            <FormHelperText>{'Default based on Vegard\'s law'}</FormHelperText>
+          </FormControl>
+
 
         </form>
         }
@@ -329,6 +329,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
 
 BulkInput.propTypes = {
   bulkCif: PropTypes.string,
+  bulkParams: PropTypes.object,
   classes: PropTypes.object.isRequired,
   clearBulkCif: PropTypes.func,
   clearSlabCifs: PropTypes.func,
@@ -339,7 +340,6 @@ BulkInput.propTypes = {
   receiveBulkCif: PropTypes.func.isRequired,
   routeParams: PropTypes.object,
   saveBulkParams: PropTypes.func,
-  location: PropTypes.object,
 };
 
 

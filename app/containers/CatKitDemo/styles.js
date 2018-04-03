@@ -1,4 +1,7 @@
 export const styles = (theme) => ({
+  statusUnfinished: {
+    color: 'red',
+  },
   header: {
     margin: theme.spacing.unit,
     padding: theme.spacing.unit,
@@ -13,6 +16,14 @@ export const styles = (theme) => ({
   },
   buttongrid: {
     padding: theme.spacing.unit,
+  },
+  buttonLink: {
+    textTransformation: 'none',
+    textDecoration: 'none',
+    fontColor: 'white',
+    color: 'white',
+    fontWeight: 'bold',
+
   },
   paper: {
     padding: theme.spacing.unit,
