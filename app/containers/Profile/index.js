@@ -88,7 +88,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
         this.setState({
           allAuthors:
           [...new Set(
-            [].concat.apply([], response.data.data.catapp.edges.map((edge) => (JSON.parse(edge.node.PublicationAuthors.replace(/'/g, '"')
+            [].concat.apply([], response.data.data.catapp.edges.map((edge) => (JSON.parse(edge.node.PublicationAuthors.replace(/'/g, '"') // eslint-disable-line prefer-spread
 .replace('.', '')
 .replace('\\\\o', 'o')
 .replace('{\\o}', 'o')
