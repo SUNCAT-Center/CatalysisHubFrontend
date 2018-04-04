@@ -140,7 +140,6 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       query,
     }).then((response) => {
       const suggestions = new Map();
-      console.log(response);
       response.data.data.systems.edges.map((edge) => {
         /* console.log(edge);*/
         // suggestions.push({label: edge.node.reactants});
@@ -156,9 +155,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
         rawSuggestions: [...suggestions.values()],
       });
     })
-      .catch((error) => {
-        console.log(query);
-        console.log(error);
+      .catch(() => {
       });
   }
   getSuggestions(value) {
