@@ -1,3 +1,4 @@
+/* eslint-disable */
 //
 // ChemDoodle Web Components 8.0.0
 //
