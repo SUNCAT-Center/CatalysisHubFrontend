@@ -202,7 +202,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
   render() {
     return (
       <div>
-        {this.state.initialLoading ? <LinearProgress /> : null }
+        {this.state.initialLoading ? <LinearProgress className={this.props.classes.progress} /> : null }
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
             <h2>Activity Map {this.props.reaction.replace(/_/g, ' ')}</h2>
@@ -319,7 +319,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
           <div>{`${this.state.reference}`}</div>
           }
         </Paper>
-        {this.state.loading ? <LinearProgress /> : null }
+        {this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
       </div>
     );
   }
