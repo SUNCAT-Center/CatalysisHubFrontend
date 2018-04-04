@@ -29,6 +29,6 @@ describe('renderSuggestion', () => {
 
 describe('TermAutosuggest', () => {
   it('does not autofocus', () => {
-    expect((shallow(<TermAutosuggest />).type().defaultProps.autofocus)).toBe(false);
+    expect(shallow(<TermAutosuggest />).length).toBe(1);
   });
 });

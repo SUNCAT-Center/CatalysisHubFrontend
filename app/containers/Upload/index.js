@@ -5,7 +5,8 @@
  */
 
 import _ from 'lodash';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';

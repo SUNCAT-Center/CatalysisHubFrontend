@@ -15,6 +15,6 @@ describe('<EnergiesPage />', () => {
         submitSearch={() => {}}
         matchingReactions={[]}
         reactionSystems={[]}
-      />).type()).toEqual('div');
+      />).find('div').length).toBe(1);
   });
 });

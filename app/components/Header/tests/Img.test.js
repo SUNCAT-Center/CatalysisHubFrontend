@@ -1,12 +1,12 @@
 import React from 'react';
-import { mount, render } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Img from '../Img';
 
 describe('<Img />', () => {
   it('should render an <img> tag', () => {
-    const renderedComponent = render(<Img src={'http://example.com/test.jpg'} alt={'test'} />);
-    expect(renderedComponent.find('img').length).toEqual(1);
+    const renderedComponent = shallow(<Img src={'http://example.com/test.jpg'} alt={'test'} />);
+    expect(renderedComponent.dive().find('img').length).toEqual(1);
   });
 
   it('should have a className attribute', () => {

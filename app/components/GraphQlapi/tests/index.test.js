@@ -5,6 +5,6 @@ import GraphQlapi from '../index';
 
 describe('<GraphQlapi />', () => {
   it('should render five divs', () => {
-    expect(shallow(<GraphQlapi />).find('div').length).toBe(5);
+    expect(shallow(<GraphQlapi cookies={{}} />).dive().find('div').length).toBe(0);
   });
 });
