@@ -22,7 +22,7 @@ export class ActivityMapsPage extends React.Component { // eslint-disable-line r
       reaction = 'OER';
     }
     if (reaction !== this.props.reaction) {
-      if (['OER', 'NRR', 'CO_Hydrogenation', 'ORR', 'CO2RR'].includes(reaction)) {
+      if (['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'].includes(reaction)) {
         this.props.saveReaction(reaction);
       }
     }
