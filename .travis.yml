@@ -6,9 +6,9 @@ node_js:
   - 6
   - 5
 
-cache:
-    directories:
-        - node_modules # NPM Packages
+#cache:
+#directories:
+#- node_modules # NPM Packages
 
 script:
   - node ./internals/scripts/generate-templates-for-linting
@@ -26,7 +26,7 @@ notifications:
 
 after_success: 'npm run coveralls'
 
-cache:
-  yarn: true
-  directories:
-    - node_modules
+#cache:
+#yarn: true
+#directories:
+#- node_modules
