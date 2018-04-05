@@ -12,6 +12,7 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
+
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
   const { injectReducer } = getAsyncInjectors(store);
