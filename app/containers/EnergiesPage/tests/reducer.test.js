@@ -5,11 +5,23 @@ import * as constants from '../constants';
 describe('energiesPageReducer', () => {
   it('returns the initial state', () => {
     expect(energiesPageReducer(undefined, {})).toEqual(({
-      selectedReaction: {},
+      dbError: false,
+      filter: {},
       matchingReactions: [],
-      searchSubmitted: false,
+      order: 'desc',
+      orderBy: '',
       reactionSystems: [],
-    }));
+      resultSize: 0,
+      search: {},
+      searchParams: {},
+      searchQuery: '',
+      searchString: '',
+      searchSubmitted: false,
+      selectedReaction: {},
+      simpleSearch: false,
+      withGeometry: true,
+    }
+    ));
   });
   it('handles DEFAULT_ACTION ', () => {
     const defaultAction = { type: constants.DEFAULT_ACTION };
