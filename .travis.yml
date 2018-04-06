@@ -6,13 +6,13 @@ node_js:
   - 6
   - 5
 
-#cache:
-#directories:
-#- node_modules # NPM Packages
+cache:
+  directories:
+    - node_modules # NPM Packages
 
 script:
   - node ./internals/scripts/generate-templates-for-linting
-  - npm run test
+  - npm run test -- -i
   - npm run build
 
 before_install:
