@@ -11,9 +11,6 @@ import {
 
 export function clickDot(event) {
   const point = event.points[0];
-  const miniPoint = { x: point.x, y: point.y };
-  console.log(miniPoint);
-
   return {
     type: CLICK_DOT,
     payload: { x: point.x, y: point.y },

@@ -43,8 +43,7 @@ class BarrierChart extends React.Component { // eslint-disable-line react/prefer
     }); // eslint-disable-line react/no-did-mount-set-state
   }
 
-  clickThumbnail = (uuid) => {
-    console.log(uuid);
+  clickThumbnail = () => {
   }
 
 

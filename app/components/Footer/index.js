@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';

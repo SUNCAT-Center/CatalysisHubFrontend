@@ -14,5 +14,9 @@ export const styles = (theme) => ({
   itemText: {
     width: 10,
   },
+  progress: {
+    marginTop: 2 * theme.spacing.unit,
+    marginBottom: 2 * theme.spacing.unit,
+  },
 });
 

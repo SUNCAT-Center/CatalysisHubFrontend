@@ -5,11 +5,23 @@ import * as constants from '../constants';
 describe('energiesPageReducer', () => {
   it('returns the initial state', () => {
     expect(energiesPageReducer(undefined, {})).toEqual(({
-      selectedReaction: {},
+      dbError: false,
+      filter: {},
       matchingReactions: [],
-      searchSubmitted: false,
+      order: 'desc',
+      orderBy: '',
       reactionSystems: [],
-    }));
+      resultSize: 0,
+      search: {},
+      searchParams: {},
+      searchQuery: '',
+      searchString: '',
+      searchSubmitted: false,
+      selectedReaction: {},
+      simpleSearch: false,
+      withGeometry: true,
+    }
+    ));
   });
   it('handles DEFAULT_ACTION ', () => {
     const defaultAction = { type: constants.DEFAULT_ACTION };
@@ -25,7 +37,7 @@ describe('energiesPageReducer', () => {
   });
   it('handles CLEAR_SYSTEMS', () => {
     const clearSystems = { type: constants.CLEAR_SYSTEMS };
-    expect(energiesPageReducer({}, clearSystems)).toEqual({ reactionSystems: [] });
+    expect(energiesPageReducer({}, clearSystems)).toEqual({ reactionSystems: [], searchSubmitted: false });
   });
   it('handles SELECT_REACTION', () => {
     const selectReaction = { type: constants.SELECT_REACTION };
@@ -38,7 +50,7 @@ describe('energiesPageReducer', () => {
   });
   it('handles SUBMIT_SEARCH', () => {
     const submitSearch = { type: constants.SUBMIT_SEARCH };
-    expect(energiesPageReducer({}, submitSearch)).toEqual({ searchSubmitted: true });
+    expect(energiesPageReducer({}, submitSearch)).toEqual({ searchParams: {}, searchSubmitted: true });
   });
 });
 

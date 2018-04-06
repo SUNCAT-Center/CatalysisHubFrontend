@@ -6,8 +6,17 @@ import PeriodicTable from '../index';
 describe('<PeriodicTable />', () => {
   it('should render a div', () => {
     const renderedComponent = shallow(
-      <PeriodicTable selection="Nothing selected" clearSelection={() => {}} />
+      <PeriodicTable
+        selection="Nothing selected" clearSelection={() => {}}
+        store={{
+          getState: () => ({
+            get: () => ({}),
+          }),
+          subscribe: () => ({
+          }),
+        }}
+      />
     );
-    expect(renderedComponent.find('div').length).toEqual(1);
+    expect(renderedComponent.dive().find('div').length).toEqual(1);
   });
 });

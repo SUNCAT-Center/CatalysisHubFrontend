@@ -4,7 +4,8 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
 import { MdAddCircleOutline, MdPanoramaFishEye, MdViewList } from 'react-icons/lib/md';
@@ -28,9 +29,9 @@ const styles = (theme) => ({
   publicationAction: {
     margin: theme.spacing.unit,
     height: 6,
-    backgroundColor: theme.palette.sandhill[50],
+    backgroundColor: _.get(theme, 'palette.sandhill.50'),
     '&:hover': {
-      backgroundColor: theme.palette.sandhill[300],
+      backgroundColor: _.get(theme, 'palette.sandhill.300'),
     },
   },
   outboundLink: {

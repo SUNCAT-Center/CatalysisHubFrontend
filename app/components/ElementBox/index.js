@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { withStyles } from 'material-ui/styles';
 
 import { Element } from '@chemistry/elements';
@@ -27,16 +28,16 @@ const styles = (theme) => ({
     fontSize: '1.23em',
   },
   gas: {
-    backgroundColor: theme.palette.cardinalred[500],
+    backgroundColor: _.get(theme, 'palette.cardinalred.500'),
   },
   liquid: {
-    backgroundColor: theme.palette.teal[500],
+    backgroundColor: _.get(theme, 'palette.teal[500]'),
   },
   solid: {
-    backgroundColor: theme.palette.sandstone[500],
+    backgroundColor: _.get(theme, 'palette.sandstone[500]'),
   },
   artificial: {
-    backgroundColor: theme.palette.sandhill[500],
+    backgroundColor: _.get(theme, 'palette.sandhill[500]'),
   },
   number: {
     marginTop: -10,

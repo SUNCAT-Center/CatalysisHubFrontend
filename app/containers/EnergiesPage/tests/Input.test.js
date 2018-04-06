@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { EnergiesPageInput } from '../Input';
+import EnergiesPageInput from '../Input';
 
 describe('<Input />', () => {
   it('returns a div', () => {
@@ -11,6 +11,6 @@ describe('<Input />', () => {
         submitSearch={() => {}}
       />,
       { context: {} }
-    ).type()).toBe('div');
+    ).find('Paper').length).toBe(0);
   });
 });

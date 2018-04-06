@@ -4,7 +4,8 @@
 *
 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import { withStyles } from 'material-ui/styles';
 import Tooltip from 'material-ui/Tooltip';

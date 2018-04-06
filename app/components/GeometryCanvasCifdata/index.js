@@ -20,8 +20,7 @@ import { isMobile } from 'react-device-detect';
 
 const jQuery = require('jquery');
 window.jQuery = jQuery;
-const { ChemDoodle } = require('utils/ChemDoodleWeb');
-
+const { ChemDoodle } = require('utils/ChemDoodleWeb'); // eslint-disable-line no-unused-vars
 const styles = (theme) => ({
   button: {
     margin: theme.spacing.unit,
@@ -220,8 +219,8 @@ GeometryCanvasCifdata.propTypes = {
   z: PropTypes.number,
   borderWidth: PropTypes.number,
   altLabels: PropTypes.object,
-  perspective: PropTypes.bool,
-  tiltToRotate: PropTypes.bool,
+  perspective: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  tiltToRotate: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   cookies: instanceOf(Cookies).isRequired,
 };
 

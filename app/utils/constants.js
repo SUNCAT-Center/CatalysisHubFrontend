@@ -20,8 +20,8 @@ module.exports = {
       tooltip: 'Interactive activity maps.',
       children: [
         {
-          title: 'CO Hydrogenation',
-          route: 'CO_Hydrogenation',
+          title: 'CO Hydrogenation (111)',
+          route: 'CO_Hydrogenation_111',
         },
         {
           title: 'NRR',
