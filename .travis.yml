@@ -11,7 +11,7 @@ cache:
     - node_modules # NPM Packages
 
 script:
-  - node ./internals/scripts/generate-templates-for-linting
+  # - node ./internals/scripts/generate-templates-for-linting
   - npm run test -- -i
   - npm run build
 
