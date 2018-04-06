@@ -13,7 +13,7 @@ cache:
 script:
   # - node ./internals/scripts/generate-templates-for-linting
   - npm run test -- -i
-  - npm run build
+  # - npm run build
 
 before_install:
   - export CHROME_BIN=chromium-browser
