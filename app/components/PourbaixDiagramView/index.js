@@ -19,8 +19,8 @@ import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 
 /* import { flaskRoot } from 'utils/constants'; */
-// const flaskRoot = 'http://api.catalysis-hub.org/'
-const flaskRoot = 'http://localhost:5000/'
+const flaskRoot = 'http://api.catalysis-hub.org/';
+// const flaskRoot = 'http://localhost:5000/';
 
 const styles = (theme) => ({
   textField: {
@@ -323,7 +323,7 @@ class PourbaixDiagramView extends React.Component {
               target="_blank"
             >
                 github/MengZ188/CatalysisHubBackend
-              </ReactGA.OutboundLink>
+            </ReactGA.OutboundLink>
             </div>
           </Grid>
         </Grid>
@@ -461,16 +461,16 @@ class PourbaixDiagramView extends React.Component {
         <br />
         <br />
 
-        <TextField 
-        label="Composition Element#1"
-        value={this.state.elem1_compo.value} 
-        onChange={this.handleChange('elem1_compo')} 
+        <TextField
+          label="Composition Element#1"
+          value={this.state.elem1_compo.value}
+          onChange={this.handleChange('elem1_compo')}
         />
 
-        <TextField 
-        label="Composition Element#2" 
-        value={this.state.elem2_compo.value} 
-        onChange={this.handleChange('elem2_compo')} 
+        <TextField
+          label="Composition Element#2"
+          value={this.state.elem2_compo.value}
+          onChange={this.handleChange('elem2_compo')}
         />
         <br />
         <br />
