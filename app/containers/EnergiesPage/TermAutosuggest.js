@@ -76,7 +76,7 @@ export function getSuggestionValue(suggestion) {
 
 
 export function renderInput(inputProps) {
-  const { classes, autoFocus, value, ref, helperText, label, onFocus, ...other } = inputProps;
+  const { classes, autoFocus, value, ref, helperText, label, onFocus, onKeyUp, ...other } = inputProps;
   return (
     <TextField
       autoFocus={autoFocus}
@@ -86,6 +86,7 @@ export function renderInput(inputProps) {
       helperText={helperText}
       label={label}
       onFocus={onFocus}
+      onKeyUp={() => { onKeyUp(); }}
       InputProps={{
         classes: {
           input: classes.input,
@@ -250,6 +251,9 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     });
     this.props.setSubstate(this.props.field, { label: '' });
     this.props.updateFilter(this.props.field, '');
+    setTimeout(() => {
+      this.props.keyUp();
+    }, 500);
   }
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -304,6 +308,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
             helperText: this.props.helperText,
             label: this.props.label,
             onChange: this.handleChange,
+            onKeyUp: this.props.keyUp,
             onKeyDown: ((event) => {
               if (event.nativeEvent.keyCode === 13) {
                 this.props.submitForm();
@@ -338,6 +343,7 @@ TermAutosuggest.propTypes = {
   setSubstate: PropTypes.func,
   submitForm: PropTypes.func,
   updateFilter: PropTypes.func,
+  keyUp: PropTypes.func,
   classes: PropTypes.object,
   autofocus: PropTypes.bool,
   helperText: PropTypes.string,

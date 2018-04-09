@@ -50,6 +50,7 @@ const styles = (theme) => ({
   },
   hint: {
     color: '#aaa',
+    marginBottom: theme.spacing.unit,
   },
 });
 
@@ -63,6 +64,7 @@ const initialState = {
   products: { label: 'any', value: '' },
   loading: false,
   suggestionsReady: false,
+  resultCount: 0,
 };
 
 class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -73,9 +75,13 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     this.submitForm = this.submitForm.bind(this);
     this.resetForm = this.resetForm.bind(this);
     this.setSubstate = this.setSubstate.bind(this);
+    this.getFilterString = this.getFilterString.bind(this);
+    this.getResultCount = this.getResultCount.bind(this);
+    this.getResultCount();
   }
   componentDidMount() {
     this.updateOptions();
+    this.getResultCount();
   }
 
   setSubstate(key, value) {
@@ -84,68 +90,30 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     this.setState(newSubstate);
   }
 
-  updateOptions(blocked = '') {
-    let query = '';
-    // Fetch Available Reactants
-    if (blocked !== 'reactants' && this.state.reactants.label === 'any') {
-      query = `{reactions(products: "~${this.state.products.value || ''}", reactants: "~", distinct: true) { edges { node { reactants } } }}`;
-      cachios.post(newGraphQLRoot, {
-        query,
-        ttl: 300,
-      }).then((response) => {
-        let reactants = [];
-        const reactant = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.reactants)));
-        reactants = reactant.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
-        reactants.push({ label: 'any', value: '' });
-        this.setState({
-          reactant_options: [...new Set(reactants)],
-          suggestionsReady: true,
-        });
-      }).catch((error) => {
-        this.props.setDbError(error);
-      });
-    }
-
-    // Fetch Available Products
-    if (blocked !== 'products' && this.state.products.label === 'any') {
-      query = `{reactions(reactants: "~${this.state.reactants.value || ''}", products: "~", distinct: true) { edges { node { products } } }}`;
-      cachios.post(newGraphQLRoot, {
-        query,
-        ttl: 300,
-      }).then((response) => {
-        let products = [];
-        const product = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.products)));
-        products = products.concat([].concat(...product));
-        products = product.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
-        /* products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));*/
-        products.push({ label: 'any', value: '' });
-        this.setState({
-          product_options: [...new Set(products)],
-          suggestionsReady: true,
-        }).catch(() => {
-          this.props.setDbError();
-        });
-      });
+  getResultCount() {
+    this.setState({
+      resultCount: '...',
+    });
+    const filterString = this.getFilterString();
+    const query = {
+      ttl: 300,
+      query: `query{reactions ( first: 0, ${filterString} ) {
+  totalCount
+  edges {
+    node {
+      id
     }
   }
-
-  handleChange(name) {
-    return (event) => {
+}}
+` };
+    cachios.post(newGraphQLRoot, query).then((response) => {
       this.setState({
-        [name]: event.target.value,
+        resultCount: `${response.data.data.reactions.totalCount} entries`,
       });
-      this.updateOptions(name);
-    };
+    });
   }
-  resetForm() {
-    this.setState(initialState);
-    this.updateOptions('');
-    this.props.receiveReactions([]);
-    this.props.clearSystems();
-  }
-  submitForm() {
-    this.props.clearSystems();
-    this.setState({ loading: true });
+
+  getFilterString() {
     const filters = [];
     if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
       filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
@@ -160,8 +128,30 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
     }
 
-
     const filterString = filters.join(', ');
+    return filterString;
+  }
+
+  handleChange(name) {
+    return (event) => {
+      this.setState({
+        [name]: event.target.value,
+      });
+      this.updateOptions(name);
+    };
+  }
+
+  resetForm() {
+    this.setState(initialState);
+    this.updateOptions('');
+    this.props.receiveReactions([]);
+    this.props.clearSystems();
+  }
+
+  submitForm() {
+    this.props.clearSystems();
+    this.setState({ loading: true });
+    const filterString = this.getFilterString();
     this.props.saveSearch(filterString);
     ReactGA.event({
       category: 'Search',
@@ -220,6 +210,51 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
   }
 
+  updateOptions(blocked = '') {
+    let query = '';
+    // Fetch Available Reactants
+    if (blocked !== 'reactants' && this.state.reactants.label === 'any') {
+      query = `{reactions(products: "~${this.state.products.value || ''}", reactants: "~", distinct: true) { edges { node { reactants } } }}`;
+      cachios.post(newGraphQLRoot, {
+        query,
+        ttl: 300,
+      }).then((response) => {
+        let reactants = [];
+        const reactant = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.reactants)));
+        reactants = reactant.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
+        reactants.push({ label: 'any', value: '' });
+        this.setState({
+          reactant_options: [...new Set(reactants)],
+          suggestionsReady: true,
+        });
+      }).catch((error) => {
+        this.props.setDbError(error);
+      });
+    }
+
+    // Fetch Available Products
+    if (blocked !== 'products' && this.state.products.label === 'any') {
+      query = `{reactions(reactants: "~${this.state.reactants.value || ''}", products: "~", distinct: true) { edges { node { products } } }}`;
+      cachios.post(newGraphQLRoot, {
+        query,
+        ttl: 300,
+      }).then((response) => {
+        let products = [];
+        const product = (response.data.data.reactions.edges.map((elem) => JSON.parse(elem.node.products)));
+        products = products.concat([].concat(...product));
+        products = product.map((r) => ({ key: Object.keys(r).join(' + '), value: Object.keys(r).join(' + ') }));
+        /* products = products.map((r) => ({ value: r, label: r.replace('star', '*') }));*/
+        products.push({ label: 'any', value: '' });
+        this.setState({
+          product_options: [...new Set(products)],
+          suggestionsReady: true,
+        }).catch(() => {
+          this.props.setDbError();
+        });
+      });
+    }
+  }
+
   render() {
     return (
       <Paper className={this.props.classes.paper}>
@@ -237,15 +272,16 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
         <h2>Reaction Energetics</h2>
+        <div className={this.props.classes.hint}>{this.state.resultCount}</div>
 
         <FormGroup row>
-          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus initialValue={this.props.filter.reactants} />
+          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus initialValue={this.props.filter.reactants} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'→'} </span>
-          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" initialValue={this.props.filter.products} />
+          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" initialValue={this.props.filter.products} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." initialValue={this.props.filter.surfaceComposition} />
+          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." initialValue={this.props.filter.surfaceComposition} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} />
+          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
 
           <br />
@@ -257,7 +293,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
           </Grid>
         </FormGroup>
         {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> :
-        <div className={this.props.classes.hint}>Partial input sufficient.</div>
+            null
         }
       </Paper>
     );
