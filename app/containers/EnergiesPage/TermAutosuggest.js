@@ -87,6 +87,7 @@ export function renderInput(inputProps) {
       label={label}
       onFocus={onFocus}
       onKeyUp={() => { onKeyUp(); }}
+      onTouchEnd={() => { onKeyUp(); }}
       InputProps={{
         classes: {
           input: classes.input,
@@ -168,7 +169,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       products = '';
     }
 
-    let surfaceComposition = (_.get(this.props.filter, 'surfaceComposition', '~') || '~').replace(/\*/g, 'star').replace(/[ ]/g, '');
+    let surfaceComposition = (_.get(this.props.filter, 'surfaceComposition', '~') || '~').replace(/\*/g, 'star');
     if (this.props.field === 'surfaceComposition') {
       surfaceComposition = 'surfaceComposition: "~", ';
     } else if (surfaceComposition !== '~') {
