@@ -37,7 +37,7 @@ const initialState = {
   elem1_compo: '',
   elem2_compo: '',
   compositionElem1: '',
-  temperature: '',
+  temperature: 298.15,
   column1Aqueous: '',
   column2Aqueous: '',
   column3Aqueous: '',
@@ -343,7 +343,7 @@ class PourbaixDiagramView extends React.Component {
           />
           <TextField
             className={this.props.classes.textField}
-            value={this.state.temperature.value}
+            value={this.state.temperature}
             onChange={this.handleChange('temperature')}
           />
           <FormGroup>
@@ -462,12 +462,14 @@ class PourbaixDiagramView extends React.Component {
         <br />
 
         <TextField
+          className={this.props.classes.textField}
           label="Composition Element#1"
           value={this.state.elem1_compo.value}
           onChange={this.handleChange('elem1_compo')}
         />
 
         <TextField
+          className={this.props.classes.textField}
           label="Composition Element#2"
           value={this.state.elem2_compo.value}
           onChange={this.handleChange('elem2_compo')}
@@ -523,6 +525,9 @@ class PourbaixDiagramView extends React.Component {
 
         <Plot
           data={lineData.map((line) => line)}
+          config={{
+            displayModeBar: false,
+          }}
           layout={{
             xaxis: {
               range: [-2, 14],
