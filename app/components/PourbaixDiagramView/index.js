@@ -18,7 +18,9 @@ import Switch from 'material-ui/Switch';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 
-import { flaskRoot } from 'utils/constants';
+/* import { flaskRoot } from 'utils/constants'; */
+const flaskRoot = 'http://api.catalysis-hub.org/';
+// const flaskRoot = 'http://localhost:5000/';
 
 const styles = (theme) => ({
   textField: {
@@ -156,7 +158,7 @@ class PourbaixDiagramView extends React.Component {
       return this.state.ionsConc;
     });
     axios
-      .post(`${flaskRoot}apps/pourbaix`, {
+      .post(`${flaskRoot}apps/pourbaix/pourbaix_ase/`, {
         element1: this.state.element1,
         element2: this.state.element2,
         elem1_compo: this.state.elem1_compo,
@@ -187,10 +189,10 @@ class PourbaixDiagramView extends React.Component {
       (parseInt(this.state.elem1_compo, 10) + parseInt(this.state.elem2_compo, 10));
 
     axios
-      .post(`${flaskRoot}apps/pourbaix_pymatgen`, {
+      .post(`${flaskRoot}apps/pourbaix/pourbaix_pymatgen/`, {
         element1: this.state.element1,
         element2: this.state.element2,
-        compositionElem1,
+        mat_co_1: compositionElem1,
       })
       .then((response) => {
         this.setState({
@@ -214,7 +216,7 @@ class PourbaixDiagramView extends React.Component {
 
   submitSurfacePourbaix() {
     axios
-      .post(`${flaskRoot}apps/pourbaix_surface`, {
+      .post(`${flaskRoot}apps/pourbaix/pourbaix_surface/`, {
         surface1: this.state.surface,
       })
       .then((response) => {
@@ -321,7 +323,7 @@ class PourbaixDiagramView extends React.Component {
               target="_blank"
             >
                 github/MengZ188/CatalysisHubBackend
-              </ReactGA.OutboundLink>
+            </ReactGA.OutboundLink>
             </div>
           </Grid>
         </Grid>
@@ -341,7 +343,6 @@ class PourbaixDiagramView extends React.Component {
           />
           <TextField
             className={this.props.classes.textField}
-            label="Temperature"
             value={this.state.temperature.value}
             onChange={this.handleChange('temperature')}
           />
@@ -457,6 +458,20 @@ class PourbaixDiagramView extends React.Component {
           </TableBody>
         </Table>
 
+        <br />
+        <br />
+
+        <TextField
+          label="Composition Element#1"
+          value={this.state.elem1_compo.value}
+          onChange={this.handleChange('elem1_compo')}
+        />
+
+        <TextField
+          label="Composition Element#2"
+          value={this.state.elem2_compo.value}
+          onChange={this.handleChange('elem2_compo')}
+        />
         <br />
         <br />
 
