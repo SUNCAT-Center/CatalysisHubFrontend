@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import ReactGA from 'react-ga';
 
 import Button from 'material-ui/Button';
-import { LinearProgress } from 'material-ui/Progress';
+import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
@@ -64,7 +64,7 @@ const initialState = {
   products: { label: 'any', value: '' },
   loading: false,
   suggestionsReady: false,
-  resultCount: 0,
+  resultCount: '...',
 };
 
 class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -92,7 +92,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
 
   getResultCount() {
     this.setState({
-      resultCount: '...',
+      resultCount: <CircularProgress size={25} />,
     });
     const filterString = this.getFilterString();
     const query = {
@@ -107,8 +107,18 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
 }}
 ` };
     cachios.post(newGraphQLRoot, query).then((response) => {
+      const totalCount = response.data.data.reactions.totalCount;
+      let message;
+
+      if (totalCount === 0) {
+        message = <div>No entries <MdWarning /></div>;
+      } else if (totalCount === 1) {
+        message = '1 entry';
+      } else {
+        message = `${response.data.data.reactions.totalCount} entries`;
+      }
       this.setState({
-        resultCount: `${response.data.data.reactions.totalCount} entries`,
+        resultCount: message,
       });
     });
   }
