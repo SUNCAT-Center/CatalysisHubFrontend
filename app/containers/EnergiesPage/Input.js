@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import ReactGA from 'react-ga';
 
 import Button from 'material-ui/Button';
-import { LinearProgress } from 'material-ui/Progress';
+import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
@@ -50,6 +50,7 @@ const styles = (theme) => ({
   },
   hint: {
     color: '#aaa',
+    marginBottom: theme.spacing.unit,
   },
 });
 
@@ -63,6 +64,7 @@ const initialState = {
   products: { label: 'any', value: '' },
   loading: false,
   suggestionsReady: false,
+  resultCount: '...',
 };
 
 class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -73,15 +75,150 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     this.submitForm = this.submitForm.bind(this);
     this.resetForm = this.resetForm.bind(this);
     this.setSubstate = this.setSubstate.bind(this);
+    this.getFilterString = this.getFilterString.bind(this);
+    this.getResultCount = this.getResultCount.bind(this);
+    this.getResultCount();
   }
   componentDidMount() {
     this.updateOptions();
+    this.getResultCount();
   }
 
   setSubstate(key, value) {
     const newSubstate = {};
     newSubstate[key] = value;
     this.setState(newSubstate);
+  }
+
+  getResultCount() {
+    this.setState({
+      resultCount: <CircularProgress size={25} />,
+    });
+    const filterString = this.getFilterString();
+    const query = {
+      ttl: 300,
+      query: `query{reactions ( first: 0, ${filterString} ) {
+  totalCount
+  edges {
+    node {
+      id
+    }
+  }
+}}
+` };
+    cachios.post(newGraphQLRoot, query).then((response) => {
+      const totalCount = response.data.data.reactions.totalCount;
+      let message;
+
+      if (totalCount === 0) {
+        message = <div>No entries <MdWarning /></div>;
+      } else if (totalCount === 1) {
+        message = '1 entry';
+      } else {
+        message = `${response.data.data.reactions.totalCount} entries`;
+      }
+      this.setState({
+        resultCount: message,
+      });
+    });
+  }
+
+  getFilterString() {
+    const filters = [];
+    if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
+      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
+    }
+    if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
+      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1')}"`);
+    }
+    if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
+      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+    }
+    if (typeof this.state.products.label !== 'undefined' && this.state.products.label) {
+      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+    }
+
+    const filterString = filters.join(', ');
+    return filterString;
+  }
+
+  handleChange(name) {
+    return (event) => {
+      this.setState({
+        [name]: event.target.value,
+      });
+      this.updateOptions(name);
+    };
+  }
+
+  resetForm() {
+    this.setState(initialState);
+    this.updateOptions('');
+    this.props.receiveReactions([]);
+    this.props.clearSystems();
+  }
+
+  submitForm() {
+    this.props.clearSystems();
+    this.setState({ loading: true });
+    const filterString = this.getFilterString();
+    this.props.saveSearch(filterString);
+    ReactGA.event({
+      category: 'Search',
+      action: 'Search',
+      label: filterString,
+    });
+    const query = {
+      ttl: 300,
+      query: `query{reactions ( first: 20, ${filterString} ) {
+    totalCount
+    edges {
+      node {
+        Equation
+        sites
+        id
+        dftCode
+        dftFunctional
+        reactants
+        products
+        facet
+        chemicalComposition
+        facet
+        reactionEnergy
+        activationEnergy
+        surfaceComposition
+        chemicalComposition
+        reactionSystems {
+          name
+          aseId
+          systems {
+            id
+            calculatorParameters
+          }
+        }
+      }
+    }
+  }}`,
+    };
+    cachios.post(newGraphQLRoot, query).then((response) => {
+      Scroll.animateScroll.scrollMore(500);
+      this.setState({
+        loading: false,
+      });
+      this.props.saveSearchQuery(query.query);
+      this.props.submitSearch({
+        reactants: this.state.reactants.label,
+        products: this.state.products.label,
+        surfaceComposition: this.state.surfaceComposition.label,
+        facet: this.state.facet.label,
+      });
+      this.props.receiveReactions(response.data.data.reactions.edges);
+      this.props.saveResultSize(response.data.data.reactions.totalCount);
+    }).catch(() => {
+      this.setState({
+        loading: false,
+      });
+    });
   }
 
   updateOptions(blocked = '') {
@@ -129,97 +266,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     }
   }
 
-  handleChange(name) {
-    return (event) => {
-      this.setState({
-        [name]: event.target.value,
-      });
-      this.updateOptions(name);
-    };
-  }
-  resetForm() {
-    this.setState(initialState);
-    this.updateOptions('');
-    this.props.receiveReactions([]);
-    this.props.clearSystems();
-  }
-  submitForm() {
-    this.props.clearSystems();
-    this.setState({ loading: true });
-    const filters = [];
-    if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
-      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
-    }
-    if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
-      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1')}"`);
-    }
-    if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
-      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
-    }
-    if (typeof this.state.products.label !== 'undefined' && this.state.products.label) {
-      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
-    }
-
-
-    const filterString = filters.join(', ');
-    this.props.saveSearch(filterString);
-    ReactGA.event({
-      category: 'Search',
-      action: 'Search',
-      label: filterString,
-    });
-    const query = {
-      ttl: 300,
-      query: `query{reactions ( first: 20, ${filterString} ) {
-    totalCount
-    edges {
-      node {
-        Equation
-        id
-        dftCode
-        dftFunctional
-        reactants
-        products
-        facet
-        chemicalComposition
-        facet
-        reactionEnergy
-        activationEnergy
-        surfaceComposition
-        chemicalComposition
-        reactionSystems {
-          name
-          aseId
-          systems {
-            id
-            calculatorParameters
-          }
-        }
-      }
-    }
-  }}`,
-    };
-    cachios.post(newGraphQLRoot, query).then((response) => {
-      Scroll.animateScroll.scrollMore(500);
-      this.setState({
-        loading: false,
-      });
-      this.props.saveSearchQuery(query.query);
-      this.props.submitSearch({
-        reactants: this.state.reactants.label,
-        products: this.state.products.label,
-        surfaceComposition: this.state.surfaceComposition.label,
-        facet: this.state.facet.label,
-      });
-      this.props.receiveReactions(response.data.data.reactions.edges);
-      this.props.saveResultSize(response.data.data.reactions.totalCount);
-    }).catch(() => {
-      this.setState({
-        loading: false,
-      });
-    });
-  }
-
   render() {
     return (
       <Paper className={this.props.classes.paper}>
@@ -237,15 +283,16 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
         <h2>Reaction Energetics</h2>
+        <div className={this.props.classes.hint}>{this.state.resultCount}</div>
 
         <FormGroup row>
-          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus initialValue={this.props.filter.reactants} />
+          <TermAutosuggest field="reactants" setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reactants" placeholder="CO, CO*, COgas, ..." autofocus initialValue={this.props.filter.reactants} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {'→'} </span>
-          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" initialValue={this.props.filter.products} />
+          <TermAutosuggest field="products" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Products" placeholder="" initialValue={this.props.filter.products} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." initialValue={this.props.filter.surfaceComposition} />
+          <TermAutosuggest field="surfaceComposition" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Surface" placeholder="Pt, CoO3, ..." initialValue={this.props.filter.surfaceComposition} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
-          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} />
+          <TermAutosuggest field="facet" submitForm={this.submitForm} setSubstate={this.setSubstate} label="Facet" placeholder="100, 111-(4x4) 10-14, ..." initialValue={this.props.filter.facet} keyUp={this.getResultCount} />
           <span style={{ flexGrow: 1, position: 'relative', float: 'left', display: 'inline-block', whiteSpace: 'nowrap', margin: 10 }} > {' '} </span>
 
           <br />
@@ -257,7 +304,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
           </Grid>
         </FormGroup>
         {this.state.loading ? <LinearProgress color="primary" className={this.props.classes.progress} /> :
-        <div className={this.props.classes.hint}>Partial input sufficient.</div>
+            null
         }
       </Paper>
     );
