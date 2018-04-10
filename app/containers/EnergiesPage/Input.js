@@ -165,6 +165,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     edges {
       node {
         Equation
+        sites
         id
         dftCode
         dftFunctional
