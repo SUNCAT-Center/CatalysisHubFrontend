@@ -96,8 +96,8 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
 
       this.props.setCellParameters(cellParams);
 
-      const synonyms = response.data.synonyms.map((x) => x.split("'")[1]);
-      this.props.setSynonyms(synonyms);
+      const name = response.data.name.split("'")[1];
+      this.props.setName(name);
 
       const permutations = response.data.species_permutations.map((perm) => perm.split("'")[1]);
       this.props.setPermutations(permutations);
@@ -314,7 +314,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
 }
 
 WyckoffInput.propTypes = {
-  setSynonyms: PropTypes.func,
+  setName: PropTypes.func,
   setPermutations: PropTypes.func,
   classes: PropTypes.object,
   setSpacegroup: PropTypes.func,
@@ -339,8 +339,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCellParameters: (cellParameters) => {
     dispatch(actions.setCellParameters(cellParameters));
   },
-  setSynonyms: (synonyms) => {
-    dispatch(actions.setSynonyms(synonyms));
+  setName: (name) => {
+    dispatch(actions.setName(name));
   },
   setPermutations: (permutations) => {
     dispatch(actions.setPermutations(permutations));

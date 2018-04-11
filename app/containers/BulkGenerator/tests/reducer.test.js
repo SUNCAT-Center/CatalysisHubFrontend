@@ -9,7 +9,7 @@ describe('bulkGeneratorReducer', () => {
       cellParameters: {},
       permutations: [],
       spacegroup: 1,
-      synonyms: [],
+      name: '',
       wyckoffList: [],
       wyckoffPoints: [],
     });

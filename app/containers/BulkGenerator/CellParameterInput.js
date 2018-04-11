@@ -53,7 +53,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     axios.get(url, params).then((response) => {
       this.props.setCellParameters(response.data.cell_params);
       this.props.receiveBulkStructure(response.data.std_cif);
-      this.props.setSynonyms(response.data.synonyms);
+      this.props.setName(response.data.name);
     });
   }
 
@@ -71,7 +71,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
   handoffBulkStructure() {
     const bulkParams = {
       wyckoff: {
-        synonyms: this.props.synonyms,
+        name: this.props.name,
         spacegroup: this.props.spacegroup,
       },
     };
@@ -95,15 +95,9 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             />
           </Grid>
         </Grid>
-        <h3>Synonyms</h3>
-        <div>{this.props.synonyms.length === 0 ? 'Synonyms not supported for more than 8 Wyckoff positions.' :
-        <ul>
-          {this.props.synonyms.map((synonym, i) => (
-            <li
-              key={`li_${i}`}
-            >{synonym}</li>
-              ))}
-        </ul>
+        <h3>Prototype Name</h3>
+        <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
+        <div>{this.props.name}</div>
         }</div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
@@ -175,14 +169,14 @@ CellParameterInput.propTypes = {
   receiveBulkCif: PropTypes.func,
   dropBulkInput: PropTypes.func,
   saveBulkParams: PropTypes.func,
-  setSynonyms: PropTypes.func,
+  setName: PropTypes.func,
   classes: PropTypes.object,
-  synonyms: PropTypes.array,
+  name: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   cellParameters: state.get('bulkGeneratorReducer').cellParameters,
-  synonyms: state.get('bulkGeneratorReducer').synonyms,
+  name: state.get('bulkGeneratorReducer').name,
   spacegroup: state.get('bulkGeneratorReducer').spacegroup,
   wyckoffPoints: state.get('bulkGeneratorReducer').wyckoffPoints,
   bulkStructure: state.get('bulkGeneratorReducer').bulkStructure,
@@ -195,8 +189,8 @@ const mapDispatchToProps = (dispatch) => ({
   receiveBulkStructure: (bulkStructure) => {
     dispatch(actions.receiveBulkStructure(bulkStructure));
   },
-  setSynonyms: (synonyms) => {
-    dispatch(actions.setSynonyms(synonyms));
+  setName: (name) => {
+    dispatch(actions.setName(name));
   },
   receiveBulkCif: (bulkCif) => {
     dispatch(catKitActions.receiveBulkCif(bulkCif));
