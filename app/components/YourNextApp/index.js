@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import axios from 'axios';
 import cachios from 'cachios';
 
 import { MenuItem } from 'material-ui/Menu';
@@ -16,11 +15,9 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-// import styled from 'styled-components';
 
-//import { flaskRoot } from 'utils/constants';
 const flaskRoot = 'http://127.0.0.1:5000';
-const appUrl = `${flaskRoot}/apps/atoml/`
+const appUrl = `${flaskRoot}/apps/atoml/`;
 
 const supportAtoms = [
   'Ag', 'Al', 'As', 'Au', 'B', 'Ba', 'Be', 'Bi', 'Ca', 'Cd', 'Co', 'Cr', 'Cs',
@@ -65,7 +62,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       conc: this.state.conc,
       site: this.state.site,
     };
-    axios.post(appUrl, d)
+    cachios.post(appUrl, d, { ttl: 300 })
     .then((response) => {
       this.setState({
         energy: response.data.output.energy,
