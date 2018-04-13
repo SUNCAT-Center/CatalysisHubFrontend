@@ -29,7 +29,7 @@ class CatKitDemoHeader extends React.Component { // eslint-disable-line react/pr
               to="https://github.com/jboes/CatKit"
               target="_blank"
             >
-                github/jboes/CatKit
+                github.com/jboes/CatKit
               </ReactGA.OutboundLink>
             </div>
           </Grid>
