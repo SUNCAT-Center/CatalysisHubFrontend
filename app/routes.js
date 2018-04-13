@@ -14,7 +14,7 @@ const loadModule = (cb) => (componentModule) => {
 
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
-  const { injectReducer, injectSagas } = getAsyncInjectors(store);
+  const { injectReducer } = getAsyncInjectors(store);
 
   return [
     {
@@ -136,6 +136,14 @@ export default function createRoutes(store) {
       name: 'yourNextApp',
       getComponent(location, cb) {
         import('components/YourNextApp')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/AtoML',
+      name: 'AtoML',
+      getComponent(location, cb) {
+        import('components/AtoML')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
@@ -320,34 +328,6 @@ export default function createRoutes(store) {
         import('components/PlotlyFoo')
           .then(loadModule(cb))
           .catch(errorLoading);
-      },
-    }, {
-      path: '/generated-route-component',
-      name: 'rbGeneratedComponentEsclass',
-      getComponent(location, cb) {
-        import('components/RbGeneratedComponentEsclass')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
-      path: '/generated-route-container',
-      name: 'rbGeneratedContainerComponent',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/RbGeneratedContainerComponent/reducer'),
-          import('containers/RbGeneratedContainerComponent/sagas'),
-          import('containers/RbGeneratedContainerComponent'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([reducer, sagas, component]) => {
-          injectReducer('rbGeneratedContainerComponent', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
       },
     }, {
       path: '*',
