@@ -39,15 +39,11 @@ export class BulkView extends React.Component { // eslint-disable-line react/pre
                 </div>
               </Grid>
               <Grid item>
-                <h4>Prototypes(s)</h4>
-                <ul>
-                  {this.props.bulkParams.wyckoff.synonyms.map((synonym, i) => (
-                    <li key={`li_${i}`}>{synonym}</li>
-                          ))}
-                </ul>
+                <h4>Prototype Name</h4>
+                <div>{this.props.bulkParams.wyckoff.name}</div>
               </Grid>
               <Grid item>
-                <h4>Points</h4>
+                <h4>Wyckoff Sites</h4>
                 <ul>
                   {_.zip(this.props.bulkParams.wyckoff.species,
                             this.props.bulkParams.wyckoff.wyckoff).map((elem, i) => (

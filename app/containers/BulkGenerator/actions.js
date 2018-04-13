@@ -6,11 +6,11 @@
 
 import * as constants from './constants';
 
-export function setSynonyms(synonyms) {
+export function setName(name) {
   return {
-    type: constants.SET_SYNONYMS,
+    type: constants.SET_NAME,
     payload: {
-      synonyms,
+      name,
     },
   };
 }

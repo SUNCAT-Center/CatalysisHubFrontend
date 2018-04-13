@@ -215,59 +215,59 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                 <Grid item>
                   <h2>Ooops! :-(</h2>
                   <div className={this.props.classes.emptyText}>
-                No reaction energies found.
-                Here are a couple of things you could try.
-                <ul>
-                  <li className={this.props.classes.li}>
-                    Remove one or more filters.
-                  </li>
-                  <li>
-                    Flip reactants and products.
-                  </li>
-                  <li className={this.props.classes.li}>
-                    <Button
-                      color="primary"
-                      raised
-                      className={this.props.classes.button}
-                    >
-                      <Link
-                        className={this.props.classes.buttonLink}
-                        to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
-                      >construct</Link>
-                    </Button> your own slab calculation.
-                  </li>
-                  <li className={this.props.classes.li}>
-                    <Button
-                      color="primary"
-                      raised
-                      className={this.props.classes.button}
-                    >
-                      <Link
-                        className={this.props.classes.buttonLink}
-                        to={'/bulkGenerator'}
-                      >import</Link>
-                    </Button> your own bulk structure.
-                  </li>
-                  <li className={this.props.classes.li}>
-                    <Button
-                      color="primary"
-                      raised
-                      className={this.props.classes.button}
-                      onClick={() => {
-                        this.setState({ requestFormOpen: true });
-                        ReactGA.event({
-                          category: 'Search',
-                          action: 'Search',
-                          label: `Open Request Form: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
-                        });
-                      }}
+                    No reaction energies found.
+                    Here are a couple of things you could try.
+                    <ul>
+                      <li className={this.props.classes.li}>
+                        Remove one or more filters.
+                      </li>
+                      <li>
+                        Flip reactants and products.
+                      </li>
+                      <li className={this.props.classes.li}>
+                        <Button
+                          color="primary"
+                          raised
+                          className={this.props.classes.button}
+                        >
+                          <Link
+                            className={this.props.classes.buttonLink}
+                            to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
+                          >construct</Link>
+                        </Button> your own slab calculation.
+                      </li>
+                      <li className={this.props.classes.li}>
+                        <Button
+                          color="primary"
+                          raised
+                          className={this.props.classes.button}
+                        >
+                          <Link
+                            className={this.props.classes.buttonLink}
+                            to={'/bulkGenerator'}
+                          >import</Link>
+                        </Button> your own bulk structure.
+                      </li>
+                      <li className={this.props.classes.li}>
+                        <Button
+                          color="primary"
+                          raised
+                          className={this.props.classes.button}
+                          onClick={() => {
+                            this.setState({ requestFormOpen: true });
+                            ReactGA.event({
+                              category: 'Search',
+                              action: 'Search',
+                              label: `Open Request Form: ${JSON.stringify(this.props.searchParams)} / ${this.props.searchString}`,
+                            });
+                          }}
 
-                    > request </Button> a calculation.
-                  </li>
-                  <li>
-                    Open <GraphQlbutton query={this.props.searchQuery} newSchema /> to interact with the database directly.
-                  </li>
-                </ul>
+                        > request </Button> a calculation.
+                      </li>
+                      <li>
+                        Open <GraphQlbutton query={this.props.searchQuery} newSchema /> to interact with the database directly.
+                      </li>
+                    </ul>
                   </div>
                 </Grid>
               </Grid>
@@ -341,9 +341,20 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                       direction={this.props.order}
                       onClick={this.createSortHandler('facet')}
                     >
-                      <div>Surface</div>
+                      <div>Facet</div>
                     </TableSortLabel>
-                    <div>Facet</div></TableCell>
+                  </TableCell>
+                </Hidden>
+                <Hidden smDown>
+                  <TableCell>
+                    <TableSortLabel
+                      active={this.props.orderBy === 'sites'}
+                      direction={this.props.order}
+                      onClick={this.createSortHandler('sites')}
+                    >
+                      <div>Sites</div>
+                    </TableSortLabel>
+                  </TableCell>
                 </Hidden>
               </TableRow>
             </TableHead>
@@ -372,6 +383,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         <TableCell padding="none"><div>{result.node.surfaceComposition}</div></TableCell>
                         <Hidden smDown>
                           <TableCell>{result.node.facet}</TableCell>
+                        </Hidden>
+                        <Hidden smDown>
+                          <TableCell>{result.node.sites}</TableCell>
                         </Hidden>
                       </TableRow>
 

@@ -14,7 +14,7 @@ const initialState = {
   bulkStructure: '',
   activeStep: 0,
   permutations: [],
-  synonyms: [],
+  name: '',
 };
 
 function bulkGeneratorReducer(state = initialState, action) {
@@ -24,10 +24,10 @@ function bulkGeneratorReducer(state = initialState, action) {
         ...state,
         permutations: action.payload.permutations,
       };
-    case constants.SET_SYNONYMS:
+    case constants.SET_NAME:
       return {
         ...state,
-        synonyms: action.payload.synonyms,
+        name: action.payload.name,
       };
     case constants.RECEIVE_BULK_STRUCTURE:
       return {
