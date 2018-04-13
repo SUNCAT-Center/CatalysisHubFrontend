@@ -5,19 +5,24 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import cachios from 'cachios';
 
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
 import Select from 'material-ui/Select';
+import { CircularProgress } from 'material-ui/Progress';
+import ReactGA from 'react-ga';
 
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles';
 
-const flaskRoot = 'http://127.0.0.1:5000';
-const appUrl = `${flaskRoot}/apps/atoml/`;
+import { apiRoot } from 'utils/constants';
+const appUrl = `${apiRoot}apps/atoml/`;
 
 const supportAtoms = [
   'Ag', 'Al', 'As', 'Au', 'B', 'Ba', 'Be', 'Bi', 'Ca', 'Cd', 'Co', 'Cr', 'Cs',
@@ -34,6 +39,12 @@ for (let i = 0; i < supportLength; i += 1) {
   items.push(<MenuItem value={supportAtoms[i]}>{supportAtoms[i]}</MenuItem>);
 }
 
+const styles = (theme) => ({
+  infoText: {
+    margin: theme.spacing.unit * 3,
+  },
+});
+
 
 class YourNextApp extends React.Component { // eslint-disable-line react/prefer-stateless-function
   // const { classes } = props;
@@ -49,11 +60,15 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       site: 'AA',
       energy: '',
       uncertainty: '',
+      loading: false,
     };
     this.componentPost = this.componentPost.bind(this);
   }
 
   componentPost() {
+    this.setState({
+      loading: true,
+    });
     const d = {
       m1: this.state.m1,
       m2: this.state.m2,
@@ -65,6 +80,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
     cachios.post(appUrl, d, { ttl: 300 })
     .then((response) => {
       this.setState({
+        loading: false,
         energy: response.data.output.energy,
         uncertainty: response.data.output.uncertainty,
       });
@@ -82,9 +98,25 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
   render() {
     return (
       <div>
-        <h2>AtoML</h2>
+        <Grid container direction="row" justify="space-between">
+          <Grid item>
+            <h2>AtoML</h2>
+          </Grid>
+          <Grid>
+            <div
+              className={this.props.classes.infoText}
+            >Powered by <ReactGA.OutboundLink
+              eventLabel="https://gitlab.com/atoML/AtoML"
+              to="https://gitlab.com/atoML/AtoML"
+              target="_blank"
+            >
+                gitlab.com/atoML/AtoML
+              </ReactGA.OutboundLink>
+            </div>
+
+          </Grid>
+        </Grid>
         <div>
-          {'Mockup of an AtoML app.'}
           <br />
 
           <FormControl
@@ -190,6 +222,9 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
           <Button raised color="primary" onClick={this.componentPost}>
             Calculate
           </Button>
+          {'\u00A0\u00A0 '}
+
+          { this.state.loading ? <CircularProgress color="primary" size={35} /> : null }
 
           <br />
           <br />
@@ -217,7 +252,8 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
 }
 
 YourNextApp.propTypes = {
+  classes: PropTypes.object,
 
 };
 
-export default YourNextApp;
+export default withStyles(styles, { withTheme: true })(YourNextApp);

@@ -4,6 +4,7 @@ module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
   /* flaskRoot: 'http://localhost:5001',*/
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
+  apiRoot: 'http://api.catalysis-hub.org/',
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
