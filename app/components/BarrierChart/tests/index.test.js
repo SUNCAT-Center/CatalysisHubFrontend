@@ -5,6 +5,12 @@ import BarrierChart from '../index';
 
 describe('<BarrierChart />', () => {
   it('should render a div', () => {
-    expect(shallow(<BarrierChart />).find('div').length).toBe(1);
+    expect(shallow(<BarrierChart
+      selectedReaction={{
+        products: '[]',
+        reactants: '[]',
+        aseIds: '[]',
+      }}
+    />).find('div').length).toBe(1);
   });
 });

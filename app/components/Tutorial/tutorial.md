@@ -9,7 +9,7 @@ The purpose of this tutorial is to explain the architecture of the CatApp projec
 
 #### Conceptually
 
-Some previous exposure in Python, JavaScript, HTML, CSS, SQL (sqlalchemy), GraphSQL, HTTP Server programming will be hugely helpful but even just a partial in two or three of this catchwords or frankly programming language should be enough to figure out the in and outs and connect the different parts.
+Some previous exposure in Python, JavaScript, HTML, CSS, SQL (sqlalchemy), GraphSQL, HTTP Server programming will be hugely helpful but even just a partial understanding in two or three of this catchwords or frankly programming language should be enough to figure out the in and outs and connect the different parts.
 
 
 #### Technically
@@ -78,20 +78,23 @@ touched for implementing new features, looks as follows:
         /internals # File config settings and generators
         /routes.js # Mapping between URL input and components
 
-Most of the additional code goes into a corresponding folder in either
-`app/components` or `app/containers`. These folders are structured such that new components can be dropped in to the project and code-coupling with other components is minimal. Unit tests go into each folder pertaining to the component.
+Most of the additional code goes into a corresponding folder in either `app/components` or `app/containers`. These folders are structured such that new components can be dropped in to the project and code-coupling with other components is minimal. Unit tests go into each folder pertaining to the component. If you think about building a bigger feature such as a little single-page page app with one or more form fields, a diagram, and a component showing a slab you should probably right away start by creating a new container. If you want to build a small component that can be used throughout the frend, that should probably go into `components`. The will then automatically go into the corresponding sub-folder along with a subdirectory for unit test (`./tests`). Each folder should thought of one functional component that can be submitted (and maintained) using version control.
 
-The mapping between a URL typed into the address bar (or a clicked linked) and what content is shown is defined in `routes.js`. To define a new top level URL type
+To wire up a URL typed into the address bar (or a clicked linked) with content shown, you need to look into `routes.js`. To define a new top level URL type
 
         npm run generate route
 
-It will ask you for the URL and the component (or container) that should be shown. The generator is just a handy short hand. Details can always be adjusted later. A route may also contain dynamic parts like `/component/:var1/:var2`, which can be processed as a variable in the corresponding component as `this.props.routeParams`. The `/containers/Profile/index.js` container illustrates this technique.
+It will ask you for the URL and the component (or container) that should be shown. The generator is just a handy short hand. Details can always be adjusted later.  A route may also contain dynamic parts like `/component/:var1/:var2`, which can be processed as a variable in the corresponding component as `this.props.routeParams`. The `/containers/Profile/index.js` container illustrates this technique. URLs can be changed quite flexibly, but the [immortal words](https://www.w3.org/Provider/Style/URI) of the [web developer](https://twitter.com/vasusrini/status/516649874205716481) still count. 
 
 ### Component and Containers
 
+
+As mentioned above, there are two types sub-directores: components and containers. The idea is to make code organization easier once the code base grows. If you like inside them both declare objects that are derived from `React.Component`. However, the container can actively manipuplate the global app state while components should not. Containers use Redux interact with the app state, while components do not change state. They still contain a little bit of state to reflect graphical interaction that are immediately visible to the user but there is no expectation that they are accesible from a different form or component. Again, if this is all confusing hub-bub, you might probably start with a `container`. You can always delete the corresponding files and hooks later to turn it into a component.
 TODO
 
 ### State and props
+
+Much of the programming flow of a React app is that each component has props and state . You can think of them like read-only (or parameters) and read-and-write variables of a function. Props are always passed in from other component upon invocation, while state maybe changed by each component (using `this.setState(...)`). If you wonder about the point of props if you cannot change them: you can influence what a compoent looks like by calling it with different props. State on the other hand can be thought of more like a traditional variable in programming
 
 TODO
 
@@ -157,7 +160,7 @@ with setting as follows:
 
 The basic steps for every user interaction are as follows:
 
-- identify user interaction
+- identify user action
 - declare a corresponding constant in `./constants.js`
 - declare a payload action in `./actions.js` to filter the state changing information 
 - declare a reducer that describes how the payload interaction changes the corresponding app state in `./reducers.js`

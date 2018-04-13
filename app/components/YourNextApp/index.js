@@ -6,6 +6,7 @@
 
 import React from 'react';
 import axios from 'axios';
+import cachios from 'cachios';
 
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
@@ -16,6 +17,10 @@ import Button from 'material-ui/Button';
 import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 // import styled from 'styled-components';
+
+//import { flaskRoot } from 'utils/constants';
+const flaskRoot = 'http://127.0.0.1:5000';
+const appUrl = `${flaskRoot}/apps/atoml/`
 
 const supportAtoms = [
   'Ag', 'Al', 'As', 'Au', 'B', 'Ba', 'Be', 'Bi', 'Ca', 'Cd', 'Co', 'Cr', 'Cs',
@@ -39,12 +44,12 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
   constructor(props) {
     super(props);
     this.state = {
-      m1: '',
-      m2: '',
-      facet: '',
-      ads: '',
-      conc: '',
-      site: '',
+      m1: 'Pt',
+      m2: 'Pd',
+      facet: '111',
+      ads: 'hfO2',
+      conc: '0.50',
+      site: 'AA',
       energy: '',
       uncertainty: '',
     };
@@ -60,7 +65,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       conc: this.state.conc,
       site: this.state.site,
     };
-    axios.post('http://127.0.0.1:5000/', d)
+    axios.post(appUrl, d)
     .then((response) => {
       this.setState({
         energy: response.data.output.energy,

@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
+import { Link } from 'react-router';
 
 import { LinearProgress } from 'material-ui/Progress';
 
@@ -46,6 +47,16 @@ function toTitleFormat(s) {
   return res.join(' ');
 }
 
+function toSlugFormat(s) {
+  return s.split(',')
+    .reverse()
+    .map((x) => x.trim())
+    .join(' ')
+    .replace('.', '')
+    .replace(/\s/g, '-')
+    .toLowerCase();
+}
+
 class Profile extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -54,10 +65,57 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       systems: [],
       reactionEnergies: [],
       loading: true,
+      allAuthors: [],
     };
   }
   componentDidMount() {
-    const authorQuery = `{catapp( publication_Authors:"~${toAuthorFormat(this.props.routeParams.name)}") {
+    this.reloadData();
+  }
+  reloadData() {
+    const allAuthorsQuery = `{catapp(publication_Authors:"~", distinct: true) {
+  totalCount
+  edges {
+    node {
+      
+      PublicationAuthors
+    }
+  }
+}}`;
+
+
+    axios.post(graphQLRoot, { query: allAuthorsQuery })
+      .then((response) => {
+        this.setState({
+          allAuthors:
+          [...new Set(
+            [].concat.apply([], response.data.data.catapp.edges.map((edge) => (JSON.parse(edge.node.PublicationAuthors.replace(/'/g, '"') // eslint-disable-line prefer-spread
+.replace('.', '')
+.replace('\\\\o', 'o')
+.replace('{\\o}', 'o')
+.replace('\\o}', 'o')
+.replace('\\o', 'o')
+.replace('o', 'o')
+.replace('{"u}', 'u')
+.replace('{"a}', 'a')
+.replace('{\\x07e}', 'e')
+.replace('{\\u0007e}', 'e')
+.replace('{e}', 'e')
+.replace('.', '')
+            ))))
+            .map((x) => x.replace('.', ''))
+            .map((x) => x.replace('{\\o}', 'o'))
+            .map((x) => x.replace('\\o}', 'o'))
+            .map((x) => x.replace('\\o', 'o'))
+            .map((x) => x.replace('{"u}', 'u'))
+            .map((x) => x.replace('{"a}', 'a'))
+            .map((x) => x.replace('{e}', 'e'))
+            .map((x) => x.replace('.', ''))
+          )].sort(),
+        });
+      });
+
+    if (this.props.routeParams.name) {
+      const authorQuery = `{catapp( publication_Authors:"~${toAuthorFormat(this.props.routeParams.name)}") {
     totalCount
     edges{
     node {
@@ -72,13 +130,18 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       activationEnergy
       surfaceComposition
   } } }}`;
-    axios.post(graphQLRoot, { query: authorQuery })
+      axios.post(graphQLRoot, { query: authorQuery })
       .then((response) => {
         this.setState({
           totalCount: response.data.data.catapp.totalCount,
         });
         this.props.receiveReactions(response.data.data.catapp.edges.map((edge) => edge.node));
       });
+    } else {
+      this.setState({
+        totalCount: 0,
+      });
+    }
   }
   render() {
     if (this.state.totalCount === -1) {
@@ -89,7 +152,15 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       );
     } else if (this.state.totalCount === 0) {
       return (
-        <div>No entries found.</div>
+        <div>
+          <h2>All Authors</h2>
+          <ul>
+            {this.state.allAuthors.map((author, i) => (
+              <li key={`li_${i}`}>
+                <Link key={`link_${i}`} to={`/profile/${toSlugFormat(author)}`}> {author} </Link> </li>
+            ))}
+          </ul>
+        </div>
       );
     } else { // eslint-disable-line no-else-return
       return (
@@ -104,6 +175,20 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
         </ReactGA.OutboundLink>
           <ReactionEnergies {...this.props} />
           <ReactionStructures {...this.props} />
+          <h2>All Authors</h2>
+          <ul>
+            {this.state.allAuthors.map((author, i) => (
+              <li key={`li_${i}`}>
+                <Link
+                  to={`/profile/${toSlugFormat(author)}`}
+                  onClick={() => {
+                    this.props.selectedAuthor(author);
+                    /* this.reloadData();*/
+                  }}
+                > {author} </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       );
     }
@@ -112,13 +197,15 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
 
 Profile.propTypes = {
   routeParams: PropTypes.object,
-  receiveReactions: PropTypes.function,
+  receiveReactions: PropTypes.func,
+  selectedAuthor: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   reactions: state.get('profileReducer').reactions,
   reactionSystems: state.get('profileReducer').reactionSystems,
   selectedReaction: state.get('profileReducer').selectedReaction,
+  selectedAuthor: state.get('profileReducer').selectedAuthor,
 
 });
 

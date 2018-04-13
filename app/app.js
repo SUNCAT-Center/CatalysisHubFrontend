@@ -38,6 +38,8 @@ import LanguageProvider from 'containers/LanguageProvider';
 import ReactGA from 'react-ga';
 import { gaTrackingId } from 'utils/constants';
 
+import { CookiesProvider } from 'react-cookie';
+
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
 import '!file-loader?name=[name].[ext]!./favicon.ico';
@@ -100,20 +102,22 @@ const rootRoute = {
 const render = (messages) => {
   ReactDOM.render(
     <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <LanguageProvider messages={messages}>
-          <Router
-            history={history}
-            routes={rootRoute}
-            render={
-              // Scroll to top when going to a new page, imitating default browser
-              // behaviour
-              applyRouterMiddleware(useScroll())
-            }
-            onUpdate={logPageView} // Google Analytics
-          />
-        </LanguageProvider>
-      </Provider>
+      <CookiesProvider>
+        <Provider store={store}>
+          <LanguageProvider messages={messages}>
+            <Router
+              history={history}
+              routes={rootRoute}
+              render={
+                // Scroll to top when going to a new page, imitating default browser
+                // behaviour
+                applyRouterMiddleware(useScroll())
+              }
+              onUpdate={logPageView} // Google Analytics
+            />
+          </LanguageProvider>
+        </Provider>
+      </CookiesProvider>
     </MuiThemeProvider>,
     document.getElementById('app')
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CookiesProvider } from 'react-cookie';
 import { shallow } from 'enzyme';
 
 import GeometryCanvas from '../index';
@@ -6,8 +7,10 @@ import GeometryCanvas from '../index';
 describe('<GeometryCanvas />', () => {
   it('should render a div', () => {
     const rc = shallow(
-      <GeometryCanvas id="test" />
+      <CookiesProvider>
+        <GeometryCanvas id="test" />
+      </CookiesProvider>
     );
-    expect(rc.find('div').length).toEqual(1);
+    expect(rc.length).toEqual(1);
   });
 });

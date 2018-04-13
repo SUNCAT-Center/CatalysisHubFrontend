@@ -4,13 +4,13 @@
  *
  */
 
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import ReactGA from 'react-ga';
+import Grid from 'material-ui/Grid';
 
-
-import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 const initialState = {
   Formula: '',
@@ -50,33 +50,39 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
         {this.props.selectedUUID === '' ? null :
         <div>
           <h2>{this.props.selectedSystem.full_key}</h2>
-          {/*
-          <ChemDoodleCanvas {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} />
-              */}
-          <GeometryCanvasCifdata {...this.props} uuid={this.props.selectedUUID} id={this.props.selectedUUID} x={x} y={y} z={z} cifData={this.props.selectedSystem.Cifdata} system={this.props.selectedSystem} />
+          <Grid container direction="row" justify="space-around">
+            <Grid item>
+              <GeometryCanvasWithOptions
+                uniqueId={this.props.selectedUUID}
+                id={this.props.selectedUUID}
+                x={x} y={y} z={z}
+                cifdata={this.props.selectedSystem.Cifdata}
+              />
+            </Grid>
+          </Grid>
           <ul>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{`Title: "${this.props.selectedSystem.PublicationTitle}"`}</li>
-            <li>Authors: {typeof this.props.selectedSystem.PublicationAuthors === 'undefined' ? null :
-                JSON.parse(this.props.selectedSystem.PublicationAuthors).join('; ').replace('\\o', 'ø')}</li>
-            <li>Year: {this.props.selectedSystem.PublicationYear}</li>
-            {this.props.selectedSystem.PublicationDoi === '' ? null :
+            <li>{`Title: "${this.props.selectedSystem.publication[0].title}"`}</li>
+            <li>Authors: {typeof this.props.selectedSystem.publication === 'undefined' || this.props.selectedSystem.publication === '' ? null :
+                    JSON.parse(this.props.selectedSystem.publication[0].authors).join('; ').replace('\\o', 'ø')}</li>
+            <li>Year: {this.props.selectedSystem.publication[0].year}</li>
+            {_.isEmpty(this.props.selectedSystem.publication[0].doi) ? null :
             <div>
               <li>
-                Source&nbsp;
-                <ReactGA.OutboundLink
-                  eventLabel={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
-                  to={`http://dx.doi.org/${this.props.selectedSystem.PublicationDoi}`}
-                  target="_blank"
-                >
-                DOI: {this.props.selectedSystem.PublicationDoi}
-                </ReactGA.OutboundLink>
+                          Source&nbsp;
+                          <ReactGA.OutboundLink
+                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
+                            to={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
+                            target="_blank"
+                          >
+                            DOI: {this.props.selectedSystem.publication[0].doi}
+                          </ReactGA.OutboundLink>
               </li>
             </div>
-            }
+                  }
           </ul>
         </div>
         }
@@ -87,7 +93,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
 
 SingleStructureView.propTypes = {
   selectedUUID: PropTypes.string.isRequired,
-  selectedSystem: PropTypes.object,
+  selectedSystem: PropTypes.object.isRequired,
 };
 
 export default SingleStructureView;

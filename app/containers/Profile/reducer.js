@@ -12,10 +12,16 @@ const initialState = {
   selectedReaction: {},
   reactions: [],
   reactionSystems: [],
+  selectedAuthor: '',
 };
 
 function profileReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.CLICK_AUTHOR:
+      return {
+        ...state,
+        selectedAuthor: action.payload,
+      };
     case constants.SELECT_REACTION:
       return {
         ...state,

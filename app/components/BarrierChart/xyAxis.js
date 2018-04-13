@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import d3 from 'd3';
+import _ from 'lodash';
 
 import Axis from './axis';
 
@@ -25,7 +26,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
     // const transform ='translate(' + margin.left + ',' + margin.top + ')';
     const reactionEnergy = this.props.selectedReaction.reactionEnergy;
     let activationEnergy = this.props.selectedReaction.activationEnergy;
-    if (activationEnergy === null) {
+    if (_.isEmpty(activationEnergy)) {
       activationEnergy = reactionEnergy / 2.0;
     }
 
@@ -43,7 +44,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
       <line x1={0} x2={500} y1={200} y2={400} />
       <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">Reaction Energy {reactionEnergy.toFixed(2)} eV</text>
       {activationEnergy === reactionEnergy / 2.0 ? null :
-      <text x={20} y={180} fontFamily="sans-serif" fontSize="14px" fill="red">Activation Energy {activationEnergy.toFixed(2)} eV</text>
+          null
       }
     </g>);
   }

@@ -75,7 +75,7 @@ class GeometryCanvasFromUuid extends React.Component { // eslint-disable-line re
     return (
       <div>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
-        <Script url="https://hub.chemdoodle.com/cwc/8.0.0/ChemDoodleWeb.js" onLoad={this.draw} />
+        <Script url="/static/ChemDoodleWeb.js" onLoad={this.draw} />
         <p id={`${this.props.selectedUUID}_script`} />
         <div id={`${this.props.selectedUUID}_div`}></div>
         <canvas

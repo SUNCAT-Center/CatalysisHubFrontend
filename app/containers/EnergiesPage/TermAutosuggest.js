@@ -1,12 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import axios from 'axios';
-import { graphQLRoot } from 'utils/constants';
+import cachios from 'cachios';
+import { newGraphQLRoot } from 'utils/constants';
 
 // Requirements for autoComplete
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 // Material UI Components
 import { withStyles } from 'material-ui/styles';
@@ -16,7 +19,9 @@ import { MenuItem } from 'material-ui/Menu';
 import { MdClear } from 'react-icons/lib/md';
 import IconButton from 'material-ui/IconButton';
 
-const toProperCase = (str) => str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+// const toProperCase = (str) => str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+import * as actions from './actions';
 
 const styles = (theme) => ({
   container: {
@@ -71,14 +76,16 @@ export function getSuggestionValue(suggestion) {
 
 
 export function renderInput(inputProps) {
-  const { classes, autoFocus, value, ref, ...other } = inputProps;
-
+  const { classes, autoFocus, value, ref, helperText, label, onFocus, ...other } = inputProps;
   return (
     <TextField
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}
       inputRef={ref}
+      helperText={helperText}
+      label={label}
+      onFocus={onFocus}
       InputProps={{
         classes: {
           input: classes.input,
@@ -114,40 +121,95 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: this.props.initialValue,
       rawSuggestions: new Set(),
       suggestions: [],
+      justFocused: false,
     };
     /* this.getSuggestions = this.getSuggestions.bind(this);*/
+    this.onFocus = this.onFocus.bind(this);
   }
   componentDidMount() {
+    this.getRawSuggestions(false);
+  }
+  onFocus = () => {
+    this.setState({
+      justFocused: true,
+    });
+    this.getRawSuggestions();
+  }
+  onBlur = () => {
+    this.setState({
+      justFocused: true,
+    });
+    this.getRawSuggestions();
+  }
+  getRawSuggestions() {
     let query;
     let responseField;
     let parseField;
+
+    let reactants = (_.get(this.props.filter, 'reactants', '~') || '~').replace(/\*/g, 'star').replace(/[ ]/g, '');
     if (this.props.field === 'reactants') {
-      query = '{catapp(reactants: "~", distinct: true) { edges { node { reactants } } }}';
+      reactants = 'reactants: "~", ';
+    } else if (reactants !== '~') {
+      reactants = `reactants: "${reactants}", `;
+    } else {
+      reactants = '';
+    }
+
+    let products = (_.get(this.props.filter, 'products', '~') || '~').replace(/\*/g, 'star').replace(/[ ]/g, '');
+    if (this.props.field === 'products') {
+      products = 'products: "~", ';
+    } else if (products !== '~') {
+      products = `products: "${products}", `;
+    } else {
+      products = '';
+    }
+
+    let surfaceComposition = (_.get(this.props.filter, 'surfaceComposition', '~') || '~').replace(/\*/g, 'star').replace(/[ ]/g, '');
+    if (this.props.field === 'surfaceComposition') {
+      surfaceComposition = 'surfaceComposition: "~", ';
+    } else if (surfaceComposition !== '~') {
+      surfaceComposition = `surfaceComposition: "${surfaceComposition}", `;
+    } else {
+      surfaceComposition = '';
+    }
+
+    let facet = (_.get(this.props.filter, 'facet', '~') || '~').replace(/\*/g, 'star').replace(/[ ]/g, '');
+    if (this.props.field === 'facet') {
+      facet = 'facet: "~", ';
+    } else if (facet !== '~') {
+      facet = `facet: "${facet}", `;
+    } else {
+      facet = '';
+    }
+
+    if (this.props.field === 'reactants') {
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { ${this.props.field} } } }}`;
       responseField = 'reactants';
       parseField = true;
     } else if (this.props.field === 'products') {
-      query = '{catapp(products: "~", distinct: true) { edges { node { products } } }}';
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { products } } }}`;
       responseField = 'products';
       parseField = true;
-    } else if (this.props.field === 'surface') {
-      query = '{catapp(surfaceComposition: "~", distinct: true) { edges { node { surfaceComposition } } }}';
+    } else if (this.props.field === 'surfaceComposition') {
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { surfaceComposition } } }}`;
       responseField = 'surfaceComposition';
       parseField = false;
     } else if (this.props.field === 'facet') {
-      query = '{catapp(facet: "~", distinct: true) { edges { node { facet } } }}';
+      query = `{reactions(${reactants}${products}${surfaceComposition}${facet}distinct: true) { edges { node { facet } } }}`;
       responseField = 'facet';
       parseField = false;
     }
 
     let label = '';
-    axios.post(graphQLRoot, {
+    cachios.post(newGraphQLRoot, {
       query,
+      ttl: 300,
     }).then((response) => {
       const suggestions = new Map();
-      response.data.data.catapp.edges.map((edge) => {
+      response.data.data.reactions.edges.map((edge) => {
         // suggestions.push({label: edge.node.reactants});
         if (parseField) {
           label = (Object.keys(JSON.parse(edge.node[responseField]))).join(' + ').replace(/star/g, '*');
@@ -168,12 +230,12 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     const inputLength = inputValue.length;
     let count = 0;
 
-    return inputLength === 0
+    return inputLength === -1
       ? []
       : [...this.state.rawSuggestions].filter((suggestion) => {
         /* const keep = count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;*/
         const iv = inputValue.replace('*', '\\*').replace('-', '\\-').replace('(', '\\(').replace(')', '\\)');
-        const keep = count < 5 && suggestion.label.toLowerCase().match(iv);
+        const keep = count < 10 && suggestion.label.toLowerCase().match(iv);
 
         if (keep) {
           count += 1;
@@ -187,6 +249,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       value: '',
     });
     this.props.setSubstate(this.props.field, { label: '' });
+    this.props.updateFilter(this.props.field, '');
   }
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -203,8 +266,12 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
   handleChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
+      justFocused: false,
     });
     this.props.setSubstate(this.props.field, { label: newValue, value: newValue });
+    const update = {};
+    update[event] = newValue;
+    this.props.updateFilter(this.props.field, newValue);
   };
 
   render() {
@@ -225,13 +292,17 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
           onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
           renderSuggestionsContainer={renderSuggestionsContainer}
+          shouldRenderSuggestions={(val) => val.length > 0 || !this.state.justFocused}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={{
             autoFocus: this.props.autofocus,
+            onFocus: this.onFocus,
             classes,
-            placeholder: toProperCase(this.props.field),
+            placeholder: (this.props.placeholder),
             value: this.state.value,
+            helperText: this.props.helperText,
+            label: this.props.label,
             onChange: this.handleChange,
             onKeyDown: ((event) => {
               if (event.nativeEvent.keyCode === 13) {
@@ -261,18 +332,40 @@ TermAutosuggest.propTypes = {
   field: PropTypes.oneOf([
     'reactants',
     'products',
-    'surface',
+    'surfaceComposition',
     'facet',
   ]),
   setSubstate: PropTypes.func,
   submitForm: PropTypes.func,
+  updateFilter: PropTypes.func,
   classes: PropTypes.object,
   autofocus: PropTypes.bool,
+  helperText: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  filter: PropTypes.object,
+  initialValue: PropTypes.string,
 };
 
 TermAutosuggest.defaultProps = {
   autofocus: false,
+  helperText: '',
+  label: '',
+  placeholder: '',
+  initialValue: '',
+  filter: {},
 };
 
+const mapStateToProps = (state) => ({
+  filter: state.get('energiesPageReducer').filter,
+});
 
-export default withStyles(styles)(TermAutosuggest);
+const mapDispatchToProps = (dispatch) => ({
+  updateFilter: (field, value) => {
+    dispatch(actions.updateFilter(field, value));
+  },
+});
+
+export default withStyles(styles)(
+connect(mapStateToProps, mapDispatchToProps)(TermAutosuggest)
+);

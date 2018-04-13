@@ -14,7 +14,7 @@ const loadModule = (cb) => (componentModule) => {
 
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
-  const { injectReducer } = getAsyncInjectors(store);
+  const { injectReducer, injectSagas } = getAsyncInjectors(store);
 
   return [
     {
@@ -62,7 +62,7 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: 'activityMaps',
+      path: '/activityMaps(/:reaction)',
       name: 'activityMaps',
       getComponent(location, cb) {
         import('containers/ActivityMapsPage')
@@ -174,6 +174,24 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/catKitDemo(/:data)',
+      name: 'catKitDemo',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/CatKitDemo/reducer'),
+          import('containers/CatKitDemo'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('catKitDemo', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/catKitDemo(/:lattice/:latticeConstant/:composition)',
       name: 'catKitDemo',
       getComponent(nextState, cb) {
@@ -192,7 +210,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/profile/:name',
+      path: '/profile(/:name)',
       name: 'profile',
       getComponent(location, cb) {
         import('containers/Profile')
@@ -208,12 +226,128 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/tutorial',
+      path: '/developerGuide',
       name: 'tutorial',
       getComponent(location, cb) {
         import('components/Tutorial')
           .then(loadModule(cb))
           .catch(errorLoading);
+      },
+    }, {
+      path: '/settings',
+      name: 'settings',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Settings/reducer'),
+          import('containers/Settings'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('settings', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/upload',
+      name: 'upload',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/Upload/reducer'),
+          import('containers/Upload'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('upload', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: 'bulkGenerator',
+      name: 'bulkGenerator',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/BulkGenerator/reducer'),
+          import('containers/BulkGenerator'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('bulkGenerator', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/feedback',
+      name: 'feedBackForm',
+      getComponent(location, cb) {
+        import('components/FeedBackForm')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/prototypeExplorer',
+      name: 'prototypeExplorer',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PrototypeExplorer/reducer'),
+          import('containers/PrototypeExplorer'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('prototypeExplorer', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/plotlyFoo',
+      name: 'plotlyFoo',
+      getComponent(location, cb) {
+        import('components/PlotlyFoo')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/generated-route-component',
+      name: 'rbGeneratedComponentEsclass',
+      getComponent(location, cb) {
+        import('components/RbGeneratedComponentEsclass')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/generated-route-container',
+      name: 'rbGeneratedContainerComponent',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/RbGeneratedContainerComponent/reducer'),
+          import('containers/RbGeneratedContainerComponent/sagas'),
+          import('containers/RbGeneratedContainerComponent'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('rbGeneratedContainerComponent', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '*',
