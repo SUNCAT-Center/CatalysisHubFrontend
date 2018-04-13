@@ -100,7 +100,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       <div>
         <Grid container direction="row" justify="space-between">
           <Grid item>
-            <h2>AtoML</h2>
+            <h2>CatML</h2>
           </Grid>
           <Grid>
             <div

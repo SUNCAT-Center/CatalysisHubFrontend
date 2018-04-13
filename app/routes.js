@@ -140,8 +140,8 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/AtoML',
-      name: 'AtoML',
+      path: '/CatML',
+      name: 'CatML',
       getComponent(location, cb) {
         import('components/AtoML')
           .then(loadModule(cb))

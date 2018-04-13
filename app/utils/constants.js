@@ -39,8 +39,8 @@ module.exports = {
 
       ],
     }, {
-      title: 'AtoML / Machine Learning',
-      tooltip: 'Machine learning based predictions -- Work in Progress.',
+      title: 'CatML',
+      tooltip: 'Machine learning based predictions',
     }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
