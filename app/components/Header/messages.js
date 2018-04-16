@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'boilerplate.components.Header.scalingRelations',
     defaultMessage: 'Scaling Relations',
   },
+  catKit: {
+    id: 'boilerplate.components.Header.catKit',
+    defaultMessage: 'CatKit',
+  },
   pourbaixDiagrams: {
     id: 'boilerplate.components.Header.pourbaixDiagrams',
     defaultMessage: 'Pourbaix Diagrams',
@@ -37,6 +41,10 @@ export default defineMessages({
   publications: {
     id: 'boilerplate.components.Header.publications',
     defaultMessage: 'Publications',
+  },
+  graphqlconsole: {
+    id: 'boilerplate.components.Header.graphqlconsole',
+    defaultMessage: 'GraphQL API',
   },
   yourNextApp: {
     id: 'boilerplate.components.Header.yourNextApp',

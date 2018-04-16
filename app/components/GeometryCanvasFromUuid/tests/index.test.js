@@ -1,10 +1,13 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import GeometryCanvasFromUuid from '../index';
+import GeometryCanvasFromUuid from '../index';
 
 describe('<GeometryCanvasFromUuid />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render two divs', () => {
+    expect(
+      shallow(
+        <GeometryCanvasFromUuid selectedUUID="" />
+      ).find('div').length).toBe(2);
   });
 });

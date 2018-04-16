@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import Button from 'material-ui/Button';
 
+import { appBar, whiteLabel } from 'utils/constants';
+
 import Img from './Img';
 import NavBar from './NavBar';
 // import HeaderLink from './HeaderLink';
@@ -11,15 +13,16 @@ import messages from './messages';
 import HeaderBar from './HeaderBar';
 
 
-// import DrawerBar from 'components/DrawerBar';
-
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <HeaderBar>
         <Link to="/">
+          { whiteLabel === true ? null :
           <Img height="100px" src={Banner} alt="react-boilerplate - Logo" />
+          }
         </Link>
+        { appBar ? null :
         <NavBar
           style={{
             marginTop: '15px',
@@ -66,6 +69,11 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
             </Button>
           </Link>
 
+          <Link to="/graphQLConsole">
+            <Button color="primary" >
+              <FormattedMessage {...messages.graphqlconsole} />
+            </Button>
+          </Link>
 
           <Link to="/yourNextApp">
             <Button color="primary" >
@@ -98,6 +106,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
           </HeaderLink>
           */}
         </NavBar>
+        }
       </HeaderBar>
     );
   }

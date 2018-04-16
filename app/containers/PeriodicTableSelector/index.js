@@ -4,13 +4,11 @@
  *
  */
 
-/* import React, { PropTypes } from 'react'; */
 import React from 'react';
 import { connect } from 'react-redux';
 /* import { createStructuredSelector } from 'reselect'; */
-import PeriodicTable from 'components/PeriodicTable';
+import PeriodicTable from './PeriodicTable';
 
-/* import makeSelectPeriodicTableSelector from './selectors'; */
 import { clickElement, clearSelection } from './actions';
 
 export class PeriodicTableSelector extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -24,11 +22,11 @@ export class PeriodicTableSelector extends React.Component { // eslint-disable-l
 }
 
 
-const mapStateToProps = (state) => ({
+export const mapStateToProps = (state) => ({
   selection: state.get('periodicTableSelector').selection,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+export const mapDispatchToProps = (dispatch) => ({
   clickElement: (element) => {
     dispatch(clickElement(element));
   },

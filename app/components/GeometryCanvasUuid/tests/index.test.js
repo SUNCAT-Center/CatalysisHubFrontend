@@ -8,6 +8,6 @@ describe('<GeometryCanvas />', () => {
     const rc = shallow(
       <GeometryCanvas id="test" />
     );
-    expect(rc.find('div').length).toEqual(1);
+    expect(rc.find('div').length).toEqual(0);
   });
 });

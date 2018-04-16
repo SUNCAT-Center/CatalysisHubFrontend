@@ -10,7 +10,7 @@ import ElementBox from 'components/ElementBox';
 import * as actions from 'containers/PeriodicTableSelector/actions';
 
 const mapStateToProps = (state) => ({
-  state,
+  selection: state.get('periodicTableSelector').selection,
 });
 
 const mapDispatchToProps = (dispatch) => (

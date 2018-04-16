@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 
 import { PeriodicTableSelector } from '../index';
 
+
 describe('<PeriodicTableSelector />', () => {
   it('should render a div', () => {
     const renderedComponent = shallow(
