@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 import axios from 'axios';
 import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
@@ -18,9 +19,16 @@ import Switch from 'material-ui/Switch';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 
+
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import Typography from 'material-ui/Typography';
+
 /* import { flaskRoot } from 'utils/constants'; */
-const flaskRoot = 'http://api.catalysis-hub.org/';
-// const flaskRoot = 'http://localhost:5000/';
+// const flaskRoot = 'http://api.catalysis-hub.org/';
+const flaskRoot = 'http://localhost:5000/';
 
 const styles = (theme) => ({
   textField: {
@@ -34,8 +42,8 @@ const styles = (theme) => ({
 const initialState = {
   element1: '',
   element2: '',
-  elem1_compo: '',
-  elem2_compo: '',
+  elem1_compo: 1,
+  elem2_compo: 1,
   compositionElem1: '',
   temperature: 298.15,
   column1Aqueous: '',
@@ -43,6 +51,11 @@ const initialState = {
   column3Aqueous: '',
   column1Solids: '',
   column2Solids: '',
+  column1AqueousPymatgen: '',
+  column2AqueousPymatgen: '',
+  column3AqueousPymatgen: '',
+  column1SolidsPymatgen: '',
+  column2SolidsPymatgen: '',
   loading: false,
   imageData: null,
   imageArray: [],
@@ -53,7 +66,10 @@ const initialState = {
   contentType: '',
   ionList: [],
   solidList: [],
+  ionListPymatgen: [],
+  solidListPymatgen: [],
   ionsConc: [],
+  ionsConcPymatgen: [],
   LabelsXLoc: [],
   LabelsYLoc: [],
   LabelsText: [],
@@ -86,6 +102,7 @@ class PourbaixDiagramView extends React.Component {
     super(props);
     this.state = initialState;
     this.submitQuery = this.submitQuery.bind(this);
+    this.submitQueryPymatgen = this.submitQueryPymatgen.bind(this);
     this.submitQueryPourbaix = this.submitQueryPourbaix.bind(this);
     this.submitPourbaixPymatgen = this.submitPourbaixPymatgen.bind(this);
     this.submitSurfacePourbaix = this.submitSurfacePourbaix.bind(this);
@@ -116,7 +133,7 @@ class PourbaixDiagramView extends React.Component {
     });
 
     axios
-      .post(`${flaskRoot}apps/pourbaix/`, {
+      .post(`${flaskRoot}apps/pourbaix/species_ase`, {
         element1: this.state.element1,
         element2: this.state.element2,
         temperature: this.state.temperature,
@@ -130,10 +147,10 @@ class PourbaixDiagramView extends React.Component {
           loading: false,
           ionList: response.data[0].ion_list,
           solidList: response.data[0].solid_list,
-          column1Aqueous: 'Aqueous Species',
+          column1Aqueous: 'Aqueous Species_ASE_Lange',
           column2Aqueous: 'Gibbs Formation Energies(ΔG, kJ/mol)',
           column3Aqueous: 'Concentrations(mol/L)',
-          column1Solids: 'Solid Species',
+          column1Solids: 'Solid Species_ASE_Lange',
           column2Solids: 'Gibbs Formation Energies(ΔG, kJ/mol)',
         });
         response.data[0].ion_list.map((listValue) => {
@@ -144,6 +161,47 @@ class PourbaixDiagramView extends React.Component {
         });
       });
   }
+
+  submitQueryPymatgen() {
+    this.setState({
+      loading: true,
+    });
+    const compositionElem1 =
+      parseInt(this.state.elem1_compo, 10) /
+      (parseInt(this.state.elem1_compo, 10) + parseInt(this.state.elem2_compo, 10));
+
+    axios
+      .post(`${flaskRoot}apps/pourbaix/species_pymatgen`, {
+        element1: this.state.element1,
+        element2: this.state.element2,
+        mat_co_1: compositionElem1,
+        checkedASE: this.state.checkedASE,
+        checkedLange: this.state.checkedLange,
+        checkedML: this.state.checkedML,
+        checkedPymatgen: this.state.checkedPymatgen,
+      })
+      .then((response) => {
+        this.setState({
+          loading: false,
+          ionListPymatgen: response.data[0].ion_list,
+          solidListPymatgen: response.data[0].solid_list,
+          column1AqueousPymatgen: 'Aqueous Species_Pymatgen',
+          column2AqueousPymatgen: 'Gibbs Formation Energies(ΔG, kJ/mol)',
+          column3AqueousPymatgen: 'Concentrations(mol/L)',
+          column1SolidsPymatgen: 'Solid Species_Pymatgen',
+          column2SolidsPymatgen: 'Gibbs Formation Energies(ΔG, kJ/mol)',
+        });
+        // console.log(response);
+
+        response.data[0].ion_list.map((listValue) => {
+          this.setState({
+            [`conc_pymatgen_${listValue[0]}`]: (1e-6).toExponential(),
+          });
+          return [`conc_pymatgen_${listValue[0]}`];
+        });
+      });
+  }
+
 
   submitQueryPourbaix() {
     this.setState({
@@ -188,11 +246,18 @@ class PourbaixDiagramView extends React.Component {
       parseInt(this.state.elem1_compo, 10) /
       (parseInt(this.state.elem1_compo, 10) + parseInt(this.state.elem2_compo, 10));
 
+    this.state.ionListPymatgen.map((listValue) => {
+      this.state.ionsConcPymatgen.push({
+        [`conc_pymatgen_${listValue[0]}`]: this.state[`conc_pymatgen_${listValue[0]}`],
+      });
+      return this.state.ionsConcPymatgen;
+    });
     axios
       .post(`${flaskRoot}apps/pourbaix/pourbaix_pymatgen/`, {
         element1: this.state.element1,
         element2: this.state.element2,
         mat_co_1: compositionElem1,
+        ions_conc: this.state.ionsConcPymatgen,
       })
       .then((response) => {
         this.setState({
@@ -301,6 +366,7 @@ class PourbaixDiagramView extends React.Component {
 
     lineData.push(hLine, oLine, neutralLine, V0Line, labelsLoc);
 
+
     /* console.log( lineData.map((elem) => elem));*/
 
     return (
@@ -343,174 +409,225 @@ class PourbaixDiagramView extends React.Component {
           />
           <TextField
             className={this.props.classes.textField}
+            label="Temperature"
             value={this.state.temperature}
             onChange={this.handleChange('temperature')}
           />
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.checkedASE}
-                  onChange={this.handleSwitch('checkedASE')}
-                />
-              }
-              label="ASE Database(aqueous only) + Lange Handbook Database(solids)"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.checkedLange}
-                  onChange={this.handleSwitch('checkedLange')}
-                />
-              }
-              label="Lange Handbook Database"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.checkedML}
-                  onChange={this.handleSwitch('checkedML')}
-                />
-              }
-              label="Machine Learning Database"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.checkedPymatgen}
-                  onChange={this.handleSwitch('checkedPymatgen')}
-                />
-              }
-              label="Pymatgen Database"
-            />
-          </FormGroup>
           <br />
-          <Button
-            raised
-            onClick={this.submitQuery}
-            label=" Generate Spacies"
-            color="primary"
-            value="Generate"
-          >
-            Generate Species
-          </Button>
           <br />
+          <TextField
+            className={this.props.classes.textField}
+            label={`Composition of ${this.state.element1}` || 'Composition of Element#1'}
+            value={this.state.elem1_compo}
+            onChange={this.handleChange('elem1_compo')}
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label={`Composition of ${this.state.element2}` || 'Composition of Element#2'}
+            value={this.state.elem2_compo}
+            onChange={this.handleChange('elem2_compo')}
+          />
         </form>
-        <br />
-
-        <Table style={{ width: '65%' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{this.state.column1Aqueous}</TableCell>
-              <TableCell>{this.state.column2Aqueous}</TableCell>
-              <TableCell>{this.state.column3Aqueous}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.ionList.map((listValue, i) => (
-              <TableRow key={`${listValue[0]}_${i}`}>
-                <TableCell>{listValue[0]}</TableCell>
-                <TableCell>
-                  {(((listValue[1] + (Math.log(this.state[`conc_${listValue[0]}`])
-                       * 8.61733033722e-5 * this.state.temperature)) / 1.0364) * 100).toFixed(1)
-                  }
-                </TableCell>
-                <TableCell>
-                  <Select
-                    id={`${listValue[0]}_${i}`}
-                    key={`select_${i}`}
-                    onChange={this.handleChange(`conc_${listValue[0]}`)}
-                    value={this.state[`conc_${listValue[0]}`] || 1e-6}
-                    renderValue={(value) => `${value} `}
-                  >
-                    <MenuItem value="1e-8">1e-8 M </MenuItem>
-                    <MenuItem value="1e-7">1e-7 M </MenuItem>s
-                    <MenuItem value="1e-6">1e-6 M </MenuItem>
-                    <MenuItem value="1e-5">1e-5 M </MenuItem>
-                    <MenuItem value="1e-4">1e-4 M </MenuItem>
-                    <MenuItem value="1e-3">1e-3 M </MenuItem>
-                    <MenuItem value="0.01">0.01 M </MenuItem>
-                    <MenuItem value="0.1"> 0.1 M </MenuItem>
-                    <MenuItem value="1"> 1 M </MenuItem>
-                  </Select>
-                </TableCell>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-
-        <Table style={{ width: '65%' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{this.state.column1Solids}</TableCell>
-              <TableCell>{this.state.column2Solids}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.solidList.map((listValue, i) => (
-              <TableRow key={`${listValue[0]}_${i}`}>
-                <TableCell>{listValue[0]}</TableCell>
-                <TableCell>
-                  {((listValue[1] / 1.0364) * 100).toFixed(1)}
-                </TableCell>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-
-        <br />
-        <br />
-
-        <TextField
-          className={this.props.classes.textField}
-          label="Composition Element#1"
-          value={this.state.elem1_compo.value}
-          onChange={this.handleChange('elem1_compo')}
-        />
-
-        <TextField
-          className={this.props.classes.textField}
-          label="Composition Element#2"
-          value={this.state.elem2_compo.value}
-          onChange={this.handleChange('elem2_compo')}
-        />
-        <br />
-        <br />
-
         <FormGroup>
           <FormControlLabel
             control={
               <Switch
-                checked={this.state.asePourbaix}
-                onChange={this.handleSwitch('asePourbaix')}
+                checked={this.state.checkedASE}
+                onChange={this.handleSwitch('checkedASE')}
               />
-            }
-            label="Generate ASE_Pourbaix"
+              }
+            label="ASE Database(aqueous) + Lange Handbook(solids)"
           />
           <FormControlLabel
             control={
               <Switch
-                checked={this.state.pymatgenPourbaix}
-                onChange={this.handleSwitch('pymatgenPourbaix')}
+                checked={this.state.checkedPymatgen}
+                onChange={this.handleSwitch('checkedPymatgen')}
               />
-            }
-            label="Generate pymatgen_Pourbaix"
+              }
+            label="Pymatgen Database"
           />
         </FormGroup>
         <br />
+        {this.state.checkedASE === true && this.state.checkedPymatgen === false ?
+            (
+              <Button
+                raised onClick={this.submitQuery}
+                label="Generate Spacies 2 in 1"
+                color="primary"
+                value="Generate"
+              > Generate Spacies ASE_Lange</Button>
+            ) : (
+              <Button
+                raised onClick={this.submitQueryPymatgen}
+                label="Generate Spacies 2 in 1"
+                color="primary"
+                value="Generate"
+              > Generate Spacies Pymatgen</Button>
+            )
+          }
+        <br />
         <br />
 
-        <Button
-          raised
-          onClick={this.submitQueryPourbaix}
-          label="Generate Pourbaix_ase"
-          value="Submit"
-          color="primary"
-        >
-          Generate Pourbaix_ase
-        </Button>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={
+              <Button raised size="small" color="secondary" >
+                <Icon>+</Icon>
+              </Button>
+          }
+          >
+            <Typography>Species from ASE(aqueous) and Lange Handbook(solids)</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              <Table style={{ width: '65%' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{this.state.column1Aqueous}</TableCell>
+                    <TableCell>{this.state.column2Aqueous}</TableCell>
+                    <TableCell>{this.state.column3Aqueous}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.ionList.map((listValue, i) => (
+                    <TableRow key={`${listValue[0]}_${i}`}>
+                      <TableCell>{listValue[0]}</TableCell>
+                      <TableCell>
+                        {/* ase.units.kB = 8.61733033722e-05 eV/K  Boltzmann constant */}
+                        {(((listValue[1] + (Math.log(this.state[`conc_${listValue[0]}`])
+                             * 8.61733033722e-5 * this.state.temperature)) / 1.0364) * 100).toFixed(1)
+                        }
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          id={`${listValue[0]}_${i}`}
+                          key={`select_${i}`}
+                          onChange={this.handleChange(`conc_${listValue[0]}`)}
+                          value={this.state[`conc_${listValue[0]}`] || 1e-6}
+                          renderValue={(value) => `${value} `}
+                        >
+                          <MenuItem value="1e-8">1e-8 M </MenuItem>
+                          <MenuItem value="1e-7">1e-7 M </MenuItem>s
+                          <MenuItem value="1e-6">1e-6 M </MenuItem>
+                          <MenuItem value="1e-5">1e-5 M </MenuItem>
+                          <MenuItem value="1e-4">1e-4 M </MenuItem>
+                          <MenuItem value="1e-3">1e-3 M </MenuItem>
+                          <MenuItem value="0.01">0.01 M </MenuItem>
+                          <MenuItem value="0.1"> 0.1 M </MenuItem>
+                          <MenuItem value="1"> 1 M </MenuItem>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+
+              <Table style={{ width: '65%' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{this.state.column1Solids}</TableCell>
+                    <TableCell>{this.state.column2Solids}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.solidList.map((listValue, i) => (
+                    <TableRow key={`${listValue[0]}_${i}`}>
+                      <TableCell>{listValue[0]}</TableCell>
+                      <TableCell>
+                        {((listValue[1] / 1.0364) * 100).toFixed(1)}
+                      </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </Typography>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
         <br />
-        <img src={this.state.imageData} alt="Pourbaix_ase" />
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={
+              <Button raised size="small" color="secondary" >
+                <Icon>+</Icon>
+              </Button>
+          }
+          >
+            <Typography>Species from Pymatgen Database</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              <Table style={{ width: '65%' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{this.state.column1AqueousPymatgen}</TableCell>
+                    <TableCell>{this.state.column2AqueousPymatgen}</TableCell>
+                    <TableCell>{this.state.column3AqueousPymatgen}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.ionListPymatgen.map((listValue, i) => (
+                    <TableRow key={`pymatgen_${listValue[0]}_${i}`}>
+                      <TableCell>{listValue[0]}</TableCell>
+                      <TableCell>
+                        {/* ase.units.kB = 0.008314457 kJ/mol(-1)K(-1)  Boltzmann constant */}
+                        {
+                          (listValue[1] +
+                          (0.008314457 * this.state.temperature *
+                          Math.log(this.state[`conc_pymatgen_${listValue[0]}`] / (1e-06)))).toFixed(1)
+                        }
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          id={`pymatgen_${listValue[0]}_${i}`}
+                          key={`select_pymatgen_${i}`}
+                          onChange={this.handleChange(`conc_pymatgen_${listValue[0]}`)}
+                          value={this.state[`conc_pymatgen_${listValue[0]}`] || 1e-6}
+                          renderValue={(value) => `${value} `}
+                        >
+                          <MenuItem value="1e-8">1e-8 M </MenuItem>
+                          <MenuItem value="1e-7">1e-7 M </MenuItem>s
+                          <MenuItem value="1e-6">1e-6 M </MenuItem>
+                          <MenuItem value="1e-5">1e-5 M </MenuItem>
+                          <MenuItem value="1e-4">1e-4 M </MenuItem>
+                          <MenuItem value="1e-3">1e-3 M </MenuItem>
+                          <MenuItem value="0.01">0.01 M </MenuItem>
+                          <MenuItem value="0.1"> 0.1 M </MenuItem>
+                          <MenuItem value="1"> 1 M </MenuItem>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+
+              <Table style={{ width: '65%' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{this.state.column1SolidsPymatgen}</TableCell>
+                    <TableCell>{this.state.column2SolidsPymatgen}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.solidListPymatgen.map((listValue, i) => (
+                    <TableRow key={`pymatgen_${listValue[0]}_${i}`}>
+                      <TableCell>{listValue[0]}</TableCell>
+                      <TableCell>
+                        {
+                          listValue[1].toFixed(1)
+                        }
+                      </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </Typography>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
         <br />
         <Button
           raised
