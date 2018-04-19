@@ -29,6 +29,10 @@ const styles = () => ({
     fontFamily: 'Roboto, sans-serif',
     textDecoration: 'none',
   },
+  appHint: {
+    fontSize: 12,
+    textAlign: 'left',
+  },
 });
 
 class Apps extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -63,6 +67,7 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                       <Tooltip title={app.tooltip} placement="top">
                         <h3>{app.title}</h3>
                       </Tooltip>
+                      <div className={this.props.classes.appHint}>{app.tooltip}</div>
                     </Paper>
                   </Link>
                 </Grid>

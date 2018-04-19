@@ -41,26 +41,22 @@ module.exports = {
     }, {
       title: 'CatML',
       route: '/catml',
-      tooltip: 'Machine learning based predictions',
+      tooltip: 'Machine learning based predictions.',
     }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
       tooltip: 'Build your own slab geometry.',
     }, {
-      title: 'GraphiQL API Console',
+      title: 'GraphQL API',
       route: '/graphQLConsole',
-      tooltip: 'Direct programmatic access to database.',
+      tooltip: 'Programmatic access to database.',
     }, {
       title: 'Pourbaix Diagrams',
       route: '/pourbaixDiagrams',
       tooltip: 'Interactive electrochemical phase diagrams.',
     }, {
-      title: 'Publications',
-      route: '/publications',
-      tooltip: 'Interactive list of publications with geometries.',
-    }, {
       title: 'Scaling Relations',
-      tooltip: 'App for exploring scaling relations -- Work in Progress.',
+      tooltip: 'App for exploring scaling relations -- WIP.',
     }, {
       /* title: 'Upload Datasets',*/
       /* route: '/upload',*/
@@ -71,7 +67,7 @@ module.exports = {
     }, {
       title: 'Your Next App ...',
       route: '/yourNextApp',
-      tooltip: 'Documentation on how to write your own apps.',
+      tooltip: 'How to write your own apps.',
     },
   ],
 };
