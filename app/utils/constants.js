@@ -52,6 +52,7 @@ module.exports = {
       tooltip: 'Direct programmatic access to database.',
     }, {
       title: 'Pourbaix Diagrams',
+      route: '/pourbaixDiagrams',
       tooltip: 'Interactive electrochemical phase diagrams.',
     }, {
       title: 'Publications',
