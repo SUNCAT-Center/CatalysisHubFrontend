@@ -3,69 +3,68 @@
  * PourbaixDiagramView
  *
  */
-import React from "react";
-import ReactGA from "react-ga";
-import PropTypes from "prop-types";
-import Plot from "react-plotly.js";
-import axios from "axios";
-import Button from "material-ui/Button";
-import Icon from "material-ui/Icon";
-import TextField from "material-ui/TextField";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import React from 'react';
+import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
+import Plot from 'react-plotly.js';
+import axios from 'axios';
+import Button from 'material-ui/Button';
+// import Icon from 'material-ui/Icon';
+import TextField from 'material-ui/TextField';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 import Table, {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
-} from "material-ui/Table";
-import { FormControlLabel, FormGroup } from "material-ui/Form";
-import Switch from "material-ui/Switch";
-import Grid from "material-ui/Grid";
-import { withStyles } from "material-ui/styles";
-import _ from "lodash";
+  TableRow,
+} from 'material-ui/Table';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
+import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles';
+// import _ from 'lodash';
 
 // const results = {foo: 'bar'}
 // _.isEmpty(results)
 
 import ExpansionPanel, {
   ExpansionPanelSummary,
-  ExpansionPanelDetails
-} from "material-ui/ExpansionPanel";
-import Typography from "material-ui/Typography";
-import MdExpandMore from "react-icons/lib/md/expand-more";
-import Fade from 'material-ui/transitions/Fade';
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import Typography from 'material-ui/Typography';
+import MdExpandMore from 'react-icons/lib/md/expand-more';
 
 /* import { flaskRoot } from 'utils/constants'; */
-// const flaskRoot = 'http://api.catalysis-hub.org/';
-const flaskRoot = "http://localhost:5000/";
+const flaskRoot = 'http://api.catalysis-hub.org/';
+// const flaskRoot = 'http://localhost:5000/';
 
-const styles = theme => ({
+const styles = (theme) => ({
   textField: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   headerBar: {
-    marginTop: theme.spacing.unit
-  }
+    marginTop: theme.spacing.unit,
+  },
 });
 
 const initialState = {
-  element1: "",
-  element2: "",
+  element1: '',
+  element2: '',
   elem1_compo: 1,
   elem2_compo: 1,
-  compositionElem1: "",
+  compositionElem1: '',
   temperature: 298.15,
-  column1Aqueous: "",
-  column2Aqueous: "",
-  column3Aqueous: "",
-  column1Solids: "",
-  column2Solids: "",
-  column1AqueousPymatgen: "",
-  column2AqueousPymatgen: "",
-  column3AqueousPymatgen: "",
-  column1SolidsPymatgen: "",
-  column2SolidsPymatgen: "",
+  column1Aqueous: '',
+  column2Aqueous: '',
+  column3Aqueous: '',
+  column1Solids: '',
+  column2Solids: '',
+  column1AqueousPymatgen: '',
+  column2AqueousPymatgen: '',
+  column3AqueousPymatgen: '',
+  column1SolidsPymatgen: '',
+  column2SolidsPymatgen: '',
   loading: false,
   imageData: null,
   imageArray: [],
@@ -73,7 +72,7 @@ const initialState = {
   imageSurface: null,
   canvas: null,
   color: null,
-  contentType: "",
+  contentType: '',
   ionList: [],
   solidList: [],
   ionListPymatgen: [],
@@ -103,7 +102,7 @@ const initialState = {
   labels_loc_x: [],
   labels_loc_y: [],
   species_loc_x: [],
-  species_loc_y: []
+  species_loc_y: [],
 };
 
 class PourbaixDiagramView extends React.Component {
@@ -120,9 +119,9 @@ class PourbaixDiagramView extends React.Component {
   }
 
   handleChange(name) {
-    return event => {
+    return (event) => {
       this.setState({
-        [name]: event.target.value
+        [name]: event.target.value,
       });
     };
   }
@@ -134,12 +133,12 @@ class PourbaixDiagramView extends React.Component {
   }
 
   floatWFixedDigits(array) {
-    return array.map(elem => elem.toFixed(2));
+    return array.map((elem) => elem.toFixed(2));
   }
 
   submitQuery() {
     this.setState({
-      loading: false
+      loading: false,
     });
 
     axios
@@ -150,22 +149,22 @@ class PourbaixDiagramView extends React.Component {
         checkedASE: this.state.checkedASE,
         checkedLange: this.state.checkedLange,
         checkedML: this.state.checkedML,
-        checkedPymatgen: this.state.checkedPymatgen
+        checkedPymatgen: this.state.checkedPymatgen,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           loading: true,
           ionList: response.data[0].ion_list,
           solidList: response.data[0].solid_list,
-          column1Aqueous: "Aqueous Species_ASE_Lange",
-          column2Aqueous: "Gibbs Formation Energies(ΔG, kJ/mol)",
-          column3Aqueous: "Concentrations(mol/L)",
-          column1Solids: "Solid Species_ASE_Lange",
-          column2Solids: "Gibbs Formation Energies(ΔG, kJ/mol)"
+          column1Aqueous: 'Aqueous Species_ASE_Lange',
+          column2Aqueous: 'Gibbs Formation Energies(ΔG, kJ/mol)',
+          column3Aqueous: 'Concentrations(mol/L)',
+          column1Solids: 'Solid Species_ASE_Lange',
+          column2Solids: 'Gibbs Formation Energies(ΔG, kJ/mol)',
         });
-        response.data[0].ion_list.map(listValue => {
+        response.data[0].ion_list.map((listValue) => {
           this.setState({
-            [`conc_${listValue[0]}`]: (1e-6).toExponential()
+            [`conc_${listValue[0]}`]: (1e-6).toExponential(),
           });
           return [`conc_${listValue[0]}`];
         });
@@ -174,7 +173,7 @@ class PourbaixDiagramView extends React.Component {
 
   submitQueryPymatgen() {
     this.setState({
-      loading: false
+      loading: false,
     });
     const compositionElem1 =
       parseInt(this.state.elem1_compo, 10) /
@@ -189,24 +188,24 @@ class PourbaixDiagramView extends React.Component {
         checkedASE: this.state.checkedASE,
         checkedLange: this.state.checkedLange,
         checkedML: this.state.checkedML,
-        checkedPymatgen: this.state.checkedPymatgen
+        checkedPymatgen: this.state.checkedPymatgen,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           loading: true,
           ionListPymatgen: response.data[0].ion_list,
           solidListPymatgen: response.data[0].solid_list,
-          column1AqueousPymatgen: "Aqueous Species_Pymatgen",
-          column2AqueousPymatgen: "Gibbs Formation Energies(ΔG, kJ/mol)",
-          column3AqueousPymatgen: "Concentrations(mol/L)",
-          column1SolidsPymatgen: "Solid Species_Pymatgen",
-          column2SolidsPymatgen: "Gibbs Formation Energies(ΔG, kJ/mol)"
+          column1AqueousPymatgen: 'Aqueous Species_Pymatgen',
+          column2AqueousPymatgen: 'Gibbs Formation Energies(ΔG, kJ/mol)',
+          column3AqueousPymatgen: 'Concentrations(mol/L)',
+          column1SolidsPymatgen: 'Solid Species_Pymatgen',
+          column2SolidsPymatgen: 'Gibbs Formation Energies(ΔG, kJ/mol)',
         });
         // console.log(response);
 
-        response.data[0].ion_list.map(listValue => {
+        response.data[0].ion_list.map((listValue) => {
           this.setState({
-            [`conc_pymatgen_${listValue[0]}`]: (1e-6).toExponential()
+            [`conc_pymatgen_${listValue[0]}`]: (1e-6).toExponential(),
           });
           return [`conc_pymatgen_${listValue[0]}`];
         });
@@ -216,12 +215,12 @@ class PourbaixDiagramView extends React.Component {
   submitQueryPourbaix() {
     this.setState({
       loading: true,
-      ionsConc: []
+      ionsConc: [],
     });
 
-    this.state.ionList.map(listValue => {
+    this.state.ionList.map((listValue) => {
       this.state.ionsConc.push({
-        [`conc_${listValue[0]}`]: this.state[`conc_${listValue[0]}`]
+        [`conc_${listValue[0]}`]: this.state[`conc_${listValue[0]}`],
       });
       return this.state.ionsConc;
     });
@@ -235,9 +234,9 @@ class PourbaixDiagramView extends React.Component {
         ions_conc: this.state.ionsConc,
         checkedASE: this.state.checkedASE,
         checkedLange: this.state.checkedLange,
-        checkedML: this.state.checkedML
+        checkedML: this.state.checkedML,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           loading: false,
           completed: 100,
@@ -246,33 +245,33 @@ class PourbaixDiagramView extends React.Component {
           LabelsXLoc: response.data[0].x_loc,
           LabelsYLoc: response.data[0].y_loc,
           LabelsText: response.data[0].labels_text,
-          imageArray: response.data[0].image_array_list
+          imageArray: response.data[0].image_array_list,
         });
       });
   }
 
   submitPourbaixPymatgen() {
     this.setState({
-      figLayout: 
-      {xaxis: {
-              zeroline: false,
-              showgrid: false
-                    },
-              yaxis: {
-                zeroline: false,
-                showgrid: false
-              },}
+      figLayout:
+      { xaxis: {
+        zeroline: false,
+        showgrid: false,
+      },
+        yaxis: {
+          zeroline: false,
+          showgrid: false,
+        } },
     });
     const compositionElem1 =
       parseInt(this.state.elem1_compo, 10) /
       (parseInt(this.state.elem1_compo, 10) +
         parseInt(this.state.elem2_compo, 10));
 
-    this.state.ionListPymatgen.map(listValue => {
+    this.state.ionListPymatgen.map((listValue) => {
       this.state.ionsConcPymatgen.push({
         [`conc_pymatgen_${listValue[0]}`]: this.state[
           `conc_pymatgen_${listValue[0]}`
-        ]
+        ],
       });
       return this.state.ionsConcPymatgen;
     });
@@ -281,9 +280,9 @@ class PourbaixDiagramView extends React.Component {
         element1: this.state.element1,
         element2: this.state.element2,
         mat_co_1: compositionElem1,
-        ions_conc: this.state.ionsConcPymatgen
+        ions_conc: this.state.ionsConcPymatgen,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           imagePymatgen: response.data[0].data_url,
           h_line_x: response.data[0].h_line_x,
@@ -299,39 +298,39 @@ class PourbaixDiagramView extends React.Component {
           labels_loc_y: response.data[0].labels_loc_y,
           species_loc_x: response.data[0].species_loc_x,
           species_loc_y: response.data[0].species_loc_y,
-          figLayout:{xaxis: {
-                            range: [-2, 14],
-                            title: "pH",
-                            zeroline: false,
-                            showgrid: false
-                    },
-                    yaxis: {
-                      title: "U/V",
-                      zeroline: false,
-                      showgrid: false
-                    },
-                    width: 640,
-                    height: 480,
-                    hovermode: "closest",
-                    showlegend: false,
-                    title:
-                      "Pourbaix Diagram of " +
+          figLayout: { xaxis: {
+            range: [-2, 14],
+            title: 'pH',
+            zeroline: false,
+            showgrid: false,
+          },
+            yaxis: {
+              title: 'U/V',
+              zeroline: false,
+              showgrid: false,
+            },
+            width: 640,
+            height: 480,
+            hovermode: 'closest',
+            showlegend: false,
+            title:
+                      'Pourbaix Diagram of ' +
                       `${this.state.element1}` +
-                      "_" +
+                      '_' +
                       `${this.state.element2}`,
-                   },
+          },
+        });
       });
-  })
- }
+  }
 
   submitSurfacePourbaix() {
     axios
       .post(`${flaskRoot}apps/pourbaix/pourbaix_surface/`, {
-        surface1: this.state.surface
+        surface1: this.state.surface,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
-          imageSurface: response.data[0].data_url
+          imageSurface: response.data[0].data_url,
         });
       });
   }
@@ -340,56 +339,56 @@ class PourbaixDiagramView extends React.Component {
     const hLine = {
       x: this.floatWFixedDigits(this.state.h_line_x),
       y: this.floatWFixedDigits(this.state.h_line_y),
-      mode: "lines+markers",
-      name: "H2_evolution",
+      mode: 'lines+markers',
+      name: 'H2_evolution',
       line: {
-        dash: "dashdot",
-        width: 3
-      }
+        dash: 'dashdot',
+        width: 3,
+      },
     };
     const oLine = {
       x: this.floatWFixedDigits(this.state.o_line_x),
       y: this.floatWFixedDigits(this.state.o_line_y),
-      mode: "lines+markers",
-      name: "O2_reduction",
+      mode: 'lines+markers',
+      name: 'O2_reduction',
       line: {
-        dash: "dashdot",
-        width: 3
-      }
+        dash: 'dashdot',
+        width: 3,
+      },
     };
 
     const neutralLine = {
       x: this.floatWFixedDigits(this.state.neutral_line_x),
       y: this.floatWFixedDigits(this.state.neutral_line_y),
-      mode: "lines+markers",
-      name: "pH=7",
+      mode: 'lines+markers',
+      name: 'pH=7',
       line: {
-        dash: "dashdot",
-        width: 3
-      }
+        dash: 'dashdot',
+        width: 3,
+      },
     };
 
     const V0Line = {
       x: this.floatWFixedDigits(this.state.V0_line_x),
       y: this.floatWFixedDigits(this.state.V0_line_y),
-      mode: "lines+markers",
-      name: "U=0",
+      mode: 'lines+markers',
+      name: 'U=0',
       line: {
-        dash: "dashdot",
-        width: 3
-      }
+        dash: 'dashdot',
+        width: 3,
+      },
     };
 
     const labelsLoc = {
       x: this.floatWFixedDigits(this.state.labels_loc_x),
       y: this.floatWFixedDigits(this.state.labels_loc_y),
-      mode: "markers",
+      mode: 'markers',
       marker: {
-        color: "rgb(142, 124, 195)",
-        size: 9
+        color: 'rgb(142, 124, 195)',
+        size: 9,
       },
-      name: "",
-      text: this.state.labels_name
+      name: '',
+      text: this.state.labels_name,
     };
 
     const lineData = [];
@@ -398,12 +397,12 @@ class PourbaixDiagramView extends React.Component {
       const speciesLine = {
         x: this.floatWFixedDigits(this.state.species_loc_x[i]),
         y: this.floatWFixedDigits(this.state.species_loc_y[i]),
-        mode: "lines",
+        mode: 'lines',
         name: `edge_${i}`,
         line: {
-          color: "rgb(0,0,0)",
-          width: 2
-        }
+          color: 'rgb(0,0,0)',
+          width: 2,
+        },
       };
 
       lineData.push(speciesLine);
@@ -426,7 +425,7 @@ class PourbaixDiagramView extends React.Component {
           </Grid>
           <Grid>
             <div className={this.props.classes.infoText}>
-              Powered by{" "}
+              Powered by{' '}
               <ReactGA.OutboundLink
                 eventLabel="https://github.com/MengZ188/CatalysisHubBackend"
                 to="https://github.com/MengZ188/CatalysisHubBackend"
@@ -444,20 +443,20 @@ class PourbaixDiagramView extends React.Component {
             label="Element#1"
             placeholder="Cu"
             value={this.state.element1.value}
-            onChange={this.handleChange("element1")}
+            onChange={this.handleChange('element1')}
           />
           <TextField
             className={this.props.classes.textField}
             label="Element#2"
             placeholder="Co"
             value={this.state.element2.value}
-            onChange={this.handleChange("element2")}
+            onChange={this.handleChange('element2')}
           />
           <TextField
             className={this.props.classes.textField}
             label="Temperature"
             value={this.state.temperature}
-            onChange={this.handleChange("temperature")}
+            onChange={this.handleChange('temperature')}
           />
           <br />
           <br />
@@ -465,20 +464,20 @@ class PourbaixDiagramView extends React.Component {
             className={this.props.classes.textField}
             label={
               `Composition of ${this.state.element1}` ||
-              "Composition of Element#1"
+              'Composition of Element#1'
             }
             value={this.state.elem1_compo}
-            onChange={this.handleChange("elem1_compo")}
+            onChange={this.handleChange('elem1_compo')}
           />
 
           <TextField
             className={this.props.classes.textField}
             label={
               `Composition of ${this.state.element2}` ||
-              "Composition of Element#2"
+              'Composition of Element#2'
             }
             value={this.state.elem2_compo}
-            onChange={this.handleChange("elem2_compo")}
+            onChange={this.handleChange('elem2_compo')}
           />
         </form>
         <FormGroup>
@@ -486,7 +485,7 @@ class PourbaixDiagramView extends React.Component {
             control={
               <Switch
                 checked={this.state.checkedASE}
-                onChange={this.handleSwitch("checkedASE")}
+                onChange={this.handleSwitch('checkedASE')}
               />
             }
             label="ASE Database(aqueous) + Lange Handbook(solids)"
@@ -495,7 +494,7 @@ class PourbaixDiagramView extends React.Component {
             control={
               <Switch
                 checked={this.state.checkedPymatgen}
-                onChange={this.handleSwitch("checkedPymatgen")}
+                onChange={this.handleSwitch('checkedPymatgen')}
               />
             }
             label="Pymatgen Database"
@@ -511,7 +510,7 @@ class PourbaixDiagramView extends React.Component {
             color="primary"
             value="Generate"
           >
-            {" "}
+            {' '}
             Generate Species ASE_Lange
           </Button>
         ) : (
@@ -522,7 +521,7 @@ class PourbaixDiagramView extends React.Component {
             color="primary"
             value="Generate"
           >
-            {" "}
+            {' '}
             Generate Species Pymatgen
           </Button>
         )}
@@ -538,7 +537,7 @@ class PourbaixDiagramView extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Typography>
-                  <Table style={{ width: "65%" }}>
+                  <Table style={{ width: '65%' }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>{this.state.column1Aqueous}</TableCell>
@@ -553,12 +552,10 @@ class PourbaixDiagramView extends React.Component {
                           <TableCell>
                             {/* ase.units.kB = 8.61733033722e-05 eV/K  Boltzmann constant */}
                             {(
-                              (listValue[1] +
-                                Math.log(this.state[`conc_${listValue[0]}`]) *
+                              ((listValue[1] +
+                                (Math.log(this.state[`conc_${listValue[0]}`]) *
                                   8.61733033722e-5 *
-                                  this.state.temperature) /
-                              1.0364 *
-                              100
+                                  this.state.temperature)) / 1.0364) * 100
                             ).toFixed(1)}
                           </TableCell>
                           <TableCell>
@@ -569,7 +566,7 @@ class PourbaixDiagramView extends React.Component {
                                 `conc_${listValue[0]}`
                               )}
                               value={this.state[`conc_${listValue[0]}`] || 1e-6}
-                              renderValue={value => `${value} `}
+                              renderValue={(value) => `${value} `}
                             >
                               <MenuItem value="1e-8">1e-8 M </MenuItem>
                               <MenuItem value="1e-7">1e-7 M </MenuItem>s
@@ -587,7 +584,7 @@ class PourbaixDiagramView extends React.Component {
                     </TableBody>
                   </Table>
 
-                  <Table style={{ width: "65%" }}>
+                  <Table style={{ width: '65%' }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>{this.state.column1Solids}</TableCell>
@@ -599,7 +596,7 @@ class PourbaixDiagramView extends React.Component {
                         <TableRow key={`${listValue[0]}_${i}`}>
                           <TableCell>{listValue[0]}</TableCell>
                           <TableCell>
-                            {(listValue[1] / 1.0364 * 100).toFixed(1)}
+                            {((listValue[1] / 1.0364) * 100).toFixed(1)}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -618,7 +615,7 @@ class PourbaixDiagramView extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Typography>
-                  <Table style={{ width: "65%" }}>
+                  <Table style={{ width: '65%' }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>
@@ -640,12 +637,12 @@ class PourbaixDiagramView extends React.Component {
                             {/* ase.units.kB = 0.008314457 kJ/mol(-1)K(-1)  Boltzmann constant */}
                             {(
                               listValue[1] +
-                              0.008314457 *
+                              (0.008314457 *
                                 this.state.temperature *
                                 Math.log(
                                   this.state[`conc_pymatgen_${listValue[0]}`] /
                                     1e-6
-                                )
+                                ))
                             ).toFixed(1)}
                           </TableCell>
                           <TableCell>
@@ -659,7 +656,7 @@ class PourbaixDiagramView extends React.Component {
                                 this.state[`conc_pymatgen_${listValue[0]}`] ||
                                 1e-6
                               }
-                              renderValue={value => `${value} `}
+                              renderValue={(value) => `${value} `}
                             >
                               <MenuItem value="1e-8">1e-8 M </MenuItem>
                               <MenuItem value="1e-7">1e-7 M </MenuItem>s
@@ -677,7 +674,7 @@ class PourbaixDiagramView extends React.Component {
                     </TableBody>
                   </Table>
 
-                  <Table style={{ width: "65%" }}>
+                  <Table style={{ width: '65%' }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>
@@ -715,11 +712,11 @@ class PourbaixDiagramView extends React.Component {
         <br />
         {this.state.figLayout === null ? null : (
           <Plot
-              data={lineData.map(line => line)}
-              config={{
-                displayModeBar: false
-              }}
-              layout={this.state.figLayout}
+            data={lineData.map((line) => line)}
+            config={{
+              displayModeBar: false,
+            }}
+            layout={this.state.figLayout}
           />
         )}
 
@@ -738,19 +735,20 @@ class PourbaixDiagramView extends React.Component {
         </div>
 
         {this.state.imageSurface === null ? null : (
-        <img
-          src={this.state.imageSurface}
-          width="704"
-          height="528"
-        />)}
-        
+          <img
+            src={this.state.imageSurface}
+            width="704"
+            height="528"
+            alt="surface pourbaix"
+          />)}
+
       </div>
     );
   }
 }
 
 PourbaixDiagramView.propTypes = {
-  classes: PropTypes.object
+  classes: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(PourbaixDiagramView);
