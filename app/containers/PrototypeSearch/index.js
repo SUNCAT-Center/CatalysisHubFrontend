@@ -6,7 +6,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import cachios from 'cachios';
+/* import cachios from 'cachios';*/
+import ReactGA from 'react-ga';
+import axios from 'axios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
@@ -15,6 +17,7 @@ import Paper from 'material-ui/Paper';
 import { CircularProgress, LinearProgress } from 'material-ui/Progress';
 import Chip from 'material-ui/Chip';
 import IconButton from 'material-ui/IconButton';
+import { Link } from 'react-router';
 
 import {
   FormGroup,
@@ -28,6 +31,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
+import * as catKitActions from 'containers/CatKitDemo/actions';
 import Header from './header';
 import { styles } from './styles';
 import * as actions from './actions';
@@ -48,7 +52,22 @@ const initialState = {
   speciesSortByFrequency: false,
   spacegroupSortByFrequency: true,
   atomsSortByFrequency: false,
+  stoichiometrySortByFrequency: true,
+  stoichiometriesCollapsed: true,
   showPrototype: false,
+};
+
+const getGeometryUrl = (repository, handle, tags) => {
+  if (repository === 'OQMD') {
+    return `http://oqmd.org/materials/entry/${handle.split('-')[2]}`;
+  } else if (repository === 'MaterialsProject') {
+    return `https://materialsproject.org/materials/${handle}/`;
+  } else if (repository === 'AMCSD') {
+    return `http://rruff.geo.arizona.edu/AMS/minerals/${tags.slice(3, tags.length - 2)}`;
+  } else if (repository === 'catalysis-hub') {
+    return `http://api.catalysis-hub.org/graphql?query=%7Bsystems(uniqueId%3A%22${handle}%22)%20%7B%0A%20%20edges%20%7B%0A%20%20%20%20node%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20uniqueId%0A%20%20%20%20%20%20energy%0A%20%20%20%20%20%20keyValuePairs%0A%20%20%20%20%20%20InputFile(format%3A%22cif%22)%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%7D`;
+  }
+  return 'http://www.catalysis-hub.org/Error: Unknown repository';
 };
 
 const cf = (formula) => {
@@ -71,9 +90,12 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.handleChange = this.handleChange.bind(this);
     this.submitSearch = this.submitSearch.bind(this);
     this.loadMore = this.loadMore.bind(this);
-    this.setState(initialState);
+    this.state = initialState;
     this.selectPrototype = this.selectPrototype.bind(this);
     this.unselectPrototype = this.unselectPrototype.bind(this);
+    this.handoffWyckoff = this.handoffWyckoff.bind(this);
+    this.handoffCatKit = this.handoffCatKit.bind(this);
+
     this.setState(initialState);
   }
 
@@ -83,6 +105,12 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         [name]: event.target.value,
       });
     };
+  }
+
+  handoffWyckoff() {
+  }
+
+  handoffCatKit() {
   }
 
   loadMore() {
@@ -105,8 +133,8 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       facet_filters: JSON.stringify(this.props.facetFilters),
       prototype: ptype,
     },
-      ttl: 300 };
-    cachios.get(ptypeUrl, params).then((response) => {
+    };
+    axios.get(ptypeUrl, params).then((response) => {
       const repoPrototypes = _.groupBy(response.data.prototypes, 'repository');
       this.props.saveRepoPrototypes(repoPrototypes);
       this.setState({
@@ -128,7 +156,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       showPrototype: false,
     });
     if (!loadMore) {
-      this.props.saveSearchResults([]);
+      this.props.saveSearchResults({});
     }
     this.props.savePrototype('');
     const params = { params: {
@@ -136,9 +164,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       facet_filters: JSON.stringify(this.props.facetFilters),
       limit: this.props.searchLimit,
     },
-      ttl: 300,
+      /* ttl: 300,*/
     };
-    cachios.get(url, params).then((response) => {
+    axios.get(url, params).then((response) => {
       this.setState({
         loading: false,
         loadingMore: false,
@@ -172,7 +200,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <div
                   className={this.props.classes.hintText}
                 >
-                  {`${this.props.searchResults.time.toFixed(2)} s`}</div>
+                  {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
               }
               </Grid>
               <Grid item>
@@ -218,6 +246,65 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                                 this.props.addFacetFilter(`repository:${repository[0]}`);
                               } else {
                                 this.props.removeFacetFilter(`repository:${repository[0]}`);
+                              }
+                              return checked;
+                            }}
+                          />}
+                        />
+                      ))}
+                </FormGroup>
+              </FormControl>
+            </Paper>
+          }
+            {_.isEmpty(this.props.searchResults.stoichiometries) ? null :
+            <Paper className={this.props.classes.facetPanel}>
+              <Grid container direction="row" justify="space-between">
+                <Grid item>
+                  <FormHelperText
+                    onClick={() => {
+                      this.setState({
+                        stoichiometriesCollapsed: !this.state.stoichiometriesCollapsed,
+                      });
+                    }}
+                  >{this.state.stoichiometriesCollapsed ?
+                    <div>show more <MdExpandMore /></div>
+                        : <div>show less <MdExpandLess /></div>
+                    }</FormHelperText>
+                </Grid>
+                <Grid item>
+                  <FormHelperText
+                    onClick={() => this.setState({ stoichiometrySortByFrequency: !this.state.stoichiometrySortByFrequency })}
+                  >
+                    Sort By {this.state.stoichiometrySortByFrequency ? 'Value' : 'Frequency'}
+                  </FormHelperText>
+                </Grid>
+              </Grid>
+              <FormControl component="div">
+                <FormLabel component="legend">Stoichiometry</FormLabel>
+                <FormGroup>
+                  {this.props.searchResults.stoichiometries
+                      .sort((a, b) => {
+                        if (this.state.stoichiometrySortByFrequency) {
+                          return b[1] - a[1];
+                        }
+                        if (a[0] > b[0]) {
+                          return 1;
+                        }
+                        return -1;
+                      })
+                      .slice(0, this.state.stoichiometriesCollapsed ? shortLength : 230)
+                      .map((stoichiometry, si) => (
+                        <FormControlLabel
+                          key={`sm_${si}`}
+                          label={`${stoichiometry[0]} (${stoichiometry[1]})`}
+                          control={<Checkbox
+                            value={`stoichiometry:${stoichiometry}`}
+                            checked={_.indexOf(this.props.facetFilters, `stoichiometry:${stoichiometry[0]}`) > -1}
+                            onChange={(event, checked) => {
+                              if (checked) {
+                                this.props.addFacetFilter(`stoichiometry:${stoichiometry[0]}`);
+                              } else {
+                                this.props.removeFacetFilter(`stoichiometry:${stoichiometry[0]}`);
                               }
                               return checked;
                             }}
@@ -292,7 +379,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
 
             {_.isEmpty(this.props.searchResults.n_atoms) ? null :
             <Paper className={this.props.classes.facetPanel}>
-              <Grid container directon="row" justify="space-between">
+              <Grid container direction="row" justify="space-between">
                 <Grid item>
                   <FormHelperText
                     onClick={() => {
@@ -347,6 +434,10 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
               </FormControl>
             </Paper>
           }
+
+
+
+
             {_.isEmpty(this.props.searchResults.species) ? null :
             <Paper className={this.props.classes.facetPanel}>
               <FormControl component="div">
@@ -387,6 +478,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
               </FormControl>
             </Paper>
           }
+
+
+
             {_.isEmpty(this.props.searchResults.spacegroups) ? null :
             <Paper className={this.props.classes.facetPanel}>
               <Grid container direction="row" justify="space-between">
@@ -447,6 +541,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
           <Grid item xs={9}>
             {_.isEmpty(this.props.searchResults.prototypes) ? null :
             <Paper>
+              {this.state.loadingPrototype ? <LinearProgress /> : null}
               {this.state.showPrototype ?
                 <div>
                   <h3 className={this.props.classes.subheader}>
@@ -465,7 +560,13 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                       <ul>
                         {this.props.repoPrototypes[repository].map((ptype, pi) => (
                           <li key={`ptype_${pi}`}>
-                            {ptype.repository}:{ptype.filename}
+                            <ReactGA.OutboundLink
+                              eventLabel="Goto Structure Source"
+                              to={getGeometryUrl(ptype.repository, ptype.handle, ptype.tags)}
+                              target="_blank"
+                            >
+                                Source: {ptype.repository}:{ptype.handle}
+                            </ReactGA.OutboundLink>
                             <ul>
                               {Object.keys(ptype).map((entry, ei) => (
                                 <li key={`entry_${ei}`}>
@@ -473,6 +574,36 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                                 </li>
                                 ))}
                             </ul>
+                            <Grid container direction="row" justify="flex-end">
+                              <Grid item>
+                                <Button color="primary">
+                                  <Button
+                                    color="primary"
+                                    onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
+                                  >
+                                    <Link
+                                      className={this.props.classes.buttonLink}
+                                      to={'/bulkGenerator'}
+                                    >
+                                Open in Wyckoff Bulk Generator
+                                  </Link>
+                                  </Button>
+                                </Button>
+                              </Grid>
+                              <Grid item>
+                                <Button
+                                  color="primary"
+                                  onClick={() => this.handoffCatkit(ptype.prototype, ptype.spacegroup)}
+                                >
+                                  <Link
+                                    className={this.props.classes.buttonLink}
+                                    to={'/catKitDemo'}
+                                  >
+                                Open in CatKit
+                                  </Link>
+                                </Button>
+                              </Grid>
+                            </Grid>
                           </li>
                           ))}
                       </ul>
@@ -487,7 +618,6 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                     {this.props.searchResults.prototypes.map((ptype, pi) => (
                       <Paper key={`pcard_${pi}`} className={this.props.classes.pcard}>
                         <h4>Prototype {ptype[0]}</h4>
-                        {this.state.loadingPrototype ? <LinearProgress /> : null}
 
                         <div>
                             Structures: {ptype[1]}
@@ -575,6 +705,15 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveRepoPrototypes: (repoPrototypes) => {
     dispatch(actions.saveRepoPrototypes(repoPrototypes));
+  },
+  receiveBulkCif: (bulkCif) => {
+    dispatch(catKitActions.receiveBulkCif(bulkCif));
+  },
+  dropBulkInput: () => {
+    dispatch(catKitActions.dropBulkInput());
+  },
+  saveBulkParams: (bulkParams) => {
+    dispatch(catKitActions.saveBulkParams(bulkParams));
   },
 });
 

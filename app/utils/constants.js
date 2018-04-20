@@ -54,6 +54,10 @@ module.exports = {
       title: 'Pourbaix Diagrams',
       tooltip: 'Interactive electrochemical phase diagrams.',
     }, {
+      title: 'Prototype Search',
+      route: '/prototypeSearch',
+      tooltip: 'Search for existing structures using spacegroups and Wyckoff points.',
+    }, {
       title: 'Publications',
       route: '/publications',
       tooltip: 'Interactive list of publications with geometries.',
