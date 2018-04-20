@@ -32,12 +32,13 @@ import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
+import { flaskRoot } from 'utils/constants';
 import Header from './header';
 import { styles } from './styles';
 import * as actions from './actions';
 
-const url = 'http://localhost:5002/facet_search/';
-const ptypeUrl = 'http://localhost:5002/prototype/';
+const url = `${flaskRoot}/apps/prototypeSearch/facet_search/`;
+const ptypeUrl = `${flaskRoot}/apps/prototypeSearch/prototype/`;
 const shortLength = 5;
 const longLength = 20;
 
@@ -576,18 +577,16 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                             </ul>
                             <Grid container direction="row" justify="flex-end">
                               <Grid item>
-                                <Button color="primary">
-                                  <Button
-                                    color="primary"
-                                    onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
+                                <Button
+                                  color="primary"
+                                  onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
+                                >
+                                  <Link
+                                    className={this.props.classes.buttonLink}
+                                    to={'/bulkGenerator'}
                                   >
-                                    <Link
-                                      className={this.props.classes.buttonLink}
-                                      to={'/bulkGenerator'}
-                                    >
                                 Open in Wyckoff Bulk Generator
                                   </Link>
-                                  </Button>
                                 </Button>
                               </Grid>
                               <Grid item>

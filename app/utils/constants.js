@@ -56,8 +56,8 @@ module.exports = {
       tooltip: 'Interactive electrochemical phase diagrams.',
     }, {
       title: 'Prototype Search',
-      /* route: '/prototypeSearch',*/
-      tooltip: 'Search for existing structures using spacegroups and Wyckoff points.',
+      route: '/prototypeSearch',
+      tooltip: 'Search for structures using Wyckoff points.',
     }, {
       title: 'Scaling Relations',
       tooltip: 'App for exploring scaling relations -- WIP.',
