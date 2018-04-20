@@ -100,17 +100,17 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
       <div>
         <Grid container direction="row" justify="space-between">
           <Grid item>
-            <h2>CatML</h2>
+            <h2>CatLearn</h2>
           </Grid>
           <Grid>
             <div
               className={this.props.classes.infoText}
             >Powered by <ReactGA.OutboundLink
-              eventLabel="https://gitlab.com/atoML/AtoML"
-              to="https://gitlab.com/atoML/AtoML"
+              eventLabel="https://github.com/SUNCAT-Center/CatLearn"
+              to="https://github.com/SUNCAT-Center/CatLearn"
               target="_blank"
             >
-                gitlab.com/atoML/AtoML
+              github.com/SUNCAT-Center/CatLearn
               </ReactGA.OutboundLink>
             </div>
 

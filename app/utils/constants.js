@@ -39,8 +39,8 @@ module.exports = {
 
       ],
     }, {
-      title: 'CatML',
-      route: '/catml',
+      title: 'CatLearn',
+      route: '/catLearn',
       tooltip: 'Machine learning based predictions.',
     }, {
       title: 'CatKit Slab Generator',
