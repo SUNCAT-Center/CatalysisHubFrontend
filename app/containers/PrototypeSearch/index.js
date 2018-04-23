@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /* import cachios from 'cachios';*/
 import ReactGA from 'react-ga';
+import Script from 'react-load-script';
 import axios from 'axios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -39,6 +40,7 @@ import * as actions from './actions';
 
 const url = `${flaskRoot}/apps/prototypeSearch/facet_search/`;
 const ptypeUrl = `${flaskRoot}/apps/prototypeSearch/prototype/`;
+const structureUrl = `${flaskRoot}/apps/prototypeSearch/get_structure/`;
 const shortLength = 5;
 const longLength = 20;
 
@@ -111,7 +113,23 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
   handoffWyckoff() {
   }
 
-  handoffCatKit() {
+  handoffCatKit(ptype) {
+    console.log(ptype);
+    axios.post(structureUrl, {
+      spacegroup: ptype.spacegroup,
+      parameter_names: ptype.parameter_names,
+      parameters: ptype.parameters,
+      species: ptype.species,
+      wyckoffs: ptype.wyckoffs,
+    }).then((response) => {
+      console.log(response);
+      this.props.receiveBulkCif(response.data.structure);
+      this.props.saveBulkParams({
+        name: ptype.protopype,
+        spacegroup: ptype.spacegroup,
+      });
+      this.props.dropBulkInput();
+    });
   }
 
   loadMore() {
@@ -179,6 +197,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
   render() {
     return (
       <div>
+        <Script url="/static/ChemDoodleWeb.js" />
         <Header />
         <Paper>
           <FormGroup row>
@@ -592,7 +611,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                               <Grid item>
                                 <Button
                                   color="primary"
-                                  onClick={() => this.handoffCatkit(ptype.prototype, ptype.spacegroup)}
+                                  onClick={() => this.handoffCatKit(
+                                    ptype
+                                  )}
                                 >
                                   <Link
                                     className={this.props.classes.buttonLink}
@@ -671,7 +692,9 @@ PrototypeSearch.propTypes = {
   saveSearchLimit: PropTypes.func,
   savePrototype: PropTypes.func,
   saveRepoPrototypes: PropTypes.func,
-
+  receiveBulkCif: PropTypes.func,
+  saveBulkParams: PropTypes.func,
+  dropBulkInput: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
