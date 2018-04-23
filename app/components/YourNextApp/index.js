@@ -51,6 +51,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             <p>The current interface is created from <a href="https://github.com/react-boilerplate/react-boilerplate">React Boilerplate</a>.</p>
             <h3 id="contributions">Contributions</h3>
             <p>Contributions in the form of pull requests are highly welcome. To this end you will need a <a href="https://github.com/join">github.com account (free)</a> and create a fork by clicking in the <a href="https://github.com/mhoffman/CatAppBrowser#fork-destination-box">Fork</a> in the upper-right corner. Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/[username]/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.</p>
+
           </Paper>
           <Paper className={this.props.classes.paper}>
             <h3 id="adding-new-appscomponents">Adding New Apps/Components</h3>
@@ -59,6 +60,24 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             <p>Give it a succinct name and follow the default choices. This will create a new folder under <code>app/components/</code> with all the needed files. The new component can be readily imported and used throughout the app.</p>
             <h3 id="add-new-appscontainers">Add New Apps/Containers</h3>
             <p>For more complex applications, i.e. requiring several levels of user interface and user choice, you should go right a ahead and create a container. For intermittently storing user choices you will likely need <a href="https://github.com/reactjs/react-redux">React Redux</a>. If that sounds scary and complex, don&apos;t worry. Still start mocking up the user interface and we can talk about getting &apos;interactivity&apos; into it later.</p>
+          </Paper>
+          <Paper>
+            <h2>Including data from the GraphQL API</h2>
+            <p>For retrieving data from the database we will use the module axios which allows us to make HTTP requests similar
+              requests in Python or curl on the command line.
+            </p>
+            <p>To start we have to import the axios module somewhere near the top of our app, like so:</p>
+            <code>
+              import axios from {'\'axios\''};<br />
+
+              import {'{ newGraphQLRoot }'} from {'\'utils/constants\''};
+            </code>
+            <p>While we are at it we also imported the URL of the GraphQL API which is defined in utils/constants.js</p>
+            <p>TODO</p>
+          </Paper>
+          <Paper>
+            <h2>Making Plots</h2>
+            <p>TODO: Explain how to use Plotly</p>
           </Paper>
           <Paper className={this.props.classes.paper}>
             <h2 id="dependencies">Dependencies</h2>
