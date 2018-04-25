@@ -33,14 +33,14 @@ import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import Header from './header';
 import { styles } from './styles';
 import * as actions from './actions';
 
-const url = `${flaskRoot}/apps/prototypeSearch/facet_search/`;
-const ptypeUrl = `${flaskRoot}/apps/prototypeSearch/prototype/`;
-const structureUrl = `${flaskRoot}/apps/prototypeSearch/get_structure/`;
+const url = `${apiRoot}/apps/prototypeSearch/facet_search/`;
+const ptypeUrl = `${apiRoot}/apps/prototypeSearch/prototype/`;
+const structureUrl = `${apiRoot}/apps/prototypeSearch/get_structure/`;
 const shortLength = 5;
 const longLength = 20;
 
@@ -114,7 +114,6 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
   }
 
   handoffCatKit(ptype) {
-    console.log(ptype);
     axios.post(structureUrl, {
       spacegroup: ptype.spacegroup,
       parameter_names: ptype.parameter_names,
@@ -122,7 +121,6 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       species: ptype.species,
       wyckoffs: ptype.wyckoffs,
     }).then((response) => {
-      console.log(response);
       this.props.receiveBulkCif(response.data.structure);
       this.props.saveBulkParams({
         name: ptype.protopype,
@@ -205,7 +203,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
               autoFocus
               onChange={this.handleChange('searchString')}
               label="Search ..."
-              placeholder="Pt Ag 216066-60346-342969-Eu3N:NEu3.vasp 160"
+              placeholder="species:Ag n_species:2-5 repository:AMCSD,catalysis-hub"
               className={this.props.classes.textField}
               onKeyDown={((event) => {
                 if (event.nativeEvent.keyCode === 13) {
