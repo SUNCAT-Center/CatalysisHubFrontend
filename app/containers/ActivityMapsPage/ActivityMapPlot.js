@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import axios from 'axios';
-import { flaskRoot, newGraphQLRoot } from 'utils/constants';
+import { apiRoot, newGraphQLRoot } from 'utils/constants';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -84,7 +84,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     this.setState({
       initialLoading: true,
     });
-    const backendRoot = `${flaskRoot}/apps/activityMaps`;
+    const backendRoot = `${apiRoot}/apps/activityMaps`;
     const url = `${backendRoot}/systems/`;
     const params = { params: {
       activityMap: this.props.reaction,
