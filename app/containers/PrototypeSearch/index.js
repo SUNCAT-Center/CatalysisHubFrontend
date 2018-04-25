@@ -60,13 +60,13 @@ const initialState = {
   showPrototype: false,
 };
 
-const getGeometryUrl = (repository, handle, tags) => {
+const getGeometryUrl = (repository, handle) => {
   if (repository === 'OQMD') {
     return `http://oqmd.org/materials/entry/${handle.split('-')[2]}`;
   } else if (repository === 'MaterialsProject') {
     return `https://materialsproject.org/materials/${handle}/`;
   } else if (repository === 'AMCSD') {
-    return `http://rruff.geo.arizona.edu/AMS/minerals/${tags.slice(3, tags.length - 2)}`;
+    return `http://rruff.geo.arizona.edu/AMS/CIF_text_files/${handle}`;
   } else if (repository === 'catalysis-hub') {
     return `http://api.catalysis-hub.org/graphql?query=%7Bsystems(uniqueId%3A%22${handle}%22)%20%7B%0A%20%20edges%20%7B%0A%20%20%20%20node%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20uniqueId%0A%20%20%20%20%20%20energy%0A%20%20%20%20%20%20keyValuePairs%0A%20%20%20%20%20%20InputFile(format%3A%22cif%22)%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%7D`;
   }
@@ -211,16 +211,26 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 }
               })}
             />
+            {_.isEmpty(this.props.searchResults) ? null :
+            <div
+              className={this.props.classes.hintText}
+            >
+              {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
+              }
 
             <Grid container justify="space-between" direction="row">
-              <Grid item>
-                {_.isEmpty(this.props.searchResults) ? null :
-                <div
-                  className={this.props.classes.hintText}
-                >
-                  {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
-              }
+              {!_.isEmpty(this.props.searchResults) ? null :
+              <Grid item className={this.props.classes.paper}>
+                <div>
+                  <div>
+                Example searches:
+                </div>
+                  <div>
+                stoichiometry:AB species:GaPd crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
+                </div>
+                </div>
               </Grid>
+                }
               <Grid item>
                 <Grid container direction="row" justify="flex-start">
                   <Grid item>
