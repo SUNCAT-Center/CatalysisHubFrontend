@@ -1,6 +1,9 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
+const helmet = require('helmet');
+const csp = require('helmet-csp');
+const sslRedirect = require('heroku-ssl-redirect');
 const logger = require('./logger');
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -12,6 +15,17 @@ const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
+
+app.use(helmet());
+app.use(csp({
+  directives: {
+    connectSrc: ["'self'", 'api.catalysis-hub.org'],
+    stylesSrc: ["'self'", 'api.catalysis-hub.org'],
+    defaultSrc: ["'self'", 'api.catalysis-hub.org'],
+    imgSrc: ["'self'", 'api.catalysis-hub.org'],
+  },
+}));
+app.use(sslRedirect());
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
