@@ -14,7 +14,7 @@ class Sitemap extends React.Component { // eslint-disable-line react/prefer-stat
     super(props);
     const store = configureStore();
     const paths = parseRoutes(routes(store));
-    const sitemap = buildSitemap('http://www.catalysis-hub.org', paths);
+    const sitemap = buildSitemap('https://www.catalysis-hub.org', paths);
     this.state = {
       sitemap: sitemap.toString(),
     };
