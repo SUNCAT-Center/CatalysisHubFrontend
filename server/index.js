@@ -1,6 +1,7 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
+const sslRedirect = require('heroku-ssl-redirect');
 const logger = require('./logger');
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -12,6 +13,8 @@ const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
+
+app.use(sslRedirect());
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

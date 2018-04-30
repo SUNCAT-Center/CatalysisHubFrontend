@@ -322,14 +322,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/plotlyFoo',
-      name: 'plotlyFoo',
-      getComponent(location, cb) {
-        import('components/PlotlyFoo')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/prototypeSearch',
       name: 'prototypeSearch',
       getComponent(nextState, cb) {
@@ -346,6 +338,14 @@ export default function createRoutes(store) {
         });
 
         importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/sitemap',
+      name: 'sitemap',
+      getComponent(location, cb) {
+        import('components/Sitemap')
+          .then(loadModule(cb))
+          .catch(errorLoading);
       },
     }, {
       path: '*',
