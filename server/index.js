@@ -22,7 +22,7 @@ app.use(csp({
     connectSrc: ["'self'", 'api.catalysis-hub.org'],
     fontSrc: ["'self'", 'fonts.googleapis.com'],
     scriptSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
-    stylesSrc: ["'self'", 'api.catalysis-hub.org'],
+    styleSrc: ["'self'", 'api.catalysis-hub.org'],
     defaultSrc: ["'self'", 'api.catalysis-hub.org'],
     imgSrc: ["'self'", 'api.catalysis-hub.org'],
   },
