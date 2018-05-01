@@ -24,6 +24,7 @@ app.use(csp({
       'api.catalysis-hub.org',
       'catapp-staging.herokuapp.com',
       'ichemlabs.cloud.chemdoodle.com',
+      'localhost:5000',
     ],
     fontSrc: [
       "'self'",
