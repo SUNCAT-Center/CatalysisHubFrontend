@@ -19,12 +19,31 @@ const app = express();
 app.use(helmet());
 app.use(csp({
   directives: {
-    connectSrc: ["'self'", 'api.catalysis-hub.org'],
-    fontSrc: ["'self'", 'fonts.googleapis.com'],
-    scriptSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
-    styleSrc: ["'self'", 'api.catalysis-hub.org'],
+    connectSrc: [
+      "'self'",
+      'api.catalysis-hub.org',
+      'catapp-staging.herokuapp.com',
+      'ichemlabs.cloud.chemdoodle.com',
+    ],
+    fontSrc: [
+      "'self'",
+      'fonts.googleapis.com',
+      'data: fonts.gstatic.com',
+    ],
+    scriptSrc: [
+      "'unsafe-eval'",
+      "'unsafe-inline'",
+      "'self'",
+      'api.catalysis-hub.org',
+      'www.google-analytics.com',
+      'code.jquery.com',
+    ],
+    styleSrc: ["'unsafe-inline'",
+      "'self'",
+      'fonts.googleapis.com',
+      'www.stanford.edu'],
     defaultSrc: ["'self'", 'api.catalysis-hub.org'],
-    imgSrc: ["'self'", 'api.catalysis-hub.org'],
+    imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
   },
 }));
 app.use(sslRedirect());
