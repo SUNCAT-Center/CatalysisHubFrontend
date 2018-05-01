@@ -2,7 +2,7 @@
 
 const express = require('express');
 /* const csp = require('helmet-csp');*/
-const sslRedirect = require('heroku-ssl-redirect');
+/* const sslRedirect = require('heroku-ssl-redirect');*/
 const logger = require('./logger');
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -45,7 +45,7 @@ const app = express();
 /* imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],*/
 /* },*/
 /* }));*/
-app.use(sslRedirect());
+/* app.use(sslRedirect());*/
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
