@@ -19,14 +19,14 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import { MdClear } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/convert_atoms/`;
 const bulkUrl = `${backendRoot}/generate_bulk_cif`;
 
-const wyckoffUrl = `${flaskRoot}/apps/bulkEnumerator/get_wyckoff_from_cif`;
+const wyckoffUrl = `${apiRoot}/apps/bulkEnumerator/get_wyckoff_from_cif`;
 
 
 let initialState = {

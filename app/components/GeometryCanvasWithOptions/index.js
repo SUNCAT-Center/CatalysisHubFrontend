@@ -23,7 +23,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import { MdClose, MdFullscreen, MdFileDownload, MdBookmarkOutline } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 
@@ -123,7 +123,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     this.setState({
       downloadOpen: false,
     });
-    const url = `${flaskRoot}/apps/catKitDemo/convert_atoms/`;
+    const url = `${apiRoot}/apps/catKitDemo/convert_atoms/`;
     const params = { params: {
       format,
       cif: this.props.cifdata,

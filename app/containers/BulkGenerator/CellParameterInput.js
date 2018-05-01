@@ -13,14 +13,14 @@ import { Link } from 'react-router';
 import { MdLoop } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as actions from './actions';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/bulkEnumerator`;
+const backendRoot = `${apiRoot}/apps/bulkEnumerator`;
 const url = `${backendRoot}/get_structure`;
 
 const initialState = {

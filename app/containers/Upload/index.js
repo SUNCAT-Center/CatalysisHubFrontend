@@ -16,11 +16,11 @@ import { MdFileUpload } from 'react-icons/lib/md';
 import { createStructuredSelector } from 'reselect';
 import FileDrop from 'react-file-drop';
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 
 import makeSelectUpload from './selectors';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/upload_dataset/`;
 
 

@@ -18,11 +18,11 @@ import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const siteUrl = `${backendRoot}/get_adsorption_sites`;
 const adsorbatesUrl = `${backendRoot}/place_adsorbates`;
 

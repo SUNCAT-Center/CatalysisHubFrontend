@@ -27,13 +27,13 @@ import Slide from 'material-ui/transitions/Slide';
 import * as moment from 'moment/moment';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/generate_dft_input`;
 
-const fireworksRoot = `${flaskRoot}/apps/fireworks`;
+const fireworksRoot = `${apiRoot}/apps/fireworks`;
 const fireworksUrl = `${fireworksRoot}/schedule_workflows`;
 
 const initialState = {

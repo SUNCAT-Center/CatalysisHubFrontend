@@ -36,7 +36,7 @@ import Typography from 'material-ui/Typography';
 import MdExpandMore from 'react-icons/lib/md/expand-more';
 
 /* import { flaskRoot } from 'utils/constants'; */
-const flaskRoot = 'http://api.catalysis-hub.org/';
+const flaskRoot = 'https://api.catalysis-hub.org/';
 // const flaskRoot = 'http://localhost:5000/';
 
 const styles = (theme) => ({
