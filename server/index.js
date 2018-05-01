@@ -1,7 +1,7 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
-const csp = require('helmet-csp');
+/* const csp = require('helmet-csp');*/
 const sslRedirect = require('heroku-ssl-redirect');
 const logger = require('./logger');
 
@@ -15,36 +15,36 @@ const app = express();
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 
-app.use(csp({
-  directives: {
-    connectSrc: [
-      "'self'",
-      'api.catalysis-hub.org',
-      'catapp-staging.herokuapp.com',
-      'ichemlabs.cloud.chemdoodle.com',
-      'localhost:5000',
-    ],
-    fontSrc: [
-      "'self'",
-      'fonts.googleapis.com',
-      'data: fonts.gstatic.com',
-    ],
-    scriptSrc: [
-      "'unsafe-eval'",
-      "'unsafe-inline'",
-      "'self'",
-      'api.catalysis-hub.org',
-      'www.google-analytics.com',
-      'code.jquery.com',
-    ],
-    styleSrc: ["'unsafe-inline'",
-      "'self'",
-      'fonts.googleapis.com',
-      'www.stanford.edu'],
-    defaultSrc: ["'self'", 'api.catalysis-hub.org'],
-    imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
-  },
-}));
+/* app.use(csp({*/
+/* directives: {*/
+/* connectSrc: [*/
+/* "'self'",*/
+/* 'api.catalysis-hub.org',*/
+/* 'catapp-staging.herokuapp.com',*/
+/* 'ichemlabs.cloud.chemdoodle.com',*/
+/* 'localhost:5000',*/
+/* ],*/
+/* fontSrc: [*/
+/* "'self'",*/
+/* 'fonts.googleapis.com',*/
+/* 'data: fonts.gstatic.com',*/
+/* ],*/
+/* scriptSrc: [*/
+/* "'unsafe-eval'",*/
+/* "'unsafe-inline'",*/
+/* "'self'",*/
+/* 'api.catalysis-hub.org',*/
+/* 'www.google-analytics.com',*/
+/* 'code.jquery.com',*/
+/* ],*/
+/* styleSrc: ["'unsafe-inline'",*/
+/* "'self'",*/
+/* 'fonts.googleapis.com',*/
+/* 'www.stanford.edu'],*/
+/* defaultSrc: ["'self'", 'api.catalysis-hub.org'],*/
+/* imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],*/
+/* },*/
+/* }));*/
 app.use(sslRedirect());
 
 // In production we need to pass these values in instead of relying on webpack
