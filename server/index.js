@@ -2,6 +2,7 @@
 
 const express = require('express');
 const csp = require('helmet-csp');
+const helmet = require('helmet');
 const sslRedirect = require('heroku-ssl-redirect');
 const logger = require('./logger');
 
