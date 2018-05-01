@@ -1,7 +1,6 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
-const helmet = require('helmet');
 const csp = require('helmet-csp');
 const sslRedirect = require('heroku-ssl-redirect');
 const logger = require('./logger');
@@ -16,7 +15,6 @@ const app = express();
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
 
-app.use(helmet());
 app.use(csp({
   directives: {
     connectSrc: [
