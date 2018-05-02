@@ -7,7 +7,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <div>
-        <h2>Info</h2>
+        <h2>About Prototype Search</h2>
         <div><strong>Prototype Search</strong> is a basic research project with the aim of supporting screening studies of chemical reaction on surfaces. To this end we index bulk structures from open repositories. We acknowledge the following the repositories and the literature referenced therein</div>
         <h3>Aflowlib</h3>
         <div>URL: <a href="http://aflowlib.org/">http://aflowlib.org/</a></div>
