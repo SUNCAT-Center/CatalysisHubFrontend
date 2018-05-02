@@ -5,7 +5,8 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
+import PropTypes, { instanceOf } from 'prop-types';
 /* import cachios from 'cachios';*/
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
@@ -35,6 +36,7 @@ import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } f
 import * as catKitActions from 'containers/CatKitDemo/actions';
 import { apiRoot } from 'utils/constants';
 import Header from './header';
+import SearchInfo from './Info';
 import { styles } from './styles';
 import * as actions from './actions';
 
@@ -90,6 +92,10 @@ const cf = (formula) => {
 export class PrototypeSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+    this.state = {
+      ...initialState,
+      showInfo: ((this.props.cookies.get('prototypeSearchShowInfo') || 'true') === 'true'),
+    };
     this.handleChange = this.handleChange.bind(this);
     this.submitSearch = this.submitSearch.bind(this);
     this.loadMore = this.loadMore.bind(this);
@@ -98,8 +104,17 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.unselectPrototype = this.unselectPrototype.bind(this);
     this.handoffWyckoff = this.handoffWyckoff.bind(this);
     this.handoffCatKit = this.handoffCatKit.bind(this);
+    this.handleShowInfo = this.handleShowInfo.bind(this);
 
-    this.setState(initialState);
+    /* this.setState(initialState);*/
+  }
+
+  handleShowInfo() {
+    const value = !this.state.showInfo;
+    this.setState({
+      showInfo: value,
+    });
+    this.props.cookies.set('showInfo', value);
   }
 
   handleChange(name) {
@@ -196,62 +211,85 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     return (
       <div>
         <Script url="/static/ChemDoodleWeb.js" />
+        {!this.state.showInfo ? null :
+        <Paper className={this.props.classes.outerPaper}>
+          <SearchInfo />
+        </Paper>
+        }
         <Header />
         <Paper>
-          <FormGroup row>
-            <TextField
-              autoFocus
-              onChange={this.handleChange('searchString')}
-              label="Search ..."
-              placeholder="species:Ag n_species:2-5 repository:AMCSD,catalysis-hub"
-              className={this.props.classes.textField}
-              onKeyDown={((event) => {
-                if (event.nativeEvent.keyCode === 13) {
-                  this.submitSearch();
-                }
-              })}
-            />
-            {_.isEmpty(this.props.searchResults) ? null :
-            <div
-              className={this.props.classes.hintText}
-            >
-              {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
-              }
-
-            <Grid container justify="space-between" direction="row">
-              {!_.isEmpty(this.props.searchResults) ? null :
-              <Grid item className={this.props.classes.paper}>
-                <div>
-                  <div>
-                Example searches:
-                </div>
-                  <div>
-                stoichiometry:AB species:GaPd crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
-                </div>
-                </div>
-              </Grid>
-                }
-              <Grid item>
-                <Grid container direction="row" justify="flex-start">
-                  <Grid item>
-                    {this.props.facetFilters.map((facetFilter, i) => (
-                      <Chip
-                        key={`chip_${i}`}
-                        label={`${facetFilter}`}
-                        className={this.props.classes.button}
-                        onDelete={() => { this.props.removeFacetFilter(facetFilter); }}
-                      />
-                  ))
-
-                  }
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Button raised onClick={this.submitSearch} color="primary" className={this.props.classes.button}><MdSearch /> Search </Button>
+          <Grid container direction="column" justify="space-between">
+            <Grid item>
+              <Grid container direction="row" justify="flex-end">
               </Grid>
             </Grid>
-          </FormGroup>
+            <Grid item>
+              <Grid container direction="row" justify="space-between">
+                <Grid item>
+                  <FormGroup row>
+                    <TextField
+                      autoFocus
+                      onChange={this.handleChange('searchString')}
+                      label="Search ..."
+                      placeholder="species:Ag n_species:2-5 repository:AMCSD,catalysis-hub"
+                      className={this.props.classes.textField}
+                      onKeyDown={((event) => {
+                        if (event.nativeEvent.keyCode === 13) {
+                          this.submitSearch();
+                        }
+                      })}
+                    />
+                    <Button
+                      className={this.props.classes.button}
+                      onClick={() => this.handleShowInfo()}
+                    >
+                      {this.state.showInfo ? 'Hide Info' : 'Info' }
+                    </Button>
+                    {_.isEmpty(this.props.searchResults) ? null :
+                    <div
+                      className={this.props.classes.hintText}
+                    >
+                      {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
+                }
+
+                    <Grid container justify="space-between" direction="row">
+                      {!_.isEmpty(this.props.searchResults) ? null :
+                      <Grid item className={this.props.classes.paper}>
+                        <div>
+                          <div>
+                            Example searches:
+                          </div>
+                          <div>
+                            stoichiometry:AB species:GaPd crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
+                          </div>
+                        </div>
+                      </Grid>
+                  }
+                      <Grid item>
+                        <Button raised onClick={this.submitSearch} color="primary" className={this.props.classes.button}><MdSearch /> Search </Button>
+                      </Grid>
+                      <Grid item>
+                        <Grid container direction="row" justify="flex-start">
+                          <Grid item>
+                            {this.props.facetFilters.map((facetFilter, i) => (
+                              <Chip
+                                key={`chip_${i}`}
+                                label={`${facetFilter}`}
+                                className={this.props.classes.button}
+                                onDelete={() => { this.props.removeFacetFilter(facetFilter); }}
+                              />
+                        ))
+
+                        }
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </FormGroup>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </Paper>
         {this.state == null || this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
         <Grid container direction="row" justify="space-between">
@@ -262,28 +300,28 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">Repositories</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.repositories
-                      .map((repository, si) => (
-                        <FormControlLabel
-                          key={`sg_${si}`}
-                          label={`${repository[0]} (${repository[1]})`}
-                          control={<Checkbox
-                            value={`repository:${repository[0]}`}
-                            checked={_.indexOf(this.props.facetFilters, `repository:${repository[0]}`) > -1}
-                            onChange={(event, checked) => {
-                              if (checked) {
-                                this.props.addFacetFilter(`repository:${repository[0]}`);
-                              } else {
-                                this.props.removeFacetFilter(`repository:${repository[0]}`);
-                              }
-                              return checked;
-                            }}
-                          />}
-                        />
-                      ))}
+                        .map((repository, si) => (
+                          <FormControlLabel
+                            key={`sg_${si}`}
+                            label={`${repository[0]} (${repository[1]})`}
+                            control={<Checkbox
+                              value={`repository:${repository[0]}`}
+                              checked={_.indexOf(this.props.facetFilters, `repository:${repository[0]}`) > -1}
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  this.props.addFacetFilter(`repository:${repository[0]}`);
+                                } else {
+                                  this.props.removeFacetFilter(`repository:${repository[0]}`);
+                                }
+                                return checked;
+                              }}
+                            />}
+                          />
+                        ))}
                 </FormGroup>
               </FormControl>
             </Paper>
-          }
+            }
             {_.isEmpty(this.props.searchResults.stoichiometries) ? null :
             <Paper className={this.props.classes.facetPanel}>
               <Grid container direction="row" justify="space-between">
@@ -296,14 +334,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                     }}
                   >{this.state.stoichiometriesCollapsed ?
                     <div>show more <MdExpandMore /></div>
-                        : <div>show less <MdExpandLess /></div>
-                    }</FormHelperText>
+                          : <div>show less <MdExpandLess /></div>
+                      }</FormHelperText>
                 </Grid>
                 <Grid item>
                   <FormHelperText
                     onClick={() => this.setState({ stoichiometrySortByFrequency: !this.state.stoichiometrySortByFrequency })}
                   >
-                    Sort By {this.state.stoichiometrySortByFrequency ? 'Value' : 'Frequency'}
+                      Sort By {this.state.stoichiometrySortByFrequency ? 'Value' : 'Frequency'}
                   </FormHelperText>
                 </Grid>
               </Grid>
@@ -311,38 +349,38 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">Stoichiometry</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.stoichiometries
-                      .sort((a, b) => {
-                        if (this.state.stoichiometrySortByFrequency) {
-                          return b[1] - a[1];
-                        }
-                        if (a[0] > b[0]) {
-                          return 1;
-                        }
-                        return -1;
-                      })
-                      .slice(0, this.state.stoichiometriesCollapsed ? shortLength : 230)
-                      .map((stoichiometry, si) => (
-                        <FormControlLabel
-                          key={`sm_${si}`}
-                          label={`${stoichiometry[0]} (${stoichiometry[1]})`}
-                          control={<Checkbox
-                            value={`stoichiometry:${stoichiometry}`}
-                            checked={_.indexOf(this.props.facetFilters, `stoichiometry:${stoichiometry[0]}`) > -1}
-                            onChange={(event, checked) => {
-                              if (checked) {
-                                this.props.addFacetFilter(`stoichiometry:${stoichiometry[0]}`);
-                              } else {
-                                this.props.removeFacetFilter(`stoichiometry:${stoichiometry[0]}`);
-                              }
-                              return checked;
-                            }}
-                          />}
-                        />
-                      ))}
+                        .sort((a, b) => {
+                          if (this.state.stoichiometrySortByFrequency) {
+                            return b[1] - a[1];
+                          }
+                          if (a[0] > b[0]) {
+                            return 1;
+                          }
+                          return -1;
+                        })
+                        .slice(0, this.state.stoichiometriesCollapsed ? shortLength : 230)
+                        .map((stoichiometry, si) => (
+                          <FormControlLabel
+                            key={`sm_${si}`}
+                            label={`${stoichiometry[0]} (${stoichiometry[1]})`}
+                            control={<Checkbox
+                              value={`stoichiometry:${stoichiometry}`}
+                              checked={_.indexOf(this.props.facetFilters, `stoichiometry:${stoichiometry[0]}`) > -1}
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  this.props.addFacetFilter(`stoichiometry:${stoichiometry[0]}`);
+                                } else {
+                                  this.props.removeFacetFilter(`stoichiometry:${stoichiometry[0]}`);
+                                }
+                                return checked;
+                              }}
+                            />}
+                          />
+                        ))}
                 </FormGroup>
               </FormControl>
             </Paper>
-          }
+            }
 
 
             {_.isEmpty(this.props.searchResults.n_species) ? null :
@@ -356,16 +394,16 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                       });
                     }}
                   >{
-                      this.state.nSpeciesCollapsed ?
-                        <div>show more <MdExpandMore /></div>
-                        : <div>show less <MdExpandLess /></div>
-                    }</FormHelperText>
+                        this.state.nSpeciesCollapsed ?
+                          <div>show more <MdExpandMore /></div>
+                          : <div>show less <MdExpandLess /></div>
+                      }</FormHelperText>
                 </Grid>
                 <Grid item>
                   <FormHelperText
                     onClick={() => this.setState({ speciesSortByFrequency: !this.state.speciesSortByFrequency })}
                   >
-                    Sort By {this.state.speciesSortByFrequency ? 'Value' : 'Frequency'}
+                      Sort By {this.state.speciesSortByFrequency ? 'Value' : 'Frequency'}
                   </FormHelperText>
                 </Grid>
               </Grid>
@@ -373,35 +411,35 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">#Species</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.n_species
-                      .sort((a, b) => {
-                        if (this.state.speciesSortByFrequency) {
-                          return a[0] - b[0];
-                        }
-                        return b[1] - a[1];
-                      })
-                      .slice(0, this.state.nSpeciesCollapsed ? shortLength : longLength)
-                      .map((nSpecies, si) => (
-                        <FormControlLabel
-                          key={`spec_${si}`}
-                          label={`${nSpecies[0]} (${nSpecies[1]})`}
-                          control={<Checkbox
-                            value={`n_species:${nSpecies}`}
-                            checked={_.indexOf(this.props.facetFilters, `n_species:${nSpecies[0]}`) > -1}
-                            onChange={(event, checked) => {
-                              if (checked) {
-                                this.props.addFacetFilter(`n_species:${nSpecies[0]}`);
-                              } else {
-                                this.props.removeFacetFilter(`n_species:${nSpecies[0]}`);
-                              }
-                              return checked;
-                            }}
-                          />}
-                        />
-                      ))}
+                        .sort((a, b) => {
+                          if (this.state.speciesSortByFrequency) {
+                            return a[0] - b[0];
+                          }
+                          return b[1] - a[1];
+                        })
+                        .slice(0, this.state.nSpeciesCollapsed ? shortLength : longLength)
+                        .map((nSpecies, si) => (
+                          <FormControlLabel
+                            key={`spec_${si}`}
+                            label={`${nSpecies[0]} (${nSpecies[1]})`}
+                            control={<Checkbox
+                              value={`n_species:${nSpecies}`}
+                              checked={_.indexOf(this.props.facetFilters, `n_species:${nSpecies[0]}`) > -1}
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  this.props.addFacetFilter(`n_species:${nSpecies[0]}`);
+                                } else {
+                                  this.props.removeFacetFilter(`n_species:${nSpecies[0]}`);
+                                }
+                                return checked;
+                              }}
+                            />}
+                          />
+                        ))}
                 </FormGroup>
               </FormControl>
             </Paper>
-          }
+            }
 
 
 
@@ -416,16 +454,16 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                       });
                     }}
                   >{
-                      this.state.nAtomsCollapsed ?
-                        <div>show more <MdExpandMore /></div>
-                        : <div>show less <MdExpandLess /></div>
-                    }</FormHelperText>
+                        this.state.nAtomsCollapsed ?
+                          <div>show more <MdExpandMore /></div>
+                          : <div>show less <MdExpandLess /></div>
+                      }</FormHelperText>
                 </Grid>
                 <Grid item>
                   <FormHelperText
                     onClick={() => this.setState({ atomsSortByFrequency: !this.state.atomsSortByFrequency })}
                   >
-                    Sort By {this.state.atomsSortByFrequency ? 'Value' : 'Frequency'}
+                      Sort By {this.state.atomsSortByFrequency ? 'Value' : 'Frequency'}
                   </FormHelperText>
                 </Grid>
               </Grid>
@@ -433,35 +471,35 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">#Atoms</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.n_atoms
-                      .sort((a, b) => {
-                        if (this.state.atomsSortByFrequency) {
-                          return a[0] - b[0];
-                        }
-                        return b[1] - a[1];
-                      })
-                      .slice(0, this.state.nAtomsCollapsed ? shortLength : longLength)
-                      .map((nAtoms, si) => (
-                        <FormControlLabel
-                          key={`sg_${si}`}
-                          label={`${nAtoms[0]} (${nAtoms[1]})`}
-                          control={<Checkbox
-                            value={`n_atoms:${nAtoms}`}
-                            checked={_.indexOf(this.props.facetFilters, `n_atoms:${nAtoms[0]}`) > -1}
-                            onChange={(event, checked) => {
-                              if (checked) {
-                                this.props.addFacetFilter(`n_atoms:${nAtoms[0]}`);
-                              } else {
-                                this.props.removeFacetFilter(`n_atoms:${nAtoms[0]}`);
-                              }
-                              return checked;
-                            }}
-                          />}
-                        />
-                      ))}
+                        .sort((a, b) => {
+                          if (this.state.atomsSortByFrequency) {
+                            return a[0] - b[0];
+                          }
+                          return b[1] - a[1];
+                        })
+                        .slice(0, this.state.nAtomsCollapsed ? shortLength : longLength)
+                        .map((nAtoms, si) => (
+                          <FormControlLabel
+                            key={`sg_${si}`}
+                            label={`${nAtoms[0]} (${nAtoms[1]})`}
+                            control={<Checkbox
+                              value={`n_atoms:${nAtoms}`}
+                              checked={_.indexOf(this.props.facetFilters, `n_atoms:${nAtoms[0]}`) > -1}
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  this.props.addFacetFilter(`n_atoms:${nAtoms[0]}`);
+                                } else {
+                                  this.props.removeFacetFilter(`n_atoms:${nAtoms[0]}`);
+                                }
+                                return checked;
+                              }}
+                            />}
+                          />
+                        ))}
                 </FormGroup>
               </FormControl>
             </Paper>
-          }
+            }
 
 
 
@@ -472,25 +510,25 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">Species</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.species
-                        .slice(0, this.state.speciesCollapsed ? shortLength : longLength)
-                        .map((species, si) => (
-                          <FormControlLabel
-                            key={`spg_${si}`}
-                            label={`${cf(species[0])}  (${species[1]})`}
-                            control={<Checkbox
-                              value={`species:${species}`}
-                              checked={_.indexOf(this.props.facetFilters, `species:${species[0]}`) > -1}
-                              onChange={(event, checked) => {
-                                if (checked) {
-                                  this.props.addFacetFilter(`species:${species[0]}`);
-                                } else {
-                                  this.props.removeFacetFilter(`species:${species[0]}`);
-                                }
-                                return checked;
-                              }}
-                            />}
-                          />
-                        ))}
+                          .slice(0, this.state.speciesCollapsed ? shortLength : longLength)
+                          .map((species, si) => (
+                            <FormControlLabel
+                              key={`spg_${si}`}
+                              label={`${cf(species[0])}  (${species[1]})`}
+                              control={<Checkbox
+                                value={`species:${species}`}
+                                checked={_.indexOf(this.props.facetFilters, `species:${species[0]}`) > -1}
+                                onChange={(event, checked) => {
+                                  if (checked) {
+                                    this.props.addFacetFilter(`species:${species[0]}`);
+                                  } else {
+                                    this.props.removeFacetFilter(`species:${species[0]}`);
+                                  }
+                                  return checked;
+                                }}
+                              />}
+                            />
+                          ))}
                 </FormGroup>
                 <FormHelperText
                   onClick={() => {
@@ -499,13 +537,13 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                     });
                   }}
                 >{
-                        this.state.speciesCollapsed ?
-                          <div>show more <MdExpandMore /></div>
-                          : <div>show less <MdExpandLess /></div>
-                      }</FormHelperText>
+                          this.state.speciesCollapsed ?
+                            <div>show more <MdExpandMore /></div>
+                            : <div>show less <MdExpandLess /></div>
+                        }</FormHelperText>
               </FormControl>
             </Paper>
-          }
+            }
 
 
 
@@ -521,14 +559,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                     }}
                   >{this.state.spacegroupsCollapsed ?
                     <div>show more <MdExpandMore /></div>
-                        : <div>show less <MdExpandLess /></div>
-                    }</FormHelperText>
+                          : <div>show less <MdExpandLess /></div>
+                      }</FormHelperText>
                 </Grid>
                 <Grid item>
                   <FormHelperText
                     onClick={() => this.setState({ spacegroupSortByFrequency: !this.state.spacegroupSortByFrequency })}
                   >
-                    Sort By {this.state.spacegroupSortByFrequency ? 'Value' : 'Frequency'}
+                      Sort By {this.state.spacegroupSortByFrequency ? 'Value' : 'Frequency'}
                   </FormHelperText>
                 </Grid>
               </Grid>
@@ -536,35 +574,35 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <FormLabel component="legend">Spacegroups</FormLabel>
                 <FormGroup>
                   {this.props.searchResults.spacegroups
-                      .sort((a, b) => {
-                        if (this.state.spacegroupSortByFrequency) {
-                          return b[1] - a[1];
-                        }
-                        return a[0] - b[0];
-                      })
-                      .slice(0, this.state.spacegroupsCollapsed ? shortLength : 230)
-                      .map((spacegroup, si) => (
-                        <FormControlLabel
-                          key={`sg_${si}`}
-                          label={`${spacegroup[0]} (${spacegroup[1]})`}
-                          control={<Checkbox
-                            value={`spacegroup:${spacegroup}`}
-                            checked={_.indexOf(this.props.facetFilters, `spacegroup:${spacegroup[0]}`) > -1}
-                            onChange={(event, checked) => {
-                              if (checked) {
-                                this.props.addFacetFilter(`spacegroup:${spacegroup[0]}`);
-                              } else {
-                                this.props.removeFacetFilter(`spacegroup:${spacegroup[0]}`);
-                              }
-                              return checked;
-                            }}
-                          />}
-                        />
-                      ))}
+                        .sort((a, b) => {
+                          if (this.state.spacegroupSortByFrequency) {
+                            return b[1] - a[1];
+                          }
+                          return a[0] - b[0];
+                        })
+                        .slice(0, this.state.spacegroupsCollapsed ? shortLength : 230)
+                        .map((spacegroup, si) => (
+                          <FormControlLabel
+                            key={`sg_${si}`}
+                            label={`${spacegroup[0]} (${spacegroup[1]})`}
+                            control={<Checkbox
+                              value={`spacegroup:${spacegroup}`}
+                              checked={_.indexOf(this.props.facetFilters, `spacegroup:${spacegroup[0]}`) > -1}
+                              onChange={(event, checked) => {
+                                if (checked) {
+                                  this.props.addFacetFilter(`spacegroup:${spacegroup[0]}`);
+                                } else {
+                                  this.props.removeFacetFilter(`spacegroup:${spacegroup[0]}`);
+                                }
+                                return checked;
+                              }}
+                            />}
+                          />
+                        ))}
                 </FormGroup>
               </FormControl>
             </Paper>
-          }
+            }
           </Grid>
           <Grid item xs={9}>
             {_.isEmpty(this.props.searchResults.prototypes) ? null :
@@ -578,7 +616,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                     >
                       <MdChevronLeft />
                     </IconButton>
-                      Prototype {this.props.ptype}</h3>
+                        Prototype {this.props.ptype}</h3>
                   {Object.keys(this.props.repoPrototypes).map((repository, ri) => (
                     <Paper
                       key={`repolist_${ri}`}
@@ -593,14 +631,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                               to={getGeometryUrl(ptype.repository, ptype.handle, ptype.tags)}
                               target="_blank"
                             >
-                                Source: {ptype.repository}:{ptype.handle}
+                                  Source: {ptype.repository}:{ptype.handle}
                             </ReactGA.OutboundLink>
                             <ul>
                               {Object.keys(ptype).map((entry, ei) => (
                                 <li key={`entry_${ei}`}>
                                   {entry}: {ptype[entry]}
                                 </li>
-                                ))}
+                                  ))}
                             </ul>
                             <Grid container direction="row" justify="flex-end">
                               <Grid item>
@@ -612,33 +650,33 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                                     className={this.props.classes.buttonLink}
                                     to={'/bulkGenerator'}
                                   >
-                                Open in Wyckoff Bulk Generator
-                                  </Link>
+                                        Open in Wyckoff Bulk Generator
+                                      </Link>
                                 </Button>
                               </Grid>
                               <Grid item>
                                 <Button
                                   color="primary"
                                   onClick={() => this.handoffCatKit(
-                                    ptype
-                                  )}
+                                        ptype
+                                      )}
                                 >
                                   <Link
                                     className={this.props.classes.buttonLink}
                                     to={'/catKitDemo'}
                                   >
-                                Open in CatKit
-                                  </Link>
+                                        Open in CatKit
+                                      </Link>
                                 </Button>
                               </Grid>
                             </Grid>
                           </li>
-                          ))}
+                            ))}
                       </ul>
                     </Paper>
-                    ))}
+                      ))}
                 </div>
-                  :
+                    :
                 <div>
 
                   <div>
@@ -648,7 +686,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                         <h4>Prototype {ptype[0]}</h4>
 
                         <div>
-                            Structures: {ptype[1]}
+                              Structures: {ptype[1]}
                         </div>
                         <Grid container direction="row" justify="flex-end">
                           <Grid item>
@@ -662,7 +700,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           </Grid>
                         </Grid>
                       </Paper>
-                      )) }
+                        )) }
                   </div>
                   <Grid container direction="row" justify="center">
                     <Grid item>
@@ -671,14 +709,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                       >
                         {this.state.loadingMore ? <CircularProgress /> : null }
 
-                          Load More
-                        </Button>
+                            Load More
+                          </Button>
                     </Grid>
                   </Grid>
                 </div>
-              }
+                }
             </Paper>
-          }
+            }
           </Grid>
         </Grid>
       </div>
@@ -703,6 +741,7 @@ PrototypeSearch.propTypes = {
   receiveBulkCif: PropTypes.func,
   saveBulkParams: PropTypes.func,
   dropBulkInput: PropTypes.func,
+  cookies: instanceOf(Cookies),
 };
 
 const mapStateToProps = (state) => ({
@@ -747,4 +786,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PrototypeSearch));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withCookies(
+    withStyles(styles, { withTheme: true })(
+      PrototypeSearch
+    ))
+);
