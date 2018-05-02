@@ -6,25 +6,29 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 
 
 import { MdClear, MdContentCut } from 'react-icons/lib/md';
 import _ from 'lodash';
 
 import axios from 'axios';
+import cachios from 'cachios';
 import { apiRoot } from 'utils/constants';
 
 import { styles } from './styles';
 
 const backendRoot = `${apiRoot}/apps/catKitDemo`;
 
+const nmod = (x, n) => (((x % n) + n) % n);
+
 
 const initialState = {
   millerX: 1,
   millerY: 1,
   millerZ: 1,
-  layers: 4,
-  vacuum: 10.0,
+  layers: 10,
+  vacuum: 15.0,
   termination: 0,
   uploadError: '',
   n_terminations: 1,
@@ -80,13 +84,15 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     const params = { params: {
       bulkParams: this.props.bulkParams,
       slabParams,
-    } };
+    },
+      ttl: 3000,
+    };
     if (this.props.customBulkInput) {
       params.params.bulk_cif = this.props.bulkCif;
     }
 
     this.props.saveSlabParams(slabParams);
-    axios.get(url, params).then((response) => {
+    cachios.get(url, params).then((response) => {
       this.props.receiveSlabCifs(response.data.images);
       this.setState({
         n_terminations: parseInt(response.data.n_terminations, 10),
@@ -99,6 +105,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       this.setState({
         [name]: event.target.value,
       });
+      this.generateSlabs();
     };
   }
 
@@ -194,6 +201,8 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                 />
                 <FormHelperText>Integer</FormHelperText>
               </FormControl>
+              <IconButton onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) - 1 } }, true); }} >-</IconButton>
+              <IconButton onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) + 1 } }, true); }} >+</IconButton>
 
             </Grid>
             <Grid item>
@@ -213,6 +222,8 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                 />
                 <FormHelperText>Angstrom</FormHelperText>
               </FormControl>
+              <IconButton onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) - 1 } }, true); }} >-</IconButton>
+              <IconButton onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) + 1 } }, true); }} >+</IconButton>
 
             </Grid>
             <Grid item>
@@ -231,6 +242,8 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                       }
                     })}
                   />
+                  <IconButton onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) + 1, this.state.n_terminations) } }, true); }} >+</IconButton>
+                  <IconButton onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) - 1, this.state.n_terminations) } }, true); }} >-</IconButton>
                   <FormHelperText
                     error={this.state.termination < 0 || this.state.termination >= this.state.n_terminations}
                   >Between 0 and {this.state.n_terminations - 1}</FormHelperText>
