@@ -718,8 +718,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                             </Hidden>
                             <Hidden smUp>
                               <Button
-                                mini
-                                fab
+                                raised
                                 color="primary"
                                 onClick={() => this.selectPrototype(ptype[0])}
                                 className={this.props.classes.button}
