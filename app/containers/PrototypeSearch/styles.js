@@ -7,7 +7,7 @@ export const styles = (theme) => ({
     textColor: '#BBBBBB',
   },
   textField: {
-    width: '80%',
+    width: '100%',
     margin: theme.spacing.unit,
   },
   button: {

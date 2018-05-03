@@ -225,9 +225,10 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         <Paper>
           <Grid container direction="column" justify="space-between">
             <Grid item>
-              <Grid container direction="row" justify="space-between">
+              <Grid container direction="row" justify="flex-start">
                 <Grid item>
                   <TextField
+                    fullWidth
                     autoFocus
                     onChange={this.handleChange('searchString')}
                     label="Search ..."
@@ -271,7 +272,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   </Grid>
 
                   <Grid container justify="space-between" direction="row">
-                    {_.isEmpty(this.props.searchResults) ? null :
+                    {!_.isEmpty(this.props.searchResults) ? null :
                     <Hidden smDown>
                       <Grid item className={this.props.classes.paper}>
                         <div>
