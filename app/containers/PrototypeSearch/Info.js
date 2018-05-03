@@ -69,7 +69,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
           <li>{'Kirklin, S., Saal, J.E., Meredig, B., Thompson, A., Doak, J.W., Aykol, M., Rühl, S. and Wolverton, C. "The Open Quantum Materials Database (OQMD): assessing the accuracy of DFT formation energies", npj Computational Materials 1, 15010 (2015). doi:10.1038/npjcompumats.2015.10'}</li>
         </ul>
         <h2> Usage</h2>
-        <div>{'The search can be used like a free text search. Search terms can be stoichiometries (e.g. \'AB2\'), spacegroups (e.g. \'151\'), conventional names of structures (e.g. \'hollandite\'), a repository name (e.g. \'AMCSD\'). The search will return faster and more accurately when naming the column in the form column:term (e.g. \'stoichiometry:AB2,AB3\'). Multiple possibilities can be separated with a comma (\',\'), no spaces. Multiple search terms will be applied with an AND filter, that is more terms lead to narrow results. The column names are:'}</div>
+        <div>{'The search can be used like a free text search. Search terms can be stoichiometries (e.g. \'AB2\'), spacegroups (e.g. \'151\'), conventional names of structures (e.g. \'hollandite\'), a repository name (e.g. \'AMCSD\'). The search will return faster and more accurately when naming the column in the form column:term (e.g. \'stoichiometry:AB2,AB3\'). Multiple possibilities can be separated with a comma (\',\'), no spaces. Multiple search terms will be applied with an AND filter, that is more terms lead to narrower results. The column names are:'}</div>
         <ul>
           <li>handle</li>
           <li>crystal_system</li>
@@ -83,7 +83,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
           <li>n_atoms</li>
 
         </ul>
-        <div>{'The column species has a special feature: The term species:Ag,Pd (with comma) will filter for structure containing Ag OR Pd, while species:AgPd will filter for structures containing Ag AND Pd. The latter is a shorthand for "species:Ag species:Pd". Any numeric field may contain ranges up to size 230, e.g. "n_atoms:50-70". The crystal_system column is a short hand for space-groups and can take any of the 7 values: triclinic, monoclinic, orthorhombic, tetragonal, trigonal, hexagonal, or cubic.'}</div>
+        <div>{'The column \'species\' has an additional feature: The term \'species:Ag,Pd\' (with comma) will filter for structures containing Ag OR Pd, while \'species:AgPd\' (without comma) will filter for structures containing Ag AND Pd. Any numeric field may contain ranges up to size 230, e.g. \'n_atoms:50-70\' will filter for structures containing from 50 and up to 70 atoms per unit cell. The \'crystal_system\' column is a short hand for space-groups and can take any of the 7 values: \'triclinic\', \'monoclinic\', \'orthorhombic\', \'tetragonal\', \'trigonal\', \'hexagonal\', or \'cubic\'.'}</div>
       </div>
     );
   }
