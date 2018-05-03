@@ -83,7 +83,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
           <li>n_atoms</li>
 
         </ul>
-        <div>{'The column species has a special feature: The term species:Ag,Pd (with comma) will filter for structure containing Ag OR Pd, while species:AgPd will filter for structures containing Ag AND Pd. The latter is a shorthand for "species:Ag species:Pd".'}</div>
+        <div>{'The column species has a special feature: The term species:Ag,Pd (with comma) will filter for structure containing Ag OR Pd, while species:AgPd will filter for structures containing Ag AND Pd. The latter is a shorthand for "species:Ag species:Pd". Any numeric field may contain ranges up to size 230, e.g. "n_atoms:50-70". The crystal_system column is a short hand for space-groups and can take any of the 7 values: triclinic, monoclinic, orthorhombic, tetragonal, trigonal, hexagonal, or cubic.'}</div>
       </div>
     );
   }
