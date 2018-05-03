@@ -225,79 +225,78 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         <Paper>
           <Grid container direction="column" justify="space-between">
             <Grid item>
-              <Grid container direction="row" justify="flex-start">
-                <Grid item>
-                  <TextField
-                    fullWidth
-                    autoFocus
-                    onChange={this.handleChange('searchString')}
-                    label="Search ..."
-                    placeholder="species:Ag n_species:2-5 repository:AMCSD,catalysis-hub"
-                    className={this.props.classes.textField}
-                    onKeyDown={((event) => {
-                      if (event.nativeEvent.keyCode === 13) {
-                        this.submitSearch();
-                      }
-                    })}
-                  />
-                  <Hidden smDown>
-                    <Button
-                      className={this.props.classes.button}
-                      onClick={() => this.handleShowInfo()}
-                    >
-                      {this.state.showInfo ? 'Hide Info' : 'Info' }
-                    </Button>
-                  </Hidden>
-                  {_.isEmpty(this.props.searchResults) ? null :
-                  <div
-                    className={this.props.classes.hintText}
-                  >
-                    {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
+              <TextField
+                autoFocus
+                onChange={this.handleChange('searchString')}
+                label="Search ..."
+                placeholder="stoichiometry:AB2 species:AgO n_species:2-5 repository:AMCSD,catalysis-hub"
+                className={this.props.classes.textField}
+                onKeyDown={((event) => {
+                  if (event.nativeEvent.keyCode === 13) {
+                    this.submitSearch();
                   }
-                  <Grid container direction="row" justify="flex-start">
-                    {this.props.facetFilters.map((facetFilter, i) => (
-                      <Grid
-                        item
-                        key={`chip_${i}`}
+                })}
+              />
+            </Grid>
+            <Grid item>
+              <Grid container direction="row" justify="space-between">
+                {_.isEmpty(this.props.searchResults) ? null :
+                <div
+                  className={this.props.classes.hintText}
+                >
+                  {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
+                }
+                <Hidden smDown>
+                  <Button
+                    className={this.props.classes.button}
+                    onClick={() => this.handleShowInfo()}
+                  >
+                    {this.state.showInfo ? 'Hide Info' : 'Info' }
+                  </Button>
+                </Hidden>
+                <Button raised onClick={this.submitSearch} color="primary" className={this.props.classes.button}><MdSearch /> Search </Button>
+                <Grid container direction="row" justify="flex-end">
+                  <Grid item>
+                    <Hidden mdUp>
+                      <Button
+                        className={this.props.classes.button}
+                        onClick={() => this.handleShowInfo()}
                       >
-                        <Chip
-                          label={`${facetFilter}`}
-                          className={this.props.classes.button}
-                          onDelete={() => { this.props.removeFacetFilter(facetFilter); }}
-                        />
-                      </Grid>
-                    ))
-
-                    }
+                        {this.state.showInfo ? 'Hide Info' : 'Info' }
+                      </Button>
+                    </Hidden>
                   </Grid>
+                  {this.props.facetFilters.map((facetFilter, i) => (
+                    <Grid
+                      item
+                      key={`chip_${i}`}
+                    >
+                      <Chip
+                        label={`${facetFilter}`}
+                        className={this.props.classes.button}
+                        onDelete={() => { this.props.removeFacetFilter(facetFilter); }}
+                      />
+                    </Grid>
+                  ))
 
-                  <Grid container justify="space-between" direction="row">
-                    {!_.isEmpty(this.props.searchResults) ? null :
-                    <Hidden smDown>
-                      <Grid item className={this.props.classes.paper}>
+                  }
+                </Grid>
+
+                <Grid container justify="space-between" direction="row">
+                  {!_.isEmpty(this.props.searchResults) ? null :
+                  <Hidden smDown>
+                    <Grid item className={this.props.classes.paper}>
+                      <div>
                         <div>
-                          <div>
                               Example searches:
                             </div>
-                          <Typography>
+                        <Typography>
                               stoichiometry:AB species:GaPd crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
                             </Typography>
-                        </div>
-                      </Grid>
-                    </Hidden>
-                    }
-                    <Grid item>
-                      <Hidden mdUp>
-                        <Button
-                          className={this.props.classes.button}
-                          onClick={() => this.handleShowInfo()}
-                        >
-                          {this.state.showInfo ? 'Hide Info' : 'Info' }
-                        </Button>
-                      </Hidden>
-                      <Button raised onClick={this.submitSearch} color="primary" className={this.props.classes.button}><MdSearch /> Search </Button>
+                      </div>
                     </Grid>
-                  </Grid>
+                  </Hidden>
+                  }
                 </Grid>
               </Grid>
             </Grid>
