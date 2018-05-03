@@ -17,6 +17,7 @@ import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import { CircularProgress, LinearProgress } from 'material-ui/Progress';
+import Hidden from 'material-ui/Hidden';
 import Chip from 'material-ui/Chip';
 import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router';
@@ -256,7 +257,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 }
 
                     <Grid container justify="space-between" direction="row">
-                      {!_.isEmpty(this.props.searchResults) ? null :
+                      {_.isEmpty(this.props.searchResults) ? null :
                       <Grid item className={this.props.classes.paper}>
                         <div>
                           <div>
@@ -551,32 +552,33 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
 
 
             {_.isEmpty(this.props.searchResults.spacegroups) ? null :
-            <Paper className={this.props.classes.facetPanel}>
-              <Grid container direction="row" justify="space-between">
-                <Grid item>
-                  <FormHelperText
-                    onClick={() => {
-                      this.setState({
-                        spacegroupsCollapsed: !this.state.spacegroupsCollapsed,
-                      });
-                    }}
-                  >{this.state.spacegroupsCollapsed ?
-                    <div>show more <MdExpandMore /></div>
+            <Hidden smDown>
+              <Paper className={this.props.classes.facetPanel}>
+                <Grid container direction="row" justify="space-between">
+                  <Grid item>
+                    <FormHelperText
+                      onClick={() => {
+                        this.setState({
+                          spacegroupsCollapsed: !this.state.spacegroupsCollapsed,
+                        });
+                      }}
+                    >{this.state.spacegroupsCollapsed ?
+                      <div>show more <MdExpandMore /></div>
                           : <div>show less <MdExpandLess /></div>
                       }</FormHelperText>
-                </Grid>
-                <Grid item>
-                  <FormHelperText
-                    onClick={() => this.setState({ spacegroupSortByFrequency: !this.state.spacegroupSortByFrequency })}
-                  >
+                  </Grid>
+                  <Grid item>
+                    <FormHelperText
+                      onClick={() => this.setState({ spacegroupSortByFrequency: !this.state.spacegroupSortByFrequency })}
+                    >
                       Sort By {this.state.spacegroupSortByFrequency ? 'Value' : 'Frequency'}
-                  </FormHelperText>
+                    </FormHelperText>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <FormControl component="div">
-                <FormLabel component="legend">Spacegroups [HM-Symbol]</FormLabel>
-                <FormGroup>
-                  {this.props.searchResults.spacegroups
+                <FormControl component="div">
+                  <FormLabel component="legend">Spacegroups [HM-Symbol]</FormLabel>
+                  <FormGroup>
+                    {this.props.searchResults.spacegroups
                         .sort((a, b) => {
                           if (this.state.spacegroupSortByFrequency) {
                             return b[1] - a[1];
@@ -602,123 +604,126 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                             />}
                           />
                         ))}
-                </FormGroup>
-              </FormControl>
-            </Paper>
+                  </FormGroup>
+                </FormControl>
+              </Paper>
+            </Hidden>
             }
           </Grid>
           <Grid item xs={9}>
             {_.isEmpty(this.props.searchResults.prototypes) ? null :
-            <Paper>
-              {this.state.loadingPrototype ? <LinearProgress /> : null}
-              {this.state.showPrototype ?
-                <div>
-                  <h3 className={this.props.classes.subheader}>
-                    <IconButton
-                      onClick={() => this.unselectPrototype()}
-                    >
-                      <MdChevronLeft />
-                    </IconButton>
+            <Hidden smDown>
+              <Paper>
+                {this.state.loadingPrototype ? <LinearProgress /> : null}
+                {this.state.showPrototype ?
+                  <div>
+                    <h3 className={this.props.classes.subheader}>
+                      <IconButton
+                        onClick={() => this.unselectPrototype()}
+                      >
+                        <MdChevronLeft />
+                      </IconButton>
                         Prototype {this.props.ptype}</h3>
-                  {Object.keys(this.props.repoPrototypes).map((repository, ri) => (
-                    <Paper
-                      key={`repolist_${ri}`}
-                      className={this.props.classes.paper}
-                    >
-                      <h4>{repository}</h4>
-                      <ul>
-                        {this.props.repoPrototypes[repository].map((ptype, pi) => (
-                          <li key={`ptype_${pi}`}>
-                            <ReactGA.OutboundLink
-                              eventLabel="Goto Structure Source"
-                              to={getGeometryUrl(ptype.repository, ptype.handle, ptype.tags)}
-                              target="_blank"
-                            >
+                    {Object.keys(this.props.repoPrototypes).map((repository, ri) => (
+                      <Paper
+                        key={`repolist_${ri}`}
+                        className={this.props.classes.paper}
+                      >
+                        <h4>{repository}</h4>
+                        <ul>
+                          {this.props.repoPrototypes[repository].map((ptype, pi) => (
+                            <li key={`ptype_${pi}`}>
+                              <ReactGA.OutboundLink
+                                eventLabel="Goto Structure Source"
+                                to={getGeometryUrl(ptype.repository, ptype.handle, ptype.tags)}
+                                target="_blank"
+                              >
                                   Source: {ptype.repository}:{ptype.handle}
-                            </ReactGA.OutboundLink>
-                            <ul>
-                              {Object.keys(ptype).map((entry, ei) => (
-                                <li key={`entry_${ei}`}>
-                                  {entry}: {ptype[entry]}
-                                </li>
+                              </ReactGA.OutboundLink>
+                              <ul>
+                                {Object.keys(ptype).map((entry, ei) => (
+                                  <li key={`entry_${ei}`}>
+                                    {entry}: {ptype[entry]}
+                                  </li>
                                   ))}
-                            </ul>
-                            <Grid container direction="row" justify="flex-end">
-                              <Grid item>
-                                <Button
-                                  color="primary"
-                                  onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
-                                >
-                                  <Link
-                                    className={this.props.classes.buttonLink}
-                                    to={'/bulkGenerator'}
+                              </ul>
+                              <Grid container direction="row" justify="flex-end">
+                                <Grid item>
+                                  <Button
+                                    color="primary"
+                                    onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
                                   >
+                                    <Link
+                                      className={this.props.classes.buttonLink}
+                                      to={'/bulkGenerator'}
+                                    >
                                         Open in Wyckoff Bulk Generator
                                       </Link>
-                                </Button>
-                              </Grid>
-                              <Grid item>
-                                <Button
-                                  color="primary"
-                                  onClick={() => this.handoffCatKit(
+                                  </Button>
+                                </Grid>
+                                <Grid item>
+                                  <Button
+                                    color="primary"
+                                    onClick={() => this.handoffCatKit(
                                         ptype
                                       )}
-                                >
-                                  <Link
-                                    className={this.props.classes.buttonLink}
-                                    to={'/catKitDemo'}
                                   >
+                                    <Link
+                                      className={this.props.classes.buttonLink}
+                                      to={'/catKitDemo'}
+                                    >
                                         Open in CatKit
                                       </Link>
-                                </Button>
+                                  </Button>
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          </li>
+                            </li>
                             ))}
-                      </ul>
-                    </Paper>
-                      ))}
-                </div>
-                    :
-                <div>
-
-                  <div>
-                    <h3 className={this.props.classes.subheader}>Prototypes ({this.props.searchResults.n_prototypes})</h3>
-                    {this.props.searchResults.prototypes.map((ptype, pi) => (
-                      <Paper key={`pcard_${pi}`} className={this.props.classes.pcard}>
-                        <h4>Prototype {ptype[0]}</h4>
-
-                        <div>
-                              Structures: {ptype[1]}
-                        </div>
-                        <Grid container direction="row" justify="flex-end">
-                          <Grid item>
-                            <Button
-                              raised
-                              color="primary"
-                              onClick={() => this.selectPrototype(ptype[0])}
-                              className={this.props.classes.button}
-                            >Details <MdChevronRight />
-                            </Button>
-                          </Grid>
-                        </Grid>
+                        </ul>
                       </Paper>
-                        )) }
+                      ))}
                   </div>
-                  <Grid container direction="row" justify="center">
-                    <Grid item>
-                      <Button
-                        onClick={() => { this.loadMore(); }}
-                      >
-                        {this.state.loadingMore ? <CircularProgress /> : null }
+                    :
+                  <div>
+
+                    <div>
+                      <h3 className={this.props.classes.subheader}>Prototypes ({this.props.searchResults.n_prototypes})</h3>
+                      {this.props.searchResults.prototypes.map((ptype, pi) => (
+                        <Paper key={`pcard_${pi}`} className={this.props.classes.pcard}>
+                          <h4>Prototype {ptype[0]}</h4>
+
+                          <div>
+                              Structures: {ptype[1]}
+                          </div>
+                          <Grid container direction="row" justify="flex-end">
+                            <Grid item>
+                              <Button
+                                raised
+                                color="primary"
+                                onClick={() => this.selectPrototype(ptype[0])}
+                                className={this.props.classes.button}
+                              >Details <MdChevronRight />
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Paper>
+                        )) }
+                    </div>
+                    <Grid container direction="row" justify="center">
+                      <Grid item>
+                        <Button
+                          onClick={() => { this.loadMore(); }}
+                        >
+                          {this.state.loadingMore ? <CircularProgress /> : null }
 
                             Load More
                           </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </div>
+                  </div>
                 }
-            </Paper>
+              </Paper>
+            </Hidden>
             }
           </Grid>
         </Grid>
