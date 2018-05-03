@@ -11,6 +11,7 @@ import PropTypes, { instanceOf } from 'prop-types';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
 import axios from 'axios';
+import cachios from 'cachios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
@@ -36,6 +37,7 @@ import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
+import * as wyckoffActions from 'containers/BulkGenerator/actions';
 import { apiRoot } from 'utils/constants';
 import Header from './header';
 import SearchInfo from './Info';
@@ -130,7 +132,36 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     };
   }
 
-  handoffWyckoff() {
+  handoffWyckoff(ptype) {
+    const params = { params: {
+      spacegroup: ptype.spacegroup,
+    },
+      ttl: 300,
+    };
+    cachios.get(`${apiRoot}/apps/bulkEnumerator/get_wyckoff_list`, params).then((response) => {
+      this.props.wyckoffSetWyckoffList(response.data.wyckoff_list);
+    });
+    axios.post(structureUrl, {
+      spacegroup: ptype.spacegroup,
+      parameter_names: ptype.parameter_names,
+      parameters: ptype.parameters,
+      species: ptype.species,
+      wyckoffs: ptype.wyckoffs,
+    }).then((response) => {
+      this.props.wyckoffSetCellParameters(JSON.parse(ptype.parameters));
+      this.props.wyckoffSetName(ptype.prototype);
+      this.props.wyckoffSetSpacegroup(parseInt(ptype.spacegroup, 10));
+      this.props.wyckoffReceiveBulkStructure(response.data.structure);
+
+      const wyckoffPoints = _.zip(
+        JSON.parse(ptype.species.replace(/'/g, '"')),
+        JSON.parse(ptype.wyckoffs.replace(/'/g, '"'))
+      ).map((p) => ({
+        species: p[0],
+        symbol: p[1],
+      }));
+      this.props.wyckoffSetWyckoffPoints(wyckoffPoints);
+    });
   }
 
   handoffCatKit(ptype) {
@@ -667,7 +698,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                               <Grid item>
                                 <Button
                                   color="primary"
-                                  onClick={() => this.handoffWyckoff(ptype.prototype, ptype.spacegroup)}
+                                  onClick={() => this.handoffWyckoff(ptype)}
                                 >
                                   <Link
                                     className={this.props.classes.buttonLink}
@@ -776,6 +807,15 @@ PrototypeSearch.propTypes = {
   receiveBulkCif: PropTypes.func,
   saveBulkParams: PropTypes.func,
   dropBulkInput: PropTypes.func,
+
+  wyckoffReceiveBulkStructure: PropTypes.func,
+  wyckoffSetCellParameters: PropTypes.func,
+  wyckoffSetName: PropTypes.func,
+  /* wyckoffSetPermutations: PropTypes.func,*/
+  wyckoffSetSpacegroup: PropTypes.func,
+  wyckoffSetWyckoffPoints: PropTypes.func,
+  wyckoffSetWyckoffList: PropTypes.func,
+
   cookies: instanceOf(Cookies),
 };
 
@@ -818,6 +858,27 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveBulkParams: (bulkParams) => {
     dispatch(catKitActions.saveBulkParams(bulkParams));
+  },
+  wyckoffReceiveBulkStructure: (x) => {
+    dispatch(wyckoffActions.receiveBulkStructure(x));
+  },
+  wyckoffSetCellParameters: (x) => {
+    dispatch(wyckoffActions.setCellParameters(x));
+  },
+  wyckoffSetName: (x) => {
+    dispatch(wyckoffActions.setName(x));
+  },
+  wyckoffSetPermutations: (x) => {
+    dispatch(wyckoffActions.setPermutations(x));
+  },
+  wyckoffSetSpacegroup: (x) => {
+    dispatch(wyckoffActions.setSpacegroup(x));
+  },
+  wyckoffSetWyckoffPoints: (x) => {
+    dispatch(wyckoffActions.setWyckoffPoints(x));
+  },
+  wyckoffSetWyckoffList: (x) => {
+    dispatch(wyckoffActions.receiveWyckoffList(x));
   },
 });
 

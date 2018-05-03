@@ -282,11 +282,11 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
               ))}
         </div>
         }
-        {_.isEmpty(this.state.wyckoffPoints) ? null :
+        {_.isEmpty(this.props.wyckoffPoints) ? null :
         <div>
           <h2>Configure Wyckoff Points</h2>
           <Paper className={this.props.classes.paper} >
-            {this.state.wyckoffPoints.map((point, i) => (
+            {this.props.wyckoffPoints.map((point, i) => (
               <Chip
                 avatar={<Avatar>{point.symbol}</Avatar>}
                 key={`chip_${i}`}
@@ -315,6 +315,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
 
 WyckoffInput.propTypes = {
   setName: PropTypes.func,
+  wyckoffPoints: PropTypes.array,
   setPermutations: PropTypes.func,
   classes: PropTypes.object,
   setSpacegroup: PropTypes.func,
@@ -326,7 +327,8 @@ WyckoffInput.propTypes = {
   receiveBulkStructure: PropTypes.func,
 };
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  wyckoffPoints: state.get('bulkGeneratorReducer').wyckoffPoints,
 });
 
 const mapDispatchToProps = (dispatch) => ({
