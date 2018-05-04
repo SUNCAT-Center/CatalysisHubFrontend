@@ -10,7 +10,7 @@ import { FormControl } from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
 import { Link } from 'react-router';
 
-import { MdLoop } from 'react-icons/lib/md';
+import { MdLoop, MdChevronRight } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { apiRoot } from 'utils/constants';
@@ -101,22 +101,6 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             />
           </Grid>
         </Grid>
-        <h3>Prototype Name</h3>
-        <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
-        <span>{this.props.name} </span>
-        }
-          <Button
-            color="primary"
-            raised
-            onClick={() => this.handoffPrototypeSearch(this.props.name)}
-          >
-            <Link
-              className={this.props.classes.buttonLink}
-              to={'/prototypeSearch'}
-            > Find similar structures
-          </Link>
-          </Button>
-        </div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h3>Input Cell Parameters</h3>
@@ -128,7 +112,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
               raised
               onClick={this.getStructure}
             >
-              <MdLoop /> Update Structure
+              <MdLoop />{' \u00A0\u00A0'} Update Structure
           </Button>
           </Grid>
         </Grid>
@@ -155,8 +139,30 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             </Grid>
         ))}
         </Grid>
-        <div>
-        Now you can cut slabs using <Button
+        <Grid container direction="row" justify="space-between">
+          <Grid item>
+            <h3>Prototype Name</h3>
+            <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
+            <span>{this.props.name} </span>
+        }
+              {'\u00A0\u00A0'}
+              <Button
+                color="primary"
+                raised
+                onClick={() => this.handoffPrototypeSearch(this.props.name)}
+              >
+                <Link
+                  className={this.props.classes.buttonLink}
+                  to={'/prototypeSearch'}
+                > Search similar structures <MdChevronRight />
+                </Link>
+              </Button>
+            </div>
+          </Grid>
+          <Grid item>
+            <h3>CatKit</h3>
+            <div>
+        Cut arbitrary slabs using <Button
           color="primary"
           raised
           onClick={this.handoffBulkStructure}
@@ -166,11 +172,13 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             className={this.props.classes.buttonLink}
             to={'/catkitDemo'}
           >
-            CatKit
+            CatKit <MdChevronRight />
           </Link>
         </Button>
         .
       </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
