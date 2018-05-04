@@ -7,6 +7,7 @@
 import { compose } from 'recompose';
 import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
+import { connect } from 'react-redux';
 import { withCookies, Cookies } from 'react-cookie';
 import ReactGA from 'react-ga';
 import FileDownload from 'react-file-download';
@@ -26,6 +27,7 @@ import axios from 'axios';
 import { apiRoot } from 'utils/constants';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
+import * as actions from './actions';
 
 const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
   'gen', 'gromos', 'json', 'jsv', 'nwchem', 'proteindatabank', 'py', 'turbomole', 'v-sim', 'vasp', 'xsf', 'xyz'];
@@ -92,6 +94,15 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     this.handleDownload = this.handleDownload.bind(this);
     this.handleDownloadClose = this.handleDownloadClose.bind(this);
   }
+
+  componentWillMount() {
+    this.setState({
+      x: this.props.xRepeat,
+      y: this.props.yRepeat,
+      z: this.props.zRepeat,
+    });
+  }
+
   componentWillReceiveProps() {
     this.setState({ in: false });
     setTimeout(() => {
@@ -144,6 +155,13 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 
   handleChange(axis, diff) {
     return () => {
+      if (axis === 'x') {
+        this.props.setXRepeat(this.state[axis] + diff);
+      } else if (axis === 'y') {
+        this.props.setYRepeat(this.state[axis] + diff);
+      } else if (axis === 'z') {
+        this.props.setZRepeat(this.state[axis] + diff);
+      }
       this.setState({
         [axis]: Math.max(1, this.state[axis] + diff),
       });
@@ -336,10 +354,36 @@ GeometryCanvasWithOptions.propTypes = {
   id: PropTypes.string.isRequired,
   extraSlug: PropTypes.string,
   cookies: instanceOf(Cookies).isRequired,
+  xRepeat: PropTypes.number,
+  yRepeat: PropTypes.number,
+  zRepeat: PropTypes.number,
+
+  setXRepeat: PropTypes.func,
+  setYRepeat: PropTypes.func,
+  setZRepeat: PropTypes.func,
 };
+
+const mapStateToProps = (state) => ({
+  xRepeat: state.get('geometryCanvasReducer').xRepeat,
+  yRepeat: state.get('geometryCanvasReducer').yRepeat,
+  zRepeat: state.get('geometryCanvasReducer').zRepeat,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setXRepeat: (x) => {
+    dispatch(actions.setXRepeat(x));
+  },
+  setYRepeat: (x) => {
+    dispatch(actions.setYRepeat(x));
+  },
+  setZRepeat: (x) => {
+    dispatch(actions.setZRepeat(x));
+  },
+});
 
 
 export default compose(
   withStyles(styles, { withTheme: true }),
   withCookies,
+  connect(mapStateToProps, mapDispatchToProps)
 )(GeometryCanvasWithOptions);
