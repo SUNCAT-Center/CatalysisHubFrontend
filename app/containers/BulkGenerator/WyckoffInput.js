@@ -103,7 +103,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
       this.props.setPermutations(permutations);
 
       this.props.receiveBulkStructure(response.data.cif);
-      this.props.setSpacegroup(response.data.spacegroup);
+      this.props.setSpacegroup(parseInt(response.data.spacegroup, 10));
       this.props.receiveWyckoffList(response.data.wyckoff_list.map((point) => ({
         ...point,
         symbol: point.symbol.split("'")[1],

@@ -17,6 +17,7 @@ import { apiRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
+import * as prototypeSearchActions from 'containers/PrototypeSearch/actions';
 import * as actions from './actions';
 import { styles } from './styles';
 
@@ -36,6 +37,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     this.getStructure = this.getStructure.bind(this);
     this.handleCellParameterChange = this.handleCellParameterChange.bind(this);
     this.handoffBulkStructure = this.handoffBulkStructure.bind(this);
+    this.handoffPrototypeSearch = this.handoffPrototypeSearch.bind(this);
   }
   componentDidMount() {
     this.getStructure();
@@ -68,6 +70,10 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     };
   }
 
+  handoffPrototypeSearch(name) {
+    this.props.prototypeSearchSaveSearchTerms(`prototype:${name}`);
+  }
+
   handoffBulkStructure() {
     const bulkParams = {
       wyckoff: {
@@ -97,8 +103,20 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
         </Grid>
         <h3>Prototype Name</h3>
         <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
-        <div>{this.props.name}</div>
-        }</div>
+        <span>{this.props.name} </span>
+        }
+          <Button
+            color="primary"
+            raised
+            onClick={() => this.handoffPrototypeSearch(this.props.name)}
+          >
+            <Link
+              className={this.props.classes.buttonLink}
+              to={'/prototypeSearch'}
+            > Find similar structures
+          </Link>
+          </Button>
+        </div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h3>Input Cell Parameters</h3>
@@ -148,11 +166,11 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             className={this.props.classes.buttonLink}
             to={'/catkitDemo'}
           >
-          CatKit
-        </Link>
+            CatKit
+          </Link>
         </Button>
-      .
-    </div>
+        .
+      </div>
       </div>
     );
   }
@@ -169,6 +187,7 @@ CellParameterInput.propTypes = {
   receiveBulkCif: PropTypes.func,
   dropBulkInput: PropTypes.func,
   saveBulkParams: PropTypes.func,
+  prototypeSearchSaveSearchTerms: PropTypes.func,
   setName: PropTypes.func,
   classes: PropTypes.object,
   name: PropTypes.string,
@@ -200,6 +219,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveBulkParams: (bulkParams) => {
     dispatch(catKitActions.saveBulkParams(bulkParams));
+  },
+  prototypeSearchSaveSearchTerms: (x) => {
+    dispatch(prototypeSearchActions.saveSearchTerms(x));
   },
 });
 
