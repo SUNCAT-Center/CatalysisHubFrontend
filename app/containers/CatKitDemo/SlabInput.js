@@ -135,6 +135,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="miller-x-helper">Miller X</InputLabel>
                 <Input
+                  className={this.props.classes.numberTextfield}
                   autoFocus
                   id="miller-x-helper"
                   value={this.state.millerX}
@@ -154,6 +155,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="miller-y-helper">Miller Y</InputLabel>
                 <Input
+                  className={this.props.classes.numberTextfield}
                   id="miller-y-helper"
                   value={this.state.millerY}
                   onChange={this.handleChange('millerY')}
@@ -172,6 +174,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="miller-z-helper">Miller Z</InputLabel>
                 <Input
+                  className={this.props.classes.numberTextfield}
                   id="miller-z-helper"
                   value={this.state.millerZ}
                   onChange={this.handleChange('millerZ')}
@@ -190,6 +193,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="layers-helper">Layers</InputLabel>
                 <Input
+                  className={this.props.classes.buttonedTextfield}
                   id="layers-helper"
                   value={this.state.layers}
                   onChange={this.handleChange('layers')}
@@ -198,11 +202,20 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                       this.generateSlabs();
                     }
                   })}
+                  endAdornment={
+                    <Grid container direction="row" justify="flex-end">
+                      <Grid item>
+                        <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) - 1 } }, true); }} >-</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) + 1 } }, true); }} >+</IconButton>
+                      </Grid>
+
+                    </Grid>
+                  }
                 />
                 <FormHelperText>Integer</FormHelperText>
               </FormControl>
-              <IconButton onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) - 1 } }, true); }} >-</IconButton>
-              <IconButton onClick={() => { this.handleChange('layers')({ target: { value: parseInt(this.state.layers, 10) + 1 } }, true); }} >+</IconButton>
 
             </Grid>
             <Grid item>
@@ -211,6 +224,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="vacuum-helper">Vacuum</InputLabel>
                 <Input
+                  className={this.props.classes.buttonedTextfield}
                   id="vacuum-helper"
                   value={this.state.vacuum}
                   onChange={this.handleChange('vacuum')}
@@ -219,11 +233,19 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                       this.generateSlabs();
                     }
                   })}
+                  endAdornment={
+                    <Grid container direction="row" justify="flex-end">
+                      <Grid item>
+                        <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) - 1 } }, true); }} >-</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) + 1 } }, true); }} >+</IconButton>
+                      </Grid>
+                    </Grid>
+                  }
                 />
                 <FormHelperText>Angstrom</FormHelperText>
               </FormControl>
-              <IconButton onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) - 1 } }, true); }} >-</IconButton>
-              <IconButton onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) + 1 } }, true); }} >+</IconButton>
 
             </Grid>
             <Grid item>
@@ -232,6 +254,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                 <FormControl className={this.props.classes.formControl} >
                   <InputLabel htmlFor="termination-helper">Termination</InputLabel>
                   <Input
+                    className={this.props.classes.buttonedTextfield}
                     id="termination-helper"
                     error={!(this.state.termination >= 0 || this.state.termination < this.state.n_terminations)}
                     value={this.state.termination}
@@ -241,9 +264,18 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                         this.generateSlabs();
                       }
                     })}
-                  />
-                  <IconButton onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) + 1, this.state.n_terminations) } }, true); }} >+</IconButton>
-                  <IconButton onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) - 1, this.state.n_terminations) } }, true); }} >-</IconButton>
+                    endAdornment={
+                      <Grid container direction="row" justify="flex-end">
+                        <Grid item>
+                          <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) - 1, this.state.n_terminations) } }, true); }} >-</IconButton>
+                        </Grid>
+                        <Grid item>
+                          <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('termination')({ target: { value: nmod(parseInt(this.state.termination, 10) + 1, this.state.n_terminations) } }, true); }} >+</IconButton>
+                        </Grid>
+                      </Grid>
+                    }
+                  >
+                  </Input>
                   <FormHelperText
                     error={this.state.termination < 0 || this.state.termination >= this.state.n_terminations}
                   >Between 0 and {this.state.n_terminations - 1}</FormHelperText>
