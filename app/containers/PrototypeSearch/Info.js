@@ -8,7 +8,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
     return (
       <div>
         <h2>About Prototype Search</h2>
-        <div><strong>Prototype Search</strong> is a basic research project with the aim of supporting screening studies of chemical reaction on surfaces. To this end we index bulk structures from open repositories. We acknowledge the following the repositories and the literature referenced therein</div>
+        <div><strong>Prototype Search</strong> is a basic research project with the aim of supporting screening studies of chemical reaction on surfaces. To this end we index bulk structures from open repositories. We acknowledge the following the repositories and the literature referenced therein. While great care has been taken to create a nearly complete index, this search does not contain structure with more than 60 Wyckoff sites, which will typically exclude some protein crystals. The numbers shown here therefore may not reflect the full size of the respective repository.</div>
         <h3>Aflowlib</h3>
         <div>URL: <a href="http://aflowlib.org/">http://aflowlib.org/</a></div>
         <div>{'A RESTful API for exchanging materials data in the AFLOWLIB.org consortium. Computational Materials Science, Volume 93, October 2014, Pages 178-192. Richard H. Taylor, Frisco Rose, Cormac Toher, Ohad Levy, Kesong Yang, Marco Buongiorno Nardelli, Stefano Curtarolo.'}</div>

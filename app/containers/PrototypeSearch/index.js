@@ -54,6 +54,7 @@ const hmSymbols = ['P 1', 'P -1', 'P 1 2 1', 'P 1 21 1', 'C 1 2 1', 'P 1 m 1', '
 
 
 const initialState = {
+  searchString: '',
   loading: false,
   loadingMore: false,
   loadingPrototype: false,
@@ -102,6 +103,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.state = {
       ...initialState,
       showInfo: ((this.props.cookies.get('prototypeSearchShowInfo') || 'true') === 'true'),
+      searchString: this.props.searchTerms,
     };
     this.handleChange = this.handleChange.bind(this);
     this.submitSearch = this.submitSearch.bind(this);
@@ -114,6 +116,11 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.handleShowInfo = this.handleShowInfo.bind(this);
 
     /* this.setState(initialState);*/
+  }
+  componentWillMount() {
+    this.setState({
+      searchString: this.props.searchTerms,
+    });
   }
 
   handleShowInfo() {
@@ -223,6 +230,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       loading: true,
       showPrototype: false,
     });
+    this.props.saveSearchTerms(this.state.searchString);
     if (!loadMore) {
       this.props.saveSearchResults({});
     }
@@ -259,6 +267,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
               <TextField
                 autoFocus
                 onChange={this.handleChange('searchString')}
+                value={this.state.searchString}
                 label="Search ..."
                 placeholder="stoichiometry:AB2 species:AgO n_species:2-5 repository:AMCSD,catalysis-hub"
                 className={this.props.classes.textField}
@@ -317,7 +326,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   {!_.isEmpty(this.props.searchResults) ? null :
                   <Hidden smDown>
                     <Grid item className={this.props.classes.paper}>
-                      <div>
+                      <div className={this.props.classes.paper}>
                         <div>
                               Example searches:
                             </div>
@@ -796,12 +805,14 @@ PrototypeSearch.propTypes = {
   searchLimit: PropTypes.number,
   facetFilters: PropTypes.array,
   ptype: PropTypes.string,
+  searchTerms: PropTypes.string,
   repoPrototypes: PropTypes.object,
 
   saveSearchResults: PropTypes.func,
   addFacetFilter: PropTypes.func,
   removeFacetFilter: PropTypes.func,
   saveSearchLimit: PropTypes.func,
+  saveSearchTerms: PropTypes.func,
   savePrototype: PropTypes.func,
   saveRepoPrototypes: PropTypes.func,
   receiveBulkCif: PropTypes.func,
@@ -820,12 +831,12 @@ PrototypeSearch.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  searchTerms: state.get('prototypeSearch').searchTerms,
-  searchResults: state.get('prototypeSearch').searchResults,
-  searchLimit: state.get('prototypeSearch').searchLimit,
   facetFilters: state.get('prototypeSearch').facetFilters,
   ptype: state.get('prototypeSearch').ptype,
   repoPrototypes: state.get('prototypeSearch').repoPrototypes,
+  searchLimit: state.get('prototypeSearch').searchLimit,
+  searchResults: state.get('prototypeSearch').searchResults,
+  searchTerms: state.get('prototypeSearch').searchTerms,
 });
 
 const mapDispatchToProps = (dispatch) => ({

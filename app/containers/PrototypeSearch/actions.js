@@ -12,11 +12,11 @@ export function defaultAction() {
   };
 }
 
-export function saveSearchTerms(searchTerm) {
+export function saveSearchTerms(_x) {
   return {
     type: constants.SAVE_SEARCH_TERMS,
     payload: {
-      searchTerm,
+      searchTerms: _x,
     },
   };
 }

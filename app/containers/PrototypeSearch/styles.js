@@ -26,6 +26,7 @@ export const styles = (theme) => ({
   },
   paper: {
     margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
   },
   outerPaper: {
     marginTop: theme.spacing.unit,
