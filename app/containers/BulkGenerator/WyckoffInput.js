@@ -228,7 +228,8 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
                   if (event.nativeEvent.keyCode === 13) {
                     this.getWyckoffList();
                   }
-                })}
+                }
+                )}
               />
               <FormHelperText id="name-helper-text">Between 1 and 230</FormHelperText>
 
@@ -290,6 +291,11 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
               <Chip
                 avatar={<Avatar>{point.symbol}</Avatar>}
                 key={`chip_${i}`}
+                onKeyDown={((event) => {
+                  if (event.nativeEvent.keyCode === 13) {
+                    this.props.stepperHandleNext();
+                  }
+                })}
                 label={
                   <div>
                     <ElementAutosuggest
@@ -325,6 +331,7 @@ WyckoffInput.propTypes = {
   setWyckoffPoints: PropTypes.func,
   setCellParameters: PropTypes.func,
   receiveBulkStructure: PropTypes.func,
+  stepperHandleNext: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
