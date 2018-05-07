@@ -100,6 +100,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
       x: this.props.xRepeat,
       y: this.props.yRepeat,
       z: this.props.zRepeat,
+      rotationMatrix: this.props.rotationMatrix,
     });
   }
 
@@ -156,11 +157,11 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
   handleChange(axis, diff) {
     return () => {
       if (axis === 'x') {
-        this.props.setXRepeat(this.state[axis] + diff);
+        this.props.setXRepeat(parseInt(this.state[axis], 10) + diff);
       } else if (axis === 'y') {
-        this.props.setYRepeat(this.state[axis] + diff);
+        this.props.setYRepeat(parseInt(this.state[axis], 10) + diff);
       } else if (axis === 'z') {
-        this.props.setZRepeat(this.state[axis] + diff);
+        this.props.setZRepeat(parseInt(this.state[axis], 10) + diff);
       }
       this.setState({
         [axis]: Math.max(1, this.state[axis] + diff),
@@ -200,6 +201,9 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               z={this.state.z}
               height={window.innerHeight}
               width={window.innerWidth}
+              rotationMatrix={this.props.rotationMatrix}
+              setRotationMatrix={this.props.setRotationMatrix}
+              parent={this}
             />
           </div>
         </Modal>
@@ -210,6 +214,8 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           x={this.state.x}
           y={this.state.y}
           z={this.state.z}
+          setRotationMatrix={this.props.setRotationMatrix}
+          parent={this}
         />
         <Grid
           container
@@ -357,16 +363,20 @@ GeometryCanvasWithOptions.propTypes = {
   xRepeat: PropTypes.number,
   yRepeat: PropTypes.number,
   zRepeat: PropTypes.number,
+  rotationMatrix: PropTypes.array,
 
   setXRepeat: PropTypes.func,
   setYRepeat: PropTypes.func,
   setZRepeat: PropTypes.func,
+  setRotationMatrix: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   xRepeat: state.get('geometryCanvasReducer').xRepeat,
   yRepeat: state.get('geometryCanvasReducer').yRepeat,
   zRepeat: state.get('geometryCanvasReducer').zRepeat,
+  rotationMatrix: state.get('geometryCanvasReducer').rotationMatrix,
+  canvas: state.get('geometryCanvasReducer').canvas,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -378,6 +388,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setZRepeat: (x) => {
     dispatch(actions.setZRepeat(x));
+  },
+  setRotationMatrix: (x) => {
+    dispatch(actions.setRotationMatrix(x));
+  },
+  saveCanvas: (x) => {
+    dispatch(actions.saveCanvas(x));
   },
 });
 

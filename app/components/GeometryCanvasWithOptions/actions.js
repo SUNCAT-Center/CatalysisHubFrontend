@@ -1,5 +1,24 @@
 import * as constants from './constants';
 
+
+export function saveCanvas(x) {
+  return {
+    type: constants.SAVE_CANVAS,
+    payload: {
+      canvas: x,
+    },
+  };
+}
+
+export function setRotationMatrix(x) {
+  return {
+    type: constants.SET_ROTATION_MATRIX,
+    payload: {
+      rotationMatrix: x,
+    },
+  };
+}
+
 export function setXRepeat(x) {
   return {
     type: constants.SET_X_REPEAT,

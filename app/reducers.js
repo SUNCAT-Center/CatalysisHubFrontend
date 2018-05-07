@@ -21,6 +21,7 @@ import profileReducer from 'containers/Profile/reducer';
 import bulkGeneratorReducer from 'containers/BulkGenerator/reducer';
 import appSnackBarReducer from 'containers/AppSnackBar/reducer';
 import prototypeSearchReducer from 'containers/PrototypeSearch/reducer';
+import geometryCanvasReducer from 'components/GeometryCanvasWithOptions/reducer';
 
 /*
  * routeReducer
@@ -69,6 +70,7 @@ export default function createReducer(asyncReducers) {
     bulkGeneratorReducer,
     appSnackBarReducer,
     prototypeSearchReducer,
+    geometryCanvasReducer,
     ...asyncReducers,
   });
 }
