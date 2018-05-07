@@ -3,7 +3,7 @@ import * as constants from './constants';
 const initialState = {
   xRepeat: 2,
   yRepeat: 2,
-  zRepeat: 2,
+  zRepeat: 1,
   rotationMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3],
   canvas: {},
 };
