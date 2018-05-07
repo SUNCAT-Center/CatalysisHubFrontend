@@ -89,6 +89,10 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     };
     if (this.props.customBulkInput) {
       params.params.bulk_cif = this.props.bulkCif;
+      // Send in dummy data since backend seems to require it
+      params.params.bulkParams = {
+        elements: ['Pt'],
+      };
     }
 
     this.props.saveSlabParams(slabParams);
