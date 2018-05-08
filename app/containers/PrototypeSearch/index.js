@@ -81,6 +81,8 @@ const getGeometryUrl = (repository, handle) => {
     return `http://api.catalysis-hub.org/graphql?query=%7Bsystems(uniqueId%3A%22${handle}%22)%20%7B%0A%20%20edges%20%7B%0A%20%20%20%20node%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20uniqueId%0A%20%20%20%20%20%20energy%0A%20%20%20%20%20%20keyValuePairs%0A%20%20%20%20%20%20InputFile(format%3A%22cif%22)%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%7D`;
   } else if (repository === 'COD') {
     return `http://www.crystallography.net/cod/${handle}.html`;
+  } else if (repository === 'AFLOW') {
+    return `http://aflowlib.duke.edu/${handle.split(/-/g).slice(0, handle.split(/-/g).length - 1).join('/')}`;
   }
   return 'http://www.catalysis-hub.org/Error: Unknown repository';
 };
