@@ -244,8 +244,11 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       this.props.saveSearchResults({});
     }
     this.props.savePrototype('');
+    const searchString = this.state.searchString
+      .replace(/:\s+/g, ':') // remove spaces right after colon
+      .replace(/[;,]/g, ''); // remove control characters like ; or ,
     const params = { params: {
-      search_terms: this.state.searchString,
+      search_terms: searchString,
       facet_filters: JSON.stringify(this.props.facetFilters),
       limit: this.props.searchLimit,
     },
