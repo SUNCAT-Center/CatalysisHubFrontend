@@ -155,7 +155,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       species: ptype.species,
       wyckoffs: ptype.wyckoffs,
     }).then((response) => {
-      this.props.wyckoffSetCellParameters(JSON.parse(ptype.parameters));
+      this.props.wyckoffSetCellParameters(
+        _.fromPairs(
+          _.zip(
+            JSON.parse(ptype.parameter_names.replace(/'/g, '"')),
+            JSON.parse(ptype.parameters)
+          )
+        )
+      );
       this.props.wyckoffSetName(ptype.prototype);
       this.props.wyckoffSetSpacegroup(parseInt(ptype.spacegroup, 10));
       this.props.wyckoffReceiveBulkStructure(response.data.structure);
