@@ -162,7 +162,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         this.props.receiveBulkCif(response.data.cifdata);
         if (typeof response.data.lattice_constants !== 'undefined') {
           this.setState({
-            latticeConstant: response.data.lattice_constant.toFixed(3),
+            latticeConstant: response.data.lattice_constants.toFixed(3),
           });
         }
         const wyckoffParams = {

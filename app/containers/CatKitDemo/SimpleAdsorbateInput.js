@@ -41,6 +41,14 @@ const initialState = {
   siteTypes: [],
 };
 
+const siteNames = [
+  'gas',
+  'top',
+  'bridge',
+  'hollow',
+  '4fold',
+];
+
 class AdsorbateInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -204,7 +212,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                                   >
                                     <MenuItem value="all">all</MenuItem>
                                     {this.state.siteTypes.map((siteType) => (
-                                      <MenuItem key={`siteType_${siteType}`} value={siteType}>{siteType}</MenuItem>
+                                      <MenuItem key={`siteType_${siteType}`} value={siteType}>{`${siteType} (${_.get(siteNames, siteType, 'all')})`}</MenuItem>
                                       )
                                     )}
                                   </Select>
@@ -257,7 +265,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                 </Grid>
               </Grid>
               <Grid item key={`item_${this.state.activeImage}`}>
-                <h4>{`Site "${this.state.siteNames[this.state.activeImage]}" -- (${this.state.activeImage + 1}/${this.props.images.length}).`}</h4>
+                <h4>{`Site "${this.state.siteNames[this.state.activeImage]} (${_.get(siteNames, this.state.siteNames[this.state.activeImage], '')})" -- (${this.state.activeImage + 1}/${this.props.images.length}).`}</h4>
                 <GeometryCanvasWithOptions
                   cifdata={this.props.images[this.state.activeImage]}
                   uniqueId={`slab_preview_${this.state.activeImage}`}

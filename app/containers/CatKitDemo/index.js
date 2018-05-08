@@ -149,7 +149,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               <Grid item>
                 <Button
                   className={this.props.classes.button}
-                  disabled={activeStep === 0 || activeStep === 3}
+                  disabled={activeStep === 0}
                   onClick={this.handleBack}
                 >
                   <MdChevronLeft /> Back

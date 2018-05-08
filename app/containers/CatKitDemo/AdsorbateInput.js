@@ -42,6 +42,14 @@ const initialState = {
   placeHolder: 'Cl',
 };
 
+const siteNames = [
+  'top',
+  'bridge',
+  'hollow',
+  '4fold',
+];
+
+
 class AdsorbateInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -171,7 +179,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                               >
                                 <MenuItem value="all">all</MenuItem>
                                 {Object.keys(_.get(this.props.adsorptionSites, 0, {})).map((siteType) => (
-                                  <MenuItem key={`siteType_${siteType}`} value={siteType}>{siteType}</MenuItem>
+                                  <MenuItem key={`siteType_${siteType}`} value={`${siteType} (${_.get(siteNames, siteType, 'all')})`}>{`${siteType} (${_.get(siteNames, siteType, 'all')})`}</MenuItem>
                                   ))}
                               </Select>
                             </FormControl>
