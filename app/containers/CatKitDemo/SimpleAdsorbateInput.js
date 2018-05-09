@@ -127,7 +127,10 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
 
   placeAdsorbates() {
     const params = { params: {
-      bulkParams: this.props.bulkParams,
+      bulkParams: {
+        ...this.props.bulkParams,
+        elements: ['Pt'],
+      },
       slabParams: this.props.slabParams,
       siteOccupation: this.state.siteOccupation,
     } };
