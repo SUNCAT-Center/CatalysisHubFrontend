@@ -28,6 +28,12 @@ export const styles = (theme) => ({
     margin: theme.spacing.unit,
     padding: theme.spacing.unit,
   },
+  errorPaper: {
+    marginTop: 3 * theme.spacing.unit,
+    marginBottom: 3 * theme.spacing.unit,
+    padding: theme.spacing.unit,
+    backgroundColor: theme.palette.cardinalred[100],
+  },
   outerPaper: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,

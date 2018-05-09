@@ -56,6 +56,8 @@ const hmSymbols = ['P 1', 'P -1', 'P 1 2 1', 'P 1 21 1', 'C 1 2 1', 'P 1 m 1', '
 const initialState = {
   searchString: '',
   loading: false,
+  error: false,
+  errorMessage: '',
   loadingMore: false,
   loadingPrototype: false,
   spacegroupsCollapsed: true,
@@ -179,6 +181,12 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         symbol: p[1],
       }));
       this.props.wyckoffSetWyckoffPoints(wyckoffPoints);
+    }).catch((error) => {
+      this.setState({
+        error: true,
+        loading: false,
+        errorMessage: error,
+      });
     });
   }
 
@@ -238,6 +246,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
 
   submitSearch(loadMore = false) {
     this.setState({
+      error: false,
       loading: true,
       showPrototype: false,
     });
@@ -262,7 +271,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         loadingMore: false,
       });
       this.props.saveSearchResults(response.data);
-    });
+    }).catch((error) => {
+      this.setState({
+        error: true,
+        loading: false,
+        errorMessage: error,
+      });
+    }
+    );
   }
 
   render() {
@@ -275,6 +291,41 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         </Paper>
         }
         <Header />
+        {!this.state.error ? null :
+        <Paper className={this.props.classes.errorPaper}>
+          <h3>
+              Error in search.
+              </h3>
+          <div>
+            <pre>{this.props.searchTerms}</pre>
+          </div>
+          <ul>
+            {this.props.facetFilters.map(((filter, i) => (
+              <li key={`li_${i}`}>
+                {filter}
+              </li>
+                  )
+                ))}
+          </ul>
+          <div>
+              Try again or change your queries.
+              </div>
+          <Grid container direction="row" justify="flex-end">
+            <Grid item>
+              <Button
+                raised
+                onClick={() => {
+                  this.setState({
+                    error: false,
+                  });
+                }}
+              >
+                    OK
+                  </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+        }
         <Paper>
           <Grid container direction="column" justify="space-between">
             <Grid item>
