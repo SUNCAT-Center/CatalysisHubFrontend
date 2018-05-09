@@ -81,7 +81,7 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
               </ul>
               <div>{"Open the 'Docs' tab on the right to find a full documentation."}</div>
               <div>Alternatively you query from the command line using <pre style={{ display: 'inline' }}>curl</pre>:
-                  <pre>{ `curl -XPOST http://catappdatabase.herokuapp.com/graphql --data 'query={systems(last: 10 ) {
+                  <pre>{ `curl -XPOST https://api.catalysis-hub.org/graphql --data 'query={systems(last: 10 ) {
   edges {
     node {
       energy Cifdata
