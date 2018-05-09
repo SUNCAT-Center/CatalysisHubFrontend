@@ -170,7 +170,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 20, ${filterString} ) {
+      query: `query{reactions ( first: 500, ${filterString} ) {
     totalCount
     edges {
       node {
@@ -191,10 +191,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         reactionSystems {
           name
           aseId
-          systems {
-            id
-            calculatorParameters
-          }
         }
       }
     }
