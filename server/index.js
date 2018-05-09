@@ -46,7 +46,16 @@ app.use(csp({
       "'self'",
       'fonts.googleapis.com',
       'www.stanford.edu'],
-    defaultSrc: ["'self'", 'api.catalysis-hub.org'],
+    frameSrc: [
+      "'self'",
+      'api.catalysis-hub.org',
+      'goo.gl',
+      'docs.google.com',
+    ],
+    defaultSrc: [
+      "'self'",
+      'api.catalysis-hub.org',
+    ],
     imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
   },
 }));
