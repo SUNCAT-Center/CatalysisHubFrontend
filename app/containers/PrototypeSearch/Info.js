@@ -8,7 +8,7 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
     return (
       <div>
         <h2>About Prototype Search</h2>
-        <div><strong>Prototype Search</strong> is a basic research project with the aim of supporting screening studies of chemical reaction on surfaces. To this end we index bulk structures from open repositories. We acknowledge the following the repositories and the literature referenced therein. While great care has been taken to create a nearly complete index, this search does not contain structure with more than 60 Wyckoff sites, which will typically exclude some protein crystals. The numbers shown here therefore may not reflect the full size of the respective repository.</div>
+        <div><strong>Prototype Search</strong> is a basic research project with the aim of supporting screening studies of chemical reaction on surfaces. To this end, we index bulk structures from open repositories. We acknowledge the following the repositories and the literature referenced therein. While great care has been taken to create a nearly complete index, this search does not contain structure with more than 60 Wyckoff sites, which will typically exclude protein crystals. The numbers shown here therefore may not reflect the full size of the respective repository.</div>
         <h3>Aflowlib</h3>
         <div>URL: <a href="http://aflowlib.org/">http://aflowlib.org/</a></div>
         <div>{'A RESTful API for exchanging materials data in the AFLOWLIB.org consortium. Computational Materials Science, Volume 93, October 2014, Pages 178-192. Richard H. Taylor, Frisco Rose, Cormac Toher, Ohad Levy, Kesong Yang, Marco Buongiorno Nardelli, Stefano Curtarolo.'}</div>
@@ -69,18 +69,18 @@ export class SearchInfo extends React.Component { // eslint-disable-line react/p
           <li>{'Kirklin, S., Saal, J.E., Meredig, B., Thompson, A., Doak, J.W., Aykol, M., Rühl, S. and Wolverton, C. "The Open Quantum Materials Database (OQMD): assessing the accuracy of DFT formation energies", npj Computational Materials 1, 15010 (2015). doi:10.1038/npjcompumats.2015.10'}</li>
         </ul>
         <h2> Usage</h2>
-        <div>{'The search can be used like a free text search. Search terms can be stoichiometries (e.g. \'AB2\'), spacegroups (e.g. \'151\'), conventional names of structures (e.g. \'hollandite\'), a repository name (e.g. \'AMCSD\'). The search will return faster and more accurately when naming the column in the form column:term (e.g. \'stoichiometry:AB2,AB3\'). Multiple possibilities can be separated with a comma (\',\'), no spaces. Multiple search terms will be applied with an AND filter, that is more terms lead to narrower results. The column names are:'}</div>
+        <div>{'The search can be used like a free text search. Search terms can be stoichiometries (e.g. \'AB2\'), spacegroups (e.g. \'151\'), conventional names of structures (e.g. \'hollandite\'), a repository name (e.g. \'AMCSD\'). To make the search faster and more accurate, specify column in the form column:term (e.g. \'stoichiometry:AB2,AB3\'). Multiple possibilities can be separated with a comma (\',\'), no spaces. Multiple search terms will be applied with an AND filter, that is more terms lead to narrower results. The column names are:'}</div>
         <ul>
-          <li>handle</li>
           <li>crystal_system</li>
-          <li>spacegroup</li>
-          <li>species</li>
-          <li>tag</li>
+          <li>handle</li>
+          <li>n_atoms</li>
+          <li>n_species</li>
           <li>prototype</li>
           <li>repository</li>
+          <li>spacegroup</li>
+          <li>species</li>
           <li>stoichiometry</li>
-          <li>n_species</li>
-          <li>n_atoms</li>
+          <li>tag</li>
 
         </ul>
         <div>{'The column \'species\' has an additional feature: The term \'species:Ag,Pd\' (with comma) will filter for structures containing Ag OR Pd, while \'species:AgPd\' (without comma) will filter for structures containing Ag AND Pd. Any numeric field may contain ranges up to size 230, e.g. \'n_atoms:50-70\' will filter for structures containing from 50 and up to 70 atoms per unit cell. The \'crystal_system\' column is a short hand for space-groups and can take any of the 7 values: \'triclinic\', \'monoclinic\', \'orthorhombic\', \'tetragonal\', \'trigonal\', \'hexagonal\', or \'cubic\'.'}</div>
