@@ -201,8 +201,8 @@
       "global": {
         "statements": 18,
         "branches": 3,
-        "lines": 40,
-        "functions": 15
+        "lines": 20,
+        "functions": 10
       }
     },
     "moduleDirectories": [
