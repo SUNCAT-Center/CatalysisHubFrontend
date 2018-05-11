@@ -86,7 +86,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             <h3 id="development">Development</h3>
             <p>The current interface is created from <a href="https://github.com/react-boilerplate/react-boilerplate">React Boilerplate</a>.</p>
             <h3 id="contributions">Contributions</h3>
-            <p>Contributions in the form of pull requests are highly welcome. To this end you will need a <a href="https://github.com/join">github.com account (free)</a> and create a fork by clicking in the <a href="https://github.com/mhoffman/CatAppBrowser#fork-destination-box">Fork</a> in the upper-right corner. Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/[username]/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.</p>
+            <p>Contributions in the form of pull requests are highly welcome. To this end you will need a <a href="https://github.com/join">github.com account (free)</a> and create a fork by clicking in the <a href="https://github.com/SUNCAT-Center/CatAppBrowser#fork-destination-box">Fork</a> in the upper-right corner. Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/[username]/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.</p>
 
           </Paper>
           <Paper className={this.props.classes.paper}>
@@ -406,7 +406,7 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
             <h2 id="development-1">Development</h2>
             <ul>
               <li><p>To commit javascript code, it has to pass the ESLint linter. The linter may seem a little pesky at first, but I promise it makes your code look great and lets&apos;s us focus on bigger code design issues. Some issues can be fixed automatically by running <code>./node_modules/eslint/bin/eslint.js --fix &lt;filename&gt;</code></p></li>
-              <li><p>For testing we rely on <a href="https://facebook.github.io/jest/docs/en/more-resources.html">Jest</a> and <a href="https://travis-ci.org/mhoffman/CatAppBrowser">Travis CI</a>. Please have a look a Jest and write some simple test. Test coverage should eventually go up.</p></li>
+              <li><p>For testing we rely on <a href="https://facebook.github.io/jest/docs/en/more-resources.html">Jest</a> and <a href="https://travis-ci.org/SUNCAT-Center/CatAppBrowser">Travis CI</a>. Please have a look a Jest and write some simple test. Test coverage should eventually go up.</p></li>
             </ul>
           </Paper>
         </div>
