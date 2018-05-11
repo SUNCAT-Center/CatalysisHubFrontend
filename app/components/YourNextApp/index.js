@@ -93,7 +93,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
             <h2 id="install">Install Frontend</h2>
             <p>For local installation make a local clone of this repo</p>
             <SyntaxHighlighter language={'bash'}>
-                git clone https://github.com/SUNCAT-Center/CatAppBrowser.git
+              git clone https://github.com/[username]/CatAppBrowser.git
             </SyntaxHighlighter>
             <p>change into the repository and run</p>
             <SyntaxHighlighter language={'bash'}>{`cd CatAppBrowser
@@ -107,7 +107,7 @@ npm run start`}
             <h2>Install Backend</h2>
             <p>Start by cloning the backend flask repository like so</p>
             <SyntaxHighlighter language={'bash'}>
-              {'git clone https://github.com/kirstenwinther/CatalysisHubBackend.git'}
+              {'git clone https://github.com/[username]/CatalysisHubBackend.git'}
             </SyntaxHighlighter>
             <p>Once git has finished cloning cd into the newly created directory and
                 create a new virtual environment, like so:</p>
