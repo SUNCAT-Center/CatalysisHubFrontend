@@ -170,7 +170,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 500, ${filterString} ) {
+      query: `query{reactions ( first: 200, ${filterString} ) {
     totalCount
     edges {
       node {
