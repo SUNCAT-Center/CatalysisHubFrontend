@@ -52,7 +52,7 @@ GraphQlbutton.propTypes = {
 
 GraphQlbutton.defaultProps = {
   newSchema: true,
-  query: '{systems(first: 10) { edges { node { id energy InputFile(format: "cif") Positions Cell Formula } } }}',
+  query: '{systems(first: 10) { edges { node { id energy InputFile(format: "cif") positions cell Formula } } }}',
 };
 
 

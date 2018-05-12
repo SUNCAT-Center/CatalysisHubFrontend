@@ -26,6 +26,7 @@ app.use(csp({
       "'self'",
       'api.catalysis-hub.org',
       'catapp-staging.herokuapp.com',
+      'catappdatabase2-pr-48.herokuapp.com',
       'ichemlabs.cloud.chemdoodle.com',
       'localhost:5000',
     ],
@@ -49,6 +50,7 @@ app.use(csp({
     frameSrc: [
       "'self'",
       'api.catalysis-hub.org',
+      'catappdatabase2-pr-48.herokuapp.com',
       'goo.gl',
       'docs.google.com',
     ],
