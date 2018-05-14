@@ -1,4 +1,8 @@
+/* Import Icons*/
+
 import packageJson from './package.json';
+
+
 
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
@@ -60,6 +64,10 @@ module.exports = {
       title: 'Prototype Search',
       route: '/prototypeSearch',
       tooltip: 'Search for structures using Wyckoff points.',
+    }, {
+      title: 'Publications',
+      route: '/publications',
+      tooltip: 'Calculated structures sorted by publications.',
     }, {
       title: 'Scaling Relations',
       tooltip: 'App for exploring scaling relations -- WIP.',
