@@ -2,8 +2,6 @@
 
 import packageJson from './package.json';
 
-
-
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
   /* flaskRoot: 'http://localhost:5001',*/
@@ -68,6 +66,10 @@ module.exports = {
       title: 'Publications',
       route: '/publications',
       tooltip: 'Calculated structures sorted by publications.',
+    }, {
+      title: 'Reaction Energetics',
+      tooltip: 'Explore calculated reaction energetics',
+      route: '/energies',
     }, {
       title: 'Scaling Relations',
       tooltip: 'App for exploring scaling relations -- WIP.',
