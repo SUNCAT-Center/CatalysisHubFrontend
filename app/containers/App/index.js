@@ -332,11 +332,18 @@ class App extends React.Component {
             </Link>
           </ListSubheader>}
         >
-          <ListItem>
-            <Link to="/feedback" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
+        </List>
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link
+              className={this.props.classes.topMenuLink}
+              to="/feedback"
+            >
               <MdFeedback /> Feedback
             </Link>
-          </ListItem>
+          </ListSubheader>
+          }
+        >
         </List>
         <Divider className={this.props.classes.divider} />
       </div>
