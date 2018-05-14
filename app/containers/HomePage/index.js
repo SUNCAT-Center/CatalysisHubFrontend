@@ -16,8 +16,8 @@ import { LinearProgress } from 'material-ui/Progress';
 import { Link } from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
-import { FaDatabase } from 'react-icons/lib/fa';
-import { MdWarning } from 'react-icons/lib/md';
+import { FaDatabase, FaNewspaperO } from 'react-icons/lib/fa';
+import { MdWarning, MdApps } from 'react-icons/lib/md';
 import Slide from 'material-ui/transitions/Slide';
 import View from 'flexbox-react';
 import Tooltip from 'material-ui/Tooltip';
@@ -167,7 +167,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <Chip
                           label={this.state.publications} avatar={
                             <Avatar>
-                              <FaDatabase size={24} />
+                              <FaNewspaperO size={24} />
                             </Avatar>
                     }
                         />
@@ -193,7 +193,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <Chip
                           label={apps.length} avatar={
                             <Avatar>
-                              <FaDatabase size={24} />
+                              <MdApps size={24} />
                             </Avatar>
                     }
                         />
