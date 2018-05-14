@@ -333,11 +333,6 @@ class App extends React.Component {
           </ListSubheader>}
         >
           <ListItem>
-            <Link to="/developerGuide" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
-              Developer Guide
-            </Link>
-          </ListItem>
-          <ListItem>
             <Link to="/feedback" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
               <MdFeedback /> Feedback
             </Link>

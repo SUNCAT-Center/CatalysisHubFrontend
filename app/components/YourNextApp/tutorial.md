@@ -24,7 +24,6 @@ a frontend component (CatAppBrowser) and a script component (CatAppCLI).
 
 ## Backend: CatAppBackend
 
-### Routing
 
 The backend routing scheme looks as follows:
 
@@ -32,7 +31,9 @@ The backend routing scheme looks as follows:
           -- /graphql
           -- /apps/
           ---- /activityMaps/
+          ------ ..
           ---- /scalingRelations/
+          ---- /prototypeSearch/
 
 ### GraphQL
 
@@ -52,42 +53,7 @@ TODO
 
 ## Frontend: React
 
-### Why JavaScript?
-
-If you are the typical theory minded chemical engineer/physicist/chemist the prospect of learning a little JavaScript most likely sounds very much like a nuisance. You probably have a little Python and Bash and some other compiled language under your belt like C, C++, Fortran. And now JavaScript!? Isn't that like Java, just worse? (No) Doesn't it only run in browser? What's with all the brackets? I don't like the syntax! Don't I have a learn every bug of every browser? Isn't it super slow? 
-
-Those are all valid concerns. It is difficult to dispel all of them at the same time and I won't try to turn a complete JavaScript sceptic into a JavaScript lover, but I want to invite you to judge a programming language not only by its core feature such as syntax. If you spend a second to look beyond that and consider things like platform, community ecosystem, packaging, package management, distribution, execution model, you are quick to realize that JavaScript is in fact one of the more exciting languages these days. 
-
-Yes, it had a horrible start running (slowly) with many different implementations and a lot of idiosyncracies built in. Over time however several key development have very much changed this 'core' feature. With the initial release of jQuery (~2006) a lot of effort has gone into standardizing the language and its execution. jQuery has acted as a sort of compatibility layer between different browsers and version, helping that one version of code runs quite reliably across many browsers, operating systems, and versions. The other key development can be attributed to Node.js (~2009). Node.js is written in C++ and allows to execute JavaScript without a browser on the server-side. Node.js can be effectively thought of as interpreter very much like the Python interpreter: you can write scripts, run them, just a different ecosystem of libraries and tool :-). Having a bit of JS under the belt mean you can write code that runs on every laptop, tablet, or smart phone and can be easily distributed by plugging a URL into a browser window. Furthermore, it has a very large and growing ecosystem of developers, tool, and libraries.
-
-So, nuff said, why not give it a try?
-
-
-### Project Structure
-
-The basic layout of the frontend project accounting
-for all files and directories that need to be typically
-touched for implementing new features, looks as follows:
-
-        /app # All programming logic
-          /components # Reusable blocks w/o state
-          /containers #  Bigger app blocks w/ state
-          /utils
-            /constants.js #  global constants like URLs
-            /theme.js # Global app style
-        /internals # File config settings and generators
-        /routes.js # Mapping between URL input and components
-
-Most of the additional code goes into a corresponding folder in either `app/components` or `app/containers`. These folders are structured such that new components can be dropped in to the project and code-coupling with other components is minimal. Unit tests go into each folder pertaining to the component. If you think about building a bigger feature such as a little single-page page app with one or more form fields, a diagram, and a component showing a slab you should probably right away start by creating a new container. If you want to build a small component that can be used throughout the frend, that should probably go into `components`. The will then automatically go into the corresponding sub-folder along with a subdirectory for unit test (`./tests`). Each folder should thought of one functional component that can be submitted (and maintained) using version control.
-
-To wire up a URL typed into the address bar (or a clicked linked) with content shown, you need to look into `routes.js`. To define a new top level URL type
-
-        npm run generate route
-
-It will ask you for the URL and the component (or container) that should be shown. The generator is just a handy short hand. Details can always be adjusted later.  A route may also contain dynamic parts like `/component/:var1/:var2`, which can be processed as a variable in the corresponding component as `this.props.routeParams`. The `/containers/Profile/index.js` container illustrates this technique. URLs can be changed quite flexibly, but the [immortal words](https://www.w3.org/Provider/Style/URI) of the [web developer](https://twitter.com/vasusrini/status/516649874205716481) still count. 
-
 ### Component and Containers
-
 
 As mentioned above, there are two types sub-directores: components and containers. The idea is to make code organization easier once the code base grows. If you like inside them both declare objects that are derived from `React.Component`. However, the container can actively manipuplate the global app state while components should not. Containers use Redux interact with the app state, while components do not change state. They still contain a little bit of state to reflect graphical interaction that are immediately visible to the user but there is no expectation that they are accesible from a different form or component. Again, if this is all confusing hub-bub, you might probably start with a `container`. You can always delete the corresponding files and hooks later to turn it into a component.
 TODO
@@ -96,7 +62,6 @@ TODO
 
 Much of the programming flow of a React app is that each component has props and state . You can think of them like read-only (or parameters) and read-and-write variables of a function. Props are always passed in from other component upon invocation, while state maybe changed by each component (using `this.setState(...)`). If you wonder about the point of props if you cannot change them: you can influence what a compoent looks like by calling it with different props. State on the other hand can be thought of more like a traditional variable in programming
 
-TODO
 
 ### JSX
 

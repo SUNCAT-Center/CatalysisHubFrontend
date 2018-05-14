@@ -10,11 +10,17 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import Switch from 'material-ui/Switch';
 import Grid from 'material-ui/Grid';
 import ReactGA from 'react-ga';
+import Markdown from 'markdown-to-jsx';
 
 
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Slide from 'material-ui/transitions/Slide';
+
+import projectStructure from './project_structure.md';
+import reactQuickstart from './react_quickstart.md';
+import backendRoutes from './backend_routes.md';
+import whyJS from './whyJS.md';
 
 const styles = (theme) => ({
   paper: {
@@ -282,6 +288,9 @@ axios.post(url, parms).then((response) => {
           </Paper>
           <Paper className={this.props.classes.paper}>
             <h2>Adding Flask API endpoints</h2>
+            <Markdown>
+              {backendRoutes}
+            </Markdown>
             <p>A lot of interactive functionality can be implemented in the frontend using only JavaScript. However,
               other features are  lot easier to do on the frontend especially, when they strongly leverage existing
               Python libraries such as ASE, CatMAP, CatLearn, CatGen etc.. One other good reason to write API Endpoints
@@ -289,8 +298,7 @@ axios.post(url, parms).then((response) => {
             <p>To add a new backend functionality we head over to the directory with the flask APP and create a new folder like</p>
             <SyntaxHighlighter language={'bash'} showLineNumbers={this.state.showLineNumbers}>{'mkdir -p ./apps/myShinyNewAppName'}</SyntaxHighlighter>
           Inside this directory we create a new file named <code>`__init__.py`</code>, that we populate like so
-          <SyntaxHighlighter language={'python'} showLineNumbers={this.state.showLineNumbers}>{`import copy
-import json
+          <SyntaxHighlighter language={'python'} showLineNumbers={this.state.showLineNumbers}>{`import copy import json
 import os
 import os.path
 import pprint
@@ -379,6 +387,11 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
 
           </Paper>
           <Paper className={this.props.classes.paper}>
+            <Markdown>
+              {reactQuickstart}
+            </Markdown>
+          </Paper>
+          <Paper className={this.props.classes.paper}>
             <h2>Making Plots</h2>
             <p>{`So let's say we collected some data either from the GraphQL database or our own Flask endpoint and we
               want to somehow display it in the browser. We want to it to resize automatically to look at least acceptable
@@ -396,18 +409,28 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
           <Paper className={this.props.classes.paper}>
             <h2 id="dependencies">Dependencies</h2>
             <ul>
-              <li>Graphs are created with <a href="http://mpld3.github.io/">mpld3</a></li>
-              <li>React v15 (will be updated to 16 soon) React is a powerful JavaScript library that is actively developed by Facebook. With some background in HTML and a little bit of JavaScript one can quite far. There are a ton of <a href="https://reactjs.org/tutorial/tutorial.html">tutorials</a> out there.</li>
+              <li>Most diagrams are created with <a href={"'https://plot.ly/'"}>Plotly{"'"}s</a></li> js library.
+              <li>React v15 (will be updated to 16 hopefully soon) React is a powerful JavaScript library that is actively developed by Facebook. With some background in HTML and a little bit of JavaScript one can quite far. There are a ton of <a href="https://reactjs.org/tutorial/tutorial.html">tutorials</a> out there.</li>
             </ul>
             <h2 id="ui-development">UI Development</h2>
             <ul>
-              <li>This project uses <a href="http://www.material-ui.com/#/components/slider">Material UI</a> Component throughout.</li>
+              <li>This project uses <a href="http://www.material-ui.com/#/components/slider">Material UI</a> Components throughout.</li>
             </ul>
             <h2 id="development-1">Development</h2>
             <ul>
               <li><p>To commit javascript code, it has to pass the ESLint linter. The linter may seem a little pesky at first, but I promise it makes your code look great and lets&apos;s us focus on bigger code design issues. Some issues can be fixed automatically by running <code>./node_modules/eslint/bin/eslint.js --fix &lt;filename&gt;</code></p></li>
               <li><p>For testing we rely on <a href="https://facebook.github.io/jest/docs/en/more-resources.html">Jest</a> and <a href="https://travis-ci.org/SUNCAT-Center/CatAppBrowser">Travis CI</a>. Please have a look a Jest and write some simple test. Test coverage should eventually go up.</p></li>
             </ul>
+          </Paper>
+          <Paper className={this.props.classes.paper}>
+            <Markdown>
+              {whyJS}
+            </Markdown>
+          </Paper>
+          <Paper className={this.props.classes.paper}>
+            <Markdown>
+              {projectStructure}
+            </Markdown>
           </Paper>
         </div>
       </Slide>

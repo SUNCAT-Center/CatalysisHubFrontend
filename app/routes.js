@@ -234,14 +234,6 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/developerGuide',
-      name: 'tutorial',
-      getComponent(location, cb) {
-        import('components/Tutorial')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/settings',
       name: 'settings',
       getComponent(nextState, cb) {
