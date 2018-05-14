@@ -8,8 +8,8 @@ module.exports = {
   /* apiRoot: 'http://localhost:5000',*/
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
-  /* newGraphQLRoot: '//api.catalysis-hub.org/graphql',*/
-  newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',
+  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',*/
+  newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   docRoot: '//docs.catalysis-hub.org',
   whiteLabel: false,
   suBranding: false,
