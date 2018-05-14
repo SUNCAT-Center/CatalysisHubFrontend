@@ -240,23 +240,25 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
                   }
                 {(this.state.references[year] || [])
-                      .filter((references, j) => (this.state.titles[year][j] !== null))
-                      .map((reference, j) => (
-                        <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                          { this.state.openedPublication !== `elem_${year}_${j}` ?
-                            <MdAddCircleOutline onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} size={28} className={this.props.classes.publicationEntry} />
-                            :
-                            <MdPanoramaFishEye size={28} className={this.props.classes.publicationEntry} />
-                          }
-                          <span> &nbsp;&nbsp;&nbsp; </span>
-                          <span className={this.props.classes.publicationEntry}>
-                            {prettyPrintReference(reference)}
+                    .map((reference, j) => {
+                      if (this.state.titles[year][j] !== null) {
+                        return (
 
-                          </span>
-                          <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
-                            <MdViewList /> {'\u00A0\u00A0'}Load Data
+                          <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
+                            { this.state.openedPublication !== `elem_${year}_${j}` ?
+                              <MdAddCircleOutline onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} size={28} className={this.props.classes.publicationEntry} />
+                            :
+                              <MdPanoramaFishEye size={28} className={this.props.classes.publicationEntry} />
+                          }
+                            <span> &nbsp;&nbsp;&nbsp; </span>
+                            <span className={this.props.classes.publicationEntry}>
+                              {prettyPrintReference(reference)}
+
+                            </span>
+                            <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
+                              <MdViewList /> {'\u00A0\u00A0'}Load Data
                           </Button>
-                          {(this.state.dois[year][j] === null
+                            {(this.state.dois[year][j] === null
                             || typeof this.state.dois[year][j] === 'undefined'
                             || this.state.dois[year][j] === ''
                           ) ? null :
@@ -272,24 +274,27 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                           </ReactGA.OutboundLink>
                           }
 
-                          <div>
-                            { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                            <span>
-                              {this.state.loading === true ? <LinearProgress color="primary" /> : null}
+                            <div>
+                              { this.state.openedPublication !== `elem_${year}_${j}` ? null :
+                              <span>
+                                {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
-                              {/*
+                                {/*
                         true || this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
                         */}
-                              {this.state.systems.length === 0 ? null :
-                              <PublicationSystems {...this.state} />
+                                {this.state.systems.length === 0 ? null :
+                                <PublicationSystems {...this.state} />
                         }
-                            </span>
+                              </span>
                             }
+                            </div>
+                            <br />
                           </div>
-                          <br />
-                        </div>
-                      ))}
+                        );
+                      }
+                      return null;
+                    })}
               </Paper>
             </div>
           </Slide>
