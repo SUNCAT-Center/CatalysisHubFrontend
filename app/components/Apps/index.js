@@ -25,8 +25,14 @@ import {
   FaCubes,
 } from 'react-icons/lib/fa';
 
-import { IoCube } from 'react-icons/lib/io';
-import { MdSearch } from 'react-icons/lib/md';
+import {
+  IoCube,
+  IoSocialBuffer,
+} from 'react-icons/lib/io';
+import {
+  MdSearch,
+  MdBubbleChart,
+} from 'react-icons/lib/md';
 
 
 const styles = () => ({
@@ -53,7 +59,7 @@ const getAppIcon = (title) => {
   } else if (title === 'Prototype Search') {
     return <IoCube />;
   } else if (title === 'CatKit Slab Generator') {
-    return <FaCube />;
+    return <IoSocialBuffer />;
   } else if (title === 'Reaction Energetics') {
     return <MdSearch />;
   } else if (title === 'Publications') {
@@ -64,6 +70,8 @@ const getAppIcon = (title) => {
     return <FaDatabase />;
   } else if (title === 'Wyckoff Bulk Generator') {
     return <FaCubes />;
+  } else if (title === 'Scaling Relations') {
+    return <MdBubbleChart />;
   }
   return null;
 };
