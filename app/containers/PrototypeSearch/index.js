@@ -127,6 +127,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.setState({
       searchString: this.props.searchTerms,
     });
+    this.submitSearch();
   }
 
   handleShowInfo() {
@@ -735,7 +736,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
           <Grid item sm={9} xs={12} >
             {_.isEmpty(this.props.searchResults.prototypes) ? null :
             <Paper>
-              {this.state.loadingPrototype ? <LinearProgress /> : null}
+              {this.state.loadingPrototype ? <LinearProgress className={this.props.classes.progress} /> : null}
               {this.state.showPrototype ?
                 <div>
                   <h3 className={this.props.classes.subheader}>

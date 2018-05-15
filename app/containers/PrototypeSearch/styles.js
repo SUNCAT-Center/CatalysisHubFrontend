@@ -40,7 +40,7 @@ export const styles = (theme) => ({
     padding: theme.spacing.unit,
   },
   progress: {
-    marginBottom: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
+    marginBottom: 2 * theme.spacing.unit,
+    marginTop: 2 * theme.spacing.unit,
   },
 });
