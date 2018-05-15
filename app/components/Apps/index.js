@@ -18,11 +18,9 @@ import Tooltip from 'material-ui/Tooltip';
 
 import {
   FaMapO,
-  FaCube,
   FaTerminal,
   FaNewspaperO,
   FaDatabase,
-  FaCubes,
 } from 'react-icons/lib/fa';
 
 import {
@@ -32,6 +30,7 @@ import {
 import {
   MdSearch,
   MdBubbleChart,
+  MdFormatShapes,
 } from 'react-icons/lib/md';
 
 
@@ -69,7 +68,7 @@ const getAppIcon = (title) => {
   } else if (title === 'GraphQL API') {
     return <FaDatabase />;
   } else if (title === 'Wyckoff Bulk Generator') {
-    return <FaCubes />;
+    return <MdFormatShapes />;
   } else if (title === 'Scaling Relations') {
     return <MdBubbleChart />;
   }
