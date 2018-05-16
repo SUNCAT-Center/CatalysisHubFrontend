@@ -43,6 +43,13 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     this.getStructure();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const cellParameters = nextProps.cellParameters;
+    this.props.setCellParameters(cellParameters);
+    this.setState({
+      cellParameters,
+    });
+  }
 
   getStructure() {
     const params = { params: {
@@ -113,7 +120,7 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
               onClick={this.getStructure}
             >
               <MdLoop />{' \u00A0\u00A0'} Update Structure
-          </Button>
+            </Button>
           </Grid>
         </Grid>
         <Grid container direction="row">
@@ -134,17 +141,23 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
                   name={`parameter_${i}`}
                   value={this.state.cellParameters[name]}
                   onChange={this.handleCellParameterChange(name)}
+                  onKeyDown={(event) => {
+                    if (event.nativeEvent.keyCode === 13) {
+                      this.getStructure();
+                    }
+                  }}
+
                 />
               </FormControl>
             </Grid>
-        ))}
+          ))}
         </Grid>
         <Grid container direction="row" justify="space-between">
           <Grid item>
             <h3>Prototype Name</h3>
             <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
             <span>{this.props.name} </span>
-        }
+            }
               {'\u00A0\u00A0'}
               <Button
                 color="primary"
@@ -162,21 +175,21 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
           <Grid item>
             <h3>CatKit</h3>
             <div>
-        Cut arbitrary slabs using <Button
-          color="primary"
-          raised
-          onClick={this.handoffBulkStructure}
-          className={this.props.classes.button}
-        >
-          <Link
-            className={this.props.classes.buttonLink}
-            to={'/catkitDemo'}
-          >
-            CatKit <MdChevronRight />
-          </Link>
-        </Button>
-        .
-      </div>
+            Cut arbitrary slabs using <Button
+              color="primary"
+              raised
+              onClick={this.handoffBulkStructure}
+              className={this.props.classes.button}
+            >
+              <Link
+                className={this.props.classes.buttonLink}
+                to={'/catkitDemo'}
+              >
+                CatKit <MdChevronRight />
+              </Link>
+            </Button>
+            .
+          </div>
           </Grid>
         </Grid>
       </div>
