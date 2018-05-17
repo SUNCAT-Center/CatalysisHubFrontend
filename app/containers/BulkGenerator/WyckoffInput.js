@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'; import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import IFrame from 'react-iframe';
@@ -152,10 +151,10 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
         const value = event.target.value;
         if (_.isEmpty(value) || (!!parseInt(value, 10) && parseInt(value, 10) > 0 && parseInt(value, 10) < 231)) {
           this.setState({
-            [name]: parseInt(event.target.value, 10) || '',
+            [name]: parseInt(event.target.value, 10) || 1,
           });
         }
-        this.props.setSpacegroup(parseInt(this.state.spacegroup, 10) || '');
+        this.props.setSpacegroup(parseInt(this.state.spacegroup, 10) || 1);
       } else {
         this.setState({
           [name]: event.target.value,
