@@ -712,7 +712,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((spacegroup, si) => (
                             <FormControlLabel
                               key={`sg_${si}`}
-                              label={`${spacegroup[0]} [${hmSymbols[parseInt(spacegroup, 10) - 1]}] (${spacegroup[1]})`}
+                              label={`${spacegroup[0]} [${hmSymbols[parseInt(spacegroup, 10) - 1].replace(/ /g, '')}] (${spacegroup[1]})`}
                               control={<Checkbox
                                 value={`spacegroup:${spacegroup}`}
                                 checked={_.indexOf(this.props.facetFilters, `spacegroup:${spacegroup[0]}`) > -1}
@@ -817,6 +817,13 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           <Grid item>
                             <div>
                                     Structures: {ptype[1]}
+                            </div>
+                            <div>
+                              Spacegroup: {parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10)}
+                              ; HM-Symbol: [{hmSymbols[parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10) - 1].replace(/ /g, '')}]
+                            </div>
+                            <div>
+                              Stoichiometry: {ptype[0].split(/_/g)[0]}
                             </div>
                           </Grid>
                           <Grid item>
