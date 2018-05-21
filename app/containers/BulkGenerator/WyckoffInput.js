@@ -151,10 +151,10 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
         const value = event.target.value;
         if (_.isEmpty(value) || (!!parseInt(value, 10) && parseInt(value, 10) > 0 && parseInt(value, 10) < 231)) {
           this.setState({
-            [name]: parseInt(event.target.value, 10) || 1,
+            [name]: parseInt(event.target.value, 10) || null,
           });
         }
-        this.props.setSpacegroup(parseInt(this.state.spacegroup, 10) || 1);
+        this.props.setSpacegroup(parseInt(this.state.spacegroup, 10) || null);
       } else {
         this.setState({
           [name]: event.target.value,
