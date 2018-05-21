@@ -53,6 +53,7 @@ app.use(csp({
       'catappdatabase2-pr-48.herokuapp.com',
       'goo.gl',
       'docs.google.com',
+      'www.cryst.ehu.es',
     ],
     defaultSrc: [
       "'self'",
