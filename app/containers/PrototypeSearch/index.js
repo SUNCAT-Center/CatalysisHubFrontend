@@ -839,7 +839,7 @@ Showing {this.state.loadedStructures}/{this.state.prototypeStructures}{'\u00A0\u
                 <div>
 
                   <div>
-                    <h3 className={this.props.classes.subheader}>Prototypes ({this.props.searchResults.n_prototypes})</h3>
+                    <h3 className={this.props.classes.subheader}>Prototypes ({this.props.searchResults.prototypes.length})</h3>
                     {this.props.searchResults.prototypes.map((ptype, pi) => (
                       <Paper key={`pcard_${pi}`} className={this.props.classes.pcard}>
                         <h4>Prototype {ptype[0]}</h4>
