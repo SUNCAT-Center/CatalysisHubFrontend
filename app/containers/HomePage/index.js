@@ -28,6 +28,7 @@ import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
+import Apps from 'components/Apps';
 import CenteredSection from './CenteredSection';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
@@ -204,6 +205,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Grid>
             </div>
           </Slide>
+          <hr />
+          <Apps />
         </div>
         <Welcome />
       </article>
