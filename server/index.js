@@ -29,6 +29,7 @@ app.use(csp({
       'catappdatabase2-pr-48.herokuapp.com',
       'ichemlabs.cloud.chemdoodle.com',
       'localhost:5000',
+      'slack.com',
     ],
     fontSrc: [
       "'self'",
@@ -54,6 +55,15 @@ app.use(csp({
       'goo.gl',
       'docs.google.com',
       'www.cryst.ehu.es',
+      'slac-suncat.slack.com',
+      'slack.com',
+      'github.com',
+      'localhost:5000',
+    ],
+    frameAncestors: [
+      "'self'",
+      'github.com',
+
     ],
     defaultSrc: [
       "'self'",
