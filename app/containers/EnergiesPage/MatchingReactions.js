@@ -374,7 +374,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         }}
                         className={this.props.classes.clickableRow}
                       >
-                        <TableCell padding="none"><div>{result.node.aseIds !== null ? <FaCube /> : null}</div></TableCell>
+                        <TableCell padding="none"><div>{result.node.reactionSystems[0].name !== 'N/A' ? <FaCube /> : null}</div></TableCell>
                         <TableCell padding="dense"><div>{result.node.Equation.replace('->', '→')}</div></TableCell>
                         <TableCell padding="none"><div>{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
                         <Hidden smDown>
