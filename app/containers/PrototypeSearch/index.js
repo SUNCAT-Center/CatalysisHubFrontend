@@ -240,7 +240,8 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     };
     axios.get(ptypeUrl, params).then((response) => {
       const repoPrototypes = _.groupBy(response.data.prototypes, 'repository');
-      this.props.saveRepoPrototypes(_.merge(this.props.repoPrototypes, repoPrototypes));
+      /* this.props.saveRepoPrototypes(_.merge(this.props.repoPrototypes, repoPrototypes));*/
+      this.props.saveRepoPrototypes(repoPrototypes);
       this.setState({
         loadingPrototype: false,
         loadedStructures: this.state.loadedStructures + STRUCTURES_PER_OFFSET,
