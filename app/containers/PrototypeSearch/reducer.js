@@ -14,11 +14,18 @@ const initialState = {
   searchLimit: 50,
   facetFilters: [],
   ptype: '',
-  repoPrototypes: {},
+  repoPrototypes: [],
+  groupedRepoPrototypes: {},
 };
 
 function prototypeSearchReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SAVE_GROUPED_REPO_PROTOTYPES: {
+      return {
+        ...state,
+        groupedRepoPrototypes: action.payload.groupedRepoPrototypes,
+      };
+    }
     case constants.SAVE_REPO_PROTOTYPES: {
       return {
         ...state,

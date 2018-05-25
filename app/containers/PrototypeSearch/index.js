@@ -241,9 +241,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     },
     };
     axios.get(ptypeUrl, params).then((response) => {
+      this.props.saveRepoPrototypes(response.data.repoPrototypes);
       const repoPrototypes = _.groupBy(response.data.prototypes, 'repository');
-      /* this.props.saveRepoPrototypes(_.merge(this.props.repoPrototypes, repoPrototypes));*/
-      this.props.saveRepoPrototypes(repoPrototypes);
+      this.props.saveGroupedRepoPrototypes(_.merge(this.props.repoPrototypes, repoPrototypes));
       this.setState({
         loadingPrototype: false,
         loadedStructures: this.state.loadedStructures + STRUCTURES_PER_OFFSET,
@@ -259,6 +259,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     });
     this.props.savePrototype('');
     this.props.saveRepoPrototypes([]);
+    this.props.saveGroupedRepoPrototypes({});
   }
 
   submitSearch(loadMore = false) {
@@ -269,6 +270,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       loadedStructures: 0,
     });
     this.props.saveRepoPrototypes([]);
+    this.props.saveGroupedRepoPrototypes({});
     this.props.saveSearchTerms(this.state.searchString);
     if (!loadMore) {
       this.props.saveSearchResults({});
@@ -764,14 +766,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                       <MdChevronLeft />
                     </IconButton>
                           Prototype {this.props.ptype}</h3>
-                  {Object.keys(this.props.repoPrototypes).map((repository, ri) => (
+                  {Object.keys(this.props.groupedRepoPrototypes).map((repository, ri) => (
                     <Paper
                       key={`repolist_${ri}`}
                       className={this.props.classes.paper}
                     >
                       <h4>{repository}</h4>
                       <ul>
-                        {this.props.repoPrototypes[repository].map((ptype, pi) => (
+                        {this.props.groupedRepoPrototypes[repository].map((ptype, pi) => (
                           <li key={`ptype_${pi}`}>
                             <ReactGA.OutboundLink
                               eventLabel="Goto Structure Source"
@@ -912,7 +914,8 @@ PrototypeSearch.propTypes = {
   facetFilters: PropTypes.array,
   ptype: PropTypes.string,
   searchTerms: PropTypes.string,
-  repoPrototypes: PropTypes.object,
+  repoPrototypes: PropTypes.array,
+  groupedRepoPrototypes: PropTypes.object,
 
   saveSearchResults: PropTypes.func,
   addFacetFilter: PropTypes.func,
@@ -921,6 +924,7 @@ PrototypeSearch.propTypes = {
   saveSearchTerms: PropTypes.func,
   savePrototype: PropTypes.func,
   saveRepoPrototypes: PropTypes.func,
+  saveGroupedRepoPrototypes: PropTypes.func,
   receiveBulkCif: PropTypes.func,
   saveBulkParams: PropTypes.func,
   dropBulkInput: PropTypes.func,
@@ -940,6 +944,7 @@ const mapStateToProps = (state) => ({
   facetFilters: state.get('prototypeSearch').facetFilters,
   ptype: state.get('prototypeSearch').ptype,
   repoPrototypes: state.get('prototypeSearch').repoPrototypes,
+  groupedRepoPrototypes: state.get('prototypeSearch').groupedRepoPrototypes,
   searchLimit: state.get('prototypeSearch').searchLimit,
   searchResults: state.get('prototypeSearch').searchResults,
   searchTerms: state.get('prototypeSearch').searchTerms,
@@ -963,6 +968,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   savePrototype: (ptype) => {
     dispatch(actions.savePrototype(ptype));
+  },
+  saveGroupedRepoPrototypes: (x) => {
+    dispatch(actions.saveGroupedRepoPrototypes(x));
   },
   saveRepoPrototypes: (repoPrototypes) => {
     dispatch(actions.saveRepoPrototypes(repoPrototypes));

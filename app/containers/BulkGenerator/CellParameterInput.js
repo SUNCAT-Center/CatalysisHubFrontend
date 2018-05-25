@@ -159,35 +159,38 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             <span>{this.props.name} </span>
             }
               {'\u00A0\u00A0'}
-              <Button
-                color="primary"
-                raised
-                onClick={() => this.handoffPrototypeSearch(this.props.name)}
+              <Link
+                className={this.props.classes.buttonLink}
+                to={'/prototypeSearch'}
               >
-                <Link
-                  className={this.props.classes.buttonLink}
-                  to={'/prototypeSearch'}
-                > Search similar structures <MdChevronRight />
-                </Link>
-              </Button>
+                <Button
+                  color="primary"
+                  raised
+                  onClick={() => this.handoffPrototypeSearch(this.props.name)}
+                >
+                  Search similar structures
+                  <MdChevronRight />
+                </Button>
+              </Link>
             </div>
           </Grid>
           <Grid item>
             <h3>CatKit</h3>
             <div>
-            Cut arbitrary slabs using <Button
-              color="primary"
-              raised
-              onClick={this.handoffBulkStructure}
-              className={this.props.classes.button}
-            >
+              Cut arbitrary slabs using
               <Link
                 className={this.props.classes.buttonLink}
                 to={'/catkitDemo'}
               >
+                <Button
+                  color="primary"
+                  raised
+                  onClick={this.handoffBulkStructure}
+                  className={this.props.classes.button}
+                >
                 CatKit <MdChevronRight />
+                </Button>
               </Link>
-            </Button>
             .
           </div>
           </Grid>

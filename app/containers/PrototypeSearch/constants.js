@@ -12,3 +12,4 @@ export const ADD_FACET_FILTER = 'app/PrototypeSearch/ADD_FACET_FILTER';
 export const REMOVE_FACET_FILTER = 'app/PrototypeSearch/REMOVE_FACET_FILTER';
 export const SAVE_PROTOTYPE = 'app/PrototypeSearch/SAVE_PROTOTYPE';
 export const SAVE_REPO_PROTOTYPES = 'app/PrototypeSearch/SAVE_REPO_PROTOTYPES';
+export const SAVE_GROUPED_REPO_PROTOTYPES = 'app/PrototypeSearch/SAVE_GROUPED_REPO_PROTOTYPES';
