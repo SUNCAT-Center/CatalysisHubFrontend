@@ -132,7 +132,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     this.setState({
       searchString: this.props.searchTerms,
     });
-    this.submitSearch();
+    setTimeout(() => {
+      this.submitSearch();
+    }, 500);
   }
 
   handleShowInfo() {
