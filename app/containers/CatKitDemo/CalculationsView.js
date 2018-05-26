@@ -98,6 +98,9 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   <TableCell padding="none">Prototype</TableCell>
                   <TableCell padding="none">Composition</TableCell>
                   <TableCell padding="none">Facet</TableCell>
+                  <TableCell padding="none">Layers</TableCell>
+                  <TableCell padding="none">Termination</TableCell>
+                  <TableCell padding="none">Vacuum</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
                   <TableCell padding="none">Calculator</TableCell>
                   <TableCell padding="none"><MdEdit /></TableCell>
@@ -119,8 +122,10 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               ${calculation.slabParams.millerZ}
             )`
             }</TableCell>
-                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
-                    </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.layers}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.termination}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.vacuum}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`} </TableCell>
                     <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
