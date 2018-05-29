@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -111,7 +112,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               <TableBody>
                 {this.props.calculations.map((calculation, i) => (
                   <TableRow key={`calculation_${i}`}>
-                    <TableCell padding="none">{calculation.bulkParams.wyckoff.name}</TableCell>
+                    <TableCell padding="none">{_.get(calculation, 'bulkParams.wyckoff.name', '???')}</TableCell>
                     <TableCell padding="none">{`
             [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>

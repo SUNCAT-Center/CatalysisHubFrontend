@@ -207,6 +207,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       wyckoffs: ptype.wyckoffs,
     }).then((response) => {
       this.props.receiveBulkCif(response.data.structure);
+      this.props.catKitStepperHandleReset();
       this.props.saveBulkParams({
         name: ptype.protopype,
         spacegroup: ptype.spacegroup,
@@ -928,6 +929,7 @@ PrototypeSearch.propTypes = {
   receiveBulkCif: PropTypes.func,
   saveBulkParams: PropTypes.func,
   dropBulkInput: PropTypes.func,
+  catKitStepperHandleReset: PropTypes.func,
 
   wyckoffReceiveBulkStructure: PropTypes.func,
   wyckoffSetCellParameters: PropTypes.func,
@@ -980,6 +982,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   dropBulkInput: () => {
     dispatch(catKitActions.dropBulkInput());
+  },
+  catKitStepperHandleReset: () => {
+    dispatch(catKitActions.stepperHandleReset());
   },
   saveBulkParams: (bulkParams) => {
     dispatch(catKitActions.saveBulkParams(bulkParams));
