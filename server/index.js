@@ -59,7 +59,12 @@ app.use(csp({
       "'self'",
       'api.catalysis-hub.org',
     ],
-    imgSrc: ["'self'", 'api.catalysis-hub.org', 'www.google-analytics.com'],
+    imgSrc: [
+      "'self'",
+      'data:',
+      'api.catalysis-hub.org',
+      'www.google-analytics.com',
+    ],
   },
 }));
 app.use(sslRedirect());
