@@ -218,6 +218,9 @@ const mapDispatchToProps = (dispatch) => ({
   clearCalculations: () => {
     dispatch(actions.clearCalculations());
   },
+  copyCalculation: (n) => {
+    dispatch(actions.copyCalculation(n));
+  },
   removeCalculation: (n) => {
     dispatch(actions.removeCalculation(n));
   },

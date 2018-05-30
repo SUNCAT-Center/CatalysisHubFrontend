@@ -17,6 +17,7 @@ import Grid from 'material-ui/Grid';
 import { MdClear,
   MdEdit,
   MdClose,
+  MdContentCopy,
   MdAccessTime,
   MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
@@ -56,6 +57,10 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
   }
   removeCalculation(n) {
     this.props.removeCalculation(n);
+  }
+
+  copyCalculation(n) {
+    this.props.copyCalculation(n);
   }
 
   downloadCalculations() {
@@ -131,6 +136,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
                     <TableCell padding="none">
+                      <MdContentCopy onClick={() => { this.copyCalculation(i); }} />
                       <MdClose onClick={() => { this.removeCalculation(i); }} />
                     </TableCell>
                     <TableCell>
@@ -179,6 +185,7 @@ CalculationsView.propTypes = {
   calculations: PropTypes.array,
   clearCalculations: PropTypes.func,
   removeCalculation: PropTypes.func,
+  copyCalculation: PropTypes.func,
   classes: PropTypes.object,
 };
 

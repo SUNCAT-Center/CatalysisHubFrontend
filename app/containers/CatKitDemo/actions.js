@@ -121,6 +121,14 @@ export function saveAdsorptionSites(adsorptionSites) {
   };
 }
 
+export function copyCalculation(n) {
+  return {
+    type: constants.COPY_CALCULATION,
+    payload: {
+      n,
+    },
+  };
+}
 export function removeCalculation(n) {
   return {
     type: constants.REMOVE_CALCULATION,

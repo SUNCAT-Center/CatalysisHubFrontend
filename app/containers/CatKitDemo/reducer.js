@@ -123,6 +123,17 @@ function catKitDemoReducer(state = initialState, action) {
         ...state,
         calculations: [],
       };
+    case constants.COPY_CALCULATION: {
+      const calculations = _.cloneDeep(state.calculations);
+      calculations.splice(
+        action.payload.n,
+        0,
+        _.cloneDeep(state.calculations[action.payload.n]));
+      return {
+        ...state,
+        calculations,
+      };
+    }
     case constants.REMOVE_CALCULATION:
       return {
         ...state,

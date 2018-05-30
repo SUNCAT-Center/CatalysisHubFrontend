@@ -19,6 +19,7 @@ export const SAVE_SLAB_PARAMS = 'app/CatKitDemo/SAVE_SLAB_PARAMS';
 export const CLEAR_SLAB_PARAMS = 'app/CatKitDemo/CLEAR_SLAB_PARAMS';
 export const SAVE_CALCULATION = 'app/CatKitDemo/SAVE_CALCULATION';
 export const REMOVE_CALCULATION = 'app/CatKitDemo/REMOVE_CALCULATION';
+export const COPY_CALCULATION = 'app/CatKitDemo/COPY_CALCULATION';
 export const CLEAR_CALCULATIONS = 'app/CatKitDemo/CLEAR_CALCULATIONS';
 
 
