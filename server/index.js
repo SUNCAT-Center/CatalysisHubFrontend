@@ -26,9 +26,9 @@ app.use(csp({
       "'self'",
       'api.catalysis-hub.org',
       'catapp-staging.herokuapp.com',
-      'catappdatabase2-pr-48.herokuapp.com',
       'ichemlabs.cloud.chemdoodle.com',
       'localhost:5000',
+      'www.google-analytics.com',
     ],
     fontSrc: [
       "'self'",
@@ -50,7 +50,6 @@ app.use(csp({
     frameSrc: [
       "'self'",
       'api.catalysis-hub.org',
-      'catappdatabase2-pr-48.herokuapp.com',
       'goo.gl',
       'docs.google.com',
       'www.cryst.ehu.es',
