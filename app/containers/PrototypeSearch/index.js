@@ -199,7 +199,6 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
   }
 
   handoffCatKit(ptype) {
-    console.log(ptype)
     axios.post(structureUrl, {
       spacegroup: ptype.spacegroup,
       parameter_names: ptype.parameter_names,
@@ -207,7 +206,6 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       species: ptype.species,
       wyckoffs: ptype.wyckoffs,
     }).then((response) => {
-      console.log(response)
       this.props.receiveBulkCif(response.data.structure);
       this.props.catKitStepperHandleReset();
       this.props.saveBulkParams({
@@ -219,7 +217,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
           cif: response.data.structure,
           elements: ptype.species,
           spacegroup: ptype.spacegroup,
-        }
+        },
       });
       this.props.dropBulkInput();
     });
