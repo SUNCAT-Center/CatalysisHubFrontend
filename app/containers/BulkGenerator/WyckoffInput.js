@@ -19,12 +19,14 @@ import Tooltip from 'material-ui/Tooltip';
 import { LinearProgress } from 'material-ui/Progress';
 
 import { MdAdd, MdFileUpload } from 'react-icons/lib/md';
+import { FaExternalLink } from 'react-icons/lib/fa';
 
 
 import axios from 'axios';
 import cachios from 'cachios';
 import { apiRoot } from 'utils/constants';
 
+import { hmSymbols } from 'containers/PrototypeSearch';
 import * as actions from './actions';
 import { styles } from './styles';
 import ElementAutosuggest from './ElementAutoSuggest';
@@ -287,7 +289,7 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
                 }}
                 className={this.props.classes.menuLink}
               >
-                    About Spacegroup {this.props.spacegroup}
+                About Spacegroup {this.props.spacegroup} [{_.get(hmSymbols, this.props.spacegroup - 1, '').replace(/ /g, '')}]
               </Button>
             </Grid>
           </Grid>
@@ -344,6 +346,17 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
           </Paper>
         </div>
         }
+        <Paper className={this.props.classes.paper} >
+          <Grid container direction="row" justify="flex-end">
+            <Grid item>
+          Background information on space groups and Wyckoff positions:
+          <ul>
+            <li><a href="https://en.wikipedia.org/wiki/List_of_space_groups" target="_blank">List of space groups (Wikipedia) <FaExternalLink /></a></li>
+            <li><a href="http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list" target="_blank">Bilbao Crystallographic Server <FaExternalLink /></a></li>
+          </ul>
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
     );
   }
