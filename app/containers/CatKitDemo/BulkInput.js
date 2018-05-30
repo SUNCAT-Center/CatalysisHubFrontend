@@ -114,7 +114,12 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     if (this.props.routeParams.composition) {
       elements = this.props.routeParams.composition.match(/[A-Z][a-z]?/g);
     } else {
-      elements = ['Pt'];
+      elements = _.get(this.props, 'bulkParams.elements', undefined);
+      if (typeof elements === 'string') {
+        elements = JSON.parse(elements);
+      } else if (typeof elements === 'undefined') {
+        elements = ['Pt'];
+      }
     }
     while (elements.length < structureData[structure].nspecies) {
       elements.unshift(elements[0]);
@@ -229,7 +234,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   render() {
     return (
       <Paper className={this.props.classes.paper}>
-        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
+        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for generating arbitrary bulk structures  or <Link to="/prototypeSearch">Prototype Search</Link> to search among existing ones.</div>
         <Grid container justify="space-between" direction="row" >
           <Grid item>
             <h2>Setup Bulk Structure</h2>
