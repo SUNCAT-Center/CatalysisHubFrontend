@@ -28,6 +28,7 @@ import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
+import Apps from 'components/Apps';
 import CenteredSection from './CenteredSection';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
@@ -124,6 +125,33 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <div>
               <Grid container justify="center">
                 <Grid item>
+                  <Link to="/appsIndex" className={this.props.classes.textLink}>
+                    <Paper
+                      style={{
+                        padding: 25,
+                        minWidth: 240,
+                        maxWidth: 300,
+                        textAlign: 'center',
+                        align: 'center',
+                      }}
+                    >
+                      <Tooltip title="Browse apps">
+                        <h3>Apps</h3>
+                      </Tooltip>
+                      <View style={{ justifyContent: 'center' }}>
+                        <Chip
+                          label={apps.length} avatar={
+                            <Avatar>
+                              <MdApps size={24} />
+                            </Avatar>
+                    }
+                        />
+                      </View>
+                    </Paper>
+                  </Link>
+                </Grid>
+
+                <Grid item>
                   <Link to="/energies" className={this.props.classes.textLink}>
                     <Paper
                       style={{
@@ -148,6 +176,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     </Paper>
                   </Link>
                 </Grid>
+
+
 
                 <Grid item>
                   <Link to="/publications" className={this.props.classes.textLink}>
@@ -175,35 +205,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     </Paper>
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Link to="/appsIndex" className={this.props.classes.textLink}>
-                    <Paper
-                      style={{
-                        padding: 25,
-                        minWidth: 240,
-                        maxWidth: 300,
-                        textAlign: 'center',
-                        align: 'center',
-                      }}
-                    >
-                      <Tooltip title="Browse apps">
-                        <h3>Apps</h3>
-                      </Tooltip>
-                      <View style={{ justifyContent: 'center' }}>
-                        <Chip
-                          label={apps.length} avatar={
-                            <Avatar>
-                              <MdApps size={24} />
-                            </Avatar>
-                    }
-                        />
-                      </View>
-                    </Paper>
-                  </Link>
-                </Grid>
+
+
+
+
+
+
               </Grid>
             </div>
           </Slide>
+          <hr />
+          <Apps />
         </div>
         <Welcome />
       </article>

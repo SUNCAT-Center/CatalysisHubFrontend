@@ -218,6 +218,15 @@ const mapDispatchToProps = (dispatch) => ({
   clearCalculations: () => {
     dispatch(actions.clearCalculations());
   },
+  setOpenCalculation: (n) => {
+    dispatch(actions.setOpenCalculation(n));
+  },
+  editCalculation: (n) => {
+    dispatch(actions.editCalculation(n));
+  },
+  copyCalculation: (n) => {
+    dispatch(actions.copyCalculation(n));
+  },
   removeCalculation: (n) => {
     dispatch(actions.removeCalculation(n));
   },
@@ -272,6 +281,7 @@ const mapStateToProps = (state) => ({
   bulkParams: state.get('catKitDemoReducer').bulkParams,
   slabParams: state.get('catKitDemoReducer').slabParams,
   calculations: state.get('catKitDemoReducer').calculations,
+  openCalculation: state.get('catKitDemoReducer').openCalculation,
   adsorptionSites: state.get('catKitDemoReducer').adsorptionSites,
   activeStep: state.get('catKitDemoReducer').activeStep,
   altLabels: state.get('catKitDemoReducer').altLabels,

@@ -3,6 +3,7 @@ import React from 'react'; import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import IFrame from 'react-iframe';
+import { GridLoader } from 'react-spinners';
 
 import FileDrop from 'react-file-drop';
 import { withStyles } from 'material-ui/styles';
@@ -18,12 +19,14 @@ import Tooltip from 'material-ui/Tooltip';
 import { LinearProgress } from 'material-ui/Progress';
 
 import { MdAdd, MdFileUpload } from 'react-icons/lib/md';
+import { FaExternalLink } from 'react-icons/lib/fa';
 
 
 import axios from 'axios';
 import cachios from 'cachios';
 import { apiRoot } from 'utils/constants';
 
+import { hmSymbols } from 'containers/PrototypeSearch';
 import * as actions from './actions';
 import { styles } from './styles';
 import ElementAutosuggest from './ElementAutoSuggest';
@@ -40,6 +43,7 @@ const initialState = {
   loading: false,
   wyckoffPoints: [],
   open: false,
+  spacegroupInfoLoading: false,
 };
 
 export class WyckoffInput extends React.Component {  // eslint-disable-line react/prefer-stateless-function
@@ -187,32 +191,51 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
           open={this.state.open}
           onClose={() => { this.handleClose(); }}
         >
-          <IFrame
-            url={`http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list?gnum=${this.props.spacegroup}`}
-            width="95vw"
-            height="95vh"
-            position="relative"
-            top="50px"
-            display="initial"
-          />
+          <div>
+            {this.state.spacegroupInfoLoading ?
+              <Grid container direction="column" justify="center">
+                <Grid item>
+                  <Grid container direction="row" justify="center">
+                    <GridLoader />
+                  </Grid>
+                </Grid>
+              </Grid>
+              :
+              null
+          }
+            <IFrame
+              className={this.props.classes.iframe}
+              url={`http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list?gnum=${this.props.spacegroup}`}
+              width="95vw"
+              height="95vh"
+              position="relative"
+              onLoad={() => {
+                this.setState({
+                  spacegroupInfoLoading: false,
+                });
+              }}
+              top="50px"
+              display="initial"
+            />
+          </div>
         </Modal>
         <Paper className={this.props.classes.fileDrop}>
           <MdFileUpload />{'\u00A0\u00A0'}Drag a bulk structure here for analyzing existing structures.
-                <FileDrop
-                  frame={document}
-                  onDrop={this.handleFileDrop}
-                  dropEffect="move"
+          <FileDrop
+            frame={document}
+            onDrop={this.handleFileDrop}
+            dropEffect="move"
 
-                >
-                  <div
-                    className={this.props.classes.fileDropActive}
-                  >
-                    Drop File Here.
-                  </div>
-                </FileDrop>
+          >
+            <div
+              className={this.props.classes.fileDropActive}
+            >
+              Drop File Here.
+            </div>
+          </FileDrop>
           {_.isEmpty(this.state.uploadError) ? null :
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
-                }
+          }
         </Paper>
         <h2>Choose Spacegroup</h2>
         <Grid container direction="row" justify="space-between">
@@ -253,10 +276,20 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
             </Grid>
             <Grid item>
               <Button
-                onClick={() => { this.setState({ open: true }); }}
+                onClick={() => {
+                  this.setState({
+                    open: true,
+                    spacegroupInfoLoading: true,
+                  });
+                  setTimeout(() => {
+                    this.setState({
+                      spacegroupInfoLoading: false,
+                    });
+                  }, 2000);
+                }}
                 className={this.props.classes.menuLink}
               >
-                About Spacegroup {this.props.spacegroup}
+                About Spacegroup {this.props.spacegroup} [{_.get(hmSymbols, this.props.spacegroup - 1, '').replace(/ /g, '')}]
               </Button>
             </Grid>
           </Grid>
@@ -309,10 +342,21 @@ export class WyckoffInput extends React.Component {  // eslint-disable-line reac
                 onDelete={(event) => { this.removeWyckoffPoint(event, i); }}
                 className={this.props.classes.chip}
               />
-                  ))}
+                ))}
           </Paper>
         </div>
         }
+        <Paper className={this.props.classes.paper} >
+          <Grid container direction="row" justify="flex-end">
+            <Grid item>
+          Background information on space groups and Wyckoff positions:
+          <ul>
+            <li><a href="https://en.wikipedia.org/wiki/List_of_space_groups" target="_blank">List of space groups (Wikipedia) <FaExternalLink /></a></li>
+            <li><a href="http://www.cryst.ehu.es/cgi-bin/cryst/programs/nph-wp-list" target="_blank">Bilbao Crystallographic Server <FaExternalLink /></a></li>
+          </ul>
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
     );
   }

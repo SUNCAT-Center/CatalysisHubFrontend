@@ -43,7 +43,6 @@ const styles = () => ({
     minHeight: '100%',
     padding: '0 0px',
     flexDirection: 'column',
-    fontFamily: 'Roboto, sans-serif',
     textDecoration: 'none',
   },
   appHint: {

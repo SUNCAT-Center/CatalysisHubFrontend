@@ -24,11 +24,23 @@ const initialState = {
   slabInput: '',
   slabParams: {},
   wyckoffBulkParams: {},
+  openCalculation: -1,
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
-
+    case constants.SET_OPEN_CALCULATION: {
+      return {
+        ...state,
+        openCalculation: action.payload.n,
+      };
+    }
+    case constants.EDIT_CALCULATION: {
+      return {
+        ...state,
+        openCalculation: action.payload.n,
+      };
+    }
     case constants.SAVE_ADSORBATE_PARAMS: {
       return {
         ...state,
@@ -123,6 +135,17 @@ function catKitDemoReducer(state = initialState, action) {
         ...state,
         calculations: [],
       };
+    case constants.COPY_CALCULATION: {
+      const calculations = _.cloneDeep(state.calculations);
+      calculations.splice(
+        action.payload.n,
+        0,
+        _.cloneDeep(state.calculations[action.payload.n]));
+      return {
+        ...state,
+        calculations,
+      };
+    }
     case constants.REMOVE_CALCULATION:
       return {
         ...state,

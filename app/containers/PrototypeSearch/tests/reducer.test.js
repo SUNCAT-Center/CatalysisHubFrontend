@@ -6,7 +6,8 @@ describe('prototypeSearchReducer', () => {
     expect(prototypeSearchReducer(undefined, {})).toEqual(({
       facetFilters: [],
       ptype: '',
-      repoPrototypes: {},
+      repoPrototypes: [],
+      groupedRepoPrototypes: {},
       searchLimit: 50,
       searchResults: {},
       searchTerms: '',

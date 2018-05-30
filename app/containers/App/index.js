@@ -62,7 +62,6 @@ const AppWrapper = styled.div`
   min-height: 100%;
   padding: 0 0px;
   flex-direction: column;
-  font-family: 'Roboto', sans-serif;
 `;
 
 const boldFooterWeight = 500;

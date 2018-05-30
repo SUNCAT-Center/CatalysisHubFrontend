@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -16,7 +17,7 @@ import Grid from 'material-ui/Grid';
 import { MdClear,
   MdEdit,
   MdClose,
-  MdAccessTime,
+  MdContentCopy,
   MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
@@ -47,6 +48,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.state = initialState;
     this.clearCalculations = this.clearCalculations.bind(this);
     this.removeCalculation = this.removeCalculation.bind(this);
+    this.editCalculation = this.editCalculation.bind(this);
     this.downloadCalculations = this.downloadCalculations.bind(this);
     this.queueCalculations = this.queueCalculations.bind(this);
   }
@@ -55,6 +57,23 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
   }
   removeCalculation(n) {
     this.props.removeCalculation(n);
+    if (this.props.openCalculation === n) {
+      this.props.setOpenCalculation(-1);
+    } else if (this.props.openCalculation > n) {
+      this.props.setOpenCalculation(this.props.openCalculation - 1);
+    }
+  }
+
+  copyCalculation(n) {
+    this.props.copyCalculation(n);
+    if (this.props.openCalculation > n) {
+      this.props.setOpenCalculation(this.props.openCalculation + 1);
+    }
+  }
+
+  editCalculation(n) {
+    this.props.editCalculation(n);
+    this.props.stepperHandleReset();
   }
 
   downloadCalculations() {
@@ -98,17 +117,24 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   <TableCell padding="none">Prototype</TableCell>
                   <TableCell padding="none">Composition</TableCell>
                   <TableCell padding="none">Facet</TableCell>
+                  <TableCell padding="none">Layers</TableCell>
+                  <TableCell padding="none">Termination</TableCell>
+                  <TableCell padding="none">Vacuum</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
                   <TableCell padding="none">Calculator</TableCell>
-                  <TableCell padding="none"><MdEdit /></TableCell>
-                  <TableCell padding="none">Status</TableCell>
+                  <TableCell padding="none"></TableCell>
 
                 </TableRow>
               </TableHead>
               <TableBody>
                 {this.props.calculations.map((calculation, i) => (
-                  <TableRow key={`calculation_${i}`}>
-                    <TableCell padding="none">{calculation.bulkParams.wyckoff.name}</TableCell>
+                  <TableRow
+                    key={`calculation_${i}`}
+                    className={(this.props.openCalculation === i)
+                          ? this.props.classes.highlightedRow
+                          : this.props.classes.row}
+                  >
+                    <TableCell padding="none">{_.get(calculation, 'bulkParams.wyckoff.name', '???')}</TableCell>
                     <TableCell padding="none">{`
             [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>
@@ -119,22 +145,44 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               ${calculation.slabParams.millerZ}
             )`
             }</TableCell>
-                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
-                    </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.layers}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.termination}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.vacuum}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`} </TableCell>
                     <TableCell padding="none">{`
             ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
             `}</TableCell>
                     <TableCell padding="none">
-                      <MdClose onClick={() => { this.removeCalculation(i); }} />
-                    </TableCell>
-                    <TableCell>
-                      <div className={this.props.classes.statusUnfinished}>
-                        <MdAccessTime />
-                      </div>
-
+                      <Button
+                        fab
+                        mini
+                        className={this.props.classes.actionIcon}
+                      >
+                        <MdEdit
+                          onClick={() => { this.editCalculation(i); }}
+                        />
+                      </Button>
+                      <Button
+                        className={this.props.classes.actionIcon}
+                        fab
+                        mini
+                      >
+                        <MdContentCopy
+                          onClick={() => { this.copyCalculation(i); }}
+                        />
+                      </Button>
+                      <Button
+                        fab
+                        mini
+                        className={this.props.classes.actionIcon}
+                      >
+                        <MdClose
+                          onClick={() => { this.removeCalculation(i); }}
+                        />
+                      </Button>
                     </TableCell>
                   </TableRow>
-                  ))}
+                    ))}
               </TableBody>
             </Table>
             <Grid container justify="flex-end" direction="row">
@@ -146,6 +194,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   raised
                   onClick={this.downloadCalculations}
                   className={this.props.classes.button}
+                  color="primary"
                 ><MdFileDownload />{'\u00A0'} Download</Button>
               </Grid>
               {/*
@@ -173,6 +222,11 @@ CalculationsView.propTypes = {
   calculations: PropTypes.array,
   clearCalculations: PropTypes.func,
   removeCalculation: PropTypes.func,
+  copyCalculation: PropTypes.func,
+  openCalculation: PropTypes.number,
+  setOpenCalculation: PropTypes.func,
+  editCalculation: PropTypes.func,
+  stepperHandleReset: PropTypes.func,
   classes: PropTypes.object,
 };
 

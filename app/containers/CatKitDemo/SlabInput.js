@@ -27,8 +27,8 @@ const initialState = {
   millerX: 1,
   millerY: 1,
   millerZ: 1,
-  layers: 10,
-  vacuum: 15.0,
+  layers: 4,
+  vacuum: 12.0,
   termination: 0,
   uploadError: '',
   n_terminations: 1,
@@ -45,6 +45,12 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     setTimeout(() => {
       this.generateSlabs();
     }, 1000);
+  }
+
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve);
+    });
   }
 
   handleFileDrop(files) {
@@ -106,10 +112,11 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
 
   handleChange(name) {
     return (event) => {
-      this.setState({
+      this.setStateAsync({
         [name]: event.target.value,
+      }).then(() => {
+        this.generateSlabs();
       });
-      this.generateSlabs();
     };
   }
 

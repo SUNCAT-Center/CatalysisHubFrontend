@@ -66,6 +66,15 @@ export function savePrototype(ptype) {
   };
 }
 
+export function saveGroupedRepoPrototypes(x) {
+  return {
+    type: constants.SAVE_GROUPED_REPO_PROTOTYPES,
+    payload: {
+      groupedRepoPrototypes: x,
+    },
+  };
+}
+
 export function saveRepoPrototypes(repoPrototypes) {
   return {
     type: constants.SAVE_REPO_PROTOTYPES,

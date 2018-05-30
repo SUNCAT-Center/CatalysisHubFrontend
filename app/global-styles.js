@@ -3,7 +3,7 @@ import { injectGlobal } from 'styled-components';
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
   html {
-   font-family: 'Roboto', sans-serif ! important;
+   font-family: 'Source Sans Pro', sans-serif ! important;
   }
   html,
   body {
@@ -16,7 +16,7 @@ injectGlobal`
   }
 
   body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   #app {

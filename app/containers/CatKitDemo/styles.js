@@ -85,5 +85,15 @@ export const styles = (theme) => ({
   iconButton: {
     height: 30,
   },
+  actionIcon: {
+    cursor: 'pointer',
+    marginLeft: theme.spacing.unit,
+  },
+  highlightedRow: {
+    backgroundColor: '#ccc',
+  },
+  row: {
+  },
+
 });
 
