@@ -5,9 +5,9 @@ node_js:
   - "9"
   - "8"
 
-cache:
-  directories:
-    - node_modules # NPM Packages
+    #cache:
+    #directories:
+    #- node_modules # NPM Packages
 
 script:
   # - node ./internals/scripts/generate-templates-for-linting
