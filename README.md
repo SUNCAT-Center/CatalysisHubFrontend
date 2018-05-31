@@ -26,6 +26,8 @@ It might show a bunch of error message which we are going to ignore for now. Nex
 
 To run this you will need npm/node which is explained [here](https://docs.npmjs.com/getting-started/installing-node).
 
+If you are not at all familiar with git, you can master all the essentials in about 15 minutes via this [tutorial](https://try.github.io).
+
 ## Development
 
 The current interface is created from [React Boilerplate](https://github.com/react-boilerplate/react-boilerplate).
