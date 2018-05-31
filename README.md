@@ -5,20 +5,26 @@
 
 ## Install
 
-For local installation make a local clone of this repo
+For local installation head over to
 
-    git clone https://github.com/SUNCAT-Center/CatalysisHubFrontend.git
+    https://github.com/SUNCAT-Center/CatalysisHubFrontend
 
-change into the repository and run
+and click on the Fork button.  This requires you to have a [GitHub account](https://github.com/join?source=header-home)
+with your own username. This will create a fork at http://github.com/[username]/CatalysisHubFrontend
+If you open a terminal you can create a local clone via
+
+    git clone https://github.com/[username]/CatalysisHubFrontend.git
+
+Change into the repository `CatalysisHubFrontend` and run
 
     cd CatalysisHubFrontend
+    git remote add upstream https://github.com/SUNCAT-Center/CatalysisHubBackend.git
     npm run setup # only first time
     npm run start
 
-Open a browser at `http://localhost:3000/` to see it run.
+It might show a bunch of error message which we are going to ignore for now. Next, open a browser at `http://localhost:3000/` to see it run.
 
 To run this you will need npm/node which is explained [here](https://docs.npmjs.com/getting-started/installing-node).
-
 
 ## Development
 
