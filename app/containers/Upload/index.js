@@ -24,8 +24,9 @@ import { apiRoot } from 'utils/constants';
 import SocialButton from './SocialButton';
 import makeSelectUpload from './selectors';
 
-const backendRoot = `${apiRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
+const userInfoUrl = `${backendRoot}/user_info`;
 
 
 const styles = () => ({
@@ -38,15 +39,28 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       uploadError: '',
       loginModalOpen: false,
       loginUrl: '',
+      userInfo: {},
     };
 
     this.handleFileDrop = this.handleFileDrop.bind(this);
+    this.fetchUserInfo = this.fetchUserInfo.bind(this);
     this.handleSocialLogin = this.handleSocialLogin.bind(this);
     this.handleSocialLoginFailure = this.handleSocialLoginFailure.bind(this);
     this.login = this.login.bind(this);
     this.windowLogin = this.windowLogin.bind(this);
   }
 
+  fetchUserInfo() {
+    axios.get(userInfoUrl, {
+      data: {},
+      withCredentials: true,
+    }).then((response) => {
+      this.setState({
+        userInfo: response.data,
+
+      });
+    });
+  }
   handleSocialLogin() {
   }
 
@@ -130,6 +144,13 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           >
             Login in new window
           </Button>
+          <Button
+            onClick={() => {
+              this.fetchUserInfo();
+            }}
+          >
+            Get user info
+          </Button>
           <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
           <FileDrop
             frame={document}
@@ -145,6 +166,15 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           </FileDrop>
           {_.isEmpty(this.state.uploadError) ? null :
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
+          }
+        </Paper>
+        <Paper>
+          {_.get(this.state, 'userInfo.email', false)
+              ? <div>
+                Hi {this.state.userInfo.email}, wanna upload some adsorption energies?
+              </div>
+
+              : null
           }
         </Paper>
       </div>
