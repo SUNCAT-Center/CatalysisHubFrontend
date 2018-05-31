@@ -1,17 +1,17 @@
 [![Build Status](https://travis-ci.org/SUNCAT-Center/CatalysisHubFrontend.svg?branch=master)](https://travis-ci.org/SUNCAT-Center/CatalysisHubFrontend.svg?branch=master)
 
-# CatApp Browser
+# Catalysis-Hub.Org Frontend
 
 
 ## Install
 
 For local installation make a local clone of this repo
 
-    git clone https://github.com/mhoffman/CatAppBrowser.git
+    git clone https://github.com/SUNCAT-Center/CatalysisHubFrontend.git
 
 change into the repository and run
 
-    cd CatAppBrowser
+    cd CatalysisHubFrontend
     npm run setup # only first time
     npm run start
 
@@ -26,7 +26,7 @@ The current interface is created from [React Boilerplate](https://github.com/rea
 
 ### Contributions
 
-Contributions in the form of pull requests are highly welcome. To this end you will need a [github.com account (free)](https://github.com/join) and create a fork by clicking in the [Fork](https://github.com/mhoffman/CatAppBrowser#fork-destination-box) in the upper-right corner.
+Contributions in the form of pull requests are highly welcome. To this end you will need a [github.com account (free)](https://github.com/join) and create a fork by clicking in the [Fork](https://github.com/SUNCAT-Center/CatalysisHubFrontend#fork-destination-box) in the upper-right corner.
 Clone your fork locally and commit your changes locally. Once you push them back to your public repository at github.com/[username]/CatAppBrowser you can create pull requests through the web interface. This will automatically spin up a new instance of the webapp for testing and staging purposes. Once we are happy with the candidate we can merge it into the live version.
 
 
@@ -61,4 +61,4 @@ For more complex applications, i.e. requiring several levels of user interface a
 - To commit javascript code, it has to pass the ESLint linter. The linter may seem a little pesky at first, but I promise it makes your code look great and let's us focus on bigger code design issues. Some issues can be fixed automatically by running
     `./node_modules/eslint/bin/eslint.js --fix <filename>`
 
-- For testing we rely on [Jest](https://facebook.github.io/jest/docs/en/more-resources.html) and [Travis CI](https://travis-ci.org/mhoffman/CatAppBrowser). Please have a look a Jest and write some simple test. Test coverage should eventually go up.
+- For testing we rely on [Jest](https://facebook.github.io/jest/docs/en/more-resources.html) and [Travis CI](https://travis-ci.org/SUNCAT-Center/CatalysisHubFrontend). Please have a look a Jest and write some simple tests. Test coverage should eventually go up.
