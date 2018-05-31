@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mhoffman/CatAppBrowser.svg?branch=master)](https://travis-ci.org/mhoffman/CatAppBrowser)
+[![Build Status](https://travis-ci.org/SUNCAT-Center/CatalysisHubFrontend.svg?branch=master)](https://travis-ci.org/SUNCAT-Center/CatalysisHubFrontend.svg?branch=master)
 
 # CatApp Browser
 
