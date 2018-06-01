@@ -46,8 +46,8 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
             <ListItem>
               <Tooltip title="Checkout frontend code on GitHub">
                 <ReactGA.OutboundLink
-                  to="https://github.com/mhoffman/CatAppBrowser"
-                  eventLabel="https://github.com/mhoffman/CatAppBrowser"
+                  to="https://github.com/SUNCAT-Center/CatalysisHubFrontend"
+                  eventLabel="https://github.com/SUNCAT-Center/CatalysisHubFrontend"
                   target="_blank"
                 >
                 Made&nbsp;
@@ -55,8 +55,8 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
                 <ReactGA.OutboundLink
-                  to="https://github.com/kirstenwinther/CatAppCLI"
-                  eventLabel="https://github.com/kirstenwinther/CatAppCLI"
+                  to="https://github.com/SUNCAT-Center/CatKit/tree/master/catkit/hub"
+                  eventLabel="https://github.com/SUNCAT-Center/CatKit/tree/master/catkit/hub"
                   target="_blank"
                 >
                 in&nbsp;
@@ -64,8 +64,8 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               </Tooltip>
               <Tooltip title="Checkout backend code on GitHub">
                 <ReactGA.OutboundLink
-                  to="https://github.com/kirstenwinther/CatAppBackend"
-                  eventLabel="https://github.com/kirstenwinther/CatAppBackend"
+                  to="https://github.com/SUNCAT-Center/CatalysisHubBackend"
+                  eventLabel="https://github.com/SUNCAT-Center/CatalysisHubBackend"
                   target="_blank"
                 >
                 Menlo Park&nbsp;
