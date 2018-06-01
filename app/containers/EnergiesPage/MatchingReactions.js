@@ -37,6 +37,7 @@ import { newGraphQLRoot } from 'utils/constants';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
+import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as actions from './actions';
 
 const styles = (theme) => ({
@@ -232,6 +233,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         >
                           <Link
                             className={this.props.classes.buttonLink}
+                            onClick={() => {
+                              this.props.catKitStepperHandleReset();
+                            }}
                             to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
                           >construct</Link>
                         </Button> your own slab calculation.
@@ -428,6 +432,7 @@ MatchingReactions.propTypes = {
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
   classes: PropTypes.object,
+  catKitStepperHandleReset: PropTypes.func,
   resultSize: PropTypes.number,
   searchString: PropTypes.string,
   handleRequestSort: PropTypes.func,
@@ -453,6 +458,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  catKitStepperHandleReset: () => {
+    dispatch(catKitActions.stepperHandleReset());
+  },
   receiveReactions: (reactions) => {
     dispatch(actions.receiveReactions(reactions));
   },

@@ -211,12 +211,16 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       this.props.saveBulkParams({
         name: ptype.prototype,
         spacegroup: ptype.spacegroup,
-        elements: ptype.species,
+        elements: JSON.parse(ptype.species.replace(/'/g, '"')),
+        repository: ptype.repository,
+        handle: ptype.handle,
         wyckoff: {
           name: ptype.prototype,
           cif: response.data.structure,
-          elements: ptype.species,
+          elements: JSON.parse(ptype.species.replace(/'/g, '"')),
+          species: JSON.parse(ptype.species.replace(/'/g, '"')),
           spacegroup: ptype.spacegroup,
+          wyckoff: JSON.parse(ptype.wyckoffs.replace(/'/g, '"')),
         },
       });
       this.props.dropBulkInput();
