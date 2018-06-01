@@ -268,7 +268,9 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                 </Grid>
               </Grid>
               <Grid item key={`item_${this.state.activeImage}`}>
-                <h4>{`Site "${this.state.siteNames[this.state.activeImage]} (${_.get(siteNames, this.state.siteNames[this.state.activeImage], '')})" -- (${this.state.activeImage + 1}/${this.props.images.length}).`}</h4>
+                <h4>{this.state.siteType !== 'all' ?
+                    `Site "${this.state.siteType} (${siteNames[this.state.siteType]})"`
+                  : `Site "${this.state.siteNames[this.state.activeImage]} (${_.get(siteNames, this.state.siteNames[this.state.activeImage], '')})"`}{` \u2014 (${this.state.activeImage + 1}/${this.props.images.length}).`}</h4>
                 <GeometryCanvasWithOptions
                   cifdata={this.props.images[this.state.activeImage]}
                   uniqueId={`slab_preview_${this.state.activeImage}`}
