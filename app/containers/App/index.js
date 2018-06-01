@@ -14,7 +14,7 @@ import compose from 'recompose/compose';
 import { Link, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { isIOS } from 'react-device-detect';
+import { isIOS, isMobile } from 'react-device-detect';
 
 import Flexbox from 'flexbox-react';
 import Helmet from 'react-helmet';
@@ -370,20 +370,23 @@ class App extends React.Component {
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
               <Grid container direction="row" justify="space-between">
-                <Grid item sm={1} md={1} lg={1}>
-                  { (!isIOS || this.props.history === null) ? null :
-                  <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
-                    <MdChevronLeft />
-                  </IconButton>
+                {isMobile ?
+                  <Grid item sm={1} md={1} lg={1}>
+                    { (!isIOS || this.props.history === null) ? null :
+                    <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
+                      <MdChevronLeft />
+                    </IconButton>
 
                       }
-                  <Tooltip title="Open menu">
-                    <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
-                      {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                      <MenuIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
+                    <Tooltip title="Open menu">
+                      <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
+                        {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                        <MenuIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                    : '\u00A0\u00A0'
+                }
                 { suBranding === false ? null :
                 <Grid item >
                   <ReactGA.OutboundLink
