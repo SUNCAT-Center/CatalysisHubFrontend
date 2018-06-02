@@ -174,6 +174,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
           cif: response.data.cifdata,
         };
         params.params.bulkParams.lattice_constant = response.data.lattice_constant;
+        params.params.bulkParams.cif = response.data.cifdata;
         axios.get(wyckoffUrl, { params: wyckoffParams }).then((wyckoffResponse) => {
           params.params.bulkParams.wyckoff = wyckoffResponse.data;
           this.props.saveBulkParams(params.params.bulkParams);

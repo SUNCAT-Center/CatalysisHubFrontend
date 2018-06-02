@@ -101,9 +101,10 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       };
     }
 
-    this.props.saveSlabParams(slabParams);
     cachios.get(url, params).then((response) => {
-      this.props.receiveSlabCifs(response.data.images);
+      this.props.receiveSlabCifs(_.cloneDeep(response.data.images));
+      slabParams.cif = _.cloneDeep(response.data.images[0]);
+      this.props.saveSlabParams(slabParams);
       this.setState({
         n_terminations: parseInt(response.data.n_terminations, 10),
       });

@@ -234,6 +234,9 @@ export function saveBulkParams(bulkParams) {
 export function saveSlabParams(slabParams) {
   return {
     type: constants.SAVE_SLAB_PARAMS,
-    payload: _.mapValues(slabParams, parseInt),
+    payload: {
+      ..._.mapValues(slabParams, parseInt),
+      cif: slabParams.cif,
+    },
   };
 }

@@ -67,8 +67,8 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
   updateAdsorptionSites(options = {}) {
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: this.props.bulkParams,
-      slabParams: this.props.slabParams,
+      bulkParams: _.omit(this.props.bulkParams, 'cif'),
+      slabParams: _.omit(this.props.slabParams, 'cif'),
       adsorbateParams: {
         siteType: options.siteType || this.state.siteType,
         placeHolder: options.placeHolder || this.state.placeHolder,

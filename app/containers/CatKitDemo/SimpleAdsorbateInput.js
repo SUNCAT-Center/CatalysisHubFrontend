@@ -88,8 +88,8 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: this.props.bulkParams,
-      slabParams: this.props.slabParams,
+      bulkParams: _.omit(this.props.bulkParams, 'cif'),
+      slabParams: _.omit(this.props.slabParams, 'cif'),
       adsorbateParams,
     } };
     axios.get(siteUrl, params).then((response) => {
@@ -97,7 +97,10 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
         this.props.openSnackbar(response.data.error);
       }
       const siteOccupation = [];
-      this.props.saveAdsorbateParams(adsorbateParams);
+      this.props.saveAdsorbateParams({
+        ...adsorbateParams,
+        cifs: response.data.cifImages,
+      });
       this.props.saveAdsorptionSites(response.data.data);
 
       this.setState({
