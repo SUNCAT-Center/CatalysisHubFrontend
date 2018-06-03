@@ -214,6 +214,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         elements: JSON.parse(ptype.species.replace(/'/g, '"')),
         repository: ptype.repository,
         handle: ptype.handle,
+        format: this.props.cookies.get('preferredFormat') || 'cif',
         wyckoff: {
           name: ptype.prototype,
           cif: response.data.structure,
