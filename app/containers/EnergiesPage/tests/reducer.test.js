@@ -8,6 +8,7 @@ describe('energiesPageReducer', () => {
       dbError: false,
       filter: {},
       matchingReactions: [],
+      publication: {},
       order: 'desc',
       orderBy: '',
       reactionSystems: [],
