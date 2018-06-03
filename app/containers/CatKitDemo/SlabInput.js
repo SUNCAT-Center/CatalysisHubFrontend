@@ -91,7 +91,10 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     };
 
     const params = { params: {
-      bulkParams: this.props.bulkParams,
+      bulkParams: _.omit(
+        this.props.bulkParams,
+        ['input', 'cif'],
+      ),
       slabParams,
     },
       ttl: 3000,

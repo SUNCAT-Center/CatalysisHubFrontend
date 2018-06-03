@@ -404,7 +404,7 @@ class App extends React.Component {
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
-                          <Tooltip title="Open main site">
+                          <Tooltip title={`v${version}`}>
                             <Link to="/" className={this.props.classes.appBarTitle} >
                               <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
                                 {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
