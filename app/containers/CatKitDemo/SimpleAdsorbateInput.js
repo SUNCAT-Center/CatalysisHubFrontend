@@ -1,5 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
+import { Link } from 'react-router';
+import { compose } from 'recompose';
+
 import _ from 'lodash';
 
 import Grid from 'material-ui/Grid';
@@ -12,7 +16,8 @@ import Select from 'material-ui/Select';
 import { LinearProgress } from 'material-ui/Progress';
 import { FormGroup, FormControl } from 'material-ui/Form';
 import { InputLabel } from 'material-ui/Input';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
+import { MdChevronLeft, MdChevronRight, MdCheckCircle } from 'react-icons/lib/md';
+import { FaList } from 'react-icons/lib/fa';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -57,6 +62,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     this.handleChange = this.handleChange.bind(this);
     this.handleAdsorptionChange = this.handleAdsorptionChange.bind(this);
     this.placeAdsorbates = this.placeAdsorbates.bind(this);
+    this.saveCalculation = this.saveCalculation.bind(this);
   }
 
   componentDidMount() {
@@ -85,11 +91,12 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       siteType: options.siteType || this.state.siteType,
       placeHolder: options.placeHolder || this.state.placeHolder,
       adsorbate: options.adsorbate || this.state.adsorbate,
+      format: this.props.cookies.get('preferredFormat'),
     };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: _.omit(this.props.bulkParams, 'cif'),
-      slabParams: _.omit(this.props.slabParams, 'cif'),
+      bulkParams: _.omit(this.props.bulkParams, ['cif', 'input']),
+      slabParams: _.omit(this.props.slabParams, ['cif', 'input']),
       adsorbateParams,
     } };
     axios.get(siteUrl, params).then((response) => {
@@ -100,6 +107,9 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       this.props.saveAdsorbateParams({
         ...adsorbateParams,
         cifs: response.data.cifImages,
+        equations: response.data.equations,
+        molecules: response.data.molecules,
+        inputs: response.data.inputImages,
       });
       this.props.saveAdsorptionSites(response.data.data);
 
@@ -168,6 +178,22 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
         this.placeAdsorbates();
       }
     };
+  }
+  saveCalculation() {
+    this.props.saveCalculation({
+      bulkParams: this.props.bulkParams,
+      slabParams: this.props.slabParams,
+      siteOccupations: this.props.siteOccupations,
+      adsorbateParams: this.props.adsorbateParams,
+      dftParams: {
+        calculator: this.state.calculator,
+        functional: this.state.functional,
+      },
+    });
+    this.props.clearBulkParams();
+    this.props.clearBulkCif();
+    this.props.clearSlabParams();
+    this.props.clearSlabCifs();
   }
   render() {
     return (
@@ -300,6 +326,42 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
           </Paper>
         </div>
         }
+
+        {!_.isEmpty(this.props.slabParams) ? null :
+        <Grid container justify="center" direction="row">
+          <Grid item>
+            <Grid container direction="column" justify="space-between">
+              <Grid item className={this.props.classes.finish}>
+                {'And that\'s a wrap.\u00A0\u00A0\u00A0'} <MdCheckCircle size={92} color="green" />
+              </Grid>
+              <Grid item>
+                <div>Start new structure from scratch:
+                    <Button onClick={this.props.stepperHandleReset} className={this.props.classes.button}> Start Over </Button> </div>
+              </Grid>
+              <Grid item>
+                  Find and start from an existing structure
+                  <Link to="/prototypeSearch" className={this.props.classes.buttonLink}>
+                    <Button onClick={this.props.stepperHandleReset} className={this.props.classes.button}> Prototype Search </Button>
+                  </Link>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        }
+
+
+
+
+        <Grid container justify="flex-end" direction="row">
+          <Grid item>
+            <Button
+              raised
+              disabled={_.isEmpty(this.props.slabParams)}
+              onClick={this.saveCalculation}
+              color="primary"
+            ><FaList /> {'\u00A0\u00A0'}Store Calculation</Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -310,20 +372,32 @@ AdsorbateInput.defaultProps = {
 };
 
 AdsorbateInput.propTypes = {
+  adsorbateParams: PropTypes.object,
   adsorptionSites: PropTypes.array,
+  altLabels: PropTypes.array,
   bulkCif: PropTypes.string,
   bulkParams: PropTypes.object,
   classes: PropTypes.object,
+  clearBulkCif: PropTypes.func,
+  clearBulkParams: PropTypes.func,
+  clearSlabCifs: PropTypes.func,
+  clearSlabParams: PropTypes.func,
+  cookies: instanceOf(Cookies),
   images: PropTypes.array,
-  altLabels: PropTypes.array,
-  saveAdsorptionSites: PropTypes.func,
-  saveAdsorbateParams: PropTypes.func.isRequired,
-  slabParams: PropTypes.object,
-  receiveSlabCifs: PropTypes.func,
-  saveAltLabels: PropTypes.func,
-  saveSiteOccupations: PropTypes.func,
   openSnackbar: PropTypes.func,
+  receiveSlabCifs: PropTypes.func,
+  saveAdsorbateParams: PropTypes.func.isRequired,
+  saveAdsorptionSites: PropTypes.func,
+  saveAltLabels: PropTypes.func,
+  saveCalculation: PropTypes.func,
+  saveSiteOccupations: PropTypes.func,
+  siteOccupations: PropTypes.object,
+  slabParams: PropTypes.object,
+  stepperHandleReset: PropTypes.func,
 };
 
 
-export default withStyles(styles, { withTheme: true })((AdsorbateInput));
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  withCookies,
+)((AdsorbateInput));

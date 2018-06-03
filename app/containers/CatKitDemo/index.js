@@ -38,7 +38,6 @@ function getSteps() {
     'Configure bulk structure',
     'Configure surface slab',
     'Add adsorbates',
-    'Configure calculator',
   ];
 }
 
@@ -49,7 +48,7 @@ function nextStepReady(step, props) {
     case 1:
       return !_.isEmpty(props.images);
     case 2:
-      return true;
+      return false;
     case 3:
       return false;
     default:

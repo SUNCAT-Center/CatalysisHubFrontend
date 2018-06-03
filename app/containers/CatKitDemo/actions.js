@@ -237,6 +237,8 @@ export function saveSlabParams(slabParams) {
     payload: {
       ..._.mapValues(slabParams, parseInt),
       cif: slabParams.cif,
+      format: slabParams.format,
+      input: slabParams.input,
     },
   };
 }

@@ -1,5 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
+import { compose } from 'recompose';
 
 import { withStyles } from 'material-ui/styles';
 import Input, { InputLabel } from 'material-ui/Input';
@@ -85,6 +87,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       layers: this.state.layers,
       vacuum: this.state.vacuum,
       termination: this.state.termination,
+      format: this.props.cookies.get('preferredFormat'),
     };
 
     const params = { params: {
@@ -104,6 +107,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
     cachios.get(url, params).then((response) => {
       this.props.receiveSlabCifs(_.cloneDeep(response.data.images));
       slabParams.cif = _.cloneDeep(response.data.images[0]);
+      slabParams.input = response.data.input[0];
       this.props.saveSlabParams(slabParams);
       this.setState({
         n_terminations: parseInt(response.data.n_terminations, 10),
@@ -308,6 +312,7 @@ SlabInput.propTypes = {
   bulkCif: PropTypes.string.isRequired,
   bulkParams: PropTypes.object,
   classes: PropTypes.object.isRequired,
+  cookies: instanceOf(Cookies),
   customSlabInput: PropTypes.bool,
   customBulkInput: PropTypes.bool,
   dropSlabInput: PropTypes.func,
@@ -316,4 +321,8 @@ SlabInput.propTypes = {
   receiveSlabCifs: PropTypes.func.isRequired,
   saveSlabParams: PropTypes.func.isRequired,
 };
-export default withStyles(styles, { withTheme: true })(SlabInput);
+/* export default withStyles(styles, { withTheme: true })(SlabInput);*/
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  withCookies,
+)(SlabInput);
