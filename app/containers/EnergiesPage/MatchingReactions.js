@@ -116,6 +116,27 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       snackbarActions.open('Scroll down for detailed structure.');
     }
 
+    const pubQuery = {
+      query: `{publications(pubId: "${reaction.pubId}"){
+      edges {
+      node
+      {
+        year
+        doi
+        authors
+        title
+        number
+        journal
+        pages
+      }}
+      }
+      }
+      `,
+    };
+    cachios.post(newGraphQLRoot, pubQuery).then((response) => {
+      this.props.savePublication(response.data.data.publications.edges[0].node);
+    });
+
     this.props.clearSystems();
     catappIds.map((key) => {
       let aseId = key;
@@ -428,6 +449,7 @@ MatchingReactions.propTypes = {
   selectReaction: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
+  savePublication: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
@@ -455,6 +477,7 @@ const mapStateToProps = (state) => ({
   searchQuery: state.get('energiesPageReducer').searchQuery,
   order: state.get('energiesPageReducer').order,
   orderBy: state.get('energiesPageReducer').orderBy,
+  publication: state.get('energiesPageReducer').publication,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -475,6 +498,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(actions.saveSystem(system));
+  },
+  savePublication: (x) => {
+    dispatch(actions.savePublication(x));
   },
   handleRequestSort: (event, property) => {
     dispatch(actions.handleRequestSort(event, property));

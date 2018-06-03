@@ -177,6 +177,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         Equation
         sites
         id
+        pubId
         dftCode
         dftFunctional
         reactants
