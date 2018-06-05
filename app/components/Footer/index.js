@@ -70,7 +70,6 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               <ReactGA.OutboundLink
                 to="/yourNextApp"
                 eventLabel="/yourNextApp"
-                target="_blank"
                 className={this.props.classes.footerLink}
               >
                   Build Your Own App
@@ -82,7 +81,6 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               <ReactGA.OutboundLink
                 to="/feedback"
                 eventLabel="/feedback"
-                target="_blank"
                 className={this.props.classes.footerLink}
               >Send Us Your Feedback
               </ReactGA.OutboundLink>
