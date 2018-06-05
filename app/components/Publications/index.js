@@ -102,6 +102,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       references: {},
       dois: {},
       titles: {},
+      pubIds: {},
       loading: false,
       openedPublication: null,
       systems: [],
@@ -122,7 +123,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           years,
         });
         years.map((year) => {
-          const query = `{publications (year: ${year}) { edges { node {  doi title year authors journal pages  } } }}`;
+          const query = `{publications (year: ${year}) { edges { node {  doi title year authors journal pages pubId  } } }}`;
           return axios.post(newGraphQLRoot, {
             query,
           })
@@ -133,14 +134,18 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
               const dois = yearResponse.data.data.publications.edges.map((n) => (n.node.doi));
 
               const titles = yearResponse.data.data.publications.edges.map((n) => (n.node.title));
+              const pubIds = yearResponse.data.data.publications.edges.map((n) => (n.node.pubId));
+
 
               const allReferences = this.state.references;
               const allDois = this.state.dois;
               const allTitles = this.state.titles;
+              const allPubIds = this.state.pubIds;
 
               allReferences[year] = references;
               allDois[year] = dois;
               allTitles[year] = titles;
+              allPubIds[year] = pubIds;
 
               this.setState({
                 references: allReferences,
