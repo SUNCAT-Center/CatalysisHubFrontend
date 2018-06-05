@@ -44,6 +44,7 @@ const styles = () => ({
     padding: '0 0px',
     flexDirection: 'column',
     textDecoration: 'none',
+    position: 'block',
   },
   appHint: {
     fontSize: 12,

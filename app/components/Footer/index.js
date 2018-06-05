@@ -2,18 +2,38 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List, { ListItem } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
 import Tooltip from 'material-ui/Tooltip';
 
 import { whiteLabel } from 'utils/constants';
+import Img from 'containers/App/Img';
+import WhiteBanner from 'components/Header/banner_white.png';
 import Wrapper from './Wrapper';
 
 const styles = (xtheme) => ({
+  footerLink: {
+    textColor: 'white',
+    color: 'white',
+    textDecoration: 'none',
+  },
   footer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: xtheme.palette.coolgrey[500],
+    paddingLeft: '10%',
+    paddingRight: '5%',
     [xtheme.breakpoints.down('sm')]: {
       visibility: 'hidden',
     },
+  },
+  footerList: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  footerListItem: {
+    whiteSpace: 'nowrap',
   },
 });
 
@@ -28,8 +48,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               <ReactGA.OutboundLink
                 eventLabel="http://suncat.slac.stanford.edu/"
                 to="http://suncat.slac.stanford.edu/"
+                target="_blank"
               >
-                <ListItemText primary="SUNCAT" />
+                <Img className={this.props.classes.banner} src={WhiteBanner} alt="SUNCAT - Logo" />
               </ReactGA.OutboundLink>
               }
             </ListItem>
@@ -42,22 +63,50 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
           </List>
         </section>
         <section>
-          <List>
-            <ListItem>
+          <List className={this.props.classes.footerList}>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
+              <ReactGA.OutboundLink
+                to="/yourNextApp"
+                eventLabel="/yourNextApp"
+                target="_blank"
+                className={this.props.classes.footerLink}
+              >
+                  Build Your Own App
+              </ReactGA.OutboundLink>
+            </ListItem>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
+              <ReactGA.OutboundLink
+                to="/feedback"
+                eventLabel="/feedback"
+                target="_blank"
+                className={this.props.classes.footerLink}
+              >Send Us Your Feedback
+              </ReactGA.OutboundLink>
+
+            </ListItem>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
               <Tooltip title="Checkout frontend code on GitHub">
                 <ReactGA.OutboundLink
                   to="https://github.com/SUNCAT-Center/CatalysisHubFrontend"
                   eventLabel="https://github.com/SUNCAT-Center/CatalysisHubFrontend"
                   target="_blank"
+                  className={this.props.classes.footerLink}
                 >
                 Made&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
                 <ReactGA.OutboundLink
-                  to="https://github.com/SUNCAT-Center/CatKit/tree/master/catkit/hub"
-                  eventLabel="https://github.com/SUNCAT-Center/CatKit/tree/master/catkit/hub"
+                  to="https://github.com/SUNCAT-Center/CatKit"
+                  eventLabel="https://github.com/SUNCAT-Center/CatKit"
                   target="_blank"
+                  className={this.props.classes.footerLink}
                 >
                 in&nbsp;
               </ReactGA.OutboundLink>
@@ -67,6 +116,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   to="https://github.com/SUNCAT-Center/CatalysisHubBackend"
                   eventLabel="https://github.com/SUNCAT-Center/CatalysisHubBackend"
                   target="_blank"
+                  className={this.props.classes.footerLink}
                 >
                 Menlo Park&nbsp;
               </ReactGA.OutboundLink>
