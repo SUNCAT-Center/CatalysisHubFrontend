@@ -267,7 +267,7 @@ class App extends React.Component {
               {whiteLabel ? null :
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
               }
-              <Grid column direction="column" justify="center">
+              <Grid container direction="column" justify="center">
                 <Grid item>
                 </Grid>
               </Grid>
