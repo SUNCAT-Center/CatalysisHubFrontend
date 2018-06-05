@@ -27,7 +27,6 @@ import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
 
 
-import { reactions } from 'containers/ActivityMapsPage';
 import * as actions from './actions';
 import plotlyData from './plot_data/index';
 
@@ -49,6 +48,7 @@ const initialState = {
 
 };
 
+export const reactions = ['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'];
 
 class ActivityMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {

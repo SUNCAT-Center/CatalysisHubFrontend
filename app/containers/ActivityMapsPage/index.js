@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 import Script from 'react-load-script';
 import Slide from 'material-ui/transitions/Slide';
 
+import { reactions } from 'containers/ActivityMapsPage/ActivityMapPlot';
 import ActivityMaps from './ActivityMaps';
 import * as actions from './actions';
 
-export const reactions = ['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'];
 
 export class ActivityMapsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillReceiveProps(nextProps) {
