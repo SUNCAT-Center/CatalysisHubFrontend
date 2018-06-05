@@ -143,7 +143,7 @@ export default function createRoutes(store) {
       path: '/catLearn',
       name: 'CatLearn',
       getComponent(location, cb) {
-        import('components/AtoML')
+        import('components/CatLearn')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
