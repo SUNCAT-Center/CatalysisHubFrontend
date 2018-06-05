@@ -86,4 +86,17 @@ module.exports = {
       tooltip: 'How to write your own apps.',
     },
   ],
+  people: [
+    'Ankit Jain',
+    'Jake Boes',
+    'Kirsten Winther',
+    'Martin Hansen',
+    'Max Hoffmann',
+    'Meng Zhao',
+    'Michal Bajdich',
+    'Morten Winther',
+    'Osman Mamun',
+    'Paul Jennings',
+    'Thomas Bligaard',
+  ],
 };

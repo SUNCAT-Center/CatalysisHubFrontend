@@ -12,6 +12,7 @@ import Grid from 'material-ui/Grid';
 import slacLogo from 'components/Header/SLAC_Logo.png';
 import doeLogo from 'components/Header/DOE_Logo.gif';
 import stanfordLogo from 'components/Header/stanford_crop.png';
+import { people } from 'utils/constants';
 
 
 
@@ -32,20 +33,6 @@ const styles = (theme) => ({
     padding: theme.spacing.unit,
   },
 });
-
-const people = [
-  'Ankit Jain',
-  'Jake Boes',
-  'Kirsten Winther',
-  'Martin Hansen',
-  'Max Hoffmann',
-  'Meng Zhao',
-  'Michal Bajdich',
-  'Osman Mamun',
-  'Paul Jennings',
-  'Thomas Bligaard',
-];
-
 
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

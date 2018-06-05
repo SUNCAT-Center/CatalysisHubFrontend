@@ -34,6 +34,7 @@ import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
+import { withCommas } from 'utils/functions';
 import CenteredSection from './CenteredSection';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
@@ -88,6 +89,7 @@ const styles = () => ({
   },
 
 });
+
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -256,7 +258,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={this.state.reactions} />
+                            <Chip label={withCommas(this.state.reactions)} />
                           </Grid>
                           <Grid item>
                             <div className={this.props.classes.bold}>See our reactions <MdArrowForward /></div>

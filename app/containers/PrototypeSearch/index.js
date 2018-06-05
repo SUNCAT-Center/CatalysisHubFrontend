@@ -36,6 +36,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
+import { withCommas } from 'utils/functions';
 import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as wyckoffActions from 'containers/BulkGenerator/actions';
 import { apiRoot } from 'utils/constants';
@@ -383,7 +384,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <div
                   className={this.props.classes.hintText}
                 >
-                  {`${this.props.searchResults.time.toFixed(2)} s, ${this.props.searchResults.n_compounds} structures.`}</div>
+                  {`${withCommas(this.props.searchResults.n_compounds)} structures (${this.props.searchResults.time.toFixed(2)} seconds)`}</div>
                 }
                 <Hidden smDown>
                   <Button
@@ -454,7 +455,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((repository, si) => (
                             <FormControlLabel
                               key={`sg_${si}`}
-                              label={`${repository[0]} (${repository[1]})`}
+                              label={`${repository[0]} (${withCommas(repository[1])})`}
                               control={<Checkbox
                                 value={`repository:${repository[0]}`}
                                 checked={_.indexOf(this.props.facetFilters, `repository:${repository[0]}`) > -1}
@@ -515,7 +516,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((stoichiometry, si) => (
                             <FormControlLabel
                               key={`sm_${si}`}
-                              label={`${stoichiometry[0]} (${stoichiometry[1]})`}
+                              label={`${stoichiometry[0]} (${withCommas(stoichiometry[1])})`}
                               control={<Checkbox
                                 value={`stoichiometry:${stoichiometry}`}
                                 checked={_.indexOf(this.props.facetFilters, `stoichiometry:${stoichiometry[0]}`) > -1}
@@ -576,7 +577,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((nSpecies, si) => (
                             <FormControlLabel
                               key={`spec_${si}`}
-                              label={`${nSpecies[0]} (${nSpecies[1]})`}
+                              label={`${nSpecies[0]} (${withCommas(nSpecies[1])})`}
                               control={<Checkbox
                                 value={`n_species:${nSpecies}`}
                                 checked={_.indexOf(this.props.facetFilters, `n_species:${nSpecies[0]}`) > -1}
@@ -638,7 +639,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((nAtoms, si) => (
                             <FormControlLabel
                               key={`sg_${si}`}
-                              label={`${nAtoms[0]} (${nAtoms[1]})`}
+                              label={`${nAtoms[0]} (${withCommas(nAtoms[1])})`}
                               control={<Checkbox
                                 value={`n_atoms:${nAtoms}`}
                                 checked={_.indexOf(this.props.facetFilters, `n_atoms:${nAtoms[0]}`) > -1}
@@ -673,7 +674,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                             .map((species, si) => (
                               <FormControlLabel
                                 key={`spg_${si}`}
-                                label={`${cf(species[0])}  (${species[1]})`}
+                                label={`${cf(species[0])}  (${withCommas(species[1])})`}
                                 control={<Checkbox
                                   value={`species:${species}`}
                                   checked={_.indexOf(this.props.facetFilters, `species:${species[0]}`) > -1}
@@ -745,7 +746,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                           .map((spacegroup, si) => (
                             <FormControlLabel
                               key={`sg_${si}`}
-                              label={`${spacegroup[0]} [${hmSymbols[parseInt(spacegroup, 10) - 1].replace(/ /g, '')}] (${spacegroup[1]})`}
+                              label={`${spacegroup[0]} [${hmSymbols[parseInt(spacegroup, 10) - 1].replace(/ /g, '')}] (${withCommas(spacegroup[1])})`}
                               control={<Checkbox
                                 value={`spacegroup:${spacegroup}`}
                                 checked={_.indexOf(this.props.facetFilters, `spacegroup:${spacegroup[0]}`) > -1}
@@ -864,7 +865,7 @@ Showing {this.state.loadedStructures}/{this.state.prototypeStructures}{'\u00A0\u
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
                             <div>
-                                    Structures: {ptype[1]}
+                                    Structures: {withCommas(ptype[1])}
                             </div>
                             <div>
                               Spacegroup: {parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10)}
