@@ -22,7 +22,7 @@ import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 
 import { apiRoot } from 'utils/constants';
-const appUrl = `${apiRoot}apps/atoml/`;
+const appUrl = `${apiRoot}apps/catlearn/`;
 
 const supportAtoms = [
   'Ag', 'Al', 'As', 'Au', 'B', 'Ba', 'Be', 'Bi', 'Ca', 'Cd', 'Co', 'Cr', 'Cs',
