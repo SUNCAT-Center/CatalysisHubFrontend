@@ -45,8 +45,8 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   welcomeHeader: {
-    marginTop: 15,
-    marginBottom: '10%',
+    marginTop: 0,
+    marginBottom: '5%',
   },
   centeredSection: {
     marginLeft: '10%',
@@ -231,7 +231,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <h3><MdApps size={20} /> Apps</h3>
                         <div className={this.props.classes.paperInfo}>
                           Web apps for exploring calculations
-                          and make new ones.
+                          and finding new catalysts.
                         </div>
 
                         <Grid container direction="row" justify="space-between">
@@ -254,7 +254,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       >
                         <h3> <FaDatabase size={20} /> Reaction Energetics</h3>
                         <div className={this.props.classes.paperInfo}>
-                          A data base of first-principles reaction energetics.
+                          A database of first-principles reaction energetics.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>

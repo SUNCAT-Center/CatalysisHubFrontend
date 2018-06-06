@@ -50,6 +50,14 @@ const styles = () => ({
     fontSize: 12,
     textAlign: 'left',
   },
+  appPaper: {
+    padding: 25,
+    minWidth: 240,
+    maxWidth: 300,
+    textAlign: 'center',
+    backgroundColor: '#eeeeee',
+    cornerRadius: 40,
+  },
 });
 
 const getAppIcon = (title) => {
@@ -97,12 +105,9 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                     }}
                   >
                     <Paper
-                      style={{
-                        padding: 25,
-                        minWidth: 240,
-                        maxWidth: 300,
-                        textAlign: 'center',
-                      }}
+                      rounded
+                      className={this.props.classes.appPaper}
+                      elevation={0}
                     >
                       <Tooltip title={app.tooltip} placement="top">
                         <h3>
