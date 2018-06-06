@@ -35,6 +35,11 @@ const styles = (xtheme) => ({
   footerListItem: {
     whiteSpace: 'nowrap',
   },
+  banner: {
+    [xtheme.breakpoints.up('xl')]: {
+      marginLeft: 240,
+    },
+  },
 });
 
 class Footer extends React.Component { // eslint-disable-line react/prefer-stateless-function
