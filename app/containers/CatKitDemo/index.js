@@ -38,7 +38,6 @@ function getSteps() {
     'Configure bulk structure',
     'Configure surface slab',
     'Add adsorbates',
-    'Configure calculator',
   ];
 }
 
@@ -49,7 +48,7 @@ function nextStepReady(step, props) {
     case 1:
       return !_.isEmpty(props.images);
     case 2:
-      return true;
+      return false;
     case 3:
       return false;
     default:
@@ -149,7 +148,7 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               <Grid item>
                 <Button
                   className={this.props.classes.button}
-                  disabled={activeStep === 0 || activeStep === 3}
+                  disabled={activeStep === 0}
                   onClick={this.handleBack}
                 >
                   <MdChevronLeft /> Back
@@ -218,6 +217,15 @@ const mapDispatchToProps = (dispatch) => ({
   clearCalculations: () => {
     dispatch(actions.clearCalculations());
   },
+  setOpenCalculation: (n) => {
+    dispatch(actions.setOpenCalculation(n));
+  },
+  editCalculation: (n) => {
+    dispatch(actions.editCalculation(n));
+  },
+  copyCalculation: (n) => {
+    dispatch(actions.copyCalculation(n));
+  },
   removeCalculation: (n) => {
     dispatch(actions.removeCalculation(n));
   },
@@ -272,6 +280,7 @@ const mapStateToProps = (state) => ({
   bulkParams: state.get('catKitDemoReducer').bulkParams,
   slabParams: state.get('catKitDemoReducer').slabParams,
   calculations: state.get('catKitDemoReducer').calculations,
+  openCalculation: state.get('catKitDemoReducer').openCalculation,
   adsorptionSites: state.get('catKitDemoReducer').adsorptionSites,
   activeStep: state.get('catKitDemoReducer').activeStep,
   altLabels: state.get('catKitDemoReducer').altLabels,

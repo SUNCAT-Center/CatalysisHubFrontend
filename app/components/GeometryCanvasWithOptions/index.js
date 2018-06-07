@@ -7,6 +7,7 @@
 import { compose } from 'recompose';
 import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
+import { connect } from 'react-redux';
 import { withCookies, Cookies } from 'react-cookie';
 import ReactGA from 'react-ga';
 import FileDownload from 'react-file-download';
@@ -23,11 +24,12 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import { MdClose, MdFullscreen, MdFileDownload, MdBookmarkOutline } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
+import * as actions from './actions';
 
-const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
+export const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
   'gen', 'gromos', 'json', 'jsv', 'nwchem', 'proteindatabank', 'py', 'turbomole', 'v-sim', 'vasp', 'xsf', 'xyz'];
 
 
@@ -46,6 +48,21 @@ const styles = (theme) => ({
   },
   button: {
     margin: theme.spacing.unit,
+  },
+  fsIconButton: {
+    fontColor: '#000000',
+    backgroundColor: '#ffffff',
+    marginTop: theme.spacing.unit,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 12,
+      height: 15,
+      width: 15,
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 12,
+      height: 10,
+      width: 10,
+    },
   },
   iconButton: {
     fontColor: '#000000',
@@ -92,6 +109,16 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     this.handleDownload = this.handleDownload.bind(this);
     this.handleDownloadClose = this.handleDownloadClose.bind(this);
   }
+
+  componentWillMount() {
+    this.setState({
+      x: this.props.xRepeat,
+      y: this.props.yRepeat,
+      z: this.props.zRepeat,
+      rotationMatrix: this.props.rotationMatrix,
+    });
+  }
+
   componentWillReceiveProps() {
     this.setState({ in: false });
     setTimeout(() => {
@@ -123,7 +150,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     this.setState({
       downloadOpen: false,
     });
-    const url = `${flaskRoot}/apps/catKitDemo/convert_atoms/`;
+    const url = `${apiRoot}/apps/catKitDemo/convert_atoms/`;
     const params = { params: {
       format,
       cif: this.props.cifdata,
@@ -144,6 +171,13 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 
   handleChange(axis, diff) {
     return () => {
+      if (axis === 'x') {
+        this.props.setXRepeat(parseInt(this.state[axis], 10) + diff);
+      } else if (axis === 'y') {
+        this.props.setYRepeat(parseInt(this.state[axis], 10) + diff);
+      } else if (axis === 'z') {
+        this.props.setZRepeat(parseInt(this.state[axis], 10) + diff);
+      }
       this.setState({
         [axis]: Math.max(1, this.state[axis] + diff),
       });
@@ -160,17 +194,102 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           onClose={() => { this.handleClose(); }}
         >
           <div>
-            <Grid container direction="row" justify="flex-end">
+            <Grid container justify="space-between" direction="row">
               <Grid item>
-                <Tooltip title="Exit fullscreen.">
-                  <Button
-                    mini
-                    fab
-                    onClick={() => { this.handleClose(); }}
-                  >
-                    <MdClose />
-                  </Button>
-                </Tooltip>
+                <Grid container>
+                  <Grid item>
+                    <Grid container direction="row">
+                      <Grid item>
+                        <Tooltip title="Show fewer repetitions in x-directions">
+                          <Button
+                            onClick={this.handleChange('x', -1)}
+                            disabled={this.state.x < 2}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >-</Button>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item>
+                        <IconButton size="small" className={this.props.classes.fsIconButton}>x={this.state.x}</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <Tooltip title="Show more repetition in x-direction">
+                          <Button
+                            onClick={this.handleChange('x', +1)}
+                            disabled={this.state.x >= 20}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >+</Button>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Grid container direction="row">
+                      <Grid item>
+                        <Tooltip title="Show fewer repetitions in y-direction">
+                          <Button
+                            onClick={this.handleChange('y', -1)}
+                            disabled={this.state.y < 2}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >-</Button>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item>
+                        <IconButton className={this.props.classes.fsIconButton}>y={this.state.y}</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <Tooltip title="Show more repetitions in y-direction">
+                          <Button
+                            onClick={this.handleChange('y', +1)}
+                            disabled={this.state.y >= 20}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >+</Button>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Grid container direction="row">
+                      <Grid item>
+                        <Tooltip title="Show fewer repetitions in z-direction.">
+                          <Button
+                            onClick={this.handleChange('z', -1)}
+                            disabled={this.state.z < 2}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >-</Button>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item>
+                        <IconButton className={this.props.classes.fsIconButton} >z={this.state.z}</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <Tooltip title="Show more repetitions in z-direction">
+                          <Button
+                            onClick={this.handleChange('z', +1)}
+                            disabled={this.state.z >= 20}
+                            mini fab className={this.props.classes.fsIconButton}
+                          >+</Button>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <div>
+                </div>
+              </Grid>
+              <Grid item>
+                <Grid container direction="row" justify="flex-end">
+                  <Grid item>
+                    <Tooltip title="Exit fullscreen.">
+                      <Button
+                        mini
+                        fab
+                        onClick={() => { this.handleClose(); }}
+                      >
+                        <MdClose />
+                      </Button>
+                    </Tooltip>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
             <GeometryCanvasCifdata
@@ -182,6 +301,9 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               z={this.state.z}
               height={window.innerHeight}
               width={window.innerWidth}
+              rotationMatrix={this.props.rotationMatrix}
+              setRotationMatrix={this.props.setRotationMatrix}
+              parent={this}
             />
           </div>
         </Modal>
@@ -192,6 +314,8 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           x={this.state.x}
           y={this.state.y}
           z={this.state.z}
+          setRotationMatrix={this.props.setRotationMatrix}
+          parent={this}
         />
         <Grid
           container
@@ -312,7 +436,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
                       <ListItem button key={`format_${i}`} onClick={() => this.handleDownload(format)}>
                         <ListItemText primary={format} />
                       </ListItem>
-                      ))}
+                    ))}
                   </List>
                 </Dialog>
               </Grid>
@@ -336,10 +460,46 @@ GeometryCanvasWithOptions.propTypes = {
   id: PropTypes.string.isRequired,
   extraSlug: PropTypes.string,
   cookies: instanceOf(Cookies).isRequired,
+  xRepeat: PropTypes.number,
+  yRepeat: PropTypes.number,
+  zRepeat: PropTypes.number,
+  rotationMatrix: PropTypes.array,
+
+  setXRepeat: PropTypes.func,
+  setYRepeat: PropTypes.func,
+  setZRepeat: PropTypes.func,
+  setRotationMatrix: PropTypes.func,
 };
+
+const mapStateToProps = (state) => ({
+  xRepeat: state.get('geometryCanvasReducer').xRepeat,
+  yRepeat: state.get('geometryCanvasReducer').yRepeat,
+  zRepeat: state.get('geometryCanvasReducer').zRepeat,
+  rotationMatrix: state.get('geometryCanvasReducer').rotationMatrix,
+  canvas: state.get('geometryCanvasReducer').canvas,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setXRepeat: (x) => {
+    dispatch(actions.setXRepeat(x));
+  },
+  setYRepeat: (x) => {
+    dispatch(actions.setYRepeat(x));
+  },
+  setZRepeat: (x) => {
+    dispatch(actions.setZRepeat(x));
+  },
+  setRotationMatrix: (x) => {
+    dispatch(actions.setRotationMatrix(x));
+  },
+  saveCanvas: (x) => {
+    dispatch(actions.saveCanvas(x));
+  },
+});
 
 
 export default compose(
   withStyles(styles, { withTheme: true }),
   withCookies,
+  connect(mapStateToProps, mapDispatchToProps)
 )(GeometryCanvasWithOptions);

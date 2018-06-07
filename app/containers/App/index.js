@@ -14,7 +14,7 @@ import compose from 'recompose/compose';
 import { Link, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { isIOS } from 'react-device-detect';
+import { isIOS, isMobile } from 'react-device-detect';
 
 import Flexbox from 'flexbox-react';
 import Helmet from 'react-helmet';
@@ -33,6 +33,8 @@ import { MdChevronLeft,
   MdSettings,
   MdFeedback,
 } from 'react-icons/lib/md';
+
+import { FaNewspaperO } from 'react-icons/lib/fa';
 
 import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
@@ -62,7 +64,6 @@ const AppWrapper = styled.div`
   min-height: 100%;
   padding: 0 0px;
   flex-direction: column;
-  font-family: 'Roboto', sans-serif;
 `;
 
 const boldFooterWeight = 500;
@@ -70,14 +71,20 @@ const lightFooterWeight = 200;
 const drawerWidth = 240;
 
 const styles = (xtheme) => ({
+  mainContainer: {
+    minHeight: '100vh',
+    overflow: 'hidden',
+    display: 'block',
+    position: 'relative',
+    paddingBottom: 200,
+  },
   backLink: {
     color: 'white',
     marginLeft: -xtheme.spacing.unit * 3,
   },
   textLink: {
     color: 'white',
-    marginLeft: -xtheme.spacing.unit * 2.0,
-    marginRight: -xtheme.spacing.unit * 2.0,
+    textDecoration: 'none',
   },
   appBarTitle: {
     marginTop: 13,
@@ -166,6 +173,19 @@ const styles = (xtheme) => ({
       visibility: 'hidden',
     },
   },
+  barIcon: {
+    [xtheme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  barText: {
+    marginTop: 13,
+    textDecoration: 'none',
+    decoration: 'none',
+    [xtheme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   helmet: {
     [xtheme.breakpoints.down('sm')]: {
       marginBottom: '-20px',
@@ -247,6 +267,10 @@ class App extends React.Component {
               {whiteLabel ? null :
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
               }
+              <Grid container direction="column" justify="center">
+                <Grid item>
+                </Grid>
+              </Grid>
               {whiteLabel ?
                 <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
                   :
@@ -300,10 +324,10 @@ class App extends React.Component {
                       {child.title}
                     </Link>
                   </ListItem>
-                        )
+                    )
                     )}
               </List>
-                }
+              }
             </div>
 
           )
@@ -332,23 +356,25 @@ class App extends React.Component {
             </Link>
           </ListSubheader>}
         >
-          <ListItem>
-            <Link to="/developerGuide" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
-              Developer Guide
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Link to="/feedback" onClick={this.handleDrawerToggle} className={this.props.classes.menuLink}>
+        </List>
+        <List
+          subheader={<ListSubheader className={this.props.classes.subListHeader}>
+            <Link
+              className={this.props.classes.topMenuLink}
+              to="/feedback"
+            >
               <MdFeedback /> Feedback
             </Link>
-          </ListItem>
+          </ListSubheader>
+          }
+        >
         </List>
         <Divider className={this.props.classes.divider} />
       </div>
     );
 
     return (
-      <div>
+      <div className={this.props.classes.mainContainer}>
         <AppSnackBar />
         {suBranding === false || appBar === true ? null :
         <div id="brandbar">
@@ -369,20 +395,23 @@ class App extends React.Component {
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
               <Grid container direction="row" justify="space-between">
-                <Grid item sm={1} md={1} lg={1}>
-                  { (!isIOS || this.props.history === null) ? null :
-                  <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
-                    <MdChevronLeft />
-                  </IconButton>
-
-                      }
-                  <Tooltip title="Open menu">
-                    <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
-                      {/* onClick event has to be on IconButton to work w/ Firefox. */}
-                      <MenuIcon />
+                {isMobile ?
+                  <Grid item sm={1} md={1} lg={1}>
+                    { (!isIOS || this.props.history === null) ? null :
+                    <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
+                      <MdChevronLeft />
                     </IconButton>
-                  </Tooltip>
-                </Grid>
+
+                          }
+                    <Tooltip title="Open menu">
+                      <IconButton onClick={this.handleDrawerToggle} color="inherit" aria-label="Menu" className={`${this.props.classes.navIconHide} ${this.props.classes.textLink}`}>
+                        {/* onClick event has to be on IconButton to work w/ Firefox. */}
+                        <MenuIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                        : '\u00A0\u00A0'
+                    }
                 { suBranding === false ? null :
                 <Grid item >
                   <ReactGA.OutboundLink
@@ -395,12 +424,12 @@ class App extends React.Component {
                   </ReactGA.OutboundLink>
                 </Grid>
                     }
-                <Grid item sm={4} md={8}>
+                <Grid item sm={4} md={6}>
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
                         <Grid item>
-                          <Tooltip title="Open main site">
+                          <Tooltip title={`v${version}`}>
                             <Link to="/" className={this.props.classes.appBarTitle} >
                               <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
                                 {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
@@ -412,32 +441,59 @@ class App extends React.Component {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item sm={4} md={2} >
+
+
+
+                <Grid item sm={4} md={4} >
+
                   <Grid container direction="row" justify="space-between">
                     <Grid item>
-                      <Link to="/energies" className={this.props.classes.textLink}>
-                        <Tooltip title="Search reaction energetics">
-                          <IconButton size="small" color="inherit" aria-label="Search" >
-                            <MdSearch />
-                          </IconButton>
-                        </Tooltip>
-                      </Link>
-                    </Grid>
-                    <Grid item >
                       <Link to="/appsIndex" className={this.props.classes.textLink}>
-                        <Tooltip title="Open apps index">
-                          <IconButton size="small" color="inherit" aria-label="Menu" >
-                            <MdApps />
-                          </IconButton>
+                        <Tooltip title="Open Apps Index">
+                          <div>
+                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open Apps Index" >
+                              <MdApps />
+                            </IconButton>
+                            <div className={this.props.classes.barText}>Apps</div>
+                          </div>
                         </Tooltip>
                       </Link>
                     </Grid>
-                    <Grid item >
-                      <Link to="/settings" className={this.props.classes.textLink}>
-                        <Tooltip title="Open settings">
-                          <IconButton size="small" color="inherit" aria-label="Settings">
-                            <MdSettings />
-                          </IconButton>
+
+
+
+                    <Grid item>
+                      <Link to="/publications" className={this.props.classes.textLink}>
+                        <Tooltip title="Browse Publications with Geometries">
+                          <div>
+                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open Apps Index" >
+                              <FaNewspaperO />
+                            </IconButton>
+                            <div className={this.props.classes.barText}>Publications</div>
+                          </div>
+                        </Tooltip>
+                      </Link>
+                    </Grid>
+
+
+                    <Grid item>
+                      <Link to="/about" className={this.props.classes.textLink}>
+                        <Tooltip title="About This Website">
+                          <div>
+                            <div className={this.props.classes.barText}>About</div>
+                          </div>
+                        </Tooltip>
+                      </Link>
+                    </Grid>
+
+
+
+                    <Grid item>
+                      <Link to="http://docs.catalysis-hub.org" target="_blank" className={this.props.classes.textLink}>
+                        <Tooltip title="See Website Documentation. Opens in new tab.">
+                          <div>
+                            <div className={this.props.classes.barText}>Documentation</div>
+                          </div>
                         </Tooltip>
                       </Link>
                     </Grid>
@@ -472,38 +528,34 @@ class App extends React.Component {
             </Paper>
           </Hidden>
         </div>
-}
+        }
         <main className={this.props.classes.content}>
           <AppWrapper>
-            <Paper
-              className={this.props.classes.mainPaper}
-            >
-              <Helmet
-                className={this.props.classes.helmet}
-                titleTemplate="%s - Catalysis-Hub.org"
-                defaultTitle="Catalysis-Hub.org"
-                meta={[
-                  { name: 'description', content: `Catalysis-Hub.org is a frontend for browsing the SUNCAT CatApp database containing thousands of first-principles calculations related to heterogeneous catalysis reactions on surface systems. Its goal is to allow comprehensive and user-friendly access to raw quantum chemical simulations guided by heterogeneous catalysis concepts and commonly used graphical representations such as scaling relations and activity maps. All reaction energies are derived from periodic plane-wave density functional theory calculations. An increasing number of calculations contain the corresponding optimized geometry as well as further calculational details such as exchange-correlation (XC) functional, basis set quality, and k-point sampling. Ultimately, the goal is to provide fully self-contained data for predicting experimental observations from electronic structure calculations and using software packages such as Quantum Espresso, GPAW, VASP, and FHI-aims. Input and output with other codes is supported through the Atomic Simulation Environment (ASE). It may also serve as a natural starting point for training and developing machine-learning based approaches accelerating quantum chemical simulations.
+            <Helmet
+              className={this.props.classes.helmet}
+              titleTemplate="%s - Catalysis-Hub.Org"
+              defaultTitle="Catalysis-Hub.Org"
+              title={`${(_.startCase(this.props.location.pathname.replace('/', '')).match(/[A-Z][a-z]+/g) || ['Index']).join(' ')} - Catalysis-Hub.Org`}
+              meta={[
+                { name: 'description', content: `Catalysis-Hub.org is a frontend for browsing the SUNCAT CatApp database containing thousands of first-principles calculations related to heterogeneous catalysis reactions on surface systems. Its goal is to allow comprehensive and user-friendly access to raw quantum chemical simulations guided by heterogeneous catalysis concepts and commonly used graphical representations such as scaling relations and activity maps. All reaction energies are derived from periodic plane-wave density functional theory calculations. An increasing number of calculations contain the corresponding optimized geometry as well as further calculational details such as exchange-correlation (XC) functional, basis set quality, and k-point sampling. Ultimately, the goal is to provide fully self-contained data for predicting experimental observations from electronic structure calculations and using software packages such as Quantum Espresso, GPAW, VASP, and FHI-aims. Input and output with other codes is supported through the Atomic Simulation Environment (ASE). It may also serve as a natural starting point for training and developing machine-learning based approaches accelerating quantum chemical simulations.
       Features include search for specific reaction energies, transition states, structures, exploration of scaling relations, activity maps, Pourbaix diagrams and machine learning models, as well as generation of novel bulk and surface structures. Calculations are linked to peer-review publications where available. The database can be queried via a GraphQL API that can also be accessed directly.
       All code pertaining to this project is hosted as open-source under a liberal MIT license on github to encourage derived work and collaboration. The frontend is developed using the React Javascript framework based on react boilerplate. New components (apps) can be quickly spun-off and added to the project. The backend is developed using the Flask Python framework providing the GraphQL API as well as further APIs for specific apps.
       As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.` },
-          { name: 'robots', content: 'index,follow' },
-          { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
-          { name: 'DC.title', content: 'Catalysis-Hub.org' },
-                ]}
-                link={suBranding === false && appBar === false ? [] : [
-          { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
-          { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' },
-                ]}
-              />
-              <Header />
-              {React.Children.toArray(this.props.children)}
-            </Paper>
-            <Footer />
+                { name: 'robots', content: 'index,follow' },
+                { name: 'keywords', content: 'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw' },
+                { name: 'DC.title', content: 'Catalysis-Hub.org' },
+              ]}
+              link={suBranding === false && appBar === false ? [] : [
+                { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' },
+              ]}
+            />
+            <Header />
+            {React.Children.toArray(this.props.children)}
           </AppWrapper>
         </main>
         {suBranding === false ? null :
-        <div className={this.props.classes.footer}>
+        <div>
           <Flexbox id="global-footer" flexDirection="column" justifyContent="space-around" style={{ marginTop: '0px' }}>
             <Flexbox flexDirection="row" justifyContent="space-around">
               <Flexbox flexDirection="column" justifyContent="space-around">
@@ -550,7 +602,7 @@ class App extends React.Component {
                           fontWeight: lightFooterWeight,
                         }}
                       >&copy; <span className="fn org">Stanford University</span>.&nbsp;&nbsp;<span className="adr"> <span className="locality">Stanford</span>, <span className="region">California</span> <span className="postal-code">94305</span></span>.&nbsp;&nbsp;
-                    <span id="copyright-complaint"></span>
+                            <span id="copyright-complaint"></span>
                       </p>
                     </Flexbox>
                     <Flexbox height="20vh" />
@@ -561,11 +613,12 @@ class App extends React.Component {
             </Flexbox>
           </Flexbox>
         </div>
-}
+        }
+        <Footer />
       </div>
     );
   }
-      }
+}
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -581,8 +634,8 @@ const mapDispatchToProps = () => ({
 });
 
 export default compose(
-      withProgressBar,
-      withWidth(),
-      connect(mapStateToProps, mapDispatchToProps),
-      withStyles(styles, { withTheme: true }),
-      )(App);
+  withProgressBar,
+  withWidth(),
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles, { withTheme: true }),
+)(App);

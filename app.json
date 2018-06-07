@@ -1,5 +1,6 @@
 {
   "name": "CatAppBrowser",
+  "stack": "heroku-16",
   "scripts": {
   },
   "env": {

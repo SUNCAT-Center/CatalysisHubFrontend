@@ -6,8 +6,10 @@
 
 import { compose } from 'recompose';
 import React from 'react';
+import _ from 'lodash';
 import PropTypes, { instanceOf } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 /* import Button from 'material-ui/Button';*/
 /* import Chip from 'material-ui/Chip';*/
@@ -18,6 +20,8 @@ import { withCookies, Cookies } from 'react-cookie';
 
 import { isMobile } from 'react-device-detect';
 
+import * as actions from 'components/GeometryCanvasWithOptions/actions';
+
 const jQuery = require('jquery');
 window.jQuery = jQuery;
 const { ChemDoodle } = require('utils/ChemDoodleWeb'); // eslint-disable-line no-unused-vars
@@ -27,16 +31,22 @@ const styles = (theme) => ({
   },
 });
 
+const initialState = {
+  rotationMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3],
+};
+
 class GeometryCanvasCifdata extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
+      ...initialState,
       orientation: 'test orientation',
       perspective: (this.props.cookies.get('perspective') === 'true'),
       tiltToRotate: (this.props.cookies.get('tiltToRotate') === 'true'),
     };
     /* this.downloadStructure = this.downloadStructure.bind(this);*/
   }
+
   componentDidMount() {
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -54,9 +64,9 @@ function _load_lib(url, callback){
 
 }
 // Load Libraries
-  var rotationMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3]
-  rotationMatrix = ChemDoodle.lib.mat4.rotate(rotationMatrix, -.8, [1,0,0]);
-  rotationMatrix = ChemDoodle.lib.mat4.rotate(rotationMatrix, +.1, [0,0,1]);
+  /*var rotationMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3]*/
+  /*rotationMatrix = ChemDoodle.lib.mat4.rotate(rotationMatrix, -.8, [1,0,0]);*/
+  /*rotationMatrix = ChemDoodle.lib.mat4.rotate(rotationMatrix, +.1, [0,0,1]);*/
 
   if(typeof cif_${this.props.uniqueId} === 'undefined' ) {
    let cif_${this.props.uniqueId} 
@@ -66,6 +76,7 @@ function _load_lib(url, callback){
   }
   //Code
   tfcanvas_${this.props.uniqueId} = new ChemDoodle.TransformCanvas3D('${this.props.id}_view');
+  document.getElementById("${this.props.id}_view").tfcanvas = tfcanvas_${this.props.uniqueId};
   cif_${this.props.uniqueId} = ChemDoodle.readCIF(\`${this.props.cifdata}\`,  ${this.props.x}, ${this.props.y}, ${this.props.z});
   if (typeof alpha_${this.props.uniqueId} === 'undefined') {
   let alpha_${this.props.uniqueId} = 0.; 
@@ -87,6 +98,7 @@ function _load_lib(url, callback){
     }
   });
 
+
   /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Line');*/
   /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Stick');*/
   /*tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Wireframe');*/
@@ -102,7 +114,8 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.uniqueId}.specs.shapes_color = 'black';
   tfcanvas_${this.props.uniqueId}.specs.shapes_lineWidth = 1;
   tfcanvas_${this.props.uniqueId}.loadContent([cif_${this.props.uniqueId}.molecule], [cif_${this.props.uniqueId}.unitCell]);
-  tfcanvas_${this.props.uniqueId}.rotationMatrix = rotationMatrix; tfcanvas_${this.props.uniqueId}.updateScene()
+  tfcanvas_${this.props.uniqueId}.rotationMatrix = [${this.props.rotationMatrix}] || [${this.state.rotationMatrix}] || [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3];
+  tfcanvas_${this.props.uniqueId}.updateScene()
 
   if(${this.state.tiltToRotate}) {
   window.addEventListener('deviceorientation', (e) => {
@@ -140,6 +153,23 @@ function _load_lib(url, callback){
     const item = document.getElementById(`${this.props.id}_view`);
 
     item.appendChild(script);
+    this.props.saveCanvas(item.tfcanvas);
+
+
+    document.addEventListener('mouseup', (() => {
+      const nonUnity = !_.isEqual(item.tfcanvas.rotationMatrix, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+      const nonOld = !_.isEqual(item.tfcanvas.rotationMatrix, this.props.rotationMatrix);
+
+      if (nonUnity && nonOld) {
+        this.props.setRotationMatrix(
+        item.tfcanvas.rotationMatrix
+      );
+      }
+    }));
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !_.isEqual(nextProps, this.props);
   }
   componentDidUpdate() {
     this.componentDidMount();
@@ -217,6 +247,9 @@ GeometryCanvasCifdata.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   z: PropTypes.number,
+  rotationMatrix: PropTypes.array,
+  setRotationMatrix: PropTypes.func,
+  saveCanvas: PropTypes.func,
   borderWidth: PropTypes.number,
   altLabels: PropTypes.object,
   perspective: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
@@ -224,14 +257,21 @@ GeometryCanvasCifdata.propTypes = {
   cookies: instanceOf(Cookies).isRequired,
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  setRotationMatrix: (x) => {
+    dispatch(actions.setRotationMatrix(x));
+  },
+  saveCanvas: (x) => {
+    dispatch(actions.saveCanvas(x));
+  },
+});
+
+const mapStateToProps = (state) => ({
+  rotationMatrix: state.get('geometryCanvasReducer').rotationMatrix,
+});
 
 export default compose(
   withStyles(styles, { withTheme: true }),
   withCookies,
+  connect(mapStateToProps, mapDispatchToProps)
 )(GeometryCanvasCifdata);
-
-/* withStyles(styles, { withTheme: true })(*/
-/* withCookies(*/
-/* GeometryCanvasCifdata*/
-/* )*/
-/* );*/

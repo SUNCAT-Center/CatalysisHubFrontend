@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import AtoML from '../index';
+// import CatLearn from '../index';
 
-describe('<AtoML />', () => {
+describe('<CatLearn />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true);
   });

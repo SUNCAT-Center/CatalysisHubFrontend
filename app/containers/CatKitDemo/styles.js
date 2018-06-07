@@ -76,5 +76,24 @@ export const styles = (theme) => ({
   flipButton: {
     height: '100%',
   },
+  numberTextfield: {
+    width: 80,
+  },
+  buttonedTextfield: {
+    width: 250,
+  },
+  iconButton: {
+    height: 30,
+  },
+  actionIcon: {
+    cursor: 'pointer',
+    marginLeft: theme.spacing.unit,
+  },
+  highlightedRow: {
+    backgroundColor: '#ccc',
+  },
+  row: {
+  },
+
 });
 

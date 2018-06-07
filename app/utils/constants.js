@@ -1,12 +1,16 @@
+/* Import Icons*/
+
 import packageJson from './package.json';
 
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
   /* flaskRoot: 'http://localhost:5001',*/
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
-  apiRoot: 'http://api.catalysis-hub.org/',
+  apiRoot: 'https://api.catalysis-hub.org/',
+  /* apiRoot: 'http://localhost:5000',*/
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
+  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',*/
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   docRoot: '//docs.catalysis-hub.org',
   whiteLabel: false,
@@ -39,27 +43,36 @@ module.exports = {
 
       ],
     }, {
-      title: 'CatML',
-      route: '/catml',
-      tooltip: 'Machine learning based predictions',
+      title: 'CatLearn',
+      route: '/catLearn',
+      tooltip: 'Machine learning based predictions.',
     }, {
       title: 'CatKit Slab Generator',
       route: '/catKitDemo',
       tooltip: 'Build your own slab geometry.',
     }, {
-      title: 'GraphiQL API Console',
+      title: 'GraphQL API',
       route: '/graphQLConsole',
-      tooltip: 'Direct programmatic access to database.',
+      tooltip: 'Programmatic access to database.',
     }, {
       title: 'Pourbaix Diagrams',
+      route: '/pourbaixDiagrams',
       tooltip: 'Interactive electrochemical phase diagrams.',
+    }, {
+      title: 'Prototype Search',
+      route: '/prototypeSearch',
+      tooltip: 'Search for structures using Wyckoff points.',
     }, {
       title: 'Publications',
       route: '/publications',
-      tooltip: 'Interactive list of publications with geometries.',
+      tooltip: 'Calculated structures sorted by publications.',
+    }, {
+      title: 'Reaction Energetics',
+      tooltip: 'Explore calculated reaction energetics',
+      route: '/energies',
     }, {
       title: 'Scaling Relations',
-      tooltip: 'App for exploring scaling relations -- Work in Progress.',
+      tooltip: 'App for exploring scaling relations -- WIP.',
     }, {
       /* title: 'Upload Datasets',*/
       /* route: '/upload',*/
@@ -70,7 +83,20 @@ module.exports = {
     }, {
       title: 'Your Next App ...',
       route: '/yourNextApp',
-      tooltip: 'Documentation on how to write your own apps.',
+      tooltip: 'How to write your own apps.',
     },
+  ],
+  people: [
+    'Ankit Jain',
+    'Jake Boes',
+    'Kirsten Winther',
+    'Martin Hansen',
+    'Max Hoffmann',
+    'Meng Zhao',
+    'Michal Bajdich',
+    'Morten Winther',
+    'Osman Mamun',
+    'Paul Jennings',
+    'Thomas Bligaard',
   ],
 };

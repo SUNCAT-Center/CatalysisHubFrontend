@@ -16,6 +16,23 @@ import Grid from 'material-ui/Grid';
 import Slide from 'material-ui/transitions/Slide';
 import Tooltip from 'material-ui/Tooltip';
 
+import {
+  FaMapO,
+  FaTerminal,
+  FaNewspaperO,
+  FaDatabase,
+} from 'react-icons/lib/fa';
+
+import {
+  IoCube,
+  IoSocialBuffer,
+} from 'react-icons/lib/io';
+import {
+  MdSearch,
+  MdBubbleChart,
+  MdFormatShapes,
+} from 'react-icons/lib/md';
+
 
 const styles = () => ({
   AppWrapper: {
@@ -26,10 +43,45 @@ const styles = () => ({
     minHeight: '100%',
     padding: '0 0px',
     flexDirection: 'column',
-    fontFamily: 'Roboto, sans-serif',
     textDecoration: 'none',
+    position: 'block',
+  },
+  appHint: {
+    fontSize: 12,
+    textAlign: 'left',
+  },
+  appPaper: {
+    padding: 25,
+    minWidth: 240,
+    maxWidth: 300,
+    textAlign: 'center',
+    backgroundColor: '#eeeeee',
+    cornerRadius: 40,
   },
 });
+
+const getAppIcon = (title) => {
+  if (title === 'Activity Maps') {
+    return <FaMapO />;
+  } else if (title === 'Prototype Search') {
+    return <IoCube />;
+  } else if (title === 'CatKit Slab Generator') {
+    return <IoSocialBuffer />;
+  } else if (title === 'Reaction Energetics') {
+    return <MdSearch />;
+  } else if (title === 'Publications') {
+    return <FaNewspaperO />;
+  } else if (title === 'Your Next App ...') {
+    return <FaTerminal />;
+  } else if (title === 'GraphQL API') {
+    return <FaDatabase />;
+  } else if (title === 'Wyckoff Bulk Generator') {
+    return <MdFormatShapes />;
+  } else if (title === 'Scaling Relations') {
+    return <MdBubbleChart />;
+  }
+  return null;
+};
 
 class Apps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -53,16 +105,16 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                     }}
                   >
                     <Paper
-                      style={{
-                        padding: 25,
-                        minWidth: 240,
-                        maxWidth: 300,
-                        textAlign: 'center',
-                      }}
+                      rounded
+                      className={this.props.classes.appPaper}
+                      elevation={0}
                     >
                       <Tooltip title={app.tooltip} placement="top">
-                        <h3>{app.title}</h3>
+                        <h3>
+                          {getAppIcon(app.title)}
+                          {'\u00A0'}{app.title}</h3>
                       </Tooltip>
+                      <div className={this.props.classes.appHint}>{app.tooltip}</div>
                     </Paper>
                   </Link>
                 </Grid>

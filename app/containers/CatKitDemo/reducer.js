@@ -24,11 +24,29 @@ const initialState = {
   slabInput: '',
   slabParams: {},
   wyckoffBulkParams: {},
+  openCalculation: -1,
 };
 
 function catKitDemoReducer(state = initialState, action) {
   switch (action.type) {
-
+    case constants.SET_OPEN_CALCULATION: {
+      return {
+        ...state,
+        openCalculation: action.payload.n,
+      };
+    }
+    case constants.EDIT_CALCULATION: {
+      const bulkParams = _.get(state, `calculations.[${action.payload.n}].bulkParams`, state.bulkParams);
+      const slabParams = _.get(state, `calculations.[${action.payload.n}].slabParams`, state.slabParams);
+      const adsorbateParams = _.get(state, `calculations.[${action.payload.n}].adsorbateParams`, state.adsorbateParams);
+      return {
+        ...state,
+        openCalculation: action.payload.n,
+        bulkParams,
+        slabParams,
+        adsorbateParams,
+      };
+    }
     case constants.SAVE_ADSORBATE_PARAMS: {
       return {
         ...state,
@@ -123,16 +141,42 @@ function catKitDemoReducer(state = initialState, action) {
         ...state,
         calculations: [],
       };
+    case constants.COPY_CALCULATION: {
+      const calculations = _.cloneDeep(state.calculations);
+      calculations.splice(
+        action.payload.n,
+        0,
+        _.cloneDeep(state.calculations[action.payload.n]));
+      return {
+        ...state,
+        calculations,
+      };
+    }
     case constants.REMOVE_CALCULATION:
       return {
         ...state,
         calculations: state.calculations.filter((x, i) => i !== action.payload.n),
       };
-    case constants.SAVE_CALCULATION:
+    case constants.SAVE_CALCULATION: {
+      let calculations;
+      if (state.openCalculation >= 0 && state.openCalculation < state.calculations.length) {
+        calculations = _.concat(
+          state.calculations.slice(0, state.openCalculation),
+          [action.payload.calculation],
+          state.calculations.slice(state.openCalculation + 1));
+      } else {
+        calculations = _.concat(
+          state.calculations,
+          [action.payload.calculation],
+        );
+      }
+
       return {
         ...state,
-        calculations: _.union(state.calculations, [action.payload.calculation]),
+        calculations,
+        openCalculation: -1,
       };
+    }
     case constants.CLEAR_SLAB_PARAMS:
       return {
         ...state,

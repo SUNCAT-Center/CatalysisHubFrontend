@@ -16,6 +16,7 @@ describe('catKitDemoReducer', () => {
       customSlabInput: false,
       images: [],
       latticeConstant: 3.92,
+      openCalculation: -1,
       siteOccupations: {},
       slabInput: '',
       slabParams: {},

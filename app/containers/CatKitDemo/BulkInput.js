@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 
 import { Link } from 'react-router';
+import { withCookies, Cookies } from 'react-cookie';
+import { compose } from 'recompose';
 
 
 import { MenuItem } from 'material-ui/Menu';
@@ -19,14 +21,15 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import { MdClear } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
+import { outputFormats } from 'components/GeometryCanvasWithOptions';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const url = `${backendRoot}/convert_atoms/`;
 const bulkUrl = `${backendRoot}/generate_bulk_cif`;
 
-const wyckoffUrl = `${flaskRoot}/apps/bulkEnumerator/get_wyckoff_from_cif`;
+const wyckoffUrl = `${apiRoot}/apps/bulkEnumerator/get_wyckoff_from_cif`;
 
 
 let initialState = {
@@ -37,6 +40,7 @@ let initialState = {
   elements: ['Pt', 'Pt', 'Pt', 'Pt'],
   uploadError: '',
   loading: false,
+  inputFormat: 'cif',
 };
 
 
@@ -114,7 +118,12 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
     if (this.props.routeParams.composition) {
       elements = this.props.routeParams.composition.match(/[A-Z][a-z]?/g);
     } else {
-      elements = ['Pt'];
+      elements = _.get(this.props, 'bulkParams.elements', undefined);
+      if (typeof elements === 'string') {
+        elements = JSON.parse(elements);
+      } else if (typeof elements === 'undefined') {
+        elements = ['Pt'];
+      }
     }
     while (elements.length < structureData[structure].nspecies) {
       elements.unshift(elements[0]);
@@ -126,7 +135,20 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       latticeConstant,
     });
 
+
+    // Sync initial state with cookie
+    if (this.props.cookies.get('preferredFormat') === undefined) {
+      this.props.cookies.set(
+        'preferredFormat',
+        initialState.inputFormat,
+      );
+    } else {
+      initialState.inputFormat = this.props.cookies.get('preferredFormat');
+    }
+
     this.state = initialState;
+
+
     this.generateBulk = this.generateBulk.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileDrop = this.handleFileDrop.bind(this);
@@ -151,22 +173,27 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         u: this.state.u,
         covera: this.state.covera,
         wyckoff: this.props.bulkParams.wyckoff,
+        format: this.state.inputFormat,
       },
     } };
 
     this.props.clearSlabCifs();
-    this.props.saveBulkParams(params.params.bulkParams);
+    /* this.props.saveBulkParams(params.params.bulkParams);*/
 
     if (!this.props.customBulkInput) {
       axios.get(bulkUrl, params).then((response) => {
         this.props.receiveBulkCif(response.data.cifdata);
-        this.setState({
-          latticeConstant: response.data.lattice_constant.toFixed(3),
-        });
+        if (typeof response.data.lattice_constants !== 'undefined') {
+          this.setState({
+            latticeConstant: response.data.lattice_constants.toFixed(3),
+          });
+        }
         const wyckoffParams = {
           cif: response.data.cifdata,
         };
         params.params.bulkParams.lattice_constant = response.data.lattice_constant;
+        params.params.bulkParams.input = response.data.input;
+        params.params.bulkParams.cif = response.data.cifdata;
         axios.get(wyckoffUrl, { params: wyckoffParams }).then((wyckoffResponse) => {
           params.params.bulkParams.wyckoff = wyckoffResponse.data;
           this.props.saveBulkParams(params.params.bulkParams);
@@ -227,7 +254,7 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
   render() {
     return (
       <Paper className={this.props.classes.paper}>
-        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for importing arbitrary bulk structures.</div>
+        <div>Note: use <Link to="/bulkGenerator">Wyckoff Bulk Constructor</Link> for generating arbitrary bulk structures  or <Link to="/prototypeSearch">Prototype Search</Link> to search among existing ones.</div>
         <Grid container justify="space-between" direction="row" >
           <Grid item>
             <h2>Setup Bulk Structure</h2>
@@ -317,6 +344,31 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
             />
             <FormHelperText>{'Default based on Vegard\'s law'}</FormHelperText>
           </FormControl>
+          <FormControl className={this.props.classes.formContro}>
+            <InputLabel
+              htmlFor="input-format-helper"
+            >Input Format</InputLabel>
+            <Select
+              id="input-format-helper"
+              value={this.state.inputFormat}
+              onChange={(event) => {
+                this.setState({
+                  inputFormat: event.target.value,
+                });
+                this.props.cookies.set(
+                  'preferredFormat',
+                  event.target.value,
+                );
+              }}
+            >
+              {outputFormats.map((format, i) => (
+                <MenuItem key={`format_${i}`} value={format}>{format}</MenuItem>
+
+              ))}
+            </Select>
+
+
+          </FormControl>
 
 
         </form>
@@ -333,6 +385,7 @@ BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
   clearBulkCif: PropTypes.func,
   clearSlabCifs: PropTypes.func,
+  cookies: instanceOf(Cookies),
   customBulkInput: PropTypes.bool,
   dropBulkInput: PropTypes.func,
   forgetCustomBulk: PropTypes.func,
@@ -343,4 +396,7 @@ BulkInput.propTypes = {
 };
 
 
-export default withStyles(styles, { withTheme: true })(BulkInput);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  withCookies,
+)(BulkInput);

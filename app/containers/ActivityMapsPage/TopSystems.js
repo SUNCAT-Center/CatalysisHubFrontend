@@ -98,7 +98,7 @@ class TopSystems extends React.Component { // eslint-disable-line react/prefer-s
                 <ListItemText className={this.props.classes.itemText} primary="composition" />
                 <ListItemText className={this.props.classes.itemText} primary="overpotential [eV]" />
               </ListItem>
-              {this.props.systems.slice(0, 10).map((system, i) => (
+              {this.props.systems.filter((system) => system.z !== 0).slice(0, 10).map((system, i) => (
                 <ListItem
                   key={`item_${i}`}
                   button

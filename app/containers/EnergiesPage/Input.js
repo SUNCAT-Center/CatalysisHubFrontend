@@ -170,13 +170,14 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 20, ${filterString} ) {
+      query: `query{reactions ( first: 200, ${filterString} ) {
     totalCount
     edges {
       node {
         Equation
         sites
         id
+        pubId
         dftCode
         dftFunctional
         reactants
@@ -191,10 +192,6 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         reactionSystems {
           name
           aseId
-          systems {
-            id
-            calculatorParameters
-          }
         }
       }
     }

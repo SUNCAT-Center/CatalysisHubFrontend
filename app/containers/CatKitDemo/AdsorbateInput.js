@@ -20,11 +20,11 @@ import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
+const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const siteUrl = `${backendRoot}/get_adsorption_sites`;
 const adsorbatesUrl = `${backendRoot}/place_adsorbates`;
 
@@ -41,6 +41,14 @@ const initialState = {
   siteType: 'all',
   placeHolder: 'Cl',
 };
+
+const siteNames = [
+  'top',
+  'bridge',
+  'hollow',
+  '4fold',
+];
+
 
 class AdsorbateInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -59,8 +67,8 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
   updateAdsorptionSites(options = {}) {
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: this.props.bulkParams,
-      slabParams: this.props.slabParams,
+      bulkParams: _.omit(this.props.bulkParams, 'cif'),
+      slabParams: _.omit(this.props.slabParams, 'cif'),
       adsorbateParams: {
         siteType: options.siteType || this.state.siteType,
         placeHolder: options.placeHolder || this.state.placeHolder,
@@ -171,7 +179,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                               >
                                 <MenuItem value="all">all</MenuItem>
                                 {Object.keys(_.get(this.props.adsorptionSites, 0, {})).map((siteType) => (
-                                  <MenuItem key={`siteType_${siteType}`} value={siteType}>{siteType}</MenuItem>
+                                  <MenuItem key={`siteType_${siteType}`} value={`${siteType} (${_.get(siteNames, siteType, 'all')})`}>{`${siteType} (${_.get(siteNames, siteType, 'all')})`}</MenuItem>
                                   ))}
                               </Select>
                             </FormControl>

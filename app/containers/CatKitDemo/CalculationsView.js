@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileDownload from 'react-file-download';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 /* import IconButton from 'material-ui/IconButton';*/
 
@@ -16,7 +18,8 @@ import Grid from 'material-ui/Grid';
 import { MdClear,
   MdEdit,
   MdClose,
-  MdAccessTime,
+  MdContentCopy,
+  MdDelete,
   MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
@@ -27,13 +30,10 @@ import Slide from 'material-ui/transitions/Slide';
 import * as moment from 'moment/moment';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/catKitDemo`;
-const url = `${backendRoot}/generate_dft_input`;
-
-const fireworksRoot = `${flaskRoot}/apps/fireworks`;
+const fireworksRoot = `${apiRoot}/apps/fireworks`;
 const fireworksUrl = `${fireworksRoot}/schedule_workflows`;
 
 const initialState = {
@@ -47,6 +47,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.state = initialState;
     this.clearCalculations = this.clearCalculations.bind(this);
     this.removeCalculation = this.removeCalculation.bind(this);
+    this.editCalculation = this.editCalculation.bind(this);
     this.downloadCalculations = this.downloadCalculations.bind(this);
     this.queueCalculations = this.queueCalculations.bind(this);
   }
@@ -55,19 +56,80 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
   }
   removeCalculation(n) {
     this.props.removeCalculation(n);
+    if (this.props.openCalculation === n) {
+      this.props.setOpenCalculation(-1);
+    } else if (this.props.openCalculation > n) {
+      this.props.setOpenCalculation(this.props.openCalculation - 1);
+    }
+  }
+
+  copyCalculation(n) {
+    this.props.copyCalculation(n);
+    if (this.props.openCalculation > n) {
+      this.props.setOpenCalculation(this.props.openCalculation + 1);
+    }
+  }
+
+  editCalculation(n) {
+    this.props.editCalculation(n);
+    this.props.stepperHandleReset();
   }
 
   downloadCalculations() {
     this.setState({
       loading: true,
     });
-    const params = { params: {
-      calculations: JSON.stringify(this.props.calculations),
-    },
-      responseType: 'arraybuffer',
-    };
-    axios.get(url, params).then((response) => {
-      FileDownload(response.data, `calculations_${moment().format('YYYYMMDD_HHmmss')}.zip`);
+
+    const date = moment().format('YYYYMMDD_HHmmss');
+    const zip = new JSZip();
+    const dir = zip.folder(`calc_${date}`);
+    let adsDir;
+    let bulkDir;
+    let bulkStr;
+    let cdir;
+    let format;
+    let gasDir;
+    let layers;
+    let miller;
+    let slabDir;
+    let termination;
+    let vacuum;
+
+    dir.file('calculations.json', JSON.stringify(this.props.calculations, null, 4));
+
+    this.props.calculations.map((calculation) => {
+      cdir = dir
+               .folder(calculation.bulkParams.format)
+               .folder('xcFunctional');
+
+      format = calculation.bulkParams.format;
+      gasDir = cdir.folder('gas');
+      _.forOwn(_.get(calculation, 'adsorbateParams.molecules', {}),
+        (value, key) => {
+          gasDir.file(`${key}.${format}`, value);
+        }
+      );
+
+      bulkStr = `${calculation.bulkParams.elements.join('')
+        }:${calculation.bulkParams.wyckoff.name}`;
+
+      bulkDir = cdir.folder(bulkStr);
+      format = calculation.bulkParams.format;
+      bulkDir.file(`bulk.${format}`, calculation.bulkParams.input);
+      miller = `${calculation.slabParams.millerX}${calculation.slabParams.millerY}${calculation.slabParams.millerZ}`;
+      vacuum = calculation.slabParams.vacuum;
+      layers = calculation.slabParams.layers;
+      termination = calculation.slabParams.termination;
+      slabDir = bulkDir.folder(`${miller}_layers:${layers}_termination:${termination}_vacuum:${vacuum}`);
+      slabDir.file(`empty_slab.${format}`, calculation.slabParams.input);
+      return calculation.adsorbateParams.inputs.map((cif, i) => {
+        adsDir = slabDir.folder(calculation.adsorbateParams.equations[i]);
+        return adsDir.file(`${calculation.adsorbateParams.adsorbate}.${format}`, cif);
+      });
+    });
+
+    zip.generateAsync({ type: 'blob' }).then((zipFile) => {
+      saveAs(zipFile, `calculations_${date}.zip`);
     });
     this.setState({ loading: false });
   }
@@ -97,18 +159,25 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                 <TableRow>
                   <TableCell padding="none">Prototype</TableCell>
                   <TableCell padding="none">Composition</TableCell>
-                  <TableCell padding="none">Facet</TableCell>
+                  <TableCell padding="none">Miller</TableCell>
+                  <TableCell padding="none">Layers</TableCell>
+                  <TableCell padding="none">Termination</TableCell>
+                  <TableCell padding="none">Vacuum</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
-                  <TableCell padding="none">Calculator</TableCell>
-                  <TableCell padding="none"><MdEdit /></TableCell>
-                  <TableCell padding="none">Status</TableCell>
+                  <TableCell padding="none">Input Format</TableCell>
+                  <TableCell padding="none"></TableCell>
 
                 </TableRow>
               </TableHead>
               <TableBody>
                 {this.props.calculations.map((calculation, i) => (
-                  <TableRow key={`calculation_${i}`}>
-                    <TableCell padding="none">{calculation.bulkParams.wyckoff.name}</TableCell>
+                  <TableRow
+                    key={`calculation_${i}`}
+                    className={(this.props.openCalculation === i)
+                          ? this.props.classes.highlightedRow
+                          : this.props.classes.row}
+                  >
+                    <TableCell padding="none">{_.get(calculation, 'bulkParams.wyckoff.name', '???')}</TableCell>
                     <TableCell padding="none">{`
             [${calculation.bulkParams.elements.join(', ')}]
               `}</TableCell>
@@ -119,22 +188,54 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
               ${calculation.slabParams.millerZ}
             )`
             }</TableCell>
-                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`}
-                    </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.layers}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.termination}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.vacuum}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType} [${calculation.adsorbateParams.cifs.length} sites]`} </TableCell>
                     <TableCell padding="none">{`
-            ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
+            ${calculation.bulkParams.format}
             `}</TableCell>
                     <TableCell padding="none">
-                      <MdClose onClick={() => { this.removeCalculation(i); }} />
-                    </TableCell>
-                    <TableCell>
-                      <div className={this.props.classes.statusUnfinished}>
-                        <MdAccessTime />
-                      </div>
-
+                      <Button
+                        fab
+                        mini
+                        className={this.props.classes.actionIcon}
+                      >
+                        <MdEdit
+                          onClick={() => { this.editCalculation(i); }}
+                        />
+                      </Button>
+                      <Button
+                        className={this.props.classes.actionIcon}
+                        fab
+                        mini
+                      >
+                        <MdContentCopy
+                          onClick={() => { this.copyCalculation(i); }}
+                        />
+                      </Button>
+                      <Button
+                        fab
+                        mini
+                        className={this.props.classes.actionIcon}
+                      >
+                        <MdDelete
+                          onClick={() => { this.removeCalculation(i); }}
+                        />
+                      </Button>
+                      {(this.props.openCalculation === i) ?
+                        <Button
+                          fab mini
+                          className={this.props.classes.actionIcon}
+                        >
+                          <MdClose
+                            onClick={() => { this.props.setOpenCalculation(-1); }}
+                          />
+                        </Button>
+                        : null}
                     </TableCell>
                   </TableRow>
-                  ))}
+                    ))}
               </TableBody>
             </Table>
             <Grid container justify="flex-end" direction="row">
@@ -146,6 +247,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   raised
                   onClick={this.downloadCalculations}
                   className={this.props.classes.button}
+                  color="primary"
                 ><MdFileDownload />{'\u00A0'} Download</Button>
               </Grid>
               {/*
@@ -163,7 +265,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
           </Paper>
         </Slide>
         }
-        {this.state.loading ? <LinearProgress className={this.state.classes.progress} /> : null }
+        {this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
       </div>
     );
   }
@@ -173,6 +275,11 @@ CalculationsView.propTypes = {
   calculations: PropTypes.array,
   clearCalculations: PropTypes.func,
   removeCalculation: PropTypes.func,
+  copyCalculation: PropTypes.func,
+  openCalculation: PropTypes.number,
+  setOpenCalculation: PropTypes.func,
+  editCalculation: PropTypes.func,
+  stepperHandleReset: PropTypes.func,
   classes: PropTypes.object,
 };
 

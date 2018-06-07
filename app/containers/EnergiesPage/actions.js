@@ -117,6 +117,15 @@ export function clearSystems() {
   };
 }
 
+export function savePublication(x) {
+  return {
+    type: constants.SAVE_PUBLICATION,
+    payload: {
+      publication: x,
+    },
+  };
+}
+
 export function saveSystem(system) {
   return {
     type: constants.SAVE_SYSTEM,

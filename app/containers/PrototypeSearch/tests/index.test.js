@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import Tutorial from '../index';
+// import { PrototypeSearch } from '../index';
 
-describe('<Tutorial />', () => {
+describe('<PrototypeSearch />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true);
   });

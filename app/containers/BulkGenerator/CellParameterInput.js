@@ -10,17 +10,18 @@ import { FormControl } from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
 import { Link } from 'react-router';
 
-import { MdLoop } from 'react-icons/lib/md';
+import { MdLoop, MdChevronRight } from 'react-icons/lib/md';
 
 import axios from 'axios';
-import { flaskRoot } from 'utils/constants';
+import { apiRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import * as catKitActions from 'containers/CatKitDemo/actions';
+import * as prototypeSearchActions from 'containers/PrototypeSearch/actions';
 import * as actions from './actions';
 import { styles } from './styles';
 
-const backendRoot = `${flaskRoot}/apps/bulkEnumerator`;
+const backendRoot = `${apiRoot}/apps/bulkEnumerator`;
 const url = `${backendRoot}/get_structure`;
 
 const initialState = {
@@ -36,11 +37,19 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     this.getStructure = this.getStructure.bind(this);
     this.handleCellParameterChange = this.handleCellParameterChange.bind(this);
     this.handoffBulkStructure = this.handoffBulkStructure.bind(this);
+    this.handoffPrototypeSearch = this.handoffPrototypeSearch.bind(this);
   }
   componentDidMount() {
     this.getStructure();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const cellParameters = nextProps.cellParameters;
+    this.props.setCellParameters(cellParameters);
+    this.setState({
+      cellParameters,
+    });
+  }
 
   getStructure() {
     const params = { params: {
@@ -68,11 +77,19 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
     };
   }
 
+  handoffPrototypeSearch(name) {
+    this.props.prototypeSearchSaveSearchTerms(`prototype:${name}`);
+  }
+
   handoffBulkStructure() {
     const bulkParams = {
+      elements: this.props.wyckoffPoints.map((elem) => elem.species),
       wyckoff: {
         name: this.props.name,
         spacegroup: this.props.spacegroup,
+        elements: this.props.wyckoffPoints.map((elem) => elem.species),
+        species: this.props.wyckoffPoints.map((elem) => elem.species),
+        wyckoff: this.props.wyckoffPoints.map((elem) => elem.symbol),
       },
     };
 
@@ -95,10 +112,6 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
             />
           </Grid>
         </Grid>
-        <h3>Prototype Name</h3>
-        <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
-        <div>{this.props.name}</div>
-        }</div>
         <Grid container direction="row" justify="space-between">
           <Grid item >
             <h3>Input Cell Parameters</h3>
@@ -110,8 +123,8 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
               raised
               onClick={this.getStructure}
             >
-              <MdLoop /> Update Structure
-          </Button>
+              <MdLoop />{' \u00A0\u00A0'} Update Structure
+            </Button>
           </Grid>
         </Grid>
         <Grid container direction="row">
@@ -132,27 +145,60 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
                   name={`parameter_${i}`}
                   value={this.state.cellParameters[name]}
                   onChange={this.handleCellParameterChange(name)}
+                  onKeyDown={(event) => {
+                    if (event.nativeEvent.keyCode === 13) {
+                      this.getStructure();
+                    }
+                  }}
+
                 />
               </FormControl>
             </Grid>
-        ))}
+          ))}
         </Grid>
-        <div>
-        Now you can cut slabs using <Button
-          color="primary"
-          raised
-          onClick={this.handoffBulkStructure}
-          className={this.props.classes.button}
-        >
-          <Link
-            className={this.props.classes.buttonLink}
-            to={'/catkitDemo'}
-          >
-          CatKit
-        </Link>
-        </Button>
-      .
-    </div>
+        <Grid container direction="row" justify="space-between">
+          <Grid item>
+            <h3>Prototype Name</h3>
+            <div>{_.isEmpty(this.props.name) ? 'Name couldnt be determined' :
+            <span>{this.props.name} </span>
+            }
+              {'\u00A0\u00A0'}
+              <Link
+                className={this.props.classes.buttonLink}
+                to={'/prototypeSearch'}
+              >
+                <Button
+                  color="primary"
+                  raised
+                  onClick={() => this.handoffPrototypeSearch(this.props.name)}
+                >
+                  Search similar structures
+                  <MdChevronRight />
+                </Button>
+              </Link>
+            </div>
+          </Grid>
+          <Grid item>
+            <h3>CatKit</h3>
+            <div>
+              Cut arbitrary slabs using
+              <Link
+                className={this.props.classes.buttonLink}
+                to={'/catkitDemo'}
+              >
+                <Button
+                  color="primary"
+                  raised
+                  onClick={this.handoffBulkStructure}
+                  className={this.props.classes.button}
+                >
+                CatKit <MdChevronRight />
+                </Button>
+              </Link>
+            .
+          </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -169,6 +215,7 @@ CellParameterInput.propTypes = {
   receiveBulkCif: PropTypes.func,
   dropBulkInput: PropTypes.func,
   saveBulkParams: PropTypes.func,
+  prototypeSearchSaveSearchTerms: PropTypes.func,
   setName: PropTypes.func,
   classes: PropTypes.object,
   name: PropTypes.string,
@@ -200,6 +247,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveBulkParams: (bulkParams) => {
     dispatch(catKitActions.saveBulkParams(bulkParams));
+  },
+  prototypeSearchSaveSearchTerms: (x) => {
+    dispatch(prototypeSearchActions.saveSearchTerms(x));
   },
 });
 

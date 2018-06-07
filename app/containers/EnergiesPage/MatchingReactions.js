@@ -37,6 +37,7 @@ import { newGraphQLRoot } from 'utils/constants';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
+import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as actions from './actions';
 
 const styles = (theme) => ({
@@ -114,6 +115,27 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       });
       snackbarActions.open('Scroll down for detailed structure.');
     }
+
+    const pubQuery = {
+      query: `{publications(pubId: "${reaction.pubId}"){
+      edges {
+      node
+      {
+        year
+        doi
+        authors
+        title
+        number
+        journal
+        pages
+      }}
+      }
+      }
+      `,
+    };
+    cachios.post(newGraphQLRoot, pubQuery).then((response) => {
+      this.props.savePublication(response.data.data.publications.edges[0].node);
+    });
 
     this.props.clearSystems();
     catappIds.map((key) => {
@@ -232,6 +254,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         >
                           <Link
                             className={this.props.classes.buttonLink}
+                            onClick={() => {
+                              this.props.catKitStepperHandleReset();
+                            }}
                             to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
                           >construct</Link>
                         </Button> your own slab calculation.
@@ -374,7 +399,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         }}
                         className={this.props.classes.clickableRow}
                       >
-                        <TableCell padding="none"><div>{result.node.aseIds !== null ? <FaCube /> : null}</div></TableCell>
+                        <TableCell padding="none"><div>{result.node.reactionSystems[0].name !== 'N/A' ? <FaCube /> : null}</div></TableCell>
                         <TableCell padding="dense"><div>{result.node.Equation.replace('->', '→')}</div></TableCell>
                         <TableCell padding="none"><div>{!result.node.reactionEnergy || `${result.node.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
                         <Hidden smDown>
@@ -424,10 +449,12 @@ MatchingReactions.propTypes = {
   selectReaction: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
+  savePublication: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
   classes: PropTypes.object,
+  catKitStepperHandleReset: PropTypes.func,
   resultSize: PropTypes.number,
   searchString: PropTypes.string,
   handleRequestSort: PropTypes.func,
@@ -450,9 +477,13 @@ const mapStateToProps = (state) => ({
   searchQuery: state.get('energiesPageReducer').searchQuery,
   order: state.get('energiesPageReducer').order,
   orderBy: state.get('energiesPageReducer').orderBy,
+  publication: state.get('energiesPageReducer').publication,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  catKitStepperHandleReset: () => {
+    dispatch(catKitActions.stepperHandleReset());
+  },
   receiveReactions: (reactions) => {
     dispatch(actions.receiveReactions(reactions));
   },
@@ -467,6 +498,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(actions.saveSystem(system));
+  },
+  savePublication: (x) => {
+    dispatch(actions.savePublication(x));
   },
   handleRequestSort: (event, property) => {
     dispatch(actions.handleRequestSort(event, property));

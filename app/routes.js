@@ -140,10 +140,10 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/CatML',
-      name: 'CatML',
+      path: '/catLearn',
+      name: 'CatLearn',
       getComponent(location, cb) {
-        import('components/AtoML')
+        import('components/CatLearn')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
@@ -234,14 +234,6 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/developerGuide',
-      name: 'tutorial',
-      getComponent(location, cb) {
-        import('components/Tutorial')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/settings',
       name: 'settings',
       getComponent(nextState, cb) {
@@ -322,10 +314,36 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/plotlyFoo',
-      name: 'plotlyFoo',
+      path: '/prototypeSearch',
+      name: 'prototypeSearch',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/PrototypeSearch/reducer'),
+          import('containers/PrototypeSearch'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('prototypeSearch', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/sitemap',
+      name: 'sitemap',
       getComponent(location, cb) {
-        import('components/PlotlyFoo')
+        import('components/Sitemap')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/about',
+      name: 'about',
+      getComponent(location, cb) {
+        import('components/About')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

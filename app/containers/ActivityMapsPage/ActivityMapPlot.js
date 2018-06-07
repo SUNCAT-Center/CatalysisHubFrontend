@@ -10,12 +10,15 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import axios from 'axios';
-import { flaskRoot, newGraphQLRoot } from 'utils/constants';
+import { apiRoot, newGraphQLRoot } from 'utils/constants';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
@@ -45,6 +48,7 @@ const initialState = {
 
 };
 
+export const reactions = ['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'];
 
 class ActivityMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -68,15 +72,17 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
   async componentWillReceiveProps(nextProps) {
     let { reaction } = nextProps.routeParams;
     if (_.isEmpty(reaction)) {
-      reaction = 'OER';
+      reaction = nextProps.reaction;
     }
-    if (reaction !== this.props.reaction) {
-      setTimeout(() => {
-        this.setState({
-          plotlyData: plotlyData[reaction],
-        });
-        this.getSystems();
-      }, 1500);
+    if (!_.isEmpty(reaction)) {
+      if (reaction !== this.props.reaction) {
+        setTimeout(() => {
+          this.setState({
+            plotlyData: plotlyData[reaction],
+          });
+          this.getSystems();
+        }, 1500);
+      }
     }
   }
 
@@ -84,7 +90,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
     this.setState({
       initialLoading: true,
     });
-    const backendRoot = `${flaskRoot}/apps/activityMaps`;
+    const backendRoot = `${apiRoot}/apps/activityMaps`;
     const url = `${backendRoot}/systems/`;
     const params = { params: {
       activityMap: this.props.reaction,
@@ -205,7 +211,29 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
         {this.state.initialLoading ? <LinearProgress className={this.props.classes.progress} /> : null }
         <Paper className={this.props.classes.paper}>
           <div ref={(el) => { this.instance = el; }}>
-            <h2>Activity Map {this.props.reaction.replace(/_/g, ' ')}</h2>
+            <Grid container direction="row" justify="space-between">
+              <Grid item>
+                <h2>Activity Map {this.props.reaction.replace(/_/g, ' ')}</h2>
+              </Grid>
+              <Grid item>
+                <FormControl>
+                  <Select
+                    value={this.props.reaction}
+                    onChange={(event) => {
+                      this.props.saveReaction(event.target.value);
+                    }}
+                  >
+                    {
+                    reactions.map((reaction, i) => (
+                      <MenuItem key={`item_${i}`} value={reaction}>{reaction}</MenuItem>
+                      ))
+                  }
+
+                  </Select>
+                  <FormHelperText>Select reaction</FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
             {_.isEmpty(this.state.plotlyData) ? null :
             <Grid container direction="row" justify="center">
               <Grid item >
@@ -333,6 +361,7 @@ ActivityMapPlot.propTypes = {
   saveSystems: PropTypes.func.isRequired,
   clearStructures: PropTypes.func.isRequired,
   saveStructureQuery: PropTypes.func.isRequired,
+  saveReaction: PropTypes.func,
   reaction: PropTypes.string,
 };
 
