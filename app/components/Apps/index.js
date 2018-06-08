@@ -102,10 +102,10 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                     to={app.route}
                     style={{
                       textDecoration: 'none',
+                      color: 'black',
                     }}
                   >
                     <Paper
-                      rounded
                       className={this.props.classes.appPaper}
                       elevation={0}
                     >

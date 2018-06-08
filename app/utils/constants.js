@@ -70,9 +70,9 @@ module.exports = {
       title: 'Reaction Energetics',
       tooltip: 'Explore calculated reaction energetics',
       route: '/energies',
-    }, {
-      title: 'Scaling Relations',
-      tooltip: 'App for exploring scaling relations -- WIP.',
+      /* }, {*/
+      /* title: 'Scaling Relations',*/
+      /* tooltip: 'App for exploring scaling relations -- WIP.',*/
     }, {
       /* title: 'Upload Datasets',*/
       /* route: '/upload',*/

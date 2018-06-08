@@ -63,7 +63,8 @@ const styles = () => ({
   },
   textLink: {
     textDecoration: 'none',
-    textColor: '#black',
+    textColor: 'black',
+    color: 'black',
   },
   banner: {
     marginTop: 50,
@@ -86,6 +87,8 @@ const styles = () => ({
   paperInfo: {
     minHeight: 30,
     marginBottom: 10,
+    color: 'black',
+    textColor: 'black',
   },
 
 });

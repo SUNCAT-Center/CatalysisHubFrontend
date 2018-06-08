@@ -22,7 +22,7 @@ const styles = (xtheme) => ({
     bottom: 0,
     width: '100%',
     backgroundColor: xtheme.palette.coolgrey[500],
-    paddingLeft: '10%',
+    paddingLeft: '5%',
     paddingRight: '5%',
     [xtheme.breakpoints.down('sm')]: {
       visibility: 'hidden',
