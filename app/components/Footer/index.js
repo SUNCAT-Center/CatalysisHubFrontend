@@ -37,7 +37,7 @@ const styles = (xtheme) => ({
   },
   banner: {
     [xtheme.breakpoints.up('xl')]: {
-      marginLeft: 240,
+      marginLeft: 220,
     },
   },
 });
