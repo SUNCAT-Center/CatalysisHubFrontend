@@ -111,7 +111,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
       );
 
       bulkStr = `${calculation.bulkParams.elements.join('')
-        }:${calculation.bulkParams.wyckoff.name}`;
+        }_${calculation.bulkParams.wyckoff.name}`;
 
       bulkDir = cdir.folder(bulkStr);
       format = calculation.bulkParams.format;
