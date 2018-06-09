@@ -34,6 +34,7 @@ import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
+import { withCommas } from 'utils/functions';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
@@ -324,7 +325,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     return (
       <Paper className={this.props.classes.paper}>
         <div>
-          <h2>Matching Reactions ({this.props.resultSize})</h2>
+          <h2>Matching Reactions ({withCommas(this.props.resultSize)})</h2>
           <Table>
             <TableHead>
               <TableRow>

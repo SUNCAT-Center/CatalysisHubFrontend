@@ -26,6 +26,7 @@ import { MdSearch, MdChevronLeft, MdWarning } from 'react-icons/lib/md';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
+import { withCommas } from 'utils/functions';
 
 import * as actions from './actions';
 import TermAutosuggest from './TermAutosuggest';
@@ -115,7 +116,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       } else if (totalCount === 1) {
         message = '1 entry';
       } else {
-        message = `${response.data.data.reactions.totalCount} entries`;
+        message = `${withCommas(response.data.data.reactions.totalCount)} entries`;
       }
       this.setState({
         resultCount: message,
