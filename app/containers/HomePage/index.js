@@ -78,7 +78,6 @@ const styles = () => ({
     cornerRadius: 40,
     padding: 10,
     paddingTop: 5,
-    marginRight: 15,
     minWidth: 280,
     maxWidth: 300,
     textAlign: 'left',
@@ -212,7 +211,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   }
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
+                <a href="https://suncat.stanford.edu" target="_blank">
                 <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
+                </a>
 
               </Grid>
             </Grid>
@@ -225,7 +226,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <CenteredSection className={this.props.classes.centeredSection}>
             <Slide mountOnEnter unmountOnExit in direction="left">
               <div>
-                <Grid container justify="flex-start">
+                <Grid container justify="space-between">
                   <Grid item>
                     <Link to="/appsIndex" className={this.props.classes.textLink}>
                       <Paper
