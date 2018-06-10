@@ -212,7 +212,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
                 <a href="https://suncat.stanford.edu" target="_blank">
-                <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
+                  <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
                 </a>
 
               </Grid>
