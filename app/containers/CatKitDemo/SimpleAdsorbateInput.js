@@ -93,7 +93,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: _.omit(this.props.bulkParams, ['cif', 'input']),
+      bulkParams: _.omit(this.props.bulkParams, ['cif', 'input', 'wyckoff.cif']),
       slabParams: _.omit(this.props.slabParams, ['cif', 'input']),
       adsorbateParams,
     } };

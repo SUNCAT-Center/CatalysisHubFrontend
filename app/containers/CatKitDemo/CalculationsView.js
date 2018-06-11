@@ -87,6 +87,8 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     let bulkDir;
     let bulkStr;
     let cdir;
+    let cellsize;
+    let fixed;
     let format;
     let gasDir;
     let layers;
@@ -96,6 +98,19 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     let vacuum;
 
     dir.file('calculations.json', JSON.stringify(this.props.calculations, null, 4));
+    dir.file('publication.txt', JSON.stringify({
+      title: 'Test Title',
+      authors: ['Doe'],
+      journal: '',
+      volume: '',
+      number: '',
+      pages: '',
+      year: '2018',
+      publisher: '',
+      doi: '',
+      tags: [],
+
+    }));
 
     this.props.calculations.map((calculation) => {
       cdir = dir
@@ -119,8 +134,10 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
       miller = `${calculation.slabParams.millerX}${calculation.slabParams.millerY}${calculation.slabParams.millerZ}`;
       vacuum = calculation.slabParams.vacuum;
       layers = calculation.slabParams.layers;
+      fixed = calculation.slabParams.fixed;
+      cellsize = calculation.slabParams.unitCellSize;
       termination = calculation.slabParams.termination;
-      slabDir = bulkDir.folder(`${miller}_layers:${layers}_termination:${termination}_vacuum:${vacuum}`);
+      slabDir = bulkDir.folder(`${miller}_layers:${layers}_fixed:${fixed}_termination:${termination}_cellsize:${cellsize}_vacuum:${vacuum}`);
       slabDir.file(`empty_slab.${format}`, calculation.slabParams.input);
       return calculation.adsorbateParams.inputs.map((cif, i) => {
         adsDir = slabDir.folder(calculation.adsorbateParams.equations[i]);
@@ -161,7 +178,10 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   <TableCell padding="none">Composition</TableCell>
                   <TableCell padding="none">Miller</TableCell>
                   <TableCell padding="none">Layers</TableCell>
+                  <TableCell padding="none">Fixed</TableCell>
                   <TableCell padding="none">Termination</TableCell>
+                  <TableCell padding="none">Supercell Size</TableCell>
+
                   <TableCell padding="none">Vacuum</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
                   <TableCell padding="none">Input Format</TableCell>
@@ -189,7 +209,9 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             )`
             }</TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.layers}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.fixed}`} </TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.termination}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.unitCellSize}`} </TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.vacuum}`} </TableCell>
                     <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType} [${calculation.adsorbateParams.cifs.length} sites]`} </TableCell>
                     <TableCell padding="none">{`
