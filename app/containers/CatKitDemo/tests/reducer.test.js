@@ -14,12 +14,14 @@ describe('catKitDemoReducer', () => {
       calculations: [],
       customBulkInput: false,
       customSlabInput: false,
+      fixed: 2,
       images: [],
       latticeConstant: 3.92,
       openCalculation: -1,
       siteOccupations: {},
       slabInput: '',
       slabParams: {},
+      unitCellSize: 2,
       wyckoffBulkParams: {},
     });
   });
