@@ -71,6 +71,7 @@ export function renderInput(inputProps) {
   const { classes, autoFocus, value, ref, helperText, label, onFocus, ...other } = inputProps;
   return (
     <TextField
+      fullWidth
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}

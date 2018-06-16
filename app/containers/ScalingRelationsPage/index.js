@@ -6,6 +6,8 @@
 
 import React from 'react';
 import _ from 'lodash';
+import Script from 'react-load-script';
+import regression from 'regression';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Plot from 'react-plotly.js';
@@ -20,14 +22,18 @@ import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
 
 import ReactionAutosuggest from './ReactionAutosuggest';
+import StructureView from './StructureView';
 
 const initialState = {
+  plotTitle: '',
   reaction1: '',
   reaction2: '',
   reactionsSuggestions: [],
   systems: [],
   loading: false,
   scatterData: {},
+  linRegData: {},
+  geometries: [],
 };
 
 const styles = (theme) => ({
@@ -71,11 +77,11 @@ const styles = (theme) => ({
   },
 });
 
-function reactionQuery(products) {
+function reactionQuery(reactants, products) {
   return {
     ttl: 300,
     query: `{
-  reactions(products:"~${products}") {
+  reactions(reactants: "${reactants}", products:"${products}") {
     totalCount
     edges {
       node {
@@ -85,7 +91,7 @@ function reactionQuery(products) {
         reactionEnergy
         chemicalComposition
         reactionSystems {
-          id
+          aseId
           name
         }
       }
@@ -100,9 +106,9 @@ const mergeReactions = (reactions1, reactions2) => {
 
   reactions1.map((reaction) => _.get(reaction, 'node.reactionSystems', []).map((system) => {
     if (system.name === 'star') {
-      tempL = (systems[system.id] || []);
+      tempL = (systems[system.aseId] || []);
       tempL.push(reaction);
-      systems[system.id] = tempL;
+      systems[system.aseId] = tempL;
     }
     return null;
   }));
@@ -110,17 +116,19 @@ const mergeReactions = (reactions1, reactions2) => {
 
   reactions2.map((reaction) => _.get(reaction, 'node.reactionSystems', []).map((system) => {
     if (system.name === 'star') {
-      tempL = (systems[system.id] || []);
+      tempL = (systems[system.aseId] || []);
       tempL.push(reaction);
-      systems[system.id] = tempL;
+      systems[system.aseId] = tempL;
     }
     return null;
   }));
+
 
   systems = _.fromPairs(
     _.toPairs(systems)
     .filter((x) => x[1].length === 2
     ));
+
 
 
   return systems;
@@ -158,7 +166,36 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
 
 
 
-  getStructures() {
+  getStructures(e) {
+    this.setState({
+      structures: [],
+    });
+    const results = Object.keys(e.points[0].customdata).map(async (aseId) => cachios.post(newGraphQLRoot, { ttl: 300, query: `{systems(uniqueId:"${aseId}") {
+  edges {
+    node {
+      id
+      InputFile(format:"cif")
+      numbers
+      Formula
+      energy
+      DftCode
+      DftFunctional
+      publication {
+        authors
+        pages
+        title
+        journal
+        doi
+        volume
+      }
+    }
+  }
+}}` }).then((response) => (response.data.data.systems.edges[0].node)));
+    Promise.all(results).then((structures) => {
+      this.setState({
+        structures,
+      });
+    });
   }
 
 
@@ -180,8 +217,8 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
       const products1 = Object.keys(JSON.parse(reaction1.products)).join('+');
       const products2 = Object.keys(JSON.parse(reaction2.products)).join('+');
 
-      const query1 = reactionQuery(reactants1 + products1);
-      const query2 = reactionQuery(reactants2 + products2);
+      const query1 = reactionQuery(reactants1, products1);
+      const query2 = reactionQuery(reactants2, products2);
 
       cachios.post(newGraphQLRoot, query1).then((response1) => {
         cachios.post(newGraphQLRoot, query2).then((response2) => {
@@ -200,16 +237,34 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           };
 
           Object.values(systems).map((system) => {
-            scatterData.customdata.push(system[0].id);
+            scatterData.customdata.push(_.groupBy(
+              _.concat(
+              system[0].node.reactionSystems,
+              system[1].node.reactionSystems,
+            ), 'aseId'));
             scatterData.x.push(system[0].node.reactionEnergy);
             scatterData.y.push(system[1].node.reactionEnergy);
-            scatterData.text.push(`(${system[0].node.reactionEnergy}, ${system[1].node.reactionEnergy}) eV ${system[0].node.chemicalComposition}`);
+            scatterData.text.push(`(${system[0].node.reactionEnergy.toFixed(2)}, ${system[1].node.reactionEnergy.toFixed(2)}) eV ${system[0].node.chemicalComposition}`);
             return null;
           });
 
+          const linReg = regression.linear(
+            _.zip(scatterData.x,
+                  scatterData.y)
+          );
+          const sortedX = scatterData.x.concat().sort();
+          const linRegData = {
+            type: 'scatter',
+            mode: 'lines',
+            x: [sortedX[0], sortedX[sortedX.length - 1]],
+            y: [linReg.predict(sortedX[0])[1], linReg.predict(sortedX[sortedX.length - 1])[1]],
+          };
+
           this.setState({
+            plotTitle: `${linReg.string} ; r2 = ${linReg.r2}`,
             systems,
             scatterData,
+            linRegData,
             loading: false,
           });
         });
@@ -261,6 +316,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
   render() {
     return (
       <div>
+        <Script url="/static/ChemDoodleWeb.js" />
         {!this.state.loading ? null : <LinearProgress />}
         <Paper
           className={this.props.classes.mainPaper}
@@ -270,8 +326,8 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
             <ReactionAutosuggest field="reaction1" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 1" autofocus initialValue="" />
             <ReactionAutosuggest field="reaction2" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 2" initialValue="" />
             <Button
-              disabled={_.get(this.state, 'reaction1.reaction', false) ||
-                  _.get(this.state, 'reaction2.reaction', false)
+              disabled={_.isEmpty(_.get(this.state, 'reaction1.reaction', [])) ||
+                  _.isEmpty(_.get(this.state, 'reaction2.reaction', []))
               }
               color="primary"
               onClick={() => { this.submitForm(); }}
@@ -285,12 +341,23 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           <Plot
             data={[
               this.state.scatterData,
-
+              this.state.linRegData,
             ]}
             layout={{
-
+              hovermode: 'closest',
+              title: this.state.plotTitle,
+              xaxis: {
+                title: this.state.reaction1.label,
+              },
+              yaxis: {
+                title: this.state.reaction2.label,
+              },
             }}
             config={{
+              scrollZoom: false,
+              displayModeBar: false,
+              legendPosition: true,
+              showTips: false,
             }}
             onClick={(event) => {
               this.getStructures(event);
@@ -298,6 +365,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           />
           }
         </Paper>
+        <StructureView geoms={this.state.structures} />
       </div>
     );
   }
