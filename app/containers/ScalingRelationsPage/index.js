@@ -26,11 +26,29 @@ import StructureView from './StructureView';
 
 const initialState = {
   plotTitle: '',
-  reaction1: '',
-  reaction2: '',
+  reaction1: {
+    label: 'H2O(g) + * -> OH* + 0.5H2(g)',
+    reaction: [
+      { node: {
+        Equation: 'H2O(g) + * -> OH* + 0.5H2(g)',
+        products: '{"H2gas": 0.5, "OHstar": 1}',
+        reactants: '{"star": 1, "H2Ogas": 1}',
+      } },
+    ],
+  },
+  reaction2: {
+    label: '2.0H2O(g) + * -> OOH* + 1.5H2(g)',
+    reaction: [
+      { node: {
+        Equation: '2.0H2O(g) + * -> OOH* + 1.5H2(g)',
+        products: '{"H2gas": 1.5, "OOHstar": 1}',
+        reactants: '{"star": 1, "H2Ogas": 2.0}',
+      } }],
+  },
   reactionsSuggestions: [],
   systems: [],
   loading: false,
+  loadingStructures: false,
   scatterData: {},
   linRegData: {},
   geometries: [],
@@ -74,6 +92,10 @@ const styles = (theme) => ({
   },
   textField: {
     width: '100%',
+  },
+  progressBar: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
   },
 });
 
@@ -169,6 +191,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
   getStructures(e) {
     this.setState({
       structures: [],
+      loadingStructures: true,
     });
     const results = Object.keys(e.points[0].customdata).map(async (aseId) => cachios.post(newGraphQLRoot, { ttl: 300, query: `{systems(uniqueId:"${aseId}") {
   edges {
@@ -194,6 +217,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
     Promise.all(results).then((structures) => {
       this.setState({
         structures,
+        loadingStructures: false,
       });
     });
   }
@@ -239,9 +263,9 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           Object.values(systems).map((system) => {
             scatterData.customdata.push(_.groupBy(
               _.concat(
-              system[0].node.reactionSystems,
-              system[1].node.reactionSystems,
-            ), 'aseId'));
+                system[0].node.reactionSystems,
+                system[1].node.reactionSystems,
+              ), 'aseId'));
             scatterData.x.push(system[0].node.reactionEnergy);
             scatterData.y.push(system[1].node.reactionEnergy);
             scatterData.text.push(`(${system[0].node.reactionEnergy.toFixed(2)}, ${system[1].node.reactionEnergy.toFixed(2)}) eV ${system[0].node.chemicalComposition}`);
@@ -250,7 +274,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
 
           const linReg = regression.linear(
             _.zip(scatterData.x,
-                  scatterData.y)
+              scatterData.y)
           );
           const sortedX = scatterData.x.concat().sort();
           const linRegData = {
@@ -317,14 +341,14 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
     return (
       <div>
         <Script url="/static/ChemDoodleWeb.js" />
-        {!this.state.loading ? null : <LinearProgress />}
+        {!this.state.loading ? null : <LinearProgress className={this.props.classes.progressBar} />}
         <Paper
           className={this.props.classes.mainPaper}
         >
           <h2>Scaling Relations</h2>
           <FormGroup row>
-            <ReactionAutosuggest field="reaction1" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 1" autofocus initialValue="" />
-            <ReactionAutosuggest field="reaction2" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 2" initialValue="" />
+            <ReactionAutosuggest field="reaction1" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 1" autofocus initialValue={this.state.reaction1.label} />
+            <ReactionAutosuggest field="reaction2" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 2" initialValue={this.state.reaction2.label} />
             <Button
               disabled={_.isEmpty(_.get(this.state, 'reaction1.reaction', [])) ||
                   _.isEmpty(_.get(this.state, 'reaction2.reaction', []))
@@ -365,6 +389,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           />
           }
         </Paper>
+        {!this.state.loadingStructures ? null : <LinearProgress className={this.props.classes.progressBar} />}
         <StructureView geoms={this.state.structures} />
       </div>
     );
