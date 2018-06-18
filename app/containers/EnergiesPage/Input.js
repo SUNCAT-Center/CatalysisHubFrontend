@@ -127,16 +127,16 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
   getFilterString() {
     const filters = [];
     if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
-      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
+      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label.trim()}"`);
     }
     if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
-      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1')}"`);
+      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1').trim()}"`);
     }
     if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
-      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '').trim() || '~'}"`);
     }
     if (typeof this.state.products.label !== 'undefined' && this.state.products.label) {
-      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '').trim() || '~'}"`);
     }
 
     const filterString = filters.join(', ');
