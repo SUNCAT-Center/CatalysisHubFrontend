@@ -67,7 +67,7 @@ module.exports = {
       route: '/publications',
       tooltip: 'Calculated structures sorted by publications.',
     }, {
-      title: 'Reaction Energetics',
+      title: 'Surface Reactions',
       tooltip: 'Explore calculated reaction energetics',
       route: '/energies',
     }, {

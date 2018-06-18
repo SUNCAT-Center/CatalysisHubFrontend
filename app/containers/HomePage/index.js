@@ -256,9 +256,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         className={this.props.classes.homePaper}
                         elevation={0}
                       >
-                        <h3> <FaDatabase size={20} /> Reaction Energetics</h3>
+                        <h3> <FaDatabase size={20} /> Surface Reactions</h3>
                         <div className={this.props.classes.paperInfo}>
-                          A database of first-principles reaction energetics.
+                          A database of first-principles reaction energies and barriers.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>

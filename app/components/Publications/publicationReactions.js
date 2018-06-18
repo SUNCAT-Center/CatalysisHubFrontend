@@ -44,7 +44,7 @@ class PublicationReactions extends React.Component { // eslint-disable-line reac
   render() {
     return (
       <div>
-        <h3>Reaction Energetics</h3>
+        <h3>Surface Reactions</h3>
         <Table>
           <TableHead>
             <TableRow>

@@ -67,7 +67,7 @@ const getAppIcon = (title) => {
     return <IoCube />;
   } else if (title === 'CatKit Slab Generator') {
     return <IoSocialBuffer />;
-  } else if (title === 'Reaction Energetics') {
+  } else if (title === 'Surface Reactions') {
     return <MdSearch />;
   } else if (title === 'Publications') {
     return <FaNewspaperO />;

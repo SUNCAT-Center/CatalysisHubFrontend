@@ -105,7 +105,7 @@ class EnergiesPageSimpleInput extends React.Component { // eslint-disable-line r
           </Grid>
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
-        <h2>Reaction Energetics</h2>
+        <h2>Surface Reactions</h2>
         <FormGroup row>
           <TextField
             autoFocus
