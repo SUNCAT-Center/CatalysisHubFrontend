@@ -71,6 +71,13 @@ const lightFooterWeight = 200;
 const drawerWidth = 240;
 
 const styles = (xtheme) => ({
+  toolbar: {
+    padding: '0 3.1em 0 0',
+  },
+  appBarGridItem: {
+    /* border: '1px solid black',*/
+    /* leave here for debugging layout*/
+  },
   mainContainer: {
     minHeight: '100vh',
     overflow: 'hidden',
@@ -88,8 +95,9 @@ const styles = (xtheme) => ({
   },
   appBarTitle: {
     marginTop: 13,
+    marginLeft: 0,
     [xtheme.breakpoints.down('sm')]: {
-      marginLeft: 0,
+      marginLeft: -20,
     },
     color: 'white',
     decoration: 'none',
@@ -179,7 +187,7 @@ const styles = (xtheme) => ({
     },
   },
   barText: {
-    marginTop: 13,
+    marginTop: 10,
     textDecoration: 'none',
     decoration: 'none',
     [xtheme.breakpoints.down('sm')]: {
@@ -267,10 +275,6 @@ class App extends React.Component {
               {whiteLabel ? null :
               <Img width="200px" src={Banner} alt="SUNCAT - Logo" />
               }
-              <Grid container direction="column" justify="center">
-                <Grid item>
-                </Grid>
-              </Grid>
               {whiteLabel ?
                 <div style={{ color: 'primary', textDecoration: 'none' }}>Catalysis Browser beta v{version}</div>
                   :
@@ -394,9 +398,17 @@ class App extends React.Component {
         <div>
           <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar>
-              <Grid container direction="row" justify="space-between">
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                className={this.props.classes.toolbar}
+              >
                 {isMobile ?
-                  <Grid item sm={1} md={1} lg={1}>
+                  <Grid
+                    item sm={1} md={1} lg={1}
+                    className={this.props.classes.appBarGridItem}
+                  >
                     { (!isIOS || this.props.history === null) ? null :
                     <IconButton onClick={browserHistory.goBack} color="inherit" aria-label="Back" className={this.props.classes.backLink} >
                       <MdChevronLeft />
@@ -412,19 +424,10 @@ class App extends React.Component {
                   </Grid>
                         : '\u00A0\u00A0'
                     }
-                { suBranding === false ? null :
-                <Grid item >
-                  <ReactGA.OutboundLink
-                    to="http://www.stanford.edu"
-                    eventLabel="http://www.stanford.edu"
-                    style={{ margin: 0, marginLeft: 10 }}
-                    target="_blank"
-                  >
-                    <img src="https://www.stanford.edu/su-identity/images/brandbar-stanford-logo@2x.png" alt="Stanford University" width="152" height="23" />
-                  </ReactGA.OutboundLink>
-                </Grid>
-                    }
-                <Grid item sm={4} md={6}>
+                <Grid
+                  item sm={4} md={isMobile ? 5 : 6} lg={isMobile ? 6 : 7}
+                  className={this.props.classes.appBarGridItem}
+                >
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
@@ -432,7 +435,7 @@ class App extends React.Component {
                           <Tooltip title={`v${version}`}>
                             <Link to="/" className={this.props.classes.appBarTitle} >
                               <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                                {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
+                                {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
                               </Typography>
                             </Link>
                           </Tooltip>
@@ -444,9 +447,12 @@ class App extends React.Component {
 
 
 
-                <Grid item sm={4} md={4} >
+                <Grid
+                  item sm={4} md={4} lg={4}
+                  className={this.props.classes.appBarGridItem}
+                >
 
-                  <Grid container direction="row" justify="space-between">
+                  <Grid container direction="row" justify="flex-end">
                     <Grid item>
                       <Link to="/appsIndex" className={this.props.classes.textLink}>
                         <Tooltip title="Open Apps Index">
@@ -488,15 +494,17 @@ class App extends React.Component {
 
 
 
-                    <Grid item>
-                      <Link to="http://docs.catalysis-hub.org" target="_blank" className={this.props.classes.textLink}>
-                        <Tooltip title="See Website Documentation. Opens in new tab.">
-                          <div>
-                            <div className={this.props.classes.barText}>Documentation</div>
-                          </div>
-                        </Tooltip>
-                      </Link>
-                    </Grid>
+                    <Hidden mdDown>
+                      <Grid item>
+                        <Link to="http://docs.catalysis-hub.org" target="_blank" className={this.props.classes.textLink}>
+                          <Tooltip title="See Website Documentation. Opens in new tab.">
+                            <div>
+                              <div className={this.props.classes.barText}>Documentation</div>
+                            </div>
+                          </Tooltip>
+                        </Link>
+                      </Grid>
+                    </Hidden>
                   </Grid>
                 </Grid>
               </Grid>

@@ -29,7 +29,6 @@ import { styles } from './styles';
 
 const backendRoot = `${apiRoot}/apps/catKitDemo`;
 const siteUrl = `${backendRoot}/get_adsorption_sites`;
-const adsorbatesUrl = `${backendRoot}/place_adsorbates`;
 
 const defaultOccupation = 'empty';
 
@@ -60,14 +59,13 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     this.state = initialState;
     this.updateAdsorptionSites = this.updateAdsorptionSites.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleAdsorptionChange = this.handleAdsorptionChange.bind(this);
-    this.placeAdsorbates = this.placeAdsorbates.bind(this);
     this.saveCalculation = this.saveCalculation.bind(this);
   }
 
   componentDidMount() {
     this.updateAdsorptionSites();
   }
+
   handlePageFlip(delta) {
     const n = this.props.images.length;
     this.setState({
@@ -95,7 +93,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
-      bulkParams: _.omit(this.props.bulkParams, ['cif', 'input']),
+      bulkParams: _.omit(this.props.bulkParams, ['cif', 'input', 'wyckoff.cif']),
       slabParams: _.omit(this.props.slabParams, ['cif', 'input']),
       adsorbateParams,
     } };
@@ -138,20 +136,6 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     });
   }
 
-  placeAdsorbates() {
-    const params = { params: {
-      bulkParams: {
-        ...this.props.bulkParams,
-        elements: ['Pt'],
-      },
-      slabParams: this.props.slabParams,
-      siteOccupation: this.state.siteOccupation,
-    } };
-    axios.get(adsorbatesUrl, params).then((response) => {
-      this.props.receiveSlabCifs(response.data.images);
-    });
-  }
-
   handleChange(name) {
     return (event) => {
       this.setState({
@@ -167,18 +151,6 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     };
   }
 
-  handleAdsorptionChange(image, siteName, index) {
-    return (event) => {
-      if (typeof this.state.siteOccupation !== 'undefined') {
-        const siteOccupation = _.clone(this.state.siteOccupation);
-        siteOccupation[image][siteName][index] = event.target.value;
-        this.setState({
-          siteOccupation,
-        });
-        this.placeAdsorbates();
-      }
-    };
-  }
   saveCalculation() {
     this.props.saveCalculation({
       bulkParams: this.props.bulkParams,

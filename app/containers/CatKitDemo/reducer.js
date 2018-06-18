@@ -23,6 +23,8 @@ const initialState = {
   siteOccupations: {},
   slabInput: '',
   slabParams: {},
+  unitCellSize: 2,
+  fixed: 2,
   wyckoffBulkParams: {},
   openCalculation: -1,
 };
@@ -33,6 +35,18 @@ function catKitDemoReducer(state = initialState, action) {
       return {
         ...state,
         openCalculation: action.payload.n,
+      };
+    }
+    case constants.SAVE_FIXED: {
+      return {
+        ...state,
+        fixed: action.payload.fixed,
+      };
+    }
+    case constants.SAVE_UNIT_CELL_SIZE: {
+      return {
+        ...state,
+        unitCellSize: action.payload.unitCellSize,
       };
     }
     case constants.EDIT_CALCULATION: {

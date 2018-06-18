@@ -34,6 +34,7 @@ import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
+import { withCommas } from 'utils/functions';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
@@ -324,7 +325,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     return (
       <Paper className={this.props.classes.paper}>
         <div>
-          <h2>Matching Reactions ({this.props.resultSize})</h2>
+          <h2>Matching Reactions ({withCommas(this.props.resultSize)})</h2>
           <Table>
             <TableHead>
               <TableRow>
@@ -381,6 +382,15 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                     </TableSortLabel>
                   </TableCell>
                 </Hidden>
+                <TableCell>
+                  <TableSortLabel
+                    active={this.props.orderBy === 'dftFunctional'}
+                    direction={this.props.order}
+                    onClick={this.createSortHandler('dftFunctional')}
+                  >
+                    <div>XC Functional</div>
+                  </TableSortLabel>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -412,6 +422,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         <Hidden smDown>
                           <TableCell>{result.node.sites}</TableCell>
                         </Hidden>
+                        <TableCell>{`${result.node.dftFunctional}/${result.node.dftCode}` || ''}</TableCell>
                       </TableRow>
 
                     );

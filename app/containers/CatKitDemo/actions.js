@@ -7,6 +7,24 @@
 import _ from 'lodash';
 import * as constants from './constants';
 
+export function saveFixed(unitFixed) {
+  return {
+    type: constants.SAVE_FIXED,
+    payload: {
+      unitFixed,
+    },
+  };
+}
+
+export function saveUnitCellSize(unitCellSize) {
+  return {
+    type: constants.SAVE_UNIT_CELL_SIZE,
+    payload: {
+      unitCellSize,
+    },
+  };
+}
+
 export function saveAdsorbateParams(adsorbateParams) {
   return {
     type: constants.SAVE_ADSORBATE_PARAMS,

@@ -1,6 +1,22 @@
 import * as constants from './constants';
 
 
+export function setStereographic(x) {
+  let y;
+  if (typeof x === 'undefined') {
+    y = true;
+  } else {
+    y = x;
+  }
+  return {
+    type: constants.SET_STEREOGRAPHIC,
+    payload: {
+      stereographic: y,
+    },
+
+  };
+}
+
 export function saveCanvas(x) {
   return {
     type: constants.SAVE_CANVAS,

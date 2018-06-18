@@ -6,10 +6,17 @@ const initialState = {
   zRepeat: 1,
   rotationMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3],
   canvas: {},
+  stereographic: false,
 };
 
 function geometryCanvasReducer(state = initialState, action) {
   switch (action.type) {
+    case constants.SET_STEREOGRAPHIC: {
+      return {
+        ...state,
+        canvas: action.payload.stereographic,
+      };
+    }
     case constants.SAVE_CANVAS: {
       return {
         ...state,

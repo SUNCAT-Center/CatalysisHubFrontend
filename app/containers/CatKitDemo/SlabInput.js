@@ -32,6 +32,8 @@ const initialState = {
   layers: 4,
   vacuum: 12.0,
   termination: 0,
+  unitCellSize: 2,
+  fixed: 2,
   uploadError: '',
   n_terminations: 1,
 };
@@ -86,6 +88,8 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
       millerZ: this.state.millerZ,
       layers: this.state.layers,
       vacuum: this.state.vacuum,
+      unitCellSize: this.state.unitCellSize,
+      fixed: this.state.fixed,
       termination: this.state.termination,
       format: this.props.cookies.get('preferredFormat'),
     };
@@ -239,6 +243,46 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
             </Grid>
             <Grid item>
 
+              <FormControl className={this.props.classes.formControl} >
+                <InputLabel htmlFor="fixed-helper">Fixed Layers</InputLabel>
+                <Input
+                  className={this.props.classes.buttonedTextfield}
+                  id="fixed-helper"
+                  value={this.state.fixed}
+                  onChange={this.handleChange('fixed')}
+                  onKeyDown={((event) => {
+                    if (event.nativeEvent.keyCode === 13) {
+                      this.generateSlabs();
+                    }
+                  })}
+                  endAdornment={
+                    <Grid container direction="row" justify="flex-end">
+                      <Grid item>
+                        <IconButton
+                          className={this.props.classes.iconButton}
+                          color="primary"
+                          disabled={this.state.fixed <= 0}
+                          onClick={() => { this.handleChange('fixed')({ target: { value: parseInt(this.state.fixed, 10) - 1 } }, true); }}
+                        >-</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <IconButton
+                          className={this.props.classes.iconButton}
+                          color="primary"
+                          disable={this.state.fixed >= this.state.layers}
+                          onClick={() => { this.handleChange('fixed')({ target: { value: parseInt(this.state.fixed, 10) + 1 } }, true); }}
+                        >+</IconButton>
+                      </Grid>
+
+                    </Grid>
+                  }
+                />
+                <FormHelperText>Integer</FormHelperText>
+              </FormControl>
+
+            </Grid>
+            <Grid item>
+
 
               <FormControl className={this.props.classes.formControl} >
                 <InputLabel htmlFor="vacuum-helper">Vacuum</InputLabel>
@@ -255,10 +299,55 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                   endAdornment={
                     <Grid container direction="row" justify="flex-end">
                       <Grid item>
-                        <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) - 1 } }, true); }} >-</IconButton>
+                        <IconButton
+                          className={this.props.classes.iconButton}
+                          color="primary"
+                          disabled={this.state.vacuum <= 0}
+                          onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) - 1 } }, true); }}
+                        >-</IconButton>
                       </Grid>
                       <Grid item>
                         <IconButton className={this.props.classes.iconButton} color="primary" onClick={() => { this.handleChange('vacuum')({ target: { value: parseInt(this.state.vacuum, 10) + 1 } }, true); }} >+</IconButton>
+                      </Grid>
+                    </Grid>
+                  }
+                />
+                <FormHelperText>Angstrom</FormHelperText>
+              </FormControl>
+
+            </Grid>
+            <Grid item>
+
+
+              <FormControl className={this.props.classes.formControl} >
+                <InputLabel htmlFor="unitCellSize-helper">Unit Cell Size</InputLabel>
+                <Input
+                  className={this.props.classes.buttonedTextfield}
+                  id="unitCellSize-helper"
+                  value={this.state.unitCellSize}
+                  onChange={this.handleChange('unitCellSize')}
+                  onKeyDown={((event) => {
+                    if (event.nativeEvent.keyCode === 13) {
+                      this.generateSlabs();
+                    }
+                  })}
+                  endAdornment={
+                    <Grid container direction="row" justify="flex-end">
+                      <Grid item>
+                        <IconButton
+                          className={this.props.classes.iconButton}
+                          color="primary"
+                          disabled={this.state.unitCellSize < 2}
+                          onClick={() => { this.handleChange('unitCellSize')({ target: { value: parseInt(this.state.unitCellSize, 10) - 1 } }, true); }}
+                        >-</IconButton>
+                      </Grid>
+                      <Grid item>
+                        <IconButton
+                          className={this.props.classes.iconButton}
+                          disabled={this.state.unitCellSize >= 10}
+                          color="primary"
+                          onClick={() => { this.handleChange('unitCellSize')({ target: { value: parseInt(this.state.unitCellSize, 10) + 1 } }, true); }}
+                        >+</IconButton>
                       </Grid>
                     </Grid>
                   }
