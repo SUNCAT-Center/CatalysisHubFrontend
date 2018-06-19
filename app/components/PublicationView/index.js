@@ -6,6 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
@@ -17,6 +18,7 @@ import Button from 'material-ui/Button';
 
 
 import { MdChevronRight } from 'react-icons/lib/md';
+import { FaExternalLink } from 'react-icons/lib/fa';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -24,9 +26,23 @@ import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
 
 const styles = (theme) => ({
+  reactionActions: {
+    padding: theme.spacing.unit,
+  },
   progress: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
+  },
+  publicationAction: {
+    margin: theme.spacing.unit,
+    height: 6,
+    backgroundColor: _.get(theme, 'palette.sandhill.50'),
+    '&:hover': {
+      backgroundColor: _.get(theme, 'palette.sandhill.300'),
+    },
+  },
+  outboundLink: {
+    textDecoration: 'none',
   },
   paper: {
     padding: theme.spacing.unit * 3,
@@ -258,6 +274,18 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         <Paper className={this.props.classes.paper}>
           {prettyPrintReference(publication)}
           {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
+          {_.isEmpty(publication.doi) ? null :
+          <ReactGA.OutboundLink
+            eventLabel={`http://dx.doi.org/${publication.doi}`}
+            to={`http://dx.doi.org/${publication.doi}`}
+            target="_blank"
+            className={this.props.classes.outboundLink}
+          >
+            <Button className={this.props.classes.publicationAction}>
+              <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
+                                </Button>
+          </ReactGA.OutboundLink>
+          }
         </Paper>
         }
         {_.isEmpty(reactions) ? null :
@@ -271,8 +299,13 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               <h3>
                 {this.state.totalCount} reactions.
               </h3>
-              <div>
-                {_.isEmpty(this.state.reactionQuery) ? null : <GraphQlbutton query={this.state.reactionQuery.query} newSchema />}
+              <div className={this.props.classes.reactionActions}>
+                {_.isEmpty(this.state.reactionQuery) ? null :
+                <GraphQlbutton
+                  query={this.state.reactionQuery.query}
+                  newSchema
+                  className={this.props.classes.publicationAction}
+                />}
               </div>
               <ul>
                 {reactions.map((reaction, i) => (<li
@@ -281,6 +314,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 >({i}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
                   <Button
                     onClick={() => this.getStructures(reaction, i)}
+                    className={this.props.classes.publicationAction}
                   > Structures <MdChevronRight />
                   </Button>
                   <ul>
