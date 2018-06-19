@@ -8,7 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
-import { MdAddCircleOutline, MdPanoramaFishEye, MdViewList } from 'react-icons/lib/md';
+import { MdAddCircleOutline,
+  MdPanoramaFishEye,
+  MdChevronRight,
+  MdChevronLeft,
+  MdViewList } from 'react-icons/lib/md';
 import _ from 'lodash';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
@@ -22,6 +26,7 @@ import { withStyles } from 'material-ui/styles';
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
 
+import PublicationView from 'components/PublicationView';
 import PublicationSystems from './publicationSystems';
 // import PublicationReactions from './publicationReactions';
 
@@ -108,8 +113,10 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       systems: [],
       reactionEnergies: [],
       publicationQuery: '',
+      pubId: '',
     };
     this.clickPublication = this.clickPublication.bind(this);
+    this.backToList = this.backToList.bind(this);
   }
   componentDidMount() {
     const yearQuery = '{publications { edges { node { year } } }}';
@@ -159,67 +166,19 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         });
       });
   }
-  clickPublication(event, target, key) {
-    const splitKey = key.split('_');
-    const year = parseInt(splitKey[1], 10);
-    const count = parseInt(splitKey[2], 10);
-    const title = (this.state.references[year][count]).title;
-    /* reference = reference.split('"').join('\\"'); */
+  backToList() {
     this.setState({
-      loading: true,
-    });
-    if (this.state.openedPublication === key) {
-      this.setState({
-        openedPublication: null,
-      });
-    } else {
-      this.setState({
-        openedPublication: key,
-      });
-    }
-    this.setState({
+      pubId: '',
       systems: [],
       reactionEnergies: [],
     });
-    const query = `{
-  publications(title: "${title}") {
-    edges {
-      node {
-        title
-        authors
-        doi
-        journal
-        pages
-        year
-        systems {
-          DftCode
-          DftFunctional
-          energy
-          uniqueId
-          Cifdata
-          Formula
-          Facet
-          natoms
-        }
-      }
-    }
   }
-}
-`;
-    axios.post(newGraphQLRoot, { query })
-      .then((response) => {
-        const publication = [_.pick(response.data.data.publications.edges[0].node, ['title', 'year', 'doi', 'authors', 'journal', 'pages'])];
-        if (response.data.data.publications.edges[0].node.systems.length > 0) {
-          this.setState({
-            systems: response.data.data.publications.edges[0].node.systems.map((system) => ({
-              ...system,
-              publication,
-            })),
-            loading: false,
-            publicationQuery: query,
-          });
-        }
-      });
+  clickPublication(event, target, key, pubId) {
+    this.setState({
+      systems: [],
+      reactionEnergies: [],
+      pubId,
+    });
   }
 
   render() {
@@ -227,24 +186,38 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       <div>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="/static/ChemDoodleWeb.js" />
-        <h1>Publications/Datasets</h1>
+        {!_.isEmpty(this.state.pubId) ? <div>
+          <div>
+            <Button
+              onClick={() => {
+                this.backToList();
+              }}
+            >
+              <MdChevronLeft />
+              Back to Publication List</Button>
+          </div>
+          <PublicationView pubId={this.state.pubId} />
+        </div>
+            : <div>
 
-        {this.state.references === {} ? <LinearProgress color="primary" /> : null }
-        {this.state.years.map((year, i) => (
-          <Slide
-            key={`slide_${i}`}
-            in
-            mountOnEnter
-            unmountOnExit
-            timeout={200 * i}
-            direction="left"
-          >
-            <div>
-              <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
-                {(this.state.references[year] || []).length === 0 ? null :
-                <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
+              <h1>Publications/Datasets</h1>
+
+              {this.state.references === {} ? <LinearProgress color="primary" /> : null }
+              {this.state.years.map((year, i) => (
+                <Slide
+                  key={`slide_${i}`}
+                  in
+                  mountOnEnter
+                  unmountOnExit
+                  timeout={200 * i}
+                  direction="left"
+                >
+                  <div>
+                    <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
+                      {(this.state.references[year] || []).length === 0 ? null :
+                      <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
                   }
-                {(this.state.references[year] || [])
+                      {(this.state.references[year] || [])
                     .map((reference, j) => {
                       if (this.state.titles[year][j] !== null) {
                         return (
@@ -260,9 +233,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                               {prettyPrintReference(reference)}
 
                             </span>
-                            <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} className={this.props.classes.publicationAction}>
-                              <MdViewList /> {'\u00A0\u00A0'}Load Data
-                          </Button>
+                            <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j])} className={this.props.classes.publicationAction}>
+                              <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                            </Button>
                             {(this.state.dois[year][j] === null
                             || typeof this.state.dois[year][j] === 'undefined'
                             || this.state.dois[year][j] === ''
@@ -300,10 +273,12 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       }
                       return null;
                     })}
-              </Paper>
-            </div>
-          </Slide>
+                    </Paper>
+                  </div>
+                </Slide>
           ))
+        }
+            </div>
         }
       </div>
     );
