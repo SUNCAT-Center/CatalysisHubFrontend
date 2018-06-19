@@ -130,6 +130,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     this.getStructures = this.getStructures.bind(this);
     this.getReactions = this.getReactions.bind(this);
     this.handleReactionsScroll = this.handleReactionsScroll.bind(this);
+    this.sortReactions = this.sortReactions.bind(this);
   }
 
   componentDidMount() {
@@ -205,8 +206,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         this.setState({
           reactionQuery,
           reactions: _.concat(this.state.reactions,
-          response.data.data.reactions.edges.map((edge) => edge.node),
-        ),
+            response.data.data.reactions.edges.map((edge) => edge.node),
+          ),
           endCursor: response.data.data.reactions.pageInfo.endCursor,
           totalCount: response.data.data.reactions.totalCount,
           hasMoreReactions: response.data.data.reactions.pageInfo.hasNextPage,
@@ -263,6 +264,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     }
   }
 
+  sortReactions(field) {
+    this.setState({
+      reactions: _.orderBy(this.state.reactions, field)
+    })
+  }
 
   render() {
     const { publication, reactions, structures } = this.state;
@@ -271,90 +277,128 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         {this.state.loadingPublication ? <LinearProgress className={this.props.classes.progress} /> : null }
 
         {_.isEmpty(publication) ? null :
-        <Paper className={this.props.classes.paper}>
-          {prettyPrintReference(publication)}
-          {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
-          {_.isEmpty(publication.doi) ? null :
-          <ReactGA.OutboundLink
-            eventLabel={`http://dx.doi.org/${publication.doi}`}
-            to={`http://dx.doi.org/${publication.doi}`}
-            target="_blank"
-            className={this.props.classes.outboundLink}
-          >
-            <Button className={this.props.classes.publicationAction}>
-              <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
-                                </Button>
-          </ReactGA.OutboundLink>
-          }
-        </Paper>
+            <Paper className={this.props.classes.paper}>
+              {prettyPrintReference(publication)}
+              {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
+              {_.isEmpty(publication.doi) ? null :
+                  <ReactGA.OutboundLink
+                    eventLabel={`http://dx.doi.org/${publication.doi}`}
+                    to={`http://dx.doi.org/${publication.doi}`}
+                    target="_blank"
+                    className={this.props.classes.outboundLink}
+                  >
+                    <Button className={this.props.classes.publicationAction}>
+                      <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
+                    </Button>
+                  </ReactGA.OutboundLink>
+              }
+            </Paper>
         }
         {_.isEmpty(reactions) ? null :
-        <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
-          <Grid item md={6} sm={12}>
-            {this.state.loadingReactions ? <LinearProgress className={this.props.classes.progress} /> : null }
-            <Paper
-              className={this.props.classes.reactionsDiv}
-              onScroll={this.handleReactionsScroll}
-            >
-              <h3>
-                {this.state.totalCount} reactions.
-              </h3>
-              <div className={this.props.classes.reactionActions}>
-                {_.isEmpty(this.state.reactionQuery) ? null :
-                <GraphQlbutton
-                  query={this.state.reactionQuery.query}
-                  newSchema
-                  className={this.props.classes.publicationAction}
-                />}
-              </div>
-              <ul>
-                {reactions.map((reaction, i) => (<li
-                  key={`reaction_${i}`}
-                  className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
-                >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
-                  <Button
-                    onClick={() => this.getStructures(reaction, i)}
-                    className={this.props.classes.publicationAction}
-                  > Structures <MdChevronRight />
-                  </Button>
-                  <ul>
-                    <li>Formula: {reaction.Equation}</li>
-                    <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
-                    <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
-                  </ul>
-                </li>))}
-              </ul>
-
-              {this.state.loadingMoreReactions ?
-                <CircularProgress />
-                      : null}
-            </Paper>
-          </Grid>
-          <Grid item md={6} sm={12}>
-            {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
-            <Paper className={this.props.classes.structuresDiv}>
-              <Grid container justify="flex-start" direction="row">
-                {this.state.structures.map((image, i) => (
-                  <Grid item key={`item_${i}`}>
-                    <h2>{structures[i].Formula}: {structures[i].energy} eV</h2>
-                    <Grid container direction="row" justify="flex-start">
-                      <Grid item>
-                        <GeometryCanvasWithOptions
-                          cifdata={structures[i].Cifdata}
-                          uniqueId={`slab_preview_${i}`}
-                          key={`slab_preview_${i}`}
-                          id={`slab_preview_${i}`}
-                          x={1} y={1} z={1}
+            <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
+              <Grid item md={6} sm={12}>
+                {this.state.loadingReactions ? <LinearProgress className={this.props.classes.progress} /> : null }
+                <Paper
+                  className={this.props.classes.reactionsDiv}
+                  onScroll={this.handleReactionsScroll}
+                >
+                  <h3>
+                    {this.state.totalCount} reactions.
+                  </h3>
+                  <div className={this.props.classes.reactionActions}>
+                    {_.isEmpty(this.state.reactionQuery) ? null :
+                      <div>
+                        <GraphQlbutton
+                          query={this.state.reactionQuery.query}
+                          newSchema
+                          className={this.props.classes.publicationAction}
                         />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ))}
-              </Grid>
+                        <Button
+                          className={this.props.classes.publicationAction}
+                          onClick={() => {
+                            this.sortReactions('reactionEnergy')
+                          }}>
+                          Sort by Energy
+                        </Button>
+                        <Button
+                          className={this.props.classes.publicationAction}
+                          onClick={() => {
+                            this.sortReactions('dftFunctional')
+                          }}>
+                          Sort by Functional
+                        </Button>
+                        <Button
+                          className={this.props.classes.publicationAction}
+                          onClick={() => {
+                            this.sortReactions('chemicalComposition')
+                          }}>
+                          Sort by Composition
+                        </Button>
+                        <Button
+                          className={this.props.classes.publicationAction}
+                          onClick={() => {
+                            this.sortReactions('facet')
+                          }}>
+                          Sort by Facet
+                        </Button>
+                        <Button
+                          className={this.props.classes.publicationAction}
+                          onClick={() => {
+                            this.sortReactions('Equation')
+                          }}>
+                          Sort by Equation
+                        </Button>
+                      </div>
+                    }
+                  </div>
+                  <ul>
+                    {reactions.map((reaction, i) => (<li
+                      key={`reaction_${i}`}
+                      className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
+                    >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
+                      <Button
+                        onClick={() => this.getStructures(reaction, i)}
+                        className={this.props.classes.publicationAction}
+                      > Structures <MdChevronRight />
+                      </Button>
+                      <ul>
+                        <li>Formula: {reaction.Equation}</li>
+                        <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
+                        <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
+                      </ul>
+                    </li>))}
+                  </ul>
 
-            </Paper>
-          </Grid>
-        </Grid>
+                  {this.state.loadingMoreReactions ?
+                      <CircularProgress />
+                      : null}
+                    </Paper>
+                  </Grid>
+                  <Grid item md={6} sm={12}>
+                    {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
+                    <Paper className={this.props.classes.structuresDiv}>
+                      <Grid container justify="flex-start" direction="row">
+                        {this.state.structures.map((image, i) => (
+                          <Grid item key={`item_${i}`}>
+                            <h2>{structures[i].Formula}: {structures[i].energy} eV</h2>
+                            <Grid container direction="row" justify="flex-start">
+                              <Grid item>
+                                <GeometryCanvasWithOptions
+                                  cifdata={structures[i].Cifdata}
+                                  uniqueId={`slab_preview_${i}`}
+                                  key={`slab_preview_${i}`}
+                                  id={`slab_preview_${i}`}
+                                  x={1} y={1} z={1}
+                                />
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </Grid>
+
+                    </Paper>
+                  </Grid>
+                </Grid>
         }
       </div>
     );
