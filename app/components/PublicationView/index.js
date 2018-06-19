@@ -311,7 +311,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 {reactions.map((reaction, i) => (<li
                   key={`reaction_${i}`}
                   className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
-                >({i}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
+                >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
                   <Button
                     onClick={() => this.getStructures(reaction, i)}
                     className={this.props.classes.publicationAction}
