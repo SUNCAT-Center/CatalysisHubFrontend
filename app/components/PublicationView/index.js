@@ -62,6 +62,9 @@ const styles = (theme) => ({
   },
   reaction: {
   },
+  headerDiv: {
+    padding: theme.spacing.unit,
+  },
   selectedReaction: {
     backgroundColor: '#cccccc',
   },
@@ -166,6 +169,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 
   getReactions() {
     const { pubId } = this.props;
+    this.setState({
+      loadingReactions: true,
+    });
     if (this.state.hasMoreReactions) {
       const reactionQuery = {
         ttl: 300,
@@ -211,6 +217,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           endCursor: response.data.data.reactions.pageInfo.endCursor,
           totalCount: response.data.data.reactions.totalCount,
           hasMoreReactions: response.data.data.reactions.pageInfo.hasNextPage,
+          loadingReactions: false,
           loadingMoreReactions: false,
         });
       });
@@ -297,14 +304,18 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         {_.isEmpty(reactions) ? null :
         <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
           <Grid item md={6} sm={12}>
-            {this.state.loadingReactions ? <LinearProgress className={this.props.classes.progress} /> : null }
+            {(this.state.loadingReactions && !this.state.loadingMoreReactions) ? <LinearProgress className={this.props.classes.progress} /> : null }
             <Paper
               className={this.props.classes.reactionsDiv}
               onScroll={this.handleReactionsScroll}
             >
-              <h3>
-                {this.state.totalCount} reactions.
+              <Grid container className={this.props.classes.headerDiv} direction="row" justify="center">
+                <Grid item>
+                  <h3>
+                    {this.state.totalCount} reactions.
                   </h3>
+                </Grid>
+              </Grid>
               <div className={this.props.classes.reactionActions}>
                 {_.isEmpty(this.state.reactionQuery) ? null :
                 <div>
@@ -379,6 +390,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                       : null}
             </Paper>
           </Grid>
+          {this.state.structures.length === 0 ? null :
           <Grid item md={6} sm={12}>
             {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
             <Paper className={this.props.classes.structuresDiv}>
@@ -403,6 +415,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 
             </Paper>
           </Grid>
+          }
         </Grid>
         }
       </div>

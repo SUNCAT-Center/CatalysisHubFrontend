@@ -113,7 +113,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       systems: [],
       reactionEnergies: [],
       publicationQuery: '',
-      pubId: '',
+      pubId: _.get(props, 'routeParams.pubId', ''),
     };
     this.clickPublication = this.clickPublication.bind(this);
     this.backToList = this.backToList.bind(this);
@@ -172,6 +172,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       systems: [],
       reactionEnergies: [],
     });
+    this.props.router.push('/publications');
   }
   clickPublication(event, target, key, pubId) {
     this.setState({
@@ -179,6 +180,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       reactionEnergies: [],
       pubId,
     });
+    this.props.router.push(`/publications/${pubId}`);
   }
 
   render() {
@@ -287,7 +289,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 
 Publications.propTypes = {
   classes: PropTypes.object,
-
+  router: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(Publications);

@@ -124,7 +124,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/publications',
+      path: '/publications(/:pubId)',
       name: 'publications',
       getComponent(location, cb) {
         import('components/Publications')
