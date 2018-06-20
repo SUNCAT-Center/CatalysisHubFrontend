@@ -242,7 +242,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       mass
       Facet
       Formula
-      energy,
+      energy
+      uniqueId
     }
   }
 }}`,
@@ -313,7 +314,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 <Grid item>
                   <h3>
                     {this.state.totalCount} reactions.
-                  </h3>
+                      </h3>
                 </Grid>
               </Grid>
               <div className={this.props.classes.reactionActions}>
@@ -407,15 +408,52 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                           id={`slab_preview_${i}`}
                           x={1} y={1} z={1}
                         />
+
+                        {_.isEmpty(this.state.structureQuery) ? null :
+                        <Grid container className={this.props.classes.headerDiv} direction="row" justify="justify-left">
+                          <Grid item>
+                            <GraphQlbutton
+                              query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
+  edges {
+    node {
+      DftCode
+      DftFunctional
+      Facet
+      Formula
+      InputFile(format:"cif")
+      Pbc
+      cell
+      energy
+      keyValuePairs
+      magmom
+      magmoms
+      mass
+      natoms
+      numbers
+      positions
+      tags
+      uniqueId
+      volume
+    }
+  }
+}}`}
+                              newSchema
+                            />
+                          </Grid>
+                        </Grid>
+                                  }
+
+
+
                       </Grid>
                     </Grid>
                   </Grid>
-                        ))}
+                            ))}
               </Grid>
 
             </Paper>
           </Grid>
-          }
+                  }
         </Grid>
         }
       </div>
