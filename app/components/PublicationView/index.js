@@ -305,7 +305,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         }
         {_.isEmpty(reactions) ? null :
         <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
-          <Grid item md={6} sm={12}>
+          <Grid item md={5} sm={12}>
             {(this.state.loadingReactions && !this.state.loadingMoreReactions) ? <LinearProgress className={this.props.classes.progress} /> : null }
             <Paper
               className={this.props.classes.reactionsDiv}
@@ -393,7 +393,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             </Paper>
           </Grid>
           {this.state.structures.length === 0 ? null :
-          <Grid item md={6} sm={12}>
+          <Grid item md={7} sm={12}>
             {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
             <Paper className={this.props.classes.structuresDiv}>
               <Grid container justify="flex-start" direction="row">
