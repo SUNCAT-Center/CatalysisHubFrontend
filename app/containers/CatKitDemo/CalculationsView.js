@@ -2,7 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FileDownload from 'react-file-download';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 /* import IconButton from 'material-ui/IconButton';*/
 
@@ -18,6 +19,7 @@ import { MdClear,
   MdEdit,
   MdClose,
   MdContentCopy,
+  MdDelete,
   MdFileDownload } from 'react-icons/lib/md';
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
@@ -30,9 +32,6 @@ import * as moment from 'moment/moment';
 import axios from 'axios';
 import { apiRoot } from 'utils/constants';
 import { styles } from './styles';
-
-const backendRoot = `${apiRoot}/apps/catKitDemo`;
-const url = `${backendRoot}/generate_dft_input`;
 
 const fireworksRoot = `${apiRoot}/apps/fireworks`;
 const fireworksUrl = `${fireworksRoot}/schedule_workflows`;
@@ -80,13 +79,74 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.setState({
       loading: true,
     });
-    const params = { params: {
-      calculations: JSON.stringify(this.props.calculations),
-    },
-      responseType: 'arraybuffer',
-    };
-    axios.get(url, params).then((response) => {
-      FileDownload(response.data, `calculations_${moment().format('YYYYMMDD_HHmmss')}.zip`);
+
+    const date = moment().format('YYYYMMDD_HHmmss');
+    const zip = new JSZip();
+    const dir = zip.folder(`calc_${date}`);
+    let adsDir;
+    let bulkDir;
+    let bulkStr;
+    let cdir;
+    let cellsize;
+    let fixed;
+    let format;
+    let gasDir;
+    let layers;
+    let miller;
+    let slabDir;
+    let termination;
+    let vacuum;
+
+    dir.file('calculations.json', JSON.stringify(this.props.calculations, null, 4));
+    dir.file('publication.txt', JSON.stringify({
+      title: 'Test Title',
+      authors: ['Doe'],
+      journal: '',
+      volume: '',
+      number: '',
+      pages: '',
+      year: '2018',
+      publisher: '',
+      doi: '',
+      tags: [],
+
+    }));
+
+    this.props.calculations.map((calculation) => {
+      cdir = dir
+               .folder(calculation.bulkParams.format)
+               .folder('xcFunctional');
+
+      format = calculation.bulkParams.format;
+      gasDir = cdir.folder('gas');
+      _.forOwn(_.get(calculation, 'adsorbateParams.molecules', {}),
+        (value, key) => {
+          gasDir.file(`${key}.${format}`, value);
+        }
+      );
+
+      bulkStr = `${calculation.bulkParams.elements.join('')
+        }_${calculation.bulkParams.wyckoff.name}`;
+
+      bulkDir = cdir.folder(bulkStr);
+      format = calculation.bulkParams.format;
+      bulkDir.file(`bulk.${format}`, calculation.bulkParams.input);
+      miller = `${calculation.slabParams.millerX}${calculation.slabParams.millerY}${calculation.slabParams.millerZ}`;
+      vacuum = calculation.slabParams.vacuum;
+      layers = calculation.slabParams.layers;
+      fixed = calculation.slabParams.fixed;
+      cellsize = calculation.slabParams.unitCellSize;
+      termination = calculation.slabParams.termination;
+      slabDir = bulkDir.folder(`${miller}_layers:${layers}_fixed:${fixed}_termination:${termination}_cellsize:${cellsize}_vacuum:${vacuum}`);
+      slabDir.file(`empty_slab.${format}`, calculation.slabParams.input);
+      return calculation.adsorbateParams.inputs.map((cif, i) => {
+        adsDir = slabDir.folder(calculation.adsorbateParams.equations[i]);
+        return adsDir.file(`${calculation.adsorbateParams.adsorbate}.${format}`, cif);
+      });
+    });
+
+    zip.generateAsync({ type: 'blob' }).then((zipFile) => {
+      saveAs(zipFile, `calculations_${date}.zip`);
     });
     this.setState({ loading: false });
   }
@@ -116,12 +176,15 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                 <TableRow>
                   <TableCell padding="none">Prototype</TableCell>
                   <TableCell padding="none">Composition</TableCell>
-                  <TableCell padding="none">Facet</TableCell>
+                  <TableCell padding="none">Miller</TableCell>
                   <TableCell padding="none">Layers</TableCell>
+                  <TableCell padding="none">Fixed</TableCell>
                   <TableCell padding="none">Termination</TableCell>
+                  <TableCell padding="none">Supercell Size</TableCell>
+
                   <TableCell padding="none">Vacuum</TableCell>
                   <TableCell padding="none">Adsorbates</TableCell>
-                  <TableCell padding="none">Calculator</TableCell>
+                  <TableCell padding="none">Input Format</TableCell>
                   <TableCell padding="none"></TableCell>
 
                 </TableRow>
@@ -146,11 +209,13 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             )`
             }</TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.layers}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.fixed}`} </TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.termination}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.slabParams.unitCellSize}`} </TableCell>
                     <TableCell padding="none">{`${calculation.slabParams.vacuum}`} </TableCell>
-                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType}`} </TableCell>
+                    <TableCell padding="none">{`${calculation.adsorbateParams.adsorbate}@${calculation.adsorbateParams.siteType} [${calculation.adsorbateParams.cifs.length} sites]`} </TableCell>
                     <TableCell padding="none">{`
-            ${calculation.dftParams.calculator}/${calculation.dftParams.functional}
+            ${calculation.bulkParams.format}
             `}</TableCell>
                     <TableCell padding="none">
                       <Button
@@ -176,10 +241,20 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                         mini
                         className={this.props.classes.actionIcon}
                       >
-                        <MdClose
+                        <MdDelete
                           onClick={() => { this.removeCalculation(i); }}
                         />
                       </Button>
+                      {(this.props.openCalculation === i) ?
+                        <Button
+                          fab mini
+                          className={this.props.classes.actionIcon}
+                        >
+                          <MdClose
+                            onClick={() => { this.props.setOpenCalculation(-1); }}
+                          />
+                        </Button>
+                        : null}
                     </TableCell>
                   </TableRow>
                     ))}
@@ -212,7 +287,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
           </Paper>
         </Slide>
         }
-        {this.state.loading ? <LinearProgress className={this.state.classes.progress} /> : null }
+        {this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
       </div>
     );
   }

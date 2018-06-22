@@ -15,8 +15,10 @@ import _ from 'lodash';
 
 import { withStyles } from 'material-ui/styles';
 import Modal from 'material-ui/Modal';
+import Hidden from 'material-ui/Hidden';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import Switch from 'material-ui/Switch';
 import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
@@ -29,7 +31,7 @@ import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 import * as actions from './actions';
 
-const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
+export const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
   'gen', 'gromos', 'json', 'jsv', 'nwchem', 'proteindatabank', 'py', 'turbomole', 'v-sim', 'vasp', 'xsf', 'xyz'];
 
 
@@ -95,7 +97,7 @@ const initialState = {
   z: 1,
   borderWidth: 0,
   altLabels: {},
-  perspective: true,
+  stereographic: false,
   tiltToRotate: true,
   in: false,
   downloadOpen: false,
@@ -277,6 +279,23 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
                 </div>
               </Grid>
               <Grid item>
+                <Tooltip title="Switch projection: stereographic vs orthographic">
+                  <Switch
+                    value="stereographic"
+                    checked={this.state.stereographic}
+                    onClick={() => {
+                      this.props.setStereographic(
+                        !this.state.stereographic
+                      );
+                      this.setState({
+                        stereographic: !this.state.stereographic,
+                      });
+                    }}
+                  >
+                  </Switch>
+                </Tooltip>
+              </Grid>
+              <Grid item>
                 <Grid container direction="row" justify="flex-end">
                   <Grid item>
                     <Tooltip title="Exit fullscreen.">
@@ -303,6 +322,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               width={window.innerWidth}
               rotationMatrix={this.props.rotationMatrix}
               setRotationMatrix={this.props.setRotationMatrix}
+              perspective={this.state.stereographic}
               parent={this}
             />
           </div>
@@ -315,6 +335,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           y={this.state.y}
           z={this.state.z}
           setRotationMatrix={this.props.setRotationMatrix}
+          perspective={this.state.stereographic}
           parent={this}
         />
         <Grid
@@ -397,6 +418,25 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               </Grid>
             </Grid>
           </Grid>
+          <Hidden smDown>
+            <Grid item>
+              <Tooltip title="Switch projection: stereographic vs orthographic">
+                <Switch
+                  value="stereographic"
+                  checked={this.state.stereographic}
+                  onClick={() => {
+                    this.props.setStereographic(
+                    !this.state.stereographic
+                  );
+                    this.setState({
+                      stereographic: !this.state.stereographic,
+                    });
+                  }}
+                >
+                </Switch>
+              </Tooltip>
+            </Grid>
+          </Hidden>
           <Grid>
             <Grid container direction="row">
               <Grid item>
@@ -469,6 +509,7 @@ GeometryCanvasWithOptions.propTypes = {
   setYRepeat: PropTypes.func,
   setZRepeat: PropTypes.func,
   setRotationMatrix: PropTypes.func,
+  setStereographic: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -477,9 +518,13 @@ const mapStateToProps = (state) => ({
   zRepeat: state.get('geometryCanvasReducer').zRepeat,
   rotationMatrix: state.get('geometryCanvasReducer').rotationMatrix,
   canvas: state.get('geometryCanvasReducer').canvas,
+  stereographic: state.get('geometryCanvasReducer').stereographic,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setStereographic: (x) => {
+    dispatch(actions.setStereographic(x));
+  },
   setXRepeat: (x) => {
     dispatch(actions.setXRepeat(x));
   },

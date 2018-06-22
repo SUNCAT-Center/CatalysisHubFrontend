@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
@@ -13,6 +14,8 @@ import SingleStructureView from 'components/SingleStructureView';
 import BarrierChart from 'components/BarrierChart';
 
 const styles = (theme) => ({
+  publicationEntry: {
+  },
   tab: {
     backgroundColor: theme.palette.primary[50],
     textTransform: 'none',
@@ -54,16 +57,39 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
     tabValue = Math.min(tabValue, this.props.reactionSystems.length);
 
     return (<div> {/* div necessary before wrapping ternary expression */}
-      {this.props.reactionSystems.length === 0 ? null :
+      {_.isEmpty(this.props.selectedReaction) ? null :
       <Paper className={this.props.classes.paper}>
         <Grid container direction="column" width="100%">
           <h2>{this.props.selectedReaction.Equation} - Reaction Geometries</h2>
-          <Hidden smUp>
+          <Hidden mdUp>
             <BarrierChart {...this.props} thumbnailSize={50} />
           </Hidden>
           <Hidden smDown>
             <BarrierChart {...this.props} />
           </Hidden>
+          {this.props.reactionSystems.length !== 0 ? null :
+          <ul className={this.props.classes.publicationEntry}>
+            {Object.keys(this.props.publication).map((key, i) => {
+              if (this.props.publication[key] !== null) {
+                if (key === 'authors') {
+                  return (
+                    <li key={`publine_${i}`}>
+                      {key}: {JSON.parse(this.props.publication[key]).join('; ')}
+                    </li>
+                  );
+                }
+                return (
+                  <li key={`publine_${i}`}>
+                    {key}: {this.props.publication[key]}
+                  </li>
+                );
+              }
+              return null;
+            })
+                  }
+          </ul>
+
+            }
           <Tabs
             value={tabValue}
             onChange={this.handleChange}
@@ -73,6 +99,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
             fullWidth
             scrollButtons="auto"
           >
+
             {this.props.reactionSystems.map((system, i) =>
               <Tab
                 label={system.Formula} key={`reaction_tab_${i}`}
@@ -99,10 +126,12 @@ ReactionStructures.propTypes = {
   reactionSystems: PropTypes.array.isRequired,
   selectedReaction: PropTypes.object,
   classes: PropTypes.object,
+  publication: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   reactionSystems: state.get('energiesPageReducer').reactionSystems,
+  publication: state.get('energiesPageReducer').publication,
 });
 
 const mapDispatchToProps = () => ({

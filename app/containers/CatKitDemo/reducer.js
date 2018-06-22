@@ -23,6 +23,8 @@ const initialState = {
   siteOccupations: {},
   slabInput: '',
   slabParams: {},
+  unitCellSize: 2,
+  fixed: 2,
   wyckoffBulkParams: {},
   openCalculation: -1,
 };
@@ -35,10 +37,28 @@ function catKitDemoReducer(state = initialState, action) {
         openCalculation: action.payload.n,
       };
     }
+    case constants.SAVE_FIXED: {
+      return {
+        ...state,
+        fixed: action.payload.fixed,
+      };
+    }
+    case constants.SAVE_UNIT_CELL_SIZE: {
+      return {
+        ...state,
+        unitCellSize: action.payload.unitCellSize,
+      };
+    }
     case constants.EDIT_CALCULATION: {
+      const bulkParams = _.get(state, `calculations.[${action.payload.n}].bulkParams`, state.bulkParams);
+      const slabParams = _.get(state, `calculations.[${action.payload.n}].slabParams`, state.slabParams);
+      const adsorbateParams = _.get(state, `calculations.[${action.payload.n}].adsorbateParams`, state.adsorbateParams);
       return {
         ...state,
         openCalculation: action.payload.n,
+        bulkParams,
+        slabParams,
+        adsorbateParams,
       };
     }
     case constants.SAVE_ADSORBATE_PARAMS: {
@@ -151,11 +171,26 @@ function catKitDemoReducer(state = initialState, action) {
         ...state,
         calculations: state.calculations.filter((x, i) => i !== action.payload.n),
       };
-    case constants.SAVE_CALCULATION:
+    case constants.SAVE_CALCULATION: {
+      let calculations;
+      if (state.openCalculation >= 0 && state.openCalculation < state.calculations.length) {
+        calculations = _.concat(
+          state.calculations.slice(0, state.openCalculation),
+          [action.payload.calculation],
+          state.calculations.slice(state.openCalculation + 1));
+      } else {
+        calculations = _.concat(
+          state.calculations,
+          [action.payload.calculation],
+        );
+      }
+
       return {
         ...state,
-        calculations: _.union(state.calculations, [action.payload.calculation]),
+        calculations,
+        openCalculation: -1,
       };
+    }
     case constants.CLEAR_SLAB_PARAMS:
       return {
         ...state,

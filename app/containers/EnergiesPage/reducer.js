@@ -9,6 +9,7 @@ import * as constants from './constants';
 
 const initialState = {
   selectedReaction: {},
+  publication: {},
   matchingReactions: [],
   reactionSystems: [],
   searchSubmitted: false,
@@ -33,6 +34,12 @@ let orderBy;
 function energiesPageReducer(state = initialState, action) {
   const update = {};
   switch (action.type) {
+    case constants.SAVE_PUBLICATION:
+      return {
+        ...state,
+        publication: action.payload.publication,
+      };
+
     case constants.HANDLE_REQUEST_SORT:
       order = 'desc';
       orderBy = action.payload.property;

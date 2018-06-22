@@ -67,11 +67,12 @@ module.exports = {
       route: '/publications',
       tooltip: 'Calculated structures sorted by publications.',
     }, {
-      title: 'Reaction Energetics',
+      title: 'Surface Reactions',
       tooltip: 'Explore calculated reaction energetics',
       route: '/energies',
     }, {
       title: 'Scaling Relations',
+      route: '/scalingRelations',
       tooltip: 'App for exploring scaling relations -- WIP.',
     }, {
       /* title: 'Upload Datasets',*/
@@ -85,5 +86,18 @@ module.exports = {
       route: '/yourNextApp',
       tooltip: 'How to write your own apps.',
     },
+  ],
+  people: [
+    'Ankit Jain',
+    'Jake Boes',
+    'Kirsten Winther',
+    'Martin Hansen',
+    'Max Hoffmann',
+    'Meng Zhao',
+    'Michal Bajdich',
+    'Morten Winther',
+    'Osman Mamun',
+    'Paul Jennings',
+    'Thomas Bligaard',
   ],
 };

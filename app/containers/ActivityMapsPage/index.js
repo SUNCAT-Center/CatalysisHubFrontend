@@ -12,17 +12,19 @@ import { connect } from 'react-redux';
 import Script from 'react-load-script';
 import Slide from 'material-ui/transitions/Slide';
 
+import { reactions } from 'containers/ActivityMapsPage/ActivityMapPlot';
 import ActivityMaps from './ActivityMaps';
 import * as actions from './actions';
 
+
 export class ActivityMapsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     let { reaction } = this.props.routeParams;
-    if (_.isEmpty(reaction)) {
-      reaction = 'OER';
+    if (_.isEmpty(reaction) && nextProps.reaction !== this.props.reaction) {
+      reaction = nextProps.reaction;
     }
-    if (reaction !== this.props.reaction) {
-      if (['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'].includes(reaction)) {
+    if (!_.isEmpty(reaction)) {
+      if (reactions.includes(reaction)) {
         this.props.saveReaction(reaction);
       }
     }

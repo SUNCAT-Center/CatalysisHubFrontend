@@ -106,7 +106,7 @@ function _load_lib(url, callback){
   tfcanvas_${this.props.uniqueId}.specs.set3DRepresentation('Ball and Stick');
 
   tfcanvas_${this.props.uniqueId}.specs.backgroundColor = '${this.props.color}';
-  tfcanvas_${this.props.uniqueId}.specs.projectionPerspective_3D = ${this.state.perspective};
+  tfcanvas_${this.props.uniqueId}.specs.projectionPerspective_3D = ${this.props.perspective};
   tfcanvas_${this.props.uniqueId}.specs.compass_display = true;
   tfcanvas_${this.props.uniqueId}.specs.compass_size_3D = 50;
   tfcanvas_${this.props.uniqueId}.specs.atoms_displayLabels_3D = true;

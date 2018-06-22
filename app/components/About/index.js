@@ -8,16 +8,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import slacLogo from 'components/Header/SLAC_Logo.png';
+import doeLogo from 'components/Header/DOE_Logo.gif';
+import stanfordLogo from 'components/Header/stanford_crop.png';
+import { people } from 'utils/constants';
+
 
 
 const styles = (theme) => ({
+  bannerStyle: {
+    width: '240px',
+    height: '150px',
+  },
+  peopleList: {
+    display: 'flex',
+    height: '150px',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+  },
   paper: {
     marginBottom: 3 * theme.spacing.unit,
     marginTop: theme.spacing.unit,
     padding: theme.spacing.unit,
   },
 });
-
 
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -36,9 +51,35 @@ Catalysis-Hub.Org is a frontend for browsing the SUNCAT CatApp database containi
         */}
         <Paper className={this.props.classes.paper}>
           <h2>People</h2>
+          <ul className={this.props.classes.peopleList}>
+            {people.map((name, i) => (
+              <li key={`person_${i}`}>
+                {name}
+              </li>
+              ))}
+
+          </ul>
         </Paper>
         <Paper className={this.props.classes.paper}>
           <h2>Partners and Support</h2>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            style={{
+              padding: '10%',
+            }}
+          >
+            <Grid item lg={3} className={this.props.classes.bannerBox}>
+              <img src={slacLogo} alt="SLAC Logo" style={{ width: '240px', height: 'auto', display: 'block', margin: '0 auto' }} />
+            </Grid>
+            <Grid item lg={3} className={this.props.classes.bannerBox}>
+              <img src={stanfordLogo} alt="Stanford Logo" style={{ width: '300px', height: 'auto', display: 'block', margin: '0 auto' }} />
+            </Grid>
+            <Grid item lg={3} className={this.props.classes.bannerBox}>
+              <img src={doeLogo} alt="Department of Energy Logo" style={{ width: '260px', height: 'auto', display: 'block', margin: '0 auto' }} />
+            </Grid>
+          </Grid>
         </Paper>
       </div>
     );

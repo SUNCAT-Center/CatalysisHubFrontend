@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 
 import { Link } from 'react-router';
+import { withCookies, Cookies } from 'react-cookie';
+import { compose } from 'recompose';
 
 
 import { MenuItem } from 'material-ui/Menu';
@@ -20,6 +22,7 @@ import { MdClear } from 'react-icons/lib/md';
 
 import axios from 'axios';
 import { apiRoot } from 'utils/constants';
+import { outputFormats } from 'components/GeometryCanvasWithOptions';
 import { styles } from './styles';
 
 const backendRoot = `${apiRoot}/apps/catKitDemo`;
@@ -37,6 +40,7 @@ let initialState = {
   elements: ['Pt', 'Pt', 'Pt', 'Pt'],
   uploadError: '',
   loading: false,
+  inputFormat: 'cif',
 };
 
 
@@ -131,7 +135,20 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
       latticeConstant,
     });
 
+
+    // Sync initial state with cookie
+    if (this.props.cookies.get('preferredFormat') === undefined) {
+      this.props.cookies.set(
+        'preferredFormat',
+        initialState.inputFormat,
+      );
+    } else {
+      initialState.inputFormat = this.props.cookies.get('preferredFormat');
+    }
+
     this.state = initialState;
+
+
     this.generateBulk = this.generateBulk.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileDrop = this.handleFileDrop.bind(this);
@@ -156,11 +173,12 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
         u: this.state.u,
         covera: this.state.covera,
         wyckoff: this.props.bulkParams.wyckoff,
+        format: this.state.inputFormat,
       },
     } };
 
     this.props.clearSlabCifs();
-    this.props.saveBulkParams(params.params.bulkParams);
+    /* this.props.saveBulkParams(params.params.bulkParams);*/
 
     if (!this.props.customBulkInput) {
       axios.get(bulkUrl, params).then((response) => {
@@ -174,6 +192,8 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
           cif: response.data.cifdata,
         };
         params.params.bulkParams.lattice_constant = response.data.lattice_constant;
+        params.params.bulkParams.input = response.data.input;
+        params.params.bulkParams.cif = response.data.cifdata;
         axios.get(wyckoffUrl, { params: wyckoffParams }).then((wyckoffResponse) => {
           params.params.bulkParams.wyckoff = wyckoffResponse.data;
           this.props.saveBulkParams(params.params.bulkParams);
@@ -324,6 +344,31 @@ class BulkInput extends React.Component { // eslint-disable-line react/prefer-st
             />
             <FormHelperText>{'Default based on Vegard\'s law'}</FormHelperText>
           </FormControl>
+          <FormControl className={this.props.classes.formContro}>
+            <InputLabel
+              htmlFor="input-format-helper"
+            >Input Format</InputLabel>
+            <Select
+              id="input-format-helper"
+              value={this.state.inputFormat}
+              onChange={(event) => {
+                this.setState({
+                  inputFormat: event.target.value,
+                });
+                this.props.cookies.set(
+                  'preferredFormat',
+                  event.target.value,
+                );
+              }}
+            >
+              {outputFormats.map((format, i) => (
+                <MenuItem key={`format_${i}`} value={format}>{format}</MenuItem>
+
+              ))}
+            </Select>
+
+
+          </FormControl>
 
 
         </form>
@@ -340,6 +385,7 @@ BulkInput.propTypes = {
   classes: PropTypes.object.isRequired,
   clearBulkCif: PropTypes.func,
   clearSlabCifs: PropTypes.func,
+  cookies: instanceOf(Cookies),
   customBulkInput: PropTypes.bool,
   dropBulkInput: PropTypes.func,
   forgetCustomBulk: PropTypes.func,
@@ -350,4 +396,7 @@ BulkInput.propTypes = {
 };
 
 
-export default withStyles(styles, { withTheme: true })(BulkInput);
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  withCookies,
+)(BulkInput);

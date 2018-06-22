@@ -34,9 +34,11 @@ import FaCube from 'react-icons/lib/fa/cube';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
+import { withCommas } from 'utils/functions';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
+import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as actions from './actions';
 
 const styles = (theme) => ({
@@ -114,6 +116,27 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       });
       snackbarActions.open('Scroll down for detailed structure.');
     }
+
+    const pubQuery = {
+      query: `{publications(pubId: "${reaction.pubId}"){
+      edges {
+      node
+      {
+        year
+        doi
+        authors
+        title
+        number
+        journal
+        pages
+      }}
+      }
+      }
+      `,
+    };
+    cachios.post(newGraphQLRoot, pubQuery).then((response) => {
+      this.props.savePublication(response.data.data.publications.edges[0].node);
+    });
 
     this.props.clearSystems();
     catappIds.map((key) => {
@@ -232,6 +255,9 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         >
                           <Link
                             className={this.props.classes.buttonLink}
+                            onClick={() => {
+                              this.props.catKitStepperHandleReset();
+                            }}
                             to={`/catKitDemo/fcc/3.91/${this.props.searchParams.surfaceComposition}`}
                           >construct</Link>
                         </Button> your own slab calculation.
@@ -299,7 +325,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     return (
       <Paper className={this.props.classes.paper}>
         <div>
-          <h2>Matching Reactions ({this.props.resultSize})</h2>
+          <h2>Matching Reactions ({withCommas(this.props.resultSize)})</h2>
           <Table>
             <TableHead>
               <TableRow>
@@ -356,6 +382,15 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                     </TableSortLabel>
                   </TableCell>
                 </Hidden>
+                <TableCell>
+                  <TableSortLabel
+                    active={this.props.orderBy === 'dftFunctional'}
+                    direction={this.props.order}
+                    onClick={this.createSortHandler('dftFunctional')}
+                  >
+                    <div>XC Functional</div>
+                  </TableSortLabel>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -387,6 +422,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                         <Hidden smDown>
                           <TableCell>{result.node.sites}</TableCell>
                         </Hidden>
+                        <TableCell>{`${result.node.dftFunctional}/${result.node.dftCode}` || ''}</TableCell>
                       </TableRow>
 
                     );
@@ -424,10 +460,12 @@ MatchingReactions.propTypes = {
   selectReaction: PropTypes.func.isRequired,
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
+  savePublication: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
   classes: PropTypes.object,
+  catKitStepperHandleReset: PropTypes.func,
   resultSize: PropTypes.number,
   searchString: PropTypes.string,
   handleRequestSort: PropTypes.func,
@@ -450,9 +488,13 @@ const mapStateToProps = (state) => ({
   searchQuery: state.get('energiesPageReducer').searchQuery,
   order: state.get('energiesPageReducer').order,
   orderBy: state.get('energiesPageReducer').orderBy,
+  publication: state.get('energiesPageReducer').publication,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  catKitStepperHandleReset: () => {
+    dispatch(catKitActions.stepperHandleReset());
+  },
   receiveReactions: (reactions) => {
     dispatch(actions.receiveReactions(reactions));
   },
@@ -467,6 +509,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(actions.saveSystem(system));
+  },
+  savePublication: (x) => {
+    dispatch(actions.savePublication(x));
   },
   handleRequestSort: (event, property) => {
     dispatch(actions.handleRequestSort(event, property));

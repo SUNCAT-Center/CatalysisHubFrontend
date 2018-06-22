@@ -131,7 +131,7 @@ class ReactionEnergies extends React.Component { // eslint-disable-line react/pr
     return (
       <div>
         <div>
-          <h2>Reaction Energetics</h2>
+          <h2>Surface Reactions</h2>
           <Table>
             <TableHead>
               <TableRow>

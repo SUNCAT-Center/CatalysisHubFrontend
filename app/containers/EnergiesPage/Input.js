@@ -26,6 +26,7 @@ import { MdSearch, MdChevronLeft, MdWarning } from 'react-icons/lib/md';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
+import { withCommas } from 'utils/functions';
 
 import * as actions from './actions';
 import TermAutosuggest from './TermAutosuggest';
@@ -115,7 +116,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
       } else if (totalCount === 1) {
         message = '1 entry';
       } else {
-        message = `${response.data.data.reactions.totalCount} entries`;
+        message = `${withCommas(response.data.data.reactions.totalCount)} entries`;
       }
       this.setState({
         resultCount: message,
@@ -126,16 +127,16 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
   getFilterString() {
     const filters = [];
     if (typeof this.state.surfaceComposition.label !== 'undefined' && this.state.surfaceComposition.label) {
-      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label}"`);
+      filters.push(`surfaceComposition: "${this.state.surfaceComposition.label.trim()}"`);
     }
     if (typeof this.state.facet.label !== 'undefined' && this.state.facet.label) {
-      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1')}"`);
+      filters.push(`facet: "~${this.state.facet.label.replace(/^\(([^)]*)\)$/, '$1').trim()}"`);
     }
     if (typeof this.state.reactants.label !== 'undefined' && this.state.reactants.label) {
-      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`reactants: "${this.state.reactants.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '').trim() || '~'}"`);
     }
     if (typeof this.state.products.label !== 'undefined' && this.state.products.label) {
-      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '') || '~'}"`);
+      filters.push(`products: "${this.state.products.label.replace(/\*/g, 'star').replace(/[ ]/g, '').replace('any', '').trim() || '~'}"`);
     }
 
     const filterString = filters.join(', ');
@@ -177,6 +178,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         Equation
         sites
         id
+        pubId
         dftCode
         dftFunctional
         reactants
@@ -278,7 +280,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
           </Grid>
         </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
-        <h2>Reaction Energetics</h2>
+        <h2>Surface Reactions</h2>
         <div className={this.props.classes.hint}>{this.state.resultCount}</div>
 
         <FormGroup row>

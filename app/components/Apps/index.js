@@ -44,10 +44,19 @@ const styles = () => ({
     padding: '0 0px',
     flexDirection: 'column',
     textDecoration: 'none',
+    position: 'block',
   },
   appHint: {
     fontSize: 12,
     textAlign: 'left',
+  },
+  appPaper: {
+    padding: 25,
+    minWidth: 240,
+    maxWidth: 300,
+    textAlign: 'center',
+    backgroundColor: '#eeeeee',
+    cornerRadius: 40,
   },
 });
 
@@ -58,7 +67,7 @@ const getAppIcon = (title) => {
     return <IoCube />;
   } else if (title === 'CatKit Slab Generator') {
     return <IoSocialBuffer />;
-  } else if (title === 'Reaction Energetics') {
+  } else if (title === 'Surface Reactions') {
     return <MdSearch />;
   } else if (title === 'Publications') {
     return <FaNewspaperO />;
@@ -93,15 +102,12 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                     to={app.route}
                     style={{
                       textDecoration: 'none',
+                      color: 'black',
                     }}
                   >
                     <Paper
-                      style={{
-                        padding: 25,
-                        minWidth: 240,
-                        maxWidth: 300,
-                        textAlign: 'center',
-                      }}
+                      className={this.props.classes.appPaper}
+                      elevation={0}
                     >
                       <Tooltip title={app.tooltip} placement="top">
                         <h3>

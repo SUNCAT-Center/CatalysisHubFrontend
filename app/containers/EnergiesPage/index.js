@@ -52,6 +52,7 @@ EnergiesPage.propTypes = {
 
 const mapStateToProps = (state) => ({
   selectedReaction: state.get('energiesPageReducer').selectedReaction,
+  publication: state.get('energiesPageReducer').publication,
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
   reactionSystems: state.get('energiesPageReducer').reactionSystems,
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
@@ -76,6 +77,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSystem: (system) => {
     dispatch(actions.saveSystem(system));
+  },
+  savePublication: (x) => {
+    dispatch(actions.savePublication(x));
   },
   submitSearch: (params) => {
     dispatch(actions.submitSearch(params));

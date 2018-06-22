@@ -83,9 +83,13 @@ export class CellParameterInput extends React.Component {  // eslint-disable-lin
 
   handoffBulkStructure() {
     const bulkParams = {
+      elements: this.props.wyckoffPoints.map((elem) => elem.species),
       wyckoff: {
         name: this.props.name,
         spacegroup: this.props.spacegroup,
+        elements: this.props.wyckoffPoints.map((elem) => elem.species),
+        species: this.props.wyckoffPoints.map((elem) => elem.species),
+        wyckoff: this.props.wyckoffPoints.map((elem) => elem.symbol),
       },
     };
 

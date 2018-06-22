@@ -44,3 +44,5 @@ export const FORGET_CUSTOM_SLAB = 'app/CatKitDemo/FORGET_CUSTOM_SLAB';
 
 export const SAVE_WYCKOFF_BULK_PARAMS = 'app/CatKitDemo/SAVE_WYCKOFF_BULK_PARAMS';
 export const SAVE_ADSORBATE_PARAMS = 'app/CatKitDemo/SAVE_ADSORBATE_PARAMS';
+export const SAVE_UNIT_CELL_SIZE = 'app/CatKitDemo/SAVE_UNIT_CELL_SIZE';
+export const SAVE_FIXED = 'app/CatKitDemo/SAVE_FIXED';

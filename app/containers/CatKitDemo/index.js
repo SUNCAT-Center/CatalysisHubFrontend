@@ -38,7 +38,6 @@ function getSteps() {
     'Configure bulk structure',
     'Configure surface slab',
     'Add adsorbates',
-    'Configure calculator',
   ];
 }
 
@@ -49,7 +48,7 @@ function nextStepReady(step, props) {
     case 1:
       return !_.isEmpty(props.images);
     case 2:
-      return true;
+      return false;
     case 3:
       return false;
     default:
@@ -149,7 +148,8 @@ export class CatKitDemo extends React.Component { // eslint-disable-line react/p
               <Grid item>
                 <Button
                   className={this.props.classes.button}
-                  disabled={activeStep === 0}
+                  disabled={activeStep === 0 ||
+                      (activeStep === 2 && _.isEmpty(this.props.slabParams))}
                   onClick={this.handleBack}
                 >
                   <MdChevronLeft /> Back
@@ -182,6 +182,7 @@ CatKitDemo.propTypes = {
   stepperHandleNext: PropTypes.func,
   stepperHandleBack: PropTypes.func,
   stepperHandleReset: PropTypes.func,
+  slabParams: PropTypes.object,
 };
 
 const mapDispatchToProps = (dispatch) => ({
