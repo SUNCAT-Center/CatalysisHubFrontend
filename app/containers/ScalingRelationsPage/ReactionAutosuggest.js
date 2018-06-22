@@ -72,6 +72,11 @@ export function renderInput(inputProps) {
   return (
     <TextField
       fullWidth
+      style={{
+        width: 350,
+        marginTop: 10,
+        marginBottom: 10,
+      }}
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}

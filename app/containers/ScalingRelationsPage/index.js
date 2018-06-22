@@ -15,6 +15,7 @@ import { FormGroup } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import { MdSearch } from 'react-icons/lib/md';
 
@@ -362,31 +363,37 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
             </Button>
           </FormGroup>
           { this.state.systems.length === 0 ? null :
-          <Plot
-            data={[
-              this.state.scatterData,
-              this.state.linRegData,
-            ]}
-            layout={{
-              hovermode: 'closest',
-              title: this.state.plotTitle,
-              xaxis: {
-                title: this.state.reaction1.label,
-              },
-              yaxis: {
-                title: this.state.reaction2.label,
-              },
-            }}
-            config={{
-              scrollZoom: false,
-              displayModeBar: false,
-              legendPosition: true,
-              showTips: false,
-            }}
-            onClick={(event) => {
-              this.getStructures(event);
-            }}
-          />
+          <Grid container direction="row" justify="center">
+            <Grid item>
+              <Paper>
+                <Plot
+                  data={[
+                    this.state.scatterData,
+                    this.state.linRegData,
+                  ]}
+                  layout={{
+                    hovermode: 'closest',
+                    title: this.state.plotTitle,
+                    xaxis: {
+                      title: this.state.reaction1.label,
+                    },
+                    yaxis: {
+                      title: this.state.reaction2.label,
+                    },
+                  }}
+                  config={{
+                    scrollZoom: false,
+                    displayModeBar: false,
+                    legendPosition: true,
+                    showTips: false,
+                  }}
+                  onClick={(event) => {
+                    this.getStructures(event);
+                  }}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
           }
         </Paper>
         {!this.state.loadingStructures ? null : <LinearProgress className={this.props.classes.progressBar} />}
