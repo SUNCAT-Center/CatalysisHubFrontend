@@ -244,6 +244,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       Formula
       energy
       uniqueId
+      keyValuePairs
     }
   }
 }}`,
@@ -410,7 +411,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                         />
 
                         {_.isEmpty(this.state.structureQuery) ? null :
-                        <Grid container className={this.props.classes.headerDiv} direction="row" justify="justify-left">
+                        <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                           <Grid item>
                             <GraphQlbutton
                               query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
