@@ -101,7 +101,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                Made&nbsp;
+                Visit&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
@@ -111,7 +111,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                in&nbsp;
+                us on&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout backend code on GitHub">
@@ -121,7 +121,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                Menlo Park&nbsp;
+                GitHub&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
             </ListItem>
