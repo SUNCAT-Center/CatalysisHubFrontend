@@ -29,7 +29,13 @@ const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
 
 
-const styles = () => ({
+const styles = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 3,
+  },
 });
 
 export class Upload extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -120,8 +126,13 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             display="initial"
           />
         </Modal>
-        <h2>Upload Datasets</h2>
-        <Paper className={this.props.classes.fileDrop}>
+        <h2>Upload Datasets
+          {!_.isEmpty(this.state.userInfo) ?
+              `\u00A0\u00A0(${this.state.userInfo.email})`
+
+          : null}
+        </h2>
+        <Paper className={this.props.classes.paper}>
           <SocialButton
             provider="github"
             appId="94895cb9f588ac74ab9d"
@@ -168,14 +179,44 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
           }
         </Paper>
-        <Paper>
-          {_.get(this.state, 'userInfo.email', false)
-              ? <div>
+        {_.get(this.state, 'userInfo.email', false)
+            ?
+              <Paper className={this.props.classes.paper}>
+                <div>
                 Hi {this.state.userInfo.email}, wanna upload some adsorption energies?
               </div>
+              </Paper>
 
               : null
           }
+        <Paper className={this.props.classes.paper}>
+          <h3>Method 1: from the terminal.</h3>
+          <ol>
+            <li>Install catkit: pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</li>
+            <li>Run catkit organize foldername</li>
+            <li>Run catkit folder2db foldername.organized</li>
+            <li>Run catkit db2server foldername.organize.db --userhandle {this.state.userInfo.email}</li>
+          </ol>
+        </Paper>
+        <Paper className={this.props.classes.paper}>
+          <h3>Method 2: using terminal + git (WIP).</h3>
+          <ol>
+            <li>Install catkit: pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</li>
+            <li>Run catkit organize foldername</li>
+            <li>Push your organized folder as one directory to e.g. github.</li>
+            <li>Get a DOI for your repository: https://guides.github.com/activities/citable-code/</li>
+            <li>Enter the respository URL below.</li>
+          </ol>
+        </Paper>
+        <Paper className={this.props.classes.paper}>
+          <h3>Method 3: drag and drop (WIP).</h3>
+          <ol>
+            <li>Go to your results folder using e.g. Finder on Mac, Nautilus on Linux, etc.</li>
+            <li>Drag and drop your folder (up to 10 MB)<Button>HERE</Button>.</li>
+          </ol>
+        </Paper>
+        <Paper className={this.props.classes.paper}>
+          <h1>Data sets</h1>
         </Paper>
       </div>
     );
