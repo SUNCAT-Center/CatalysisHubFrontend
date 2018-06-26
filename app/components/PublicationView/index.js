@@ -263,7 +263,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   handleReactionsScroll(e) {
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const bottom = e.target.scrollHeight - e.target.scrollTop >= (e.target.clientHeight);
     if (bottom && this.state.hasMoreReactions) {
       this.setState({
         loadingMoreReactions: true,
@@ -311,7 +311,10 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               className={this.props.classes.reactionsDiv}
               onScroll={this.handleReactionsScroll}
             >
-              <Grid container className={this.props.classes.headerDiv} direction="row" justify="center">
+              <Grid
+                container
+                className={this.props.classes.headerDiv} direction="row" justify="center"
+              >
                 <Grid item>
                   <h3>
                     {this.state.totalCount} reactions.
@@ -388,7 +391,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               </ul>
 
               {this.state.loadingMoreReactions ?
-                <CircularProgress />
+                <Grid container direction="row" justify="center">
+                  <Grid item>
+                    <CircularProgress />
+                  </Grid>
+                </Grid>
                       : null}
             </Paper>
           </Grid>
@@ -396,12 +403,12 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           <Grid item md={7} sm={12}>
             {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
             <Paper className={this.props.classes.structuresDiv}>
-              <Grid container justify="flex-start" direction="row">
+              <Grid container justify="flex-start" direction="column">
                 {this.state.structures.map((image, i) => (
                   <Grid item key={`item_${i}`}>
-                    <h2>{structures[i].Formula}: {structures[i].energy} eV</h2>
-                    <Grid container direction="row" justify="flex-start">
+                    <Grid container direction="row" justify="center">
                       <Grid item>
+                        <h2>{structures[i].Formula}  ({structures[i].energy} eV)</h2>
                         <GeometryCanvasWithOptions
                           cifdata={structures[i].Cifdata}
                           uniqueId={`slab_preview_${i}`}
