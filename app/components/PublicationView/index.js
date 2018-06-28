@@ -189,7 +189,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         loadingPublication: false,
         publication: response.data.data.publications.edges[0].node,
       });
-      this.getReactions();
+      if (!this.state.loadingReactions) {
+        this.getReactions();
+      }
     });
   }
 
@@ -299,7 +301,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         loadingMoreReactions: true,
         hasMoreReactions: false,
       });
-      this.getReactions();
+      if (!this.state.loadingMoreReactions) {
+        this.getReactions();
+      }
     }
   }
 
