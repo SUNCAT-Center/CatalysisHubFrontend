@@ -12,6 +12,7 @@ module.exports = {
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
   /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',*/
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
+  uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
   docRoot: '//docs.catalysis-hub.org',
   whiteLabel: false,
   suBranding: false,
