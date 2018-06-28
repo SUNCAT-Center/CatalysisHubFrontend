@@ -7,11 +7,13 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Script from 'react-load-script';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
-import { MdFileUpload } from 'react-icons/lib/md';
+import Grid from 'material-ui/Grid';
+import { MdFileUpload, MdRefresh, MdThumbUp, MdChevronRight } from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
 import IFrame from 'react-iframe';
 
@@ -19,7 +21,10 @@ import IFrame from 'react-iframe';
 import { createStructuredSelector } from 'reselect';
 import FileDrop from 'react-file-drop';
 import axios from 'axios';
+
 import { apiRoot } from 'utils/constants';
+import PublicationView from 'components/PublicationView';
+import { prettyPrintReference } from 'utils/functions';
 
 import SocialButton from './SocialButton';
 import makeSelectUpload from './selectors';
@@ -28,8 +33,15 @@ const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
 
+const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';
+
 
 const styles = (theme) => ({
+  dataEntry: {
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+  },
   paper: {
     padding: theme.spacing.unit,
     marginTop: theme.spacing.unit,
@@ -46,14 +58,45 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       loginModalOpen: false,
       loginUrl: '',
       userInfo: {},
+      datasets: [],
+      pubId: '',
+      showHelp: true,
     };
 
-    this.handleFileDrop = this.handleFileDrop.bind(this);
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
+    this.getDatasets = this.getDatasets.bind(this);
+    this.handleFileDrop = this.handleFileDrop.bind(this);
     this.handleSocialLogin = this.handleSocialLogin.bind(this);
     this.handleSocialLoginFailure = this.handleSocialLoginFailure.bind(this);
     this.login = this.login.bind(this);
+    this.setDataset = this.setDataset.bind(this);
+    this.toggleHelp = this.toggleHelp.bind(this);
     this.windowLogin = this.windowLogin.bind(this);
+  }
+
+  getDatasets() {
+    const datasetQuery = `{publications { totalCount edges { node {
+    title authors doi pubId journal volume pages year
+  } } }}`;
+    axios.post(uploadGraphqlRoot, { query: datasetQuery }).then((response) => {
+      this.setState({
+        datasets: response.data.data.publications.edges.map(
+          (edge) => edge.node),
+      });
+    });
+  }
+
+  setDataset(dataset) {
+    this.setState({
+      pubId: dataset.pubId,
+    });
+  }
+
+  handleSocialLogin() {
+  }
+
+
+  handleSocialLoginFailure() {
   }
 
   fetchUserInfo() {
@@ -67,12 +110,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       });
     });
   }
-  handleSocialLogin() {
-  }
 
-
-  handleSocialLoginFailure() {
-  }
 
   login() {
     const uploadUrl = `${apiRoot}/apps/upload/submit`;
@@ -105,9 +143,17 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     axios.post(url, formData, { headers: { 'content-type': 'multipart/form-data' } }).then((response) => response);
   }
 
+  toggleHelp() {
+    this.setState({
+      showHelp: !this.state.showHelp,
+    });
+  }
+
   render() {
     return (
       <div>
+        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+        <Script url="/static/ChemDoodleWeb.js" />
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -179,25 +225,30 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
           }
         </Paper>
-        {_.get(this.state, 'userInfo.email', false)
-            ?
-              <Paper className={this.props.classes.paper}>
-                <div>
-                Hi {this.state.userInfo.email}, wanna upload some adsorption energies?
-              </div>
-              </Paper>
-
-              : null
-          }
         <Paper className={this.props.classes.paper}>
-          <h3>Method 1: from the terminal.</h3>
+          <Grid container direction="row" justify="space-between">
+            <Grid item>
+              <h3>How to Submit Reactions from Terminal</h3>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={() => { this.toggleHelp(); }}
+              >
+                {this.state.showHelp ? 'Got it' : 'Show help' }
+              </Button>
+
+            </Grid>
+          </Grid>
+          {!this.state.showHelp ? null :
           <ol>
-            <li>Install catkit: pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</li>
-            <li>Run catkit organize foldername</li>
-            <li>Run catkit folder2db foldername.organized</li>
-            <li>Run catkit db2server foldername.organize.db --userhandle {this.state.userInfo.email}</li>
+            <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
+            <li>Organize converged calculations, run <pre>catkit organize foldername</pre></li>
+            <li>Turn organized folder into sqlite database, run <pre>catkit folder2db foldername.organized</pre></li>
+            <li>Upload database, run <pre>catkit db2server foldername.organize.db --userhandle {this.state.userInfo.email}</pre></li>
           </ol>
+          }
         </Paper>
+        {/*
         <Paper className={this.props.classes.paper}>
           <h3>Method 2: using terminal + git (WIP).</h3>
           <ol>
@@ -215,9 +266,49 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <li>Drag and drop your folder (up to 10 MB)<Button>HERE</Button>.</li>
           </ol>
         </Paper>
+        */}
         <Paper className={this.props.classes.paper}>
-          <h1>Data sets</h1>
+          <Grid container justify="space-between" direction="row">
+            <Grid item>
+              <h1>Data sets</h1>
+            </Grid>
+            <Grid item>
+              <Button
+                raised
+                onClick={() => { this.getDatasets(); }}
+              >
+                <MdRefresh /> Fetch Data Sets
+          </Button>
+            </Grid>
+          </Grid>
+          {_.isEmpty(this.state.datasets) ? null :
+            this.state.datasets.map((dataset, i) => (
+              <Paper key={`ds_${i}`} className={this.props.classes.paper}>
+                {prettyPrintReference(dataset)}
+                <Button
+                  raised
+                  onClick={() => {
+                  }}
+                >
+                  Endorse {'\u00A0\u00A0'} <MdThumbUp />
+
+                </Button> {'\u00A0\u00A0'}<Button
+                  raised
+                  onClick={() => { this.setDataset(dataset); }}
+                > Details <MdChevronRight /> </Button>
+              </Paper>
+              ))
+          }
         </Paper>
+        {_.isEmpty(this.state.pubId) ? null :
+        <Paper>
+          <PublicationView
+            preview
+            pubId={this.state.pubId}
+            graphqlRoot={uploadGraphqlRoot}
+          />
+        </Paper>
+        }
       </div>
     );
   }
