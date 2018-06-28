@@ -10,6 +10,16 @@ import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
+import Hidden from 'material-ui/Hidden';
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  TablePagination,
+  TableSortLabel,
+} from 'material-ui/Table';
 
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress, CircularProgress } from 'material-ui/Progress';
@@ -18,7 +28,7 @@ import Button from 'material-ui/Button';
 
 
 import { MdChevronRight } from 'react-icons/lib/md';
-import { FaExternalLink } from 'react-icons/lib/fa';
+import { FaExternalLink, FaCube } from 'react-icons/lib/fa';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -26,6 +36,13 @@ import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
 
 const styles = (theme) => ({
+  table: {
+    margin: theme.spacing.unit,
+  },
+  important: {
+    textColor: 'red',
+    color: 'red',
+  },
   reactionActions: {
     padding: theme.spacing.unit,
   },
@@ -71,6 +88,11 @@ const styles = (theme) => ({
 });
 
 const initialState = {
+  resultSize: 0,
+  rowsPerPage: 100,
+  order: 'asc',
+  orderBy: 'energy',
+  page: 0,
   reactionQuery: '',
   publicationQuery: '',
   structureQuery: '',
@@ -85,7 +107,9 @@ const initialState = {
   loadingStructures: false,
   endCursor: '',
   hasMoreReactions: true,
+  tableView: false,
 };
+
 const restoreSC = (str) => {
   let res = str;
   if (str === null || typeof str === 'undefined') {
@@ -130,14 +154,15 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   constructor(props) {
     super(props);
     this.state = initialState;
+    this.toggleView = this.toggleView.bind(this);
     this.getStructures = this.getStructures.bind(this);
     this.getReactions = this.getReactions.bind(this);
     this.handleReactionsScroll = this.handleReactionsScroll.bind(this);
     this.sortReactions = this.sortReactions.bind(this);
   }
 
-  componentDidMount() {
-    const { pubId } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const { pubId } = nextProps;
     const publicationQuery = {
       ttl: 300,
       query: `{publications(pubId: "${pubId}") {
@@ -155,17 +180,19 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 }}` };
 
-    cachios.post(newGraphQLRoot, publicationQuery).then((response) => {
+    cachios.post(this.props.graphqlRoot, publicationQuery).then((response) => {
       this.setState({
         publicationQuery,
-        publication: response.data.data.publications.edges[0].node,
+        reactions: [],
+        structures: [],
         hasMoreReactions: true,
         loadingPublication: false,
+        publication: response.data.data.publications.edges[0].node,
       });
+      this.getReactions();
     });
-
-    this.getReactions();
   }
+
 
   getReactions() {
     const { pubId } = this.props;
@@ -175,7 +202,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     if (this.state.hasMoreReactions) {
       const reactionQuery = {
         ttl: 300,
-        query: `query{reactions (pubId: "${pubId}", first: 100, after: "${this.state.endCursor}") {
+        query: `query{reactions (pubId: "${pubId}",
+        first: ${Math.min(1000, Math.max(100, parseInt(this.state.reactions.length * 0.5, 10)))}, after: "${this.state.endCursor}") {
     totalCount
      pageInfo {
     hasNextPage
@@ -208,12 +236,14 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     }
   }}`,
       };
-      cachios.post(newGraphQLRoot, reactionQuery).then((response) => {
+      cachios.post(this.props.graphqlRoot, reactionQuery).then((response) => {
+        const newReactions = _.concat(this.state.reactions,
+            response.data.data.reactions.edges.map((edge) => edge.node),
+          );
         this.setState({
           reactionQuery,
-          reactions: _.concat(this.state.reactions,
-            response.data.data.reactions.edges.map((edge) => edge.node),
-          ),
+          reactions: newReactions,
+          resultSize: newReactions.length,
           endCursor: response.data.data.reactions.pageInfo.endCursor,
           totalCount: response.data.data.reactions.totalCount,
           hasMoreReactions: response.data.data.reactions.pageInfo.hasNextPage,
@@ -250,7 +280,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 }}`,
         ttl: 300,
       };
-      return cachios.post(newGraphQLRoot, structureQuery).then((response) => {
+      return cachios.post(this.props.graphqlRoot, structureQuery).then((response) => {
         this.setState({
           structureQuery,
           loadingStructures: false,
@@ -279,6 +309,50 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     });
   }
 
+  toggleView() {
+    this.setState({
+      tableView: !this.state.tableView,
+    });
+  }
+
+  handlePageChange = (event, page) => {
+    this.setState({ page });
+  };
+  handleChangeRowsPerPage = (event) => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
+  createSortHandler = (property) => (event) => {
+    this.handleRequestSort(event, property);
+  }
+
+  handleRequestSort(event, property) {
+    const orderBy = property;
+    let order;
+    let reactions;
+    this.setState({
+      loading: true,
+    });
+
+
+
+    this.state.order = 'desc';
+    if (this.state.orderBy === orderBy && this.state.order === 'desc') {
+      order = 'asc';
+    }
+
+    if (order === 'desc') {
+      reactions = this.state.reactions.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1));
+    } else {
+      reactions = this.state.reactions.sort((a, b) => (b[orderBy] > a[orderBy] ? -1 : 1));
+    }
+    this.setState({
+      loading: false,
+      reactions,
+      order,
+      orderBy,
+    });
+  }
   render() {
     const { publication, reactions, structures } = this.state;
     return (
@@ -287,141 +361,305 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 
         {_.isEmpty(publication) ? null :
         <Paper className={this.props.classes.paper}>
+          {this.props.preview === false ? null :
+          <div className={this.props.classes.important}>
+              This is just a preview. The final dataset will appear under <a>{`https://www.catalysis-hub.org/publications/${publication.pubId}`}</a>
+          </div>
+          }
           {prettyPrintReference(publication)}
-          {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
-          {_.isEmpty(publication.doi) ? null :
-          <ReactGA.OutboundLink
-            eventLabel={`http://dx.doi.org/${publication.doi}`}
-            to={`http://dx.doi.org/${publication.doi}`}
-            target="_blank"
-            className={this.props.classes.outboundLink}
-          >
-            <Button className={this.props.classes.publicationAction}>
-              <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
+          <div>
+            <Button
+              className={this.props.classes.publicationAction}
+              onClick={() => {
+                this.toggleView();
+              }}
+            >
+              {this.state.tableView ? 'List View' : 'Table View' }
+            </Button>
+            {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
+            {_.isEmpty(publication.doi) ? null :
+            <ReactGA.OutboundLink
+              eventLabel={`http://dx.doi.org/${publication.doi}`}
+              to={`http://dx.doi.org/${publication.doi}`}
+              target="_blank"
+              className={this.props.classes.outboundLink}
+            >
+              <Button className={this.props.classes.publicationAction}>
+                <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
                     </Button>
-          </ReactGA.OutboundLink>
+            </ReactGA.OutboundLink>
               }
+          </div>
         </Paper>
         }
-        {_.isEmpty(reactions) ? null :
-        <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
-          <Grid item md={5} sm={12}>
-            {(this.state.loadingReactions && !this.state.loadingMoreReactions) ? <LinearProgress className={this.props.classes.progress} /> : null }
-            <Paper
-              className={this.props.classes.reactionsDiv}
-              onScroll={this.handleReactionsScroll}
-            >
-              <Grid
-                container
-                className={this.props.classes.headerDiv} direction="row" justify="center"
-              >
-                <Grid item>
-                  <h3>
-                    {this.state.totalCount} reactions.
-                      </h3>
-                </Grid>
-              </Grid>
-              <div className={this.props.classes.reactionActions}>
-                {_.isEmpty(this.state.reactionQuery) ? null :
-                <div>
-                  <GraphQlbutton
-                    query={this.state.reactionQuery.query}
-                    newSchema
-                    className={this.props.classes.publicationAction}
-                  />
-                  <Button
-                    className={this.props.classes.publicationAction}
-                    onClick={() => {
-                      this.sortReactions('reactionEnergy');
-                    }}
-                  >
-                          Sort by Energy
-                        </Button>
-                  <Button
-                    className={this.props.classes.publicationAction}
-                    onClick={() => {
-                      this.sortReactions('dftFunctional');
-                    }}
-                  >
-                          Sort by Functional
-                        </Button>
-                  <Button
-                    className={this.props.classes.publicationAction}
-                    onClick={() => {
-                      this.sortReactions('chemicalComposition');
-                    }}
-                  >
-                          Sort by Composition
-                        </Button>
-                  <Button
-                    className={this.props.classes.publicationAction}
-                    onClick={() => {
-                      this.sortReactions('facet');
-                    }}
-                  >
-                          Sort by Facet
-                        </Button>
-                  <Button
-                    className={this.props.classes.publicationAction}
-                    onClick={() => {
-                      this.sortReactions('Equation');
-                    }}
-                  >
-                          Sort by Equation
-                        </Button>
-                </div>
-                    }
-              </div>
-              <ul>
-                {reactions.map((reaction, i) => (<li
-                  key={`reaction_${i}`}
-                  className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
-                >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
-                  <Button
-                    onClick={() => this.getStructures(reaction, i)}
-                    className={this.props.classes.publicationAction}
-                  > Structures <MdChevronRight />
-                  </Button>
-                  <ul>
-                    <li>Formula: {reaction.Equation}</li>
-                    <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
-                    <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
-                  </ul>
-                </li>))}
-              </ul>
+        {_.isEmpty(reactions) ? null : [(this.state.tableView ?
+          <Paper
+            className={this.props.classes.paper}
+          >
+            <Table className={this.props.classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="none">
+                    <div>Geometry</div></TableCell>
+                  <TableCell padding="none">
+                    <TableSortLabel
+                      active={this.state.orderBy === 'Equation'}
+                      direction={this.state.order}
+                      onClick={this.createSortHandler('Equation')}
+                    >
+                      <div>Reaction</div>
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell padding="none">
+                    <TableSortLabel
+                      active={this.state.orderBy === 'reactionEnergy'}
+                      direction={this.state.order}
+                      onClick={this.createSortHandler('reactionEnergy')}
+                    >
+                      <div>Reaction Energy</div>
+                    </TableSortLabel>
+                  </TableCell>
+                  <Hidden smDown>
+                    <TableCell>
+                      <TableSortLabel
+                        active={this.state.orderBy === 'activationEnergy'}
+                        direction={this.state.order}
+                        onClick={this.createSortHandler('activationEnergy')}
+                      >
+                        <div>Activation Energy</div>
+                      </TableSortLabel>
+                    </TableCell>
+                  </Hidden>
+                  <TableCell padding="none">
+                    <TableSortLabel
+                      active={this.state.orderBy === 'surfaceComposition'}
+                      direction={this.state.order}
+                      onClick={this.createSortHandler('surfaceComposition')}
+                    >
+                      <div>Surface</div>
+                    </TableSortLabel>
+                  </TableCell>
+                  <Hidden smDown>
+                    <TableCell>
+                      <TableSortLabel
+                        active={this.state.orderBy === 'facet'}
+                        direction={this.state.order}
+                        onClick={this.createSortHandler('facet')}
+                      >
+                        <div>Facet</div>
+                      </TableSortLabel>
+                    </TableCell>
+                  </Hidden>
+                  <Hidden smDown>
+                    <TableCell>
+                      <TableSortLabel
+                        active={this.state.orderBy === 'sites'}
+                        direction={this.state.order}
+                        onClick={this.createSortHandler('sites')}
+                      >
+                        <div>Sites</div>
+                      </TableSortLabel>
+                    </TableCell>
+                  </Hidden>
+                  <TableCell>
+                    <TableSortLabel
+                      active={this.state.orderBy === 'dftFunctional'}
+                      direction={this.state.order}
+                      onClick={this.createSortHandler('dftFunctional')}
+                    >
+                      <div>XC Functional</div>
+                    </TableSortLabel>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                /* eslint-disable arrow-body-style */
+                reactions
+                  .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
+                  .map((result, i) => {
+                    return (
+                      <TableRow
+                        hover
+                        key={`row_${i}`}
+                        onClick={() => {
+                          /* this.props.selectReaction(result);*/
+                          /* this.fetchRow(result);*/
+                        }}
+                        className={this.props.classes.clickableRow}
+                      >
+                        <TableCell padding="none"><div>{result.reactionSystems[0].name !== 'N/A' ? <FaCube /> : null}</div></TableCell>
+                        <TableCell padding="dense"><div>{result.Equation.replace('->', '→')}</div></TableCell>
+                        <TableCell padding="none"><div>{!result.reactionEnergy || `${result.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
+                        <Hidden smDown>
+                          <TableCell><div>{!result.activationEnergy || `${result.activationEnergy.toFixed(2)} eV`}</div></TableCell>
+                        </Hidden>
+                        <TableCell padding="none"><div>{result.surfaceComposition}</div></TableCell>
+                        <Hidden smDown>
+                          <TableCell>{result.facet}</TableCell>
+                        </Hidden>
+                        <Hidden smDown>
+                          <TableCell>{result.sites}</TableCell>
+                        </Hidden>
+                        <TableCell>{`${result.dftFunctional}/${result.dftCode}` || ''}</TableCell>
+                      </TableRow>
 
-              {this.state.loadingMoreReactions ?
-                <Grid container direction="row" justify="center">
+                    );
+                  })
+                /* eslint-enable */
+              }
+              </TableBody>
+              <TableFooter
+                className={this.props.classes.tableFooter}
+              >
+                <TableRow>
+                  <TablePagination
+                    count={this.state.resultSize}
+                    rowsPerPage={this.state.rowsPerPage}
+                    page={this.state.page}
+                    onChangePage={this.handlePageChange}
+                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    rowsPerPageOptions={[10, 25, 100, 1000]}
+                    className={this.props.classes.tableFooter}
+                    labelRowsPerPage=""
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+            {!this.state.hasMoreReactions ? null :
+            <div>
+            Switch to
+            <Button
+              className={this.props.classes.publicationAction}
+              onClick={() => {
+                this.toggleView();
+              }}
+            >
+              List View
+            </Button> and scroll down to load remaining reactions.
+          </div>
+          }
+          </Paper>
+          :
+
+          <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
+            <Grid item md={5} sm={12}>
+              {(this.state.loadingReactions && !this.state.loadingMoreReactions) ? <LinearProgress className={this.props.classes.progress} /> : null }
+              <Paper
+                className={this.props.classes.reactionsDiv}
+                onScroll={this.handleReactionsScroll}
+              >
+                <Grid
+                  container
+                  className={this.props.classes.headerDiv} direction="row" justify="center"
+                >
                   <Grid item>
-                    <CircularProgress />
+                    <h3>
+                      {this.state.totalCount} reactions.
+                      </h3>
                   </Grid>
                 </Grid>
-                      : null}
-            </Paper>
-          </Grid>
-          {this.state.structures.length === 0 ? null :
-          <Grid item md={7} sm={12}>
-            {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
-            <Paper className={this.props.classes.structuresDiv}>
-              <Grid container justify="flex-start" direction="column">
-                {this.state.structures.map((image, i) => (
-                  <Grid item key={`item_${i}`}>
-                    <Grid container direction="row" justify="center">
-                      <Grid item>
-                        <h2>{structures[i].Formula}  ({structures[i].energy} eV)</h2>
-                        <GeometryCanvasWithOptions
-                          cifdata={structures[i].Cifdata}
-                          uniqueId={`slab_preview_${i}`}
-                          key={`slab_preview_${i}`}
-                          id={`slab_preview_${i}`}
-                          x={1} y={1} z={1}
-                        />
+                <div className={this.props.classes.reactionActions}>
+                  {_.isEmpty(this.state.reactionQuery) ? null :
+                  <div>
+                    <GraphQlbutton
+                      query={this.state.reactionQuery.query}
+                      newSchema
+                      className={this.props.classes.publicationAction}
+                    />
+                    <Button
+                      className={this.props.classes.publicationAction}
+                      onClick={() => {
+                        this.sortReactions('reactionEnergy');
+                      }}
+                    >
+                          Sort by Energy
+                        </Button>
+                    <Button
+                      className={this.props.classes.publicationAction}
+                      onClick={() => {
+                        this.sortReactions('dftFunctional');
+                      }}
+                    >
+                          Sort by Functional
+                        </Button>
+                    <Button
+                      className={this.props.classes.publicationAction}
+                      onClick={() => {
+                        this.sortReactions('chemicalComposition');
+                      }}
+                    >
+                          Sort by Composition
+                        </Button>
+                    <Button
+                      className={this.props.classes.publicationAction}
+                      onClick={() => {
+                        this.sortReactions('facet');
+                      }}
+                    >
+                          Sort by Facet
+                        </Button>
+                    <Button
+                      className={this.props.classes.publicationAction}
+                      onClick={() => {
+                        this.sortReactions('Equation');
+                      }}
+                    >
+                          Sort by Equation
+                        </Button>
+                  </div>
+                    }
+                </div>
+                <ul>
+                  {reactions.map((reaction, i) => (<li
+                    key={`reaction_${i}`}
+                    className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
+                  >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
+                    <Button
+                      onClick={() => this.getStructures(reaction, i)}
+                      className={this.props.classes.publicationAction}
+                    > Structures <MdChevronRight />
+                    </Button>
+                    <ul>
+                      <li>Formula: {reaction.Equation}</li>
+                      <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
+                      <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
+                    </ul>
+                  </li>))}
+                </ul>
 
-                        {_.isEmpty(this.state.structureQuery) ? null :
-                        <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
-                          <Grid item>
-                            <GraphQlbutton
-                              query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
+                {this.state.loadingMoreReactions ?
+                  <Grid container direction="row" justify="center">
+                    <Grid item>
+                      <CircularProgress />
+                    </Grid>
+                  </Grid>
+                      : null}
+              </Paper>
+            </Grid>
+            {this.state.structures.length === 0 ? null :
+            <Grid item md={7} sm={12}>
+              {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
+              <Paper className={this.props.classes.structuresDiv}>
+                <Grid container justify="flex-start" direction="column">
+                  {this.state.structures.map((image, i) => (
+                    <Grid item key={`item_${i}`}>
+                      <Grid container direction="row" justify="center">
+                        <Grid item>
+                          <h2>{structures[i].Formula}  ({structures[i].energy} eV)</h2>
+                          <GeometryCanvasWithOptions
+                            cifdata={structures[i].Cifdata}
+                            uniqueId={`slab_preview_${i}`}
+                            key={`slab_preview_${i}`}
+                            id={`slab_preview_${i}`}
+                            x={1} y={1} z={1}
+                          />
+
+                          {_.isEmpty(this.state.structureQuery) ? null :
+                          <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
+                            <Grid item>
+                              <GraphQlbutton
+                                query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
       DftCode
@@ -445,24 +683,25 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     }
   }
 }}`}
-                              newSchema
-                            />
+                                newSchema
+                              />
+                            </Grid>
                           </Grid>
-                        </Grid>
                                   }
 
 
 
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
                             ))}
-              </Grid>
+                </Grid>
 
-            </Paper>
-          </Grid>
+              </Paper>
+            </Grid>
                   }
-        </Grid>
+          </Grid>
+        )]
         }
       </div>
     );
@@ -472,10 +711,14 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 PublicationView.propTypes = {
   pubId: PropTypes.string.isRequired,
   classes: PropTypes.object,
+  graphqlRoot: PropTypes.string,
+  preview: PropTypes.bool,
 };
 
 PublicationView.defaultProps = {
   pubId: 'BoesAdsorption2018',
+  graphqlRoot: newGraphQLRoot,
+  preview: false,
 };
 
 
