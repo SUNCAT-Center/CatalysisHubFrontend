@@ -26,12 +26,12 @@ import { apiRoot } from 'utils/constants';
 import PublicationView from 'components/PublicationView';
 import { prettyPrintReference } from 'utils/functions';
 
-import SocialButton from './SocialButton';
 import makeSelectUpload from './selectors';
 
 const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
+const logoutUrl = `${backendRoot}/logout`;
 
 const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';
 
@@ -63,6 +63,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       showHelp: true,
     };
 
+    this.logout = this.logout.bind(this);
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
     this.getDatasets = this.getDatasets.bind(this);
     this.handleFileDrop = this.handleFileDrop.bind(this);
@@ -74,11 +75,27 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.windowLogin = this.windowLogin.bind(this);
   }
 
+  componentDidMount() {
+    if (_.get(this.props, 'location.query.login') === 'success') {
+      this.fetchUserInfo();
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (_.get(nextProps, 'location.query.login') === 'success') {
+      this.fetchUserInfo();
+    }
+  }
+
   getDatasets() {
     const datasetQuery = `{publications { totalCount edges { node {
     title authors doi pubId journal volume pages year
   } } }}`;
-    axios.post(uploadGraphqlRoot, { query: datasetQuery }).then((response) => {
+    axios.get(uploadGraphqlRoot, {
+      params: {
+        query: datasetQuery,
+      },
+      withCredentials: true,
+    }).then((response) => {
       this.setState({
         datasets: response.data.data.publications.edges.map(
           (edge) => edge.node),
@@ -118,6 +135,20 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       this.setState({
         loginModalOpen: true,
         loginUrl: response.data.location,
+      });
+    });
+  }
+
+  logout() {
+    axios(logoutUrl, {
+      method: 'post',
+      data: {},
+      withCredentials: true,
+    }).then(() => {
+      this.setState({
+        userInfo: {},
+        datasets: [],
+        pubId: '',
       });
     });
   }
@@ -176,54 +207,47 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           {!_.isEmpty(this.state.userInfo) ?
               `\u00A0\u00A0(${this.state.userInfo.email})`
 
-          : null}
+              : null}
         </h2>
         <Paper className={this.props.classes.paper}>
-          <SocialButton
-            provider="github"
-            appId="94895cb9f588ac74ab9d"
-            onLoginSuccess={this.handleSocialLogin}
-            onLoginFailure={this.handleSocialLoginFailure}
-          >
-            Login with GitHub
-          </SocialButton>
-          <Button
-            onClick={() => {
-              this.login();
-            }}
-          >
-            Login
-          </Button>
+          {!_.isEmpty(this.state.userInfo) ? null :
           <Button
             onClick={() => {
               this.windowLogin();
             }}
           >
-            Login in new window
-          </Button>
-          <Button
-            onClick={() => {
-              this.fetchUserInfo();
-            }}
-          >
-            Get user info
-          </Button>
-          <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
-          <FileDrop
-            frame={document}
-            onDrop={this.handleFileDrop}
-            dropEffect="move"
+                Login
+              </Button>
+              }
+          {_.isEmpty(this.state.userInfo) ? null :
+          <Grid container direction="row-reverse" justify="space-between">
+            <Grid item>
+              <Button
+                onClick={() => this.logout()}
+              >
+                Logout
+              </Button>
+            </Grid>
+            <Grid item>
+              <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
+              <FileDrop
+                frame={document}
+                onDrop={this.handleFileDrop}
+                dropEffect="move"
 
-          >
-            <div
-              className={this.props.classes.fileDropActive}
-            >
-              Drop File Here.
-            </div>
-          </FileDrop>
+              >
+                <div
+                  className={this.props.classes.fileDropActive}
+                >
+                  Drop File Here.
+                </div>
+              </FileDrop>
+            </Grid>
+          </Grid>
+              }
           {_.isEmpty(this.state.uploadError) ? null :
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
-          }
+              }
         </Paper>
         <Paper className={this.props.classes.paper}>
           <Grid container direction="row" justify="space-between">
@@ -246,7 +270,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <li>Turn organized folder into sqlite database, run <pre>catkit folder2db foldername.organized</pre></li>
             <li>Upload database, run <pre>catkit db2server foldername.organize.db --userhandle {this.state.userInfo.email}</pre></li>
           </ol>
-          }
+              }
         </Paper>
         {/*
         <Paper className={this.props.classes.paper}>
@@ -278,25 +302,25 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 onClick={() => { this.getDatasets(); }}
               >
                 <MdRefresh /> Fetch Data Sets
-          </Button>
+              </Button>
             </Grid>
           </Grid>
           {_.isEmpty(this.state.datasets) ? null :
-            this.state.datasets.map((dataset, i) => (
-              <Paper key={`ds_${i}`} className={this.props.classes.paper}>
-                {prettyPrintReference(dataset)}
-                <Button
-                  raised
-                  onClick={() => {
-                  }}
-                >
-                  Endorse {'\u00A0\u00A0'} <MdThumbUp />
+              this.state.datasets.map((dataset, i) => (
+                <Paper key={`ds_${i}`} className={this.props.classes.paper}>
+                  {prettyPrintReference(dataset)}
+                  <Button
+                    raised
+                    onClick={() => {
+                    }}
+                  >
+                    Endorse {'\u00A0\u00A0'} <MdThumbUp />
 
-                </Button> {'\u00A0\u00A0'}<Button
-                  raised
-                  onClick={() => { this.setDataset(dataset); }}
-                > Details <MdChevronRight /> </Button>
-              </Paper>
+                  </Button> {'\u00A0\u00A0'}<Button
+                    raised
+                    onClick={() => { this.setDataset(dataset); }}
+                  > Details <MdChevronRight /> </Button>
+                </Paper>
               ))
           }
         </Paper>
@@ -306,6 +330,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             preview
             pubId={this.state.pubId}
             graphqlRoot={uploadGraphqlRoot}
+            privilegedAccess
           />
         </Paper>
         }
