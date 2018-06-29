@@ -30,12 +30,15 @@ import Button from 'material-ui/Button';
 import { MdChevronRight } from 'react-icons/lib/md';
 import { FaExternalLink, FaCube } from 'react-icons/lib/fa';
 
-import cachios from 'cachios';
+import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
 
 const styles = (theme) => ({
+  structureBar: {
+    padding: theme.spacing.unit,
+  },
   table: {
     margin: theme.spacing.unit,
   },
@@ -180,19 +183,24 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 }}` };
 
-    cachios.post(this.props.graphqlRoot, publicationQuery).then((response) => {
-      this.setState({
-        publicationQuery,
-        reactions: [],
-        structures: [],
-        hasMoreReactions: true,
-        loadingPublication: false,
-        publication: response.data.data.publications.edges[0].node,
+    axios(this.props.graphqlRoot,
+      {
+        method: 'post',
+        data: publicationQuery,
+        withCredentials: this.props.privilegedAccess,
+      }).then((response) => {
+        this.setState({
+          publicationQuery,
+          reactions: [],
+          structures: [],
+          hasMoreReactions: true,
+          loadingPublication: false,
+          publication: response.data.data.publications.edges[0].node,
+        });
+        if (!this.state.loadingReactions) {
+          this.getReactions();
+        }
       });
-      if (!this.state.loadingReactions) {
-        this.getReactions();
-      }
-    });
   }
 
 
@@ -238,7 +246,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     }
   }}`,
       };
-      cachios.post(this.props.graphqlRoot, reactionQuery).then((response) => {
+      axios(this.props.graphqlRoot, {
+        method: 'post',
+        data: reactionQuery,
+        withCredentials: this.props.privilegedAccess,
+      }).then((response) => {
         const newReactions = _.concat(this.state.reactions,
             response.data.data.reactions.edges.map((edge) => edge.node),
           );
@@ -282,7 +294,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 }}`,
         ttl: 300,
       };
-      return cachios.post(this.props.graphqlRoot, structureQuery).then((response) => {
+      return axios(this.props.graphqlRoot, {
+        method: 'post',
+        data: structureQuery,
+        withCredentials: this.props.privilegedAccess,
+      }).then((response) => {
         this.setState({
           structureQuery,
           loadingStructures: false,
@@ -615,21 +631,34 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                     }
                 </div>
                 <ul>
-                  {reactions.map((reaction, i) => (<li
-                    key={`reaction_${i}`}
-                    className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
-                  >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
-                    <Button
-                      onClick={() => this.getStructures(reaction, i)}
-                      className={this.props.classes.publicationAction}
-                    > Structures <MdChevronRight />
-                    </Button>
-                    <ul>
-                      <li>Formula: {reaction.Equation}</li>
-                      <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
-                      <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
-                    </ul>
-                  </li>))}
+                  {reactions.map((reaction, i) => (
+                    <div>
+                      <li
+                        key={`reaction_${i}`}
+                        className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
+                      >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
+                        <ul>
+                          <li>Formula: {reaction.Equation}</li>
+                          <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
+                          <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
+                        </ul>
+                      </li>
+                      <Grid
+                        container
+                        direction="row"
+                        justify="flex-end"
+                        className={this.props.classes.structureBar}
+                      >
+                        <Grid item>
+                          <Button
+                            onClick={() => this.getStructures(reaction, i)}
+                            className={this.props.classes.publicationAction}
+                          > Structures <MdChevronRight />
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  ))}
                 </ul>
 
                 {this.state.loadingMoreReactions ?
@@ -717,12 +746,14 @@ PublicationView.propTypes = {
   classes: PropTypes.object,
   graphqlRoot: PropTypes.string,
   preview: PropTypes.bool,
+  privilegedAccess: PropTypes.bool,
 };
 
 PublicationView.defaultProps = {
   pubId: 'BoesAdsorption2018',
   graphqlRoot: newGraphQLRoot,
   preview: false,
+  privilegedAccess: false,
 };
 
 
