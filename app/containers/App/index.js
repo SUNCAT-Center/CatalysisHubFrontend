@@ -243,7 +243,7 @@ const styles = (xtheme) => ({
     padding: xtheme.spacing.unit * 0,
     paddingTop: xtheme.spacing.unit * 1,
     height: 'calc(100% - 56px)',
-    marginTop: (appBar ? 36 : 0),
+    marginTop: (appBar ? 80 : 0),
     [xtheme.breakpoints.up('lg')]: {
       height: 'calc(100% - 64px)',
       marginTop: 80,
