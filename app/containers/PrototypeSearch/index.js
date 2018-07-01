@@ -37,6 +37,7 @@ import Button from 'material-ui/Button';
 import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
 
 import { withCommas } from 'utils/functions';
+import CompositionBar from 'components/CompositionBar';
 import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as wyckoffActions from 'containers/BulkGenerator/actions';
 import { apiRoot } from 'utils/constants';
@@ -797,6 +798,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                                     Source: {ptype.repository}:{ptype.handle}
                             </ReactGA.OutboundLink>
                             <ul>
+                              <li>
+                                <CompositionBar
+                                  width={360}
+                                  height={10}
+                                  composition={
+                                    ptype.species.replace(/\[],'/g, '')}
+                                />
+                              </li>
                               {Object.keys(ptype).map((entry, ei) => (
                                 <li key={`entry_${ei}`}>
                                   {entry}: {ptype[entry]}

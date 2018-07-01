@@ -21,11 +21,10 @@ class CompositionBar extends React.Component { // eslint-disable-line react/pref
   render() {
     const elems = this.props.composition.match(/[A-Z][a-z]*[0-9]*/g).map((block) => block.match(/[A-Z][a-z]*/)[0].repeat(parseInt((block.match(/[0-9]+/g) || ['1'])[0], 10))).join('').match(/[A-Z][a-z]*/g);
     const n = elems.length;
-    const width = isMobile ? 150 : 250;
-    const d = parseInt(width / n, 10);
+    const d = parseInt(this.props.width / n, 10);
     return (
       <div>
-        <svg width={width} height="35">
+        <svg width={this.props.width} height={this.props.height}>
           {elems.map((elem, i) => (
             <rect
               key={`slot_${i}`}
@@ -44,7 +43,14 @@ class CompositionBar extends React.Component { // eslint-disable-line react/pref
 
 CompositionBar.propTypes = {
   composition: PropTypes.string,
+  height: PropTypes.number,
+  width: PropTypes.number,
 };
 
+
+CompositionBar.defaultProps = {
+  height: 35,
+  width: isMobile ? 150 : 250,
+};
 
 export default withStyles(styles, { withTheme: true })(CompositionBar);
