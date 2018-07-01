@@ -11,6 +11,7 @@ import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
 import Hidden from 'material-ui/Hidden';
+import Tooltip from 'material-ui/Tooltip';
 import Table, {
   TableBody,
   TableCell,
@@ -34,6 +35,7 @@ import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
+import CompositionBar from 'components/CompositionBar';
 
 const styles = (theme) => ({
   structureBar: {
@@ -55,7 +57,7 @@ const styles = (theme) => ({
   },
   publicationAction: {
     margin: theme.spacing.unit,
-    height: 6,
+    height: 0,
     backgroundColor: _.get(theme, 'palette.sandhill.50'),
     '&:hover': {
       backgroundColor: _.get(theme, 'palette.sandhill.300'),
@@ -71,12 +73,12 @@ const styles = (theme) => ({
   },
   reactionsDiv: {
     overflowY: 'scroll',
-    height: '85vh',
+    height: '70vh',
 
   },
   structuresDiv: {
     overflowY: 'scroll',
-    height: '85vh',
+    height: '70vh',
     paddingLeft: 30,
     paddingRight: 30,
   },
@@ -646,9 +648,22 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                       <Grid
                         container
                         direction="row"
-                        justify="flex-end"
+                        justify="space-between"
                         className={this.props.classes.structureBar}
                       >
+                        <Grid item>
+                          <div
+                            className={this.props.classes.publicationAction}
+                          >
+                            <Tooltip
+                              title={`Composition Preview: ${reaction.chemicalComposition}`}
+                            >
+                              <CompositionBar
+                                composition={reaction.chemicalComposition}
+                              />
+                            </Tooltip>
+                          </div>
+                        </Grid>
                         <Grid item>
                           <Button
                             onClick={() => this.getStructures(reaction, i)}
