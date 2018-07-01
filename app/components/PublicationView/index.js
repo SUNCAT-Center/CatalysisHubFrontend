@@ -71,12 +71,12 @@ const styles = (theme) => ({
   },
   reactionsDiv: {
     overflowY: 'scroll',
-    height: '70vh',
+    height: '85vh',
 
   },
   structuresDiv: {
     overflowY: 'scroll',
-    height: '70vh',
+    height: '85vh',
     paddingLeft: 30,
     paddingRight: 30,
   },
