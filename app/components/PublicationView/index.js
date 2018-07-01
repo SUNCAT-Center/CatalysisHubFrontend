@@ -11,7 +11,6 @@ import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
 import Hidden from 'material-ui/Hidden';
-import Tooltip from 'material-ui/Tooltip';
 import Table, {
   TableBody,
   TableCell,
@@ -634,15 +633,14 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 </div>
                 <ul>
                   {reactions.map((reaction, i) => (
-                    <div>
+                    <div key={`reaction_${i}`}>
                       <li
-                        key={`reaction_${i}`}
                         className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
                       >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
                         <ul>
                           <li>Formula: {reaction.Equation}</li>
                           <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
-                          <li>DFT Code: {reaction.dftCode} DFT Functional: {reaction.dftFunctional}</li>
+                          <li>DFT Code: {reaction.dftCode}, DFT Functional: {reaction.dftFunctional}</li>
                         </ul>
                       </li>
                       <Grid
@@ -652,17 +650,15 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                         className={this.props.classes.structureBar}
                       >
                         <Grid item>
+                          {(i >= 250) ? null :
                           <div
                             className={this.props.classes.publicationAction}
                           >
-                            <Tooltip
-                              title={`Composition Preview: ${reaction.chemicalComposition}`}
-                            >
-                              <CompositionBar
-                                composition={reaction.chemicalComposition}
-                              />
-                            </Tooltip>
+                            <CompositionBar
+                              composition={reaction.chemicalComposition}
+                            />
                           </div>
+                          }
                         </Grid>
                         <Grid item>
                           <Button
