@@ -211,13 +211,19 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         </h2>
         <Paper className={this.props.classes.paper}>
           {!_.isEmpty(this.state.userInfo) ? null :
-          <Button
-            onClick={() => {
-              this.windowLogin();
-            }}
-          >
+          <Grid container direction="row" justify="flex-end">
+            <Grid item>
+              <Button
+                raised
+                color="primary"
+                onClick={() => {
+                  this.windowLogin();
+                }}
+              >
                 Login
               </Button>
+            </Grid>
+          </Grid>
               }
           {_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row-reverse" justify="space-between">
@@ -266,9 +272,10 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           {!this.state.showHelp ? null :
           <ol>
             <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
-            <li>Organize converged calculations, run <pre>catkit organize foldername</pre></li>
-            <li>Turn organized folder into sqlite database, run <pre>catkit folder2db foldername.organized</pre></li>
-            <li>Upload database, run <pre>catkit db2server foldername.organize.db --userhandle {this.state.userInfo.email}</pre></li>
+            <li>Organize converged calculations, run <pre>cathub organize {'<foldername>'}</pre></li>
+            <li>Turn organized folder into sqlite database, run <pre>cathub folder2db {'<foldername>'}.organized --userhandle {this.state.userInfo.email}</pre></li>
+            <li>Upload database, run <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre></li>
+            <li>Reload this page, or click on {'"Fetch Data Sets"'} to see your uploaded dataset.</li>
           </ol>
               }
         </Paper>
