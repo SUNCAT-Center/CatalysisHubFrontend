@@ -6,8 +6,15 @@ import List, { ListItem } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
 import Tooltip from 'material-ui/Tooltip';
 
-import { whiteLabel } from 'utils/constants';
+import {
+  GoBook,
+  GoCode,
+  GoComment,
+  GoMarkGithub,
+
+} from 'react-icons/lib/go';
 import Img from 'containers/App/Img';
+import { docRoot, whiteLabel } from 'utils/constants';
 import WhiteBanner from 'components/Header/banner_white.png';
 import Wrapper from './Wrapper';
 
@@ -73,11 +80,22 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               className={this.props.classes.footerListItem}
             >
               <ReactGA.OutboundLink
+                to={docRoot}
+                className={this.props.classes.footerLink}
+                target="_blank"
+              >
+                <GoBook />{'\u00A0\u00A0 '}Docs
+              </ReactGA.OutboundLink>
+            </ListItem>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
+              <ReactGA.OutboundLink
                 to="/yourNextApp"
                 eventLabel="/yourNextApp"
                 className={this.props.classes.footerLink}
               >
-                  Build Your Own App
+                <GoCode /> Build Your Own App
               </ReactGA.OutboundLink>
             </ListItem>
             <ListItem
@@ -87,7 +105,8 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 to="/feedback"
                 eventLabel="/feedback"
                 className={this.props.classes.footerLink}
-              >Send Us Your Feedback
+              >
+                <GoComment /> Send Us Your Feedback
               </ReactGA.OutboundLink>
 
             </ListItem>
@@ -101,7 +120,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                Visit&nbsp;
+                  <GoMarkGithub /> Visit&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
