@@ -84,7 +84,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 className={this.props.classes.footerLink}
                 target="_blank"
               >
-                <GoBook />{'\u00A0\u00A0 '}Docs
+                <GoBook /> Docs
               </ReactGA.OutboundLink>
             </ListItem>
             <ListItem
