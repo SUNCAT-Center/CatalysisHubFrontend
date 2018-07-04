@@ -177,7 +177,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         </div>
             : <div>
 
-              <h1>Publications/Datasets</h1>
+              <h1>Publications and Datasets</h1>
 
               {this.state.references === {} ? <LinearProgress color="primary" /> : null }
               {this.state.years.map((year, i) => (
