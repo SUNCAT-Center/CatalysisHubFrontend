@@ -493,8 +493,8 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 GeometryCanvasWithOptions.defaultProps = {
   extraSlug: '',
   showButtons: true,
-  height: window.innerHeight,
-  width: window.innerWidth,
+  height: 600,
+  width: 600,
 };
 
 GeometryCanvasWithOptions.propTypes = {
