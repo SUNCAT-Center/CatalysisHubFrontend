@@ -30,13 +30,10 @@ import AppSnackBar from 'containers/AppSnackBar';
 import { MdChevronLeft,
   MdSearch,
   MdApps,
-  MdSettings,
-  MdFeedback,
 } from 'react-icons/lib/md';
 
 import { FaNewspaperO } from 'react-icons/lib/fa';
 
-import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
 import Tooltip from 'material-ui/Tooltip';
 import AppBar from 'material-ui/AppBar';
@@ -54,7 +51,7 @@ import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import withWidth from 'material-ui/utils/withWidth';
 
-import { apps, appBar, suBranding, version, whiteLabel, docRoot } from 'utils/constants';
+import { apps, appBar, suBranding, version, whiteLabel } from 'utils/constants';
 import { theme } from 'utils/theme';
 
 const AppWrapper = styled.div`
@@ -339,40 +336,6 @@ class App extends React.Component {
           )}
         </List>
 
-        <Divider className={this.props.classes.divider} />
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <MdSettings />{'\u00A0\u00A0 '}Settings
-            </Link>
-          </ListSubheader>}
-        >
-        </List>
-
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link
-              className={this.props.classes.topMenuLink}
-              to={docRoot}
-              target="_blank"
-            >
-              <GoBook />{'\u00A0\u00A0 '}Docs
-            </Link>
-          </ListSubheader>}
-        >
-        </List>
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link
-              className={this.props.classes.topMenuLink}
-              to="/feedback"
-            >
-              <MdFeedback /> Feedback
-            </Link>
-          </ListSubheader>
-          }
-        >
-        </List>
         <Divider className={this.props.classes.divider} />
       </div>
     );
