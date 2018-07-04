@@ -34,9 +34,16 @@ import {
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import { MdChevronLeft, MdChevronRight, MdSearch, MdExpandMore, MdExpandLess } from 'react-icons/lib/md';
+import {
+  MdChevronLeft,
+  MdChevronRight,
+  MdSearch,
+  MdExpandMore,
+  MdExpandLess,
+} from 'react-icons/lib/md';
 
 import { withCommas } from 'utils/functions';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import CompositionBar from 'components/CompositionBar';
 import * as catKitActions from 'containers/CatKitDemo/actions';
 import * as wyckoffActions from 'containers/BulkGenerator/actions';
@@ -77,6 +84,7 @@ const initialState = {
   loadedStructures: 0,
   prototypeStructures: 0,
   loadingMoreStructures: false,
+  structures: {},
 };
 
 const getGeometryUrl = (repository, handle) => {
@@ -118,6 +126,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
       showInfo: ((this.props.cookies.get('prototypeSearchShowInfo') || 'true') === 'true'),
       searchString: this.props.searchTerms,
     };
+    this.getStructure = this.getStructure.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitSearch = this.submitSearch.bind(this);
     this.loadMore = this.loadMore.bind(this);
@@ -137,6 +146,23 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
     setTimeout(() => {
       this.submitSearch();
     }, 500);
+  }
+
+  getStructure(ptype, pi) {
+    axios.post(structureUrl, {
+      spacegroup: ptype.spacegroup,
+      parameter_names: ptype.parameter_names,
+      parameters: ptype.parameters,
+      species: ptype.species,
+      wyckoffs: ptype.wyckoffs,
+    }).then((response) => {
+      this.setState({
+        structures: _.merge(
+          this.state.structure,
+          { [pi]: response.data.structure }
+        ),
+      });
+    });
   }
 
   handleShowInfo() {
@@ -330,7 +356,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
         {!this.state.error ? null :
         <Paper className={this.props.classes.errorPaper}>
           <h3>
-              Error in search.
+                Error in search.
               </h3>
           <div>
             <pre>{this.props.searchTerms}</pre>
@@ -340,11 +366,11 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
               <li key={`li_${i}`}>
                 {filter}
               </li>
-                  )
+                )
                 ))}
           </ul>
           <div>
-              Try again or change your queries.
+                Try again or change your queries.
               </div>
           <Grid container direction="row" justify="flex-end">
             <Grid item>
@@ -797,48 +823,80 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                             >
                                     Source: {ptype.repository}:{ptype.handle}
                             </ReactGA.OutboundLink>
-                            <ul>
-                              <li>
-                                <CompositionBar
-                                  width={360}
-                                  height={10}
-                                  composition={
-                                    ptype.species.replace(/\[],'/g, '')}
+                            <Grid container direction="row" justify="space-between">
+                              <Grid item>
+                                <ul>
+                                  <li>
+                                    <CompositionBar
+                                      width={360}
+                                      height={10}
+                                      composition={
+                                              ptype.species.replace(/\[],'/g, '')}
+                                    />
+                                  </li>
+                                  {Object.keys(ptype).map((entry, ei) => (
+                                    <li key={`entry_${ei}`}>
+                                      {entry}: {ptype[entry]}
+                                    </li>
+                                          ))}
+                                </ul>
+                              </Grid>
+                              <Grid className={this.props.classes.preview}>
+                                {typeof this.state.structures[pi] === 'undefined' ? null :
+                                <GeometryCanvasWithOptions
+                                  cifdata={this.state.structures[pi]}
+                                  uniqueId="bulk_preview"
+                                  id="bulk_preview"
+                                  width={400}
+                                  height={400}
+                                  showButtons={false}
+                                  x={2}
+                                  y={2}
+                                  z={2}
+                                  ref={(gmCanvas) => { this.gmCanvas = gmCanvas; }}
                                 />
-                              </li>
-                              {Object.keys(ptype).map((entry, ei) => (
-                                <li key={`entry_${ei}`}>
-                                  {entry}: {ptype[entry]}
-                                </li>
-                                    ))}
-                            </ul>
+
+                                        }
+                                <div>
+
+                                </div>
+                              </Grid>
+                            </Grid>
                             <Grid container direction="row" justify="flex-end">
                               <Grid item>
                                 <Button
-                                  color="primary"
+                                  raised
+                                  onClick={() => this.getStructure(ptype, pi)}
+                                >
+                                          Preview Structure
+                                        </Button>
+                              </Grid>
+                              <Grid item>
+                                <Button
+                                  raised
                                   onClick={() => this.handoffWyckoff(ptype)}
                                 >
                                   <Link
                                     className={this.props.classes.buttonLink}
                                     to={'/bulkGenerator'}
                                   >
-                                          Open in Wyckoff Bulk Generator
-                                        </Link>
+                                      Open in Wyckoff Bulk Generator <MdChevronRight />
+                                  </Link>
                                 </Button>
                               </Grid>
                               <Grid item>
                                 <Button
-                                  color="primary"
+                                  raised
                                   onClick={() => this.handoffCatKit(
-                                          ptype
-                                        )}
+                                            ptype
+                                          )}
                                 >
                                   <Link
                                     className={this.props.classes.buttonLink}
                                     to={'/catKitDemo'}
                                   >
-                                          Open in CatKit
-                                        </Link>
+                                            Open in CatKit <MdChevronRight />
+                                  </Link>
                                 </Button>
                               </Grid>
                             </Grid>
@@ -850,14 +908,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   { (this.state.loadedStructures === 0 || this.state.loadedStructures >= this.state.prototypeStructures) ? null :
                   <Grid container direction="row" justify="space-around">
                     <Grid item>
-Showing {this.state.loadedStructures}/{this.state.prototypeStructures}{'\u00A0\u00A0\u00A0'}
+                                Showing {this.state.loadedStructures}/{this.state.prototypeStructures}{'\u00A0\u00A0\u00A0'}
                       <Button
                         raised
                         onClick={() => {
                           this.selectPrototype(this.props.ptype, this.state.prototypeStructures);
                         }}
                       >
-                  Load More{'\u00A0\u00A0'} { (this.state.loadingMoreStructures) ? <CircularProgress /> : null}
+                                  Load More{'\u00A0\u00A0'} { (this.state.loadingMoreStructures) ? <CircularProgress /> : null}
                       </Button>
                     </Grid>
                   </Grid>
@@ -877,11 +935,11 @@ Showing {this.state.loadedStructures}/{this.state.prototypeStructures}{'\u00A0\u
                                     Structures: {withCommas(ptype[1])}
                             </div>
                             <div>
-                              Spacegroup: {parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10)}
-                              ; HM-Symbol: [{hmSymbols[parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10) - 1].replace(/ /g, '')}]
-                            </div>
+                                    Spacegroup: {parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10)}
+                                    ; HM-Symbol: [{hmSymbols[parseInt(ptype[0].split(/_/g)[ptype[0].split(/_/g).length - 1], 10) - 1].replace(/ /g, '')}]
+                                  </div>
                             <div>
-                              Stoichiometry: {ptype[0].split(/_/g)[0]}
+                                    Stoichiometry: {ptype[0].split(/_/g)[0]}
                             </div>
                           </Grid>
                           <Grid item>

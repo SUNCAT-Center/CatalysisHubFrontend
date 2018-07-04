@@ -89,8 +89,8 @@ const styles = (theme) => ({
 
 const initialState = {
   open: false,
-  height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
-  width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+  height: Math.max(Math.min(window.innerWidth * 0.5, 200), 300),
+  width: Math.max(Math.min(window.innerWidth * 0.5, 200), 300),
   color: '#fff',
   x: 2,
   y: 2,
@@ -318,8 +318,6 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               x={this.state.x}
               y={this.state.y}
               z={this.state.z}
-              height={window.innerHeight}
-              width={window.innerWidth}
               rotationMatrix={this.props.rotationMatrix}
               setRotationMatrix={this.props.setRotationMatrix}
               perspective={this.state.stereographic}
@@ -334,10 +332,13 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           x={this.state.x}
           y={this.state.y}
           z={this.state.z}
+          height={this.props.height}
+          width={this.props.width}
           setRotationMatrix={this.props.setRotationMatrix}
           perspective={this.state.stereographic}
           parent={this}
         />
+        {this.props.showButtons === false ? null :
         <Grid
           container
           direction="row"
@@ -483,7 +484,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
             </Grid>
           </Grid>
         </Grid>
-
+        }
       </div>
     );
   }
@@ -491,6 +492,9 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 
 GeometryCanvasWithOptions.defaultProps = {
   extraSlug: '',
+  showButtons: true,
+  height: window.innerHeight,
+  width: window.innerWidth,
 };
 
 GeometryCanvasWithOptions.propTypes = {
@@ -503,13 +507,15 @@ GeometryCanvasWithOptions.propTypes = {
   xRepeat: PropTypes.number,
   yRepeat: PropTypes.number,
   zRepeat: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
   rotationMatrix: PropTypes.array,
-
   setXRepeat: PropTypes.func,
   setYRepeat: PropTypes.func,
   setZRepeat: PropTypes.func,
   setRotationMatrix: PropTypes.func,
   setStereographic: PropTypes.func,
+  showButtons: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
