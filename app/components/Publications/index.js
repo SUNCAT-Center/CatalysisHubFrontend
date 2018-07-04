@@ -8,14 +8,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { LinearProgress } from 'material-ui/Progress';
-import { MdAddCircleOutline,
-  MdPanoramaFishEye,
+import {
   MdChevronRight,
   MdChevronLeft,
   MdViewList } from 'react-icons/lib/md';
+import {
+  IoDocument,
+} from 'react-icons/lib/io';
 import _ from 'lodash';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
+import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Slide from 'material-ui/transitions/Slide';
@@ -59,6 +62,15 @@ const styles = (theme) => ({
     padding: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
     marginTop: theme.spacing.unit,
+  },
+  smallPaper: {
+    padding: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    paddingBottom: 0,
+  },
+  publicationActions: {
+    marginTop: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
   },
 });
 
@@ -188,20 +200,19 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                         return (
 
                           <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                            { this.state.openedPublication !== `elem_${year}_${j}` ?
-                              <MdAddCircleOutline onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`)} size={28} className={this.props.classes.publicationEntry} />
-                            :
-                              <MdPanoramaFishEye size={28} className={this.props.classes.publicationEntry} />
-                          }
-                            <span> &nbsp;&nbsp;&nbsp; </span>
-                            <span className={this.props.classes.publicationEntry}>
-                              {prettyPrintReference(reference)}
+                            <Paper className={this.props.classes.smallPaper}>
+                              <span className={this.props.classes.publicationEntry}>
+                                <IoDocument size={24} /> {prettyPrintReference(reference)}
 
-                            </span>
-                            <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j])} className={this.props.classes.publicationAction}>
-                              <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
-                            </Button>
-                            {(this.state.dois[year][j] === null
+                              </span>
+                              <Grid container direction="row" justify="flex-end" className={this.props.classes.publicationActions}>
+
+                                <Grid item>
+
+                                  <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j])} className={this.props.classes.publicationAction}>
+                                    <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                                  </Button>
+                                  {(this.state.dois[year][j] === null
                             || typeof this.state.dois[year][j] === 'undefined'
                             || this.state.dois[year][j] === ''
                           ) ? null :
@@ -216,23 +227,26 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                 </Button>
                           </ReactGA.OutboundLink>
                           }
+                                </Grid>
+                              </Grid>
 
-                            <div>
-                              { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                              <span>
-                                {this.state.loading === true ? <LinearProgress color="primary" /> : null}
+                              <div>
+                                { this.state.openedPublication !== `elem_${year}_${j}` ? null :
+                                <span>
+                                  {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
-                                {/*
+                                  {/*
                         true || this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
                         */}
-                                {this.state.systems.length === 0 ? null :
-                                <PublicationSystems {...this.state} />
+                                  {this.state.systems.length === 0 ? null :
+                                  <PublicationSystems {...this.state} />
                         }
-                              </span>
+                                </span>
                             }
-                            </div>
-                            <br />
+                              </div>
+                              <br />
+                            </Paper>
                           </div>
                         );
                       }
