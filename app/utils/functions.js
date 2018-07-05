@@ -16,6 +16,7 @@ import {
   MdSearch,
   MdBubbleChart,
   MdFormatShapes,
+  MdShowChart,
 } from 'react-icons/lib/md';
 
 
@@ -78,6 +79,8 @@ export const prettyPrintReference = (ref) =>
 export const getAppIcon = (title) => {
   if (title === 'Activity Maps') {
     return <FaMapO />;
+  } else if (title === 'Pourbaix Diagrams') {
+    return <MdShowChart />;
   } else if (title === 'CatLearn') {
     return <IoIosBook />;
   } else if (title === 'Prototype Search') {
