@@ -1,5 +1,24 @@
 
 import React from 'react';
+import {
+  FaMapO,
+  FaTerminal,
+  FaNewspaperO,
+  FaDatabase,
+} from 'react-icons/lib/fa';
+
+import {
+  IoCube,
+  IoSocialBuffer,
+  IoIosBook,
+} from 'react-icons/lib/io';
+import {
+  MdSearch,
+  MdBubbleChart,
+  MdFormatShapes,
+} from 'react-icons/lib/md';
+
+
 
 export const withCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -54,3 +73,30 @@ export const prettyPrintReference = (ref) =>
      {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year}). </span> : null}
      {(ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) ? <span>{ref.pages}. </span> : null}
    </span>);
+
+
+export const getAppIcon = (title) => {
+  if (title === 'Activity Maps') {
+    return <FaMapO />;
+  } else if (title === 'CatLearn') {
+    return <IoIosBook />;
+  } else if (title === 'Prototype Search') {
+    return <IoCube />;
+  } else if (title === 'CatKit Slab Generator') {
+    return <IoSocialBuffer />;
+  } else if (title === 'Surface Reactions') {
+    return <MdSearch />;
+  } else if (title === 'Publications') {
+    return <FaNewspaperO />;
+  } else if (title === 'Your Next App ...') {
+    return <FaTerminal />;
+  } else if (title === 'GraphQL API') {
+    return <FaDatabase />;
+  } else if (title === 'Wyckoff Bulk Generator') {
+    return <MdFormatShapes />;
+  } else if (title === 'Scaling Relations') {
+    return <MdBubbleChart />;
+  }
+  return null;
+};
+

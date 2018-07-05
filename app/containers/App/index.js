@@ -26,6 +26,7 @@ import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 import AppSnackBar from 'containers/AppSnackBar';
+import { getAppIcon } from 'utils/functions';
 
 import { MdChevronLeft,
   MdSearch,
@@ -309,7 +310,7 @@ class App extends React.Component {
                   onClick={this.handleDrawerToggle}
                   className={!_.isEmpty(app.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
                 >
-                  {app.title}
+                  {getAppIcon(app.title)} {app.title}
 
                 </Link>
               </ListItem>

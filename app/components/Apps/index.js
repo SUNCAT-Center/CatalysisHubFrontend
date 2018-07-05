@@ -16,23 +16,7 @@ import Grid from 'material-ui/Grid';
 import Slide from 'material-ui/transitions/Slide';
 import Tooltip from 'material-ui/Tooltip';
 
-import {
-  FaMapO,
-  FaTerminal,
-  FaNewspaperO,
-  FaDatabase,
-} from 'react-icons/lib/fa';
-
-import {
-  IoCube,
-  IoSocialBuffer,
-} from 'react-icons/lib/io';
-import {
-  MdSearch,
-  MdBubbleChart,
-  MdFormatShapes,
-} from 'react-icons/lib/md';
-
+import { getAppIcon } from 'utils/functions';
 
 const styles = () => ({
   AppWrapper: {
@@ -59,29 +43,6 @@ const styles = () => ({
     cornerRadius: 40,
   },
 });
-
-const getAppIcon = (title) => {
-  if (title === 'Activity Maps') {
-    return <FaMapO />;
-  } else if (title === 'Prototype Search') {
-    return <IoCube />;
-  } else if (title === 'CatKit Slab Generator') {
-    return <IoSocialBuffer />;
-  } else if (title === 'Surface Reactions') {
-    return <MdSearch />;
-  } else if (title === 'Publications') {
-    return <FaNewspaperO />;
-  } else if (title === 'Your Next App ...') {
-    return <FaTerminal />;
-  } else if (title === 'GraphQL API') {
-    return <FaDatabase />;
-  } else if (title === 'Wyckoff Bulk Generator') {
-    return <MdFormatShapes />;
-  } else if (title === 'Scaling Relations') {
-    return <MdBubbleChart />;
-  }
-  return null;
-};
 
 class Apps extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

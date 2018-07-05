@@ -298,6 +298,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           </ol>
         </Paper>
         */}
+        {_.isEmpty(this.state.userInfo) ? null :
         <Paper className={this.props.classes.paper}>
           <Grid container justify="space-between" direction="row">
             <Grid item>
@@ -331,6 +332,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               ))
           }
         </Paper>
+        }
         {_.isEmpty(this.state.pubId) ? null :
         <Paper>
           <PublicationView
