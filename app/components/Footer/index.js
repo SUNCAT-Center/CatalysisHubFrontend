@@ -80,6 +80,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               className={this.props.classes.footerListItem}
             >
               <ReactGA.OutboundLink
+                eventLabel={docRoot}
                 to={docRoot}
                 className={this.props.classes.footerLink}
                 target="_blank"
