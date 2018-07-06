@@ -26,7 +26,7 @@ import axios from 'axios';
 import cachios from 'cachios';
 import { apiRoot } from 'utils/constants';
 
-import { hmSymbols } from 'containers/PrototypeSearch';
+import { hmSymbols } from 'utils/data';
 import * as actions from './actions';
 import { styles } from './styles';
 import ElementAutosuggest from './ElementAutoSuggest';
