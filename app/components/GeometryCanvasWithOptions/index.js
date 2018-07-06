@@ -318,6 +318,8 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
               x={this.state.x}
               y={this.state.y}
               z={this.state.z}
+              height={window.innerHeight}
+              width={window.innerWidth}
               rotationMatrix={this.props.rotationMatrix}
               setRotationMatrix={this.props.setRotationMatrix}
               perspective={this.state.stereographic}
