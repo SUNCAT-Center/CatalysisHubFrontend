@@ -135,7 +135,7 @@ class ReactionAutosuggest extends React.Component { // eslint-disable-line react
 
     return inputLength === 0 ? [] : [...this.props.reactionsSuggestions].filter((reaction) => {
       const iv = inputValue.replace('*', '\\*').replace('-', '\\-').replace('(', '\\(').replace(')', '\\)');
-      const keep = count < 20 && reaction.node.Equation.toLowerCase().match(iv);
+      const keep = count < 200 && reaction.node.Equation.toLowerCase().match(iv);
       if (keep) {
         count += 1;
       }
