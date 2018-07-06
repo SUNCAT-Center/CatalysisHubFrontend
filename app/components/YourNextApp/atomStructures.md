@@ -68,3 +68,5 @@ Then all we have to do inside in our render function is to insert a
         key={`slab_preview`}
         id={`slab_preview`}
       />
+
+If we have done everything correctly, it might look at follows.

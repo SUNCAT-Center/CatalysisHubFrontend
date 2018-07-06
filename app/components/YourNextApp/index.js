@@ -35,6 +35,7 @@ const styles = (theme) => ({
 
 const initialState = {
   showLineNumbers: true,
+  initialLoad: true,
 
 };
 
@@ -73,6 +74,11 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
   constructor(props) {
     super(props);
     this.state = initialState;
+    setTimeout(() => {
+      this.setState({
+        initialLoad: false,
+      });
+    }, 5000);
   }
   render() {
     return (
@@ -441,12 +447,14 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
               <Markdown >
                 {atomStructures}
               </Markdown>
+              {this.state.initialLoad ? null :
               <GeometryCanvasWithOptions
                 cifdata={cifData}
                 uniqueId={'slab_preview'}
                 key={'slab_preview'}
                 id={'slab_preview'}
               />
+              }
 
             </Paper>
             <Paper className={this.props.classes.paper}>
