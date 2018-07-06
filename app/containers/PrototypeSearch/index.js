@@ -925,7 +925,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 <div>
 
                   <div>
-                    <h3 className={this.props.classes.subheader}>Prototypes ({this.props.searchResults.prototypes.length})</h3>
+                    <h3 className={this.props.classes.subheader}>Prototypes ({withCommas(this.props.searchResults.n_prototypes)})</h3>
                     {this.props.searchResults.prototypes.map((ptype, pi) => (
                       <Paper key={`pcard_${pi}`} className={this.props.classes.pcard}>
                         <h4>Prototype {ptype[0]}</h4>
