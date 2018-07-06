@@ -253,8 +253,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
         const newReactions = _.concat(this.state.reactions,
-            response.data.data.reactions.edges.map((edge) => edge.node),
-          );
+          response.data.data.reactions.edges.map((edge) => edge.node),
+        );
         this.setState({
           reactionQuery,
           reactions: newReactions,
@@ -384,9 +384,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         <Paper className={this.props.classes.paper}>
           {this.props.preview === false ? null :
           <div className={this.props.classes.important}>
-              This is just a preview. The final dataset will appear under <a>{`https://www.catalysis-hub.org/publications/${publication.pubId}`}</a>
+                  This is just a preview. The final dataset will appear under <a>{`https://www.catalysis-hub.org/publications/${publication.pubId}`}</a>
           </div>
-          }
+              }
           {prettyPrintReference(publication)}
           <div>
             <Button
@@ -407,9 +407,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             >
               <Button className={this.props.classes.publicationAction}>
                 <FaExternalLink />{'\u00A0\u00A0'} DOI: {publication.doi}.
-                    </Button>
+                      </Button>
             </ReactGA.OutboundLink>
-              }
+                }
           </div>
         </Paper>
         }
@@ -495,40 +495,40 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               </TableHead>
               <TableBody>
                 {
-                /* eslint-disable arrow-body-style */
-                reactions
-                  .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
-                  .map((result, i) => {
-                    return (
-                      <TableRow
-                        hover
-                        key={`row_${i}`}
-                        onClick={() => {
-                          /* this.props.selectReaction(result);*/
-                          /* this.fetchRow(result);*/
-                        }}
-                        className={this.props.classes.clickableRow}
-                      >
-                        <TableCell padding="none"><div>{result.reactionSystems[0].name !== 'N/A' ? <FaCube /> : null}</div></TableCell>
-                        <TableCell padding="dense"><div>{result.Equation.replace('->', '→')}</div></TableCell>
-                        <TableCell padding="none"><div>{!result.reactionEnergy || `${result.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
-                        <Hidden smDown>
-                          <TableCell><div>{!result.activationEnergy || `${result.activationEnergy.toFixed(2)} eV`}</div></TableCell>
-                        </Hidden>
-                        <TableCell padding="none"><div>{result.surfaceComposition}</div></TableCell>
-                        <Hidden smDown>
-                          <TableCell>{result.facet}</TableCell>
-                        </Hidden>
-                        <Hidden smDown>
-                          <TableCell>{result.sites}</TableCell>
-                        </Hidden>
-                        <TableCell>{`${result.dftFunctional}/${result.dftCode}` || ''}</TableCell>
-                      </TableRow>
+                  /* eslint-disable arrow-body-style */
+                  reactions
+                    .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
+                    .map((result, i) => {
+                      return (
+                        <TableRow
+                          hover
+                          key={`row_${i}`}
+                          onClick={() => {
+                            /* this.props.selectReaction(result);*/
+                            /* this.fetchRow(result);*/
+                          }}
+                          className={this.props.classes.clickableRow}
+                        >
+                          <TableCell padding="none"><div>{result.reactionSystems[0].name !== 'N/A' ? <FaCube /> : null}</div></TableCell>
+                          <TableCell padding="dense"><div>{result.Equation.replace('->', '→')}</div></TableCell>
+                          <TableCell padding="none"><div>{!result.reactionEnergy || `${result.reactionEnergy.toFixed(2)} eV` }</div></TableCell>
+                          <Hidden smDown>
+                            <TableCell><div>{!result.activationEnergy || `${result.activationEnergy.toFixed(2)} eV`}</div></TableCell>
+                          </Hidden>
+                          <TableCell padding="none"><div>{result.surfaceComposition}</div></TableCell>
+                          <Hidden smDown>
+                            <TableCell>{result.facet}</TableCell>
+                          </Hidden>
+                          <Hidden smDown>
+                            <TableCell>{result.sites}</TableCell>
+                          </Hidden>
+                          <TableCell>{`${result.dftFunctional}/${result.dftCode}` || ''}</TableCell>
+                        </TableRow>
 
-                    );
-                  })
-                /* eslint-enable */
-              }
+                      );
+                    })
+                  /* eslint-enable */
+                }
               </TableBody>
               <TableFooter
                 className={this.props.classes.tableFooter}
@@ -549,17 +549,17 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             </Table>
             {!this.state.hasMoreReactions ? null :
             <div>
-            Switch to
-            <Button
-              className={this.props.classes.publicationAction}
-              onClick={() => {
-                this.toggleView();
-              }}
-            >
-              List View
-            </Button> and scroll down to load remaining reactions.
-          </div>
-          }
+                  Switch to
+                  <Button
+                    className={this.props.classes.publicationAction}
+                    onClick={() => {
+                      this.toggleView();
+                    }}
+                  >
+                    List View
+                  </Button> and scroll down to load remaining reactions.
+                </div>
+            }
           </Paper>
           :
 
@@ -577,7 +577,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   <Grid item>
                     <h3>
                       {this.state.totalCount} reactions.
-                      </h3>
+                    </h3>
                   </Grid>
                 </Grid>
                 <div className={this.props.classes.reactionActions}>
@@ -594,42 +594,42 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                         this.sortReactions('reactionEnergy');
                       }}
                     >
-                          Sort by Energy
-                        </Button>
+                        Sort by Energy
+                      </Button>
                     <Button
                       className={this.props.classes.publicationAction}
                       onClick={() => {
                         this.sortReactions('dftFunctional');
                       }}
                     >
-                          Sort by Functional
-                        </Button>
+                        Sort by Functional
+                      </Button>
                     <Button
                       className={this.props.classes.publicationAction}
                       onClick={() => {
                         this.sortReactions('chemicalComposition');
                       }}
                     >
-                          Sort by Composition
-                        </Button>
+                        Sort by Composition
+                      </Button>
                     <Button
                       className={this.props.classes.publicationAction}
                       onClick={() => {
                         this.sortReactions('facet');
                       }}
                     >
-                          Sort by Facet
-                        </Button>
+                        Sort by Facet
+                      </Button>
                     <Button
                       className={this.props.classes.publicationAction}
                       onClick={() => {
                         this.sortReactions('Equation');
                       }}
                     >
-                          Sort by Equation
-                        </Button>
+                        Sort by Equation
+                      </Button>
                   </div>
-                    }
+                  }
                 </div>
                 <ul>
                   {reactions.map((reaction, i) => (
@@ -638,6 +638,12 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                         className={(this.state.selectedReaction === i ? this.props.classes.selectedReaction : this.props.classes.reaction)}
                       >({i + 1}/{this.state.totalCount}) Composition: {reaction.chemicalComposition}, Facet {reaction.facet}, Sites {reaction.sites}
                         <ul>
+                          <li>
+                            <CompositionBar
+                              composition={reaction.chemicalComposition}
+                              height={10}
+                            />
+                          </li>
                           <li>Formula: {reaction.Equation}</li>
                           <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
                           <li>DFT Code: {reaction.dftCode}, DFT Functional: {reaction.dftFunctional}</li>
@@ -646,20 +652,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                       <Grid
                         container
                         direction="row"
-                        justify="space-between"
+                        justify="flex-end"
                         className={this.props.classes.structureBar}
                       >
-                        <Grid item>
-                          {(i >= 250) ? null :
-                          <div
-                            className={this.props.classes.publicationAction}
-                          >
-                            <CompositionBar
-                              composition={reaction.chemicalComposition}
-                            />
-                          </div>
-                          }
-                        </Grid>
                         <Grid item>
                           <Button
                             onClick={() => this.getStructures(reaction, i)}
@@ -678,7 +673,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                       <CircularProgress />
                     </Grid>
                   </Grid>
-                      : null}
+                    : null}
               </Paper>
             </Grid>
             {this.state.structures.length === 0 ? null :
@@ -731,19 +726,19 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                               />
                             </Grid>
                           </Grid>
-                                  }
+                                }
 
 
 
                         </Grid>
                       </Grid>
                     </Grid>
-                            ))}
+                          ))}
                 </Grid>
 
               </Paper>
             </Grid>
-                  }
+                }
           </Grid>
         )]
         }
