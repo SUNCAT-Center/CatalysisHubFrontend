@@ -10,5 +10,16 @@ export const styles = (theme) => ({
     height: 500,
     border: '1px solid dashed',
   },
+  dataEntry: {
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+  },
+  paper: {
+    padding: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 3,
+  },
 });
 

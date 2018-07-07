@@ -26,6 +26,7 @@ import { apiRoot } from 'utils/constants';
 import PublicationView from 'components/PublicationView';
 import { prettyPrintReference } from 'utils/functions';
 
+import { styles } from './styles';
 import makeSelectUpload from './selectors';
 
 const backendRoot = `${apiRoot}/apps/upload`;
@@ -36,19 +37,6 @@ const logoutUrl = `${backendRoot}/logout`;
 const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';
 
 
-const styles = (theme) => ({
-  dataEntry: {
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 10,
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 3,
-  },
-});
 
 export class Upload extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
