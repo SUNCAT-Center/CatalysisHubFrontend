@@ -13,26 +13,8 @@ import slacLogo from 'components/Header/SLAC_Logo.png';
 import doeLogo from 'components/Header/DOE_Logo.gif';
 import stanfordLogo from 'components/Header/stanford_crop.png';
 import { people } from 'utils/constants';
+import { styles } from './styles';
 
-
-
-const styles = (theme) => ({
-  bannerStyle: {
-    width: '240px',
-    height: '150px',
-  },
-  peopleList: {
-    display: 'flex',
-    height: '150px',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-  },
-  paper: {
-    marginBottom: 3 * theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    padding: theme.spacing.unit,
-  },
-});
 
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
