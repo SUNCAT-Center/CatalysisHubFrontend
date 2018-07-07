@@ -9,18 +9,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 
-
-const styles = (theme) => ({
-  paper: {
-    padding: 2 * theme.spacing.unit,
-  },
-  header: {
-    marginTop: 2 * theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-
-});
-
+import { styles } from './styles';
 
 class PrivacyPolicy extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
