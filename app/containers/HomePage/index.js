@@ -39,58 +39,8 @@ import CenteredSection from './CenteredSection';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
+import { styles } from './styles';
 
-const styles = () => ({
-  bold: {
-    fontWeight: 'bold',
-  },
-  welcomeHeader: {
-    marginTop: 0,
-    marginBottom: '5%',
-  },
-  centeredSection: {
-    marginLeft: '10%',
-    marginRight: '10%',
-  },
-  truncated: {
-    textAlign: 'left',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    maxHeight: '100px',
-  },
-  expanded: {
-    textAlign: 'justify',
-  },
-  textLink: {
-    textDecoration: 'none',
-    textColor: 'black',
-    color: 'black',
-  },
-  banner: {
-    marginTop: 50,
-    width: '100%',
-  },
-  welcome: {
-    textAlign: 'left',
-  },
-  homePaper: {
-    backgroundColor: '#eeeeee',
-    cornerRadius: 40,
-    padding: 10,
-    paddingTop: 5,
-    minWidth: 280,
-    maxWidth: 300,
-    textAlign: 'left',
-    align: 'left',
-  },
-  paperInfo: {
-    minHeight: 30,
-    marginBottom: 10,
-    color: 'black',
-    textColor: 'black',
-  },
-
-});
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
