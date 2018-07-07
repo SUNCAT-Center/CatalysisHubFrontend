@@ -14,15 +14,7 @@ import { FaDatabase } from 'react-icons/lib/fa';
 import { graphQLRoot, newGraphQLRoot } from 'utils/constants';
 
 
-const styles = (theme) => ({
-  button: {
-    textDecoration: 'none',
-    backgroundColor: theme.palette.sandhill[50],
-    '&:hover': {
-      backgroundColor: theme.palette.sandhill[300],
-    },
-  },
-});
+import { styles } from './styles';
 
 
 class GraphQlbutton extends React.Component { // eslint-disable-line react/prefer-stateless-function
