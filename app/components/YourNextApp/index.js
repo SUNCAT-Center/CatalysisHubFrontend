@@ -25,13 +25,7 @@ import backendRoutes from './backend_routes.md';
 import atomStructures from './atomStructures.md';
 import whyJS from './whyJS.md';
 
-const styles = (theme) => ({
-  paper: {
-    padding: theme.spacing.unit,
-    marginTop: 3 * theme.spacing.unit,
-    marginBottom: 3 * theme.spacing.unit,
-  },
-});
+import { styles } from './styles';
 
 const initialState = {
   showLineNumbers: true,
