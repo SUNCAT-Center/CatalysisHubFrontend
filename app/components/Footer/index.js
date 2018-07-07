@@ -18,36 +18,7 @@ import { docRoot, whiteLabel } from 'utils/constants';
 import WhiteBanner from 'components/Header/banner_white.png';
 import Wrapper from './Wrapper';
 
-const styles = (xtheme) => ({
-  footerLink: {
-    textColor: 'white',
-    color: 'white',
-    textDecoration: 'none',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: xtheme.palette.coolgrey[500],
-    paddingLeft: '5%',
-    paddingRight: '5%',
-    [xtheme.breakpoints.down('sm')]: {
-      visibility: 'hidden',
-    },
-  },
-  footerList: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  footerListItem: {
-    whiteSpace: 'nowrap',
-  },
-  banner: {
-    [xtheme.breakpoints.up('xl')]: {
-      marginLeft: 220,
-    },
-  },
-});
+import { styles } from './styles';
 
 class Footer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
