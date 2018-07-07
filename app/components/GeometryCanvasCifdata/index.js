@@ -21,15 +21,11 @@ import { withCookies, Cookies } from 'react-cookie';
 import { isMobile } from 'react-device-detect';
 
 import * as actions from 'components/GeometryCanvasWithOptions/actions';
+import { styles } from './styles';
 
 const jQuery = require('jquery');
 window.jQuery = jQuery;
 const { ChemDoodle } = require('utils/ChemDoodleWeb'); // eslint-disable-line no-unused-vars
-const styles = (theme) => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-});
 
 const initialState = {
   rotationMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1.3],
