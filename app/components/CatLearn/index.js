@@ -22,6 +22,7 @@ import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 
 import { apiRoot } from 'utils/constants';
+import { styles } from './styles';
 const appUrl = `${apiRoot}apps/catlearn/`;
 
 const supportAtoms = [
@@ -38,12 +39,6 @@ const items = [];
 for (let i = 0; i < supportLength; i += 1) {
   items.push(<MenuItem value={supportAtoms[i]}>{supportAtoms[i]}</MenuItem>);
 }
-
-const styles = (theme) => ({
-  infoText: {
-    margin: theme.spacing.unit * 3,
-  },
-});
 
 
 class YourNextApp extends React.Component { // eslint-disable-line react/prefer-stateless-function
