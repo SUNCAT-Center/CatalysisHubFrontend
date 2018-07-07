@@ -35,18 +35,12 @@ import ExpansionPanel, {
 import Typography from 'material-ui/Typography';
 import MdExpandMore from 'react-icons/lib/md/expand-more';
 
+import { styles } from './styles';
+
 /* import { flaskRoot } from 'utils/constants'; */
 const flaskRoot = 'https://api.catalysis-hub.org/';
 // const flaskRoot = 'http://localhost:5000/';
 
-const styles = (theme) => ({
-  textField: {
-    margin: theme.spacing.unit,
-  },
-  headerBar: {
-    marginTop: theme.spacing.unit,
-  },
-});
 
 const initialState = {
   element1: '',
