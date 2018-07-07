@@ -19,11 +19,7 @@ import { withCookies, Cookies } from 'react-cookie';
 
 import { newGraphQLRoot } from 'utils/constants';
 
-const styles = (theme) => ({
-  button: {
-    margin: theme.spacing.unit * 2.5,
-  },
-});
+import { styles } from './styles';
 
 class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
