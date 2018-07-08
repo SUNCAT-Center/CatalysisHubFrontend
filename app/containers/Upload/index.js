@@ -75,11 +75,40 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   getDatasets() {
-    const datasetQuery = `{publications { totalCount edges { node {
-    title authors doi pubId journal volume pages year
-  } } }}`;
-    axios.get(uploadGraphqlRoot, {
-      params: {
+    /* const datasetQuery = `{reactions { totalCount edges { node {*/
+    /* title authors doi pubId journal volume pages year*/
+    /* } } }}`;*/
+    /* const datasetQuery = `{reactions(first: 100) {*/
+  /* edges {*/
+    /* node {*/
+      /* reactionEnergy*/
+      /* reactants*/
+      /* products*/
+      /* publication {*/
+        /* pubId*/
+        /* authors*/
+        /* title*/
+        /* journal*/
+      /* }*/
+    /* }*/
+  /* }*/
+/* }}`;*/
+    /* const datasetQuery = `{publications { totalCount edges { node {*/
+    /* title authors doi pubId journal volume pages year*/
+    /* } } }}`;*/
+    /* const datasetQuery = `{publications { totalCount edges { node {*/
+    /* id*/
+    /* } } }}`;*/
+    const datasetQuery = `{publications {
+  edges {
+    node {
+      id
+    }
+  }
+}}`;
+    axios(uploadGraphqlRoot, {
+      method: 'post',
+      data: {
         query: datasetQuery,
       },
       withCredentials: true,
@@ -295,6 +324,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <Grid item>
               <Button
                 raised
+                color="primary"
                 onClick={() => { this.getDatasets(); }}
               >
                 <MdRefresh /> Fetch Data Sets
