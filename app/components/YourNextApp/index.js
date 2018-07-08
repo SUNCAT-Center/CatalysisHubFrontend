@@ -12,7 +12,7 @@ import Script from 'react-load-script';
 import Grid from 'material-ui/Grid';
 import ReactGA from 'react-ga';
 import Markdown from 'markdown-to-jsx';
-
+import Plot from 'react-plotly.js';
 
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
@@ -24,6 +24,8 @@ import reactQuickstart from './react_quickstart.md';
 import backendRoutes from './backend_routes.md';
 import atomStructures from './atomStructures.md';
 import whyJS from './whyJS.md';
+import makingPlots from './makingPlots.md';
+
 
 import { styles } from './styles';
 
@@ -62,6 +64,11 @@ loop_
   Re3      1.0000 0.50000  0.00000  0.50000  Biso   1.000  Re
   Tl1      1.0000 0.50000  0.50000  0.00000  Biso   1.000  Tl
 `;
+const zPlot = [[10, 10.625, 12.5, 15.625, 20],
+       [5.625, 6.25, 8.125, 11.25, 15.625],
+       [2.5, 3.125, 5.0, 8.125, 12.5],
+       [0.625, 1.25, 3.125, 6.25, 10.625],
+       [0, 0.625, 2.5, 5.625, 10]];
 
 
 class YourNextApp extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -428,11 +435,49 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
               </Markdown>
             </Paper>
             <Paper className={this.props.classes.paper}>
-              <h2>Making Plots</h2>
-              <p>{`So let's say we collected some data either from the GraphQL database or our own Flask endpoint and we
-              want to somehow display it in the browser. We want to it to resize automatically to look at least acceptable
-            on every screen size and we might want to add some interactive features.`}</p>
-              <p>TODO</p>
+              <Markdown>
+                {makingPlots}
+              </Markdown>
+              <Plot
+                data={[{
+                  type: 'contour',
+                  z: zPlot,
+                  showscale: true,
+                  colorbar: { titleside: 'right', title: 'Target Function [eV]' },
+                  colorscale: [['0.0', 'rgb(165,0,38)'], ['0.111111111111', 'rgb(215,48,39)'], ['0.222222222222', 'rgb(244,109,67)'], ['0.333333333333', 'rgb(253,174,97)'], ['0.444444444444', 'rgb(254,224,144)'], ['0.555555555556', 'rgb(224,243,248)'], ['0.666666666667', 'rgb(171,217,233)'], ['0.777777777778', 'rgb(116,173,209)'], ['0.888888888889', 'rgb(69,117,180)'], ['1.0', 'rgb(49,54,149)']],
+                },
+                {
+                  type: 'scatter',
+                  mode: 'markers',
+                  x: [1, 2, 3, 4, 3],
+                  y: [1, 4, 2, 1.5, 3],
+                },
+                {
+                  type: 'scatter',
+                  mode: 'markers',
+                  x: [3.5, 1.2, 2.8, 3.1, 0.5],
+                  y: [1, 4, 2, 1.5, 3],
+                },
+                ]}
+                config={{
+                  scrollZoom: false,
+                  legendPosition: true,
+                  displayModeBar: false,
+                }}
+                layout={{
+                  hovermode: 'closest',
+                  xaxis: {
+                    title: 'Descriptor 1',
+                  },
+                  yaxis: {
+                    title: 'Descriptor 2',
+                  },
+                }}
+                onClick={() => {
+                }}
+
+              />
+
             </Paper>
             <Paper className={this.props.classes.paper}>
               <h2>Displaying Tables</h2>
