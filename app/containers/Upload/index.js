@@ -34,12 +34,14 @@ import { prettyPrintReference } from 'utils/functions';
 import { styles } from './styles';
 import makeSelectUpload from './selectors';
 
+/* const apiRoot = 'http://localhost:5000';*/
 const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com/';
 const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
 const logoutUrl = `${backendRoot}/logout`;
 const releaseUrl = `${backendRoot}/release`;
+const endorseUrl = `${backendRoot}/endorse`;
 
 // TODO: COMMENT OUT IN PRODUCTION
 /* const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';*/
@@ -58,6 +60,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       datasets: [],
       pubId: '',
       showHelp: true,
+      pubEntries: {},
     };
 
     this.logout = this.logout.bind(this);
@@ -67,6 +70,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handleSocialLogin = this.handleSocialLogin.bind(this);
     this.handleSocialLoginFailure = this.handleSocialLoginFailure.bind(this);
     this.handleRelease = this.handleRelease.bind(this);
+    this.handleEndorse = this.handleEndorse.bind(this);
     this.login = this.login.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -85,37 +89,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   getDatasets() {
-    /* const datasetQuery = `{reactions { totalCount edges { node {*/
-    /* title authors doi pubId journal volume pages year*/
-    /* } } }}`;*/
-    /* const datasetQuery = `{reactions(first: 100) {*/
-  /* edges {*/
-    /* node {*/
-      /* reactionEnergy*/
-      /* reactants*/
-      /* products*/
-      /* publication {*/
-        /* pubId*/
-        /* authors*/
-        /* title*/
-        /* journal*/
-      /* }*/
-    /* }*/
-  /* }*/
-/* }}`;*/
     const datasetQuery = `{publications { totalCount edges { node {
     title authors doi pubId journal volume pages year
   } } }}`;
-    /* const datasetQuery = `{publications { totalCount edges { node {*/
-    /* id*/
-    /* } } }}`;*/
-    /* const datasetQuery = `query publicationList {publications {*/
-  /* edges {*/
-    /* node {*/
-      /* id*/
-    /* }*/
-  /* }*/
-/* }}`;*/
     axios({
       url: uploadGraphqlRoot,
       method: 'POST',
@@ -129,6 +105,23 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           (edge) => edge.node),
       });
     });
+    const pubEntryQuery = `{reactions(username:"~", distinct: true) {
+  edges { node { pubId username } } }}`;
+    axios({
+      url: uploadGraphqlRoot,
+      method: 'POST',
+      data: {
+        query: pubEntryQuery,
+      },
+      withCredentials: true,
+    }).then((response) => {
+      const pubEntries = _.groupBy(response.data.data.reactions.edges.map((x) => x.node),
+                                   'pubId');
+
+      this.setState({
+        pubEntries,
+      });
+    });
   }
 
   setDataset(dataset) {
@@ -137,6 +130,13 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     });
   }
 
+  handleEndorse(dataset) {
+    axios(endorseUrl, {
+      data: { dataset },
+      withCredentials: true,
+    }).then(() => {
+    });
+  }
   handleSocialLogin() {
   }
 
@@ -145,11 +145,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   handleRelease(dataset) {
-    axios.post(releaseUrl);
-    axios.get(userInfoUrl, {
-      data: {
-        dataset,
-      },
+    axios.get(releaseUrl, {
+      data: { dataset },
       withCredentials: true,
     }).then(() => {
     });
@@ -368,25 +365,34 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               this.state.datasets.map((dataset, i) => (
                 <Paper key={`ds_${i}`} className={this.props.classes.paper}>
                   {prettyPrintReference(dataset)}
-                  <Button
-                    raised
-                    onClick={() => {
-                    }}
-                  >
+                  {(this.state.userInfo.email !== _.get(this.state.pubEntries,
+                    `${dataset.pubId}.0.username`, '')) ?
+                      <div>
+                        <Button
+                          raised
+                          onClick={() => {
+                            this.handleEndorse(dataset);
+                          }}
+                        >
                     Endorse {'\u00A0\u00A0'} <MdThumbUp />
 
-                  </Button> {'\u00A0\u00A0'}<Button
-                    raised
-                    onClick={() => { this.setDataset(dataset); }}
-                  > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
-                  <Button
-                    raised
-                    onClick={() => {
-                      this.handleRelease(dataset);
-                    }}
-                  >
+                        </Button> {'\u00A0\u00A0'}
+                      </div>
+                      : <div>
+                        <Button
+                          raised
+                          onClick={() => { this.setDataset(dataset); }}
+                        > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
+                        <Button
+                          raised
+                          onClick={() => {
+                            this.handleRelease(dataset);
+                          }}
+                        >
                     Release {'\u00A0\u00A0'} <MdPublic />
-                  </Button>
+                        </Button>
+                      </div>
+                  }
                 </Paper>
               ))
           }
