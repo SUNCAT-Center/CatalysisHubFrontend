@@ -30,6 +30,7 @@ app.use(csp({
       'localhost:5000',
       'slack.com',
       'www.google-analytics.com',
+      'catappdatabase2-pr-63.herokuapp.com',
     ],
     fontSrc: [
       "'self'",

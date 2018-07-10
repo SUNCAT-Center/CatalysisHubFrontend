@@ -13,28 +13,37 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import { MdFileUpload, MdRefresh, MdThumbUp, MdChevronRight } from 'react-icons/lib/md';
+import {
+  MdRefresh,
+  MdThumbUp,
+  MdChevronRight,
+  MdPublic,
+} from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
 import IFrame from 'react-iframe';
 
 
 import { createStructuredSelector } from 'reselect';
-import FileDrop from 'react-file-drop';
 import axios from 'axios';
 
-import { apiRoot } from 'utils/constants';
+/* import { apiRoot, uploadGraphqlRoot } from 'utils/constants';*/
+/* import { apiRoot } from 'utils/constants';*/
 import PublicationView from 'components/PublicationView';
 import { prettyPrintReference } from 'utils/functions';
 
 import { styles } from './styles';
 import makeSelectUpload from './selectors';
 
+const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com/';
 const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
 const logoutUrl = `${backendRoot}/logout`;
+const releaseUrl = `${backendRoot}/release`;
 
-const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';
+// TODO: COMMENT OUT IN PRODUCTION
+/* const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';*/
+const uploadGraphqlRoot = `${apiRoot}/apps/upload/graphql`;
 
 
 
@@ -57,6 +66,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handleFileDrop = this.handleFileDrop.bind(this);
     this.handleSocialLogin = this.handleSocialLogin.bind(this);
     this.handleSocialLoginFailure = this.handleSocialLoginFailure.bind(this);
+    this.handleRelease = this.handleRelease.bind(this);
     this.login = this.login.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -93,21 +103,22 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     /* }*/
   /* }*/
 /* }}`;*/
-    /* const datasetQuery = `{publications { totalCount edges { node {*/
-    /* title authors doi pubId journal volume pages year*/
-    /* } } }}`;*/
+    const datasetQuery = `{publications { totalCount edges { node {
+    title authors doi pubId journal volume pages year
+  } } }}`;
     /* const datasetQuery = `{publications { totalCount edges { node {*/
     /* id*/
     /* } } }}`;*/
-    const datasetQuery = `{publications {
-  edges {
-    node {
-      id
-    }
-  }
-}}`;
-    axios(uploadGraphqlRoot, {
-      method: 'post',
+    /* const datasetQuery = `query publicationList {publications {*/
+  /* edges {*/
+    /* node {*/
+      /* id*/
+    /* }*/
+  /* }*/
+/* }}`;*/
+    axios({
+      url: uploadGraphqlRoot,
+      method: 'POST',
       data: {
         query: datasetQuery,
       },
@@ -131,6 +142,17 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
 
   handleSocialLoginFailure() {
+  }
+
+  handleRelease(dataset) {
+    axios.post(releaseUrl);
+    axios.get(userInfoUrl, {
+      data: {
+        dataset,
+      },
+      withCredentials: true,
+    }).then(() => {
+    });
   }
 
   fetchUserInfo() {
@@ -243,14 +265,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           </Grid>
               }
           {_.isEmpty(this.state.userInfo) ? null :
-          <Grid container direction="row-reverse" justify="space-between">
-            <Grid item>
-              <Button
-                onClick={() => this.logout()}
-              >
-                Logout
-              </Button>
-            </Grid>
+          <Grid container direction="row" justify="flex-end">
+            {/*
             <Grid item>
               <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
               <FileDrop
@@ -265,6 +281,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                   Drop File Here.
                 </div>
               </FileDrop>
+            </Grid>
+            */}
+            <Grid item>
+              <Button
+                onClick={() => this.logout()}
+              >
+                Logout
+              </Button>
             </Grid>
           </Grid>
               }
@@ -287,13 +311,22 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             </Grid>
           </Grid>
           {!this.state.showHelp ? null :
-          <ol>
-            <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
-            <li>Organize converged calculations, run <pre>cathub organize {'<foldername>'}</pre></li>
-            <li>Turn organized folder into sqlite database, run <pre>cathub folder2db {'<foldername>'}.organized --userhandle {this.state.userInfo.email}</pre></li>
-            <li>Upload database, run <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre></li>
-            <li>Reload this page, or click on {'"Fetch Data Sets"'} to see your uploaded dataset.</li>
-          </ol>
+          <div>
+            <div>
+                For SUNCAT Users: check <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a> for info how to upload data.
+              </div>
+            <div>
+                For general audience, follow the steps below in the near future.
+              </div>
+            <ol>
+              <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
+              <li>Organize converged calculations, run <pre>cathub organize {'<foldername>'}</pre></li>
+              <li>Turn organized folder into sqlite database, run <pre>cathub folder2db {'<foldername>'}.organized --userhandle {this.state.userInfo.email}</pre></li>
+              <li>Upload database, run <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre></li>
+              <li>Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
+              </li>
+            </ol>
+          </div>
               }
         </Paper>
         {/*
@@ -345,7 +378,15 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                   </Button> {'\u00A0\u00A0'}<Button
                     raised
                     onClick={() => { this.setDataset(dataset); }}
-                  > Details <MdChevronRight /> </Button>
+                  > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
+                  <Button
+                    raised
+                    onClick={() => {
+                      this.handleRelease(dataset);
+                    }}
+                  >
+                    Release {'\u00A0\u00A0'} <MdPublic />
+                  </Button>
                 </Paper>
               ))
           }

@@ -76,9 +76,10 @@ module.exports = {
       route: '/scalingRelations',
       tooltip: 'App for exploring scaling relations -- WIP.',
     }, {
-      /* title: 'Upload Datasets',*/
-      /* route: '/upload',*/
-      /* }, {*/
+      title: 'Upload Datasets',
+      route: '/upload',
+      tooltip: 'Expand mankinds knowledge by providing your calculations.',
+    }, {
       title: 'Wyckoff Bulk Generator',
       route: '/bulkGenerator',
       tooltip: 'Construct arbitrary bulk lattices.',
