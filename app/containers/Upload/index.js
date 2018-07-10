@@ -190,7 +190,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   windowLogin() {
-    const uploadUrl = `${apiRoot}/apps/upload/submit`;
+    const uploadUrl = `${apiRoot}/apps/upload/`;
     axios.get(uploadUrl).then((response) => {
       window.open(response.data.location);
       window.focus();
