@@ -25,6 +25,7 @@ import backendRoutes from './backend_routes.md';
 import atomStructures from './atomStructures.md';
 import whyJS from './whyJS.md';
 import makingPlots from './makingPlots.md';
+import ScatterPlot from './scatterPlot';
 
 
 import { styles } from './styles';
@@ -478,6 +479,9 @@ app.register_blueprint(myShinyNewApp, url_prefix='/apps/myShinyNewApp')
 
               />
 
+            </Paper>
+            <Paper className={this.props.classes.paper}>
+              <ScatterPlot />
             </Paper>
             <Paper className={this.props.classes.paper}>
               <h2>Displaying Tables</h2>
