@@ -17,6 +17,7 @@ import {
   MdBubbleChart,
   MdFormatShapes,
   MdShowChart,
+  MdCloudUpload,
 } from 'react-icons/lib/md';
 
 
@@ -81,6 +82,8 @@ export const getAppIcon = (title) => {
     return <FaMapO />;
   } else if (title === 'Pourbaix Diagrams') {
     return <MdShowChart />;
+  } else if (title === 'Upload Datasets') {
+    return <MdCloudUpload />;
   } else if (title === 'CatLearn') {
     return <IoIosBook />;
   } else if (title === 'Prototype Search') {
