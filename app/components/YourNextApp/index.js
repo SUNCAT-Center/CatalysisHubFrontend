@@ -87,8 +87,8 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="/static/ChemDoodleWeb.js" />
         <Slide
-          onMountEnter
-          onUnmountExit
+          mountOnEnter
+          unmountOnExit
           in
           direction="left"
         >
