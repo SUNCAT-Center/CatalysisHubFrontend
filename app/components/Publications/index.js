@@ -28,10 +28,8 @@ import { withStyles } from 'material-ui/styles';
 import {
   FacebookShareButton,
   FacebookIcon,
-  FacebookShareCount,
   LinkedinShareButton,
   LinkedinIcon,
-  LinkedinShareCount,
   EmailShareButton,
   EmailIcon,
   WhatsappShareButton,
@@ -70,6 +68,37 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     };
     this.clickPublication = this.clickPublication.bind(this);
     this.backToList = this.backToList.bind(this);
+
+    if (_.get(props, 'routeParams.pubId', '') !== '') {
+      const publicationQuery = {
+        ttl: 300,
+        query: `{publications(pubId: "${this.state.pubId}") {
+  edges {
+    node {
+      id
+      pubId
+      title
+      authors
+      pages
+      volume
+      journal
+      doi
+    }
+  }
+}}` };
+
+      axios(newGraphQLRoot,
+        {
+          method: 'post',
+          data: publicationQuery,
+        }).then((response) => {
+          this.setState({
+            reference: _.get(response,
+              'data.data.publications.edges[0].node',
+              {}),
+          });
+        });
+    }
   }
   componentDidMount() {
     const yearQuery = '{publications { edges { node { year } } }}';
@@ -168,7 +197,6 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     quote={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
                   >
                     <FacebookIcon size={22} round />
-                    <FacebookShareCount url={window.location.href} />
                   </FacebookShareButton>
                 </Grid>
                 <Grid item>
@@ -178,7 +206,6 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     description={`${plainPrintReference(this.state.reference)}`}
                   >
                     <LinkedinIcon size={22} round />
-                    <LinkedinShareCount url={window.location.href} />
                   </LinkedinShareButton>
                 </Grid>
                 <Grid item>
