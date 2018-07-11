@@ -21,6 +21,7 @@ import {
 } from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
 import IFrame from 'react-iframe';
+import ReactGA from 'react-ga';
 
 
 import { createStructuredSelector } from 'reselect';
@@ -34,8 +35,8 @@ import { prettyPrintReference } from 'utils/functions';
 import { styles } from './styles';
 import makeSelectUpload from './selectors';
 
+const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com';
 /* const apiRoot = 'http://localhost:5000';*/
-const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com/';
 const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
 const userInfoUrl = `${backendRoot}/user_info`;
@@ -131,6 +132,11 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   handleEndorse(dataset) {
+    ReactGA.event({
+      category: 'Endorse',
+      action: 'Endorse a Dataset',
+      label: dataset.pubId,
+    });
     axios(endorseUrl, {
       data: { dataset },
       withCredentials: true,
@@ -190,8 +196,20 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   windowLogin() {
+    /* console.log("WINDOW LOGIN")*/
     const uploadUrl = `${apiRoot}/apps/upload/`;
-    axios.get(uploadUrl).then((response) => {
+    /* console.log(uploadUrl)*/
+    axios(uploadUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+      credentials: 'same-origin',
+    }).then((response) => {
+      /* console.log(response)*/
       window.open(response.data.location);
       window.focus();
       window.close();
