@@ -1,5 +1,8 @@
 import _ from 'lodash';
 export const styles = (theme) => ({
+  shareButtons: {
+    paddingRight: 2 * theme.spacing.unit,
+  },
   publicationAction: {
     margin: theme.spacing.unit,
     height: 6,

@@ -53,28 +53,59 @@ export const restoreSC = (str) => {
 
 export function toTitleCase(str) {
   return str.replace(
-        /\w\S*/g,
-        (txt) => {
-          if (txt.match(/^[A-Z0-9]+$/g) !== null) {
-            return txt;
-          }
-          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        }
-    );
+    /\w\S*/g,
+    (txt) => {
+      if (txt.match(/^[A-Z0-9]+$/g) !== null) {
+        return txt;
+      }
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
 }
 
 // Print a publication reference from JSON object.
 export const prettyPrintReference = (ref) =>
   // TODO Integrate with crossref.org api
   // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
-   (<span>
-     {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <strong>{`"${toTitleCase(restoreSC(ref.title))}"`}. </strong> : null }
-     {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span> {restoreSC(typeof ref.authors === 'string' ? JSON.parse(ref.authors).join('; ').replace(/[,;](?! )/g, ', ') : ref.authors.join('; ').replace(/[,;](?! )/g, ', '))}. </span> : null }
-     {(ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) ? <i>{ref.journal}, </i> : null }
-     {(ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) ? <span>{ref.volume} </span> : null}
-     {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year}). </span> : null}
-     {(ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) ? <span>{ref.pages}. </span> : null}
-   </span>);
+  (<span>
+    {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <strong>{`"${toTitleCase(restoreSC(ref.title))}"`}. </strong> : null }
+    {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span> {restoreSC(typeof ref.authors === 'string' ? JSON.parse(ref.authors).join('; ').replace(/[,;](?! )/g, ', ') : ref.authors.join('; ').replace(/[,;](?! )/g, ', '))}. </span> : null }
+    {(ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) ? <i>{ref.journal}, </i> : null }
+    {(ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) ? <span>{ref.volume} </span> : null}
+    {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year}). </span> : null}
+    {(ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) ? <span>{ref.pages}. </span> : null}
+  </span>);
+
+
+// Print a publication reference from JSON object.
+// TODO Integrate with crossref.org api
+// if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
+export const plainPrintReference = (ref) => {
+  let res = '';
+  if (ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') {
+    res = `${res + toTitleCase(restoreSC(ref.title))}. `;
+  }
+  if (ref.doi !== '' && typeof ref.doi !== 'undefined' && ref.doi !== null) {
+    res = `${res}DOI:${ref.doi}. `;
+  }
+  if (typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) {
+    res = `${res + restoreSC(typeof ref.authors === 'string' ? JSON.parse(ref.authors).join('; ').replace(/[,;](?! )/g, ', ') : ref.authors.join('; ').replace(/[,;](?! )/g, ', '))}. `;
+  }
+
+  if (ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) {
+    res = `${res + ref.journal}. `;
+  }
+  if (ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) {
+    res += ref.volume;
+  }
+  if (ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) {
+    res = `${res}(${ref.year})`;
+  }
+  if (ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) {
+    res = `${res + ref.pages}.`;
+  }
+  return res;
+};
 
 
 export const getAppIcon = (title) => {

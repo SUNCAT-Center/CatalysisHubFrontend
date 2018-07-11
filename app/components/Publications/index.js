@@ -25,10 +25,25 @@ import Slide from 'material-ui/transitions/Slide';
 import { FaExternalLink } from 'react-icons/lib/fa';
 
 import { withStyles } from 'material-ui/styles';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  FacebookShareCount,
+  LinkedinShareButton,
+  LinkedinIcon,
+  LinkedinShareCount,
+  EmailShareButton,
+  EmailIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from 'react-share';
+
 
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
-import { prettyPrintReference } from 'utils/functions';
+import { prettyPrintReference, plainPrintReference } from 'utils/functions';
 
 import PublicationView from 'components/PublicationView';
 import PublicationSystems from './publicationSystems';
@@ -51,6 +66,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       reactionEnergies: [],
       publicationQuery: '',
       pubId: _.get(props, 'routeParams.pubId', ''),
+      reference: {},
     };
     this.clickPublication = this.clickPublication.bind(this);
     this.backToList = this.backToList.bind(this);
@@ -111,11 +127,12 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     });
     this.props.router.push('/publications');
   }
-  clickPublication(event, target, key, pubId) {
+  clickPublication(event, target, key, pubId, reference) {
     this.setState({
       systems: [],
       reactionEnergies: [],
       pubId,
+      reference,
     });
     this.props.router.push(`/publications/${pubId}`);
   }
@@ -126,15 +143,61 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="/static/ChemDoodleWeb.js" />
         {!_.isEmpty(this.state.pubId) ? <div>
-          <div>
-            <Button
-              onClick={() => {
-                this.backToList();
-              }}
-            >
-              <MdChevronLeft />
-              Back to Publication List</Button>
-          </div>
+          <Grid container direction="row" justify="space-between">
+            <Grid item>
+              <Button
+                onClick={() => {
+                  this.backToList();
+                }}
+              >
+                <MdChevronLeft />
+                Back to Publication List</Button>
+            </Grid>
+            <Grid>
+              <Grid container direction="row" className={this.props.classes.shareButtons}>
+                <Grid item>
+                  <TwitterShareButton
+                    url={window.location.href}
+                    title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
+                    hashtags={[this.state.reference.pubId]}
+                  > <TwitterIcon size={22} round /> </TwitterShareButton>
+                </Grid>
+                <Grid item>
+                  <FacebookShareButton
+                    url={window.location.href}
+                    quote={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
+                  >
+                    <FacebookIcon size={22} round />
+                    <FacebookShareCount url={window.location.href} />
+                  </FacebookShareButton>
+                </Grid>
+                <Grid item>
+                  <LinkedinShareButton
+                    url={window.location.href}
+                    title={this.state.reference.title}
+                    description={`${plainPrintReference(this.state.reference)}`}
+                  >
+                    <LinkedinIcon size={22} round />
+                    <LinkedinShareCount url={window.location.href} />
+                  </LinkedinShareButton>
+                </Grid>
+                <Grid item>
+                  <EmailShareButton
+                    subject={this.state.reference.title}
+                    body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)}`}
+                  ><EmailIcon size={22} round /></EmailShareButton>
+                </Grid>
+                <Grid item>
+                  <WhatsappShareButton
+                    url={window.location.href}
+                    title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
+
+                  ><WhatsappIcon size={22} round /></WhatsappShareButton>
+                </Grid>
+              </Grid>
+
+            </Grid>
+          </Grid>
           <PublicationView pubId={this.state.pubId} />
         </div>
             : <div>
@@ -155,70 +218,70 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
                       {(this.state.references[year] || []).length === 0 ? null :
                       <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
-                  }
+                      }
                       {(this.state.references[year] || [])
-                    .map((reference, j) => {
-                      if (this.state.titles[year][j] !== null) {
-                        return (
+                          .map((reference, j) => {
+                            if (this.state.titles[year][j] !== null) {
+                              return (
 
-                          <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                            <Paper className={this.props.classes.smallPaper}>
-                              <span className={this.props.classes.publicationEntry}>
-                                <IoDocument size={24} /> {prettyPrintReference(reference)}
+                                <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
+                                  <Paper className={this.props.classes.smallPaper}>
+                                    <span className={this.props.classes.publicationEntry}>
+                                      <IoDocument size={24} /> {prettyPrintReference(reference)}
 
-                              </span>
-                              <Grid container direction="row" justify="flex-end" className={this.props.classes.publicationActions}>
+                                    </span>
+                                    <Grid container direction="row" justify="flex-end" className={this.props.classes.publicationActions}>
 
-                                <Grid item>
+                                      <Grid item>
 
-                                  <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j])} className={this.props.classes.publicationAction}>
-                                    <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
-                                  </Button>
-                                  {(this.state.dois[year][j] === null
-                            || typeof this.state.dois[year][j] === 'undefined'
-                            || this.state.dois[year][j] === ''
-                          ) ? null :
-                          <ReactGA.OutboundLink
-                            eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
-                            to={`http://dx.doi.org/${this.state.dois[year][j]}`}
-                            target="_blank"
-                            className={this.props.classes.outboundLink}
-                          >
-                            <Button className={this.props.classes.publicationAction}>
-                              <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
-                                </Button>
-                          </ReactGA.OutboundLink>
-                          }
-                                </Grid>
-                              </Grid>
+                                        <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}>
+                                          <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                                        </Button>
+                                        {(this.state.dois[year][j] === null
+                                          || typeof this.state.dois[year][j] === 'undefined'
+                                          || this.state.dois[year][j] === ''
+                                        ) ? null :
+                                        <ReactGA.OutboundLink
+                                          eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                                          to={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                                          target="_blank"
+                                          className={this.props.classes.outboundLink}
+                                        >
+                                          <Button className={this.props.classes.publicationAction}>
+                                            <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
+                                              </Button>
+                                        </ReactGA.OutboundLink>
+                                        }
+                                      </Grid>
+                                    </Grid>
 
-                              <div>
-                                { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                                <span>
-                                  {this.state.loading === true ? <LinearProgress color="primary" /> : null}
+                                    <div>
+                                      { this.state.openedPublication !== `elem_${year}_${j}` ? null :
+                                      <span>
+                                        {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
-                                  {/*
+                                        {/*
                         true || this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
                         */}
-                                  {this.state.systems.length === 0 ? null :
-                                  <PublicationSystems {...this.state} />
+                                        {this.state.systems.length === 0 ? null :
+                                        <PublicationSystems {...this.state} />
                         }
-                                </span>
+                                      </span>
+                                      }
+                                    </div>
+                                    <br />
+                                  </Paper>
+                                </div>
+                              );
                             }
-                              </div>
-                              <br />
-                            </Paper>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
+                            return null;
+                          })}
                     </Paper>
                   </div>
                 </Slide>
-          ))
-        }
+              ))
+              }
             </div>
         }
       </div>
