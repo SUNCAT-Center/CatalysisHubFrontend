@@ -29,6 +29,7 @@ import axios from 'axios';
 
 /* import { apiRoot, uploadGraphqlRoot } from 'utils/constants';*/
 /* import { apiRoot } from 'utils/constants';*/
+import * as snackbarActions from 'containers/AppSnackBar/actions';
 import PublicationView from 'components/PublicationView';
 import { prettyPrintReference } from 'utils/functions';
 
@@ -117,7 +118,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       withCredentials: true,
     }).then((response) => {
       const pubEntries = _.groupBy(response.data.data.reactions.edges.map((x) => x.node),
-                                   'pubId');
+        'pubId');
 
       this.setState({
         pubEntries,
@@ -137,18 +138,53 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       action: 'Endorse a Dataset',
       label: dataset.pubId,
     });
-    axios.post(endorseUrl, {
-      dataset,
-      userInfo: this.state.userInfo,
-    }).then(() => {
+
+    const correspondentQuery = `{reactions(first: 1, pubId: "${dataset.pubId}") {
+  edges {
+    node {
+      id
+      username
+    }
+  }
+}}`;
+    axios.post(uploadGraphqlRoot, {}, {
+      method: 'POST',
+      data: {
+        query: correspondentQuery,
+      },
+      withCredentials: true,
+    }).then((response) => {
+      axios.post(endorseUrl, {
+        dataset,
+        userInfo: this.state.userInfo,
+        corresponding_email: response.data.data.reactions.edges[0].node.username,
+      }).then(() => {
+      });
     });
   }
 
   handleRelease(dataset) {
-    axios.post(releaseUrl, {
-      dataset,
-      userInfo: this.state.userInfo,
-    }).then(() => {
+    const correspondentQuery = `{reactions(first: 1, pubId: "${dataset.pubId}") {
+  edges {
+    node {
+      id
+      username
+    }
+  }
+}}`;
+    axios.post(uploadGraphqlRoot, {}, {
+      method: 'POST',
+      data: {
+        query: correspondentQuery,
+      },
+      withCredentials: true,
+    }).then((response) => {
+      axios.post(releaseUrl, {
+        dataset,
+        userInfo: this.state.userInfo,
+        corresponding_email: response.data.data.reactions.edges[0].node.username,
+      }).then(() => {
+      });
     });
   }
 
@@ -275,8 +311,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                   this.windowLogin();
                 }}
               >
-                Login
-              </Button>
+                      Login
+                    </Button>
             </Grid>
           </Grid>
               }
@@ -329,18 +365,18 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           {!this.state.showHelp ? null :
           <div>
             <div>
-                For SUNCAT Users: check <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a> for info how to upload data.
-              </div>
+                      For SUNCAT Users: check <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a> for info how to upload data.
+                    </div>
             <div>
-                For general audience, follow the steps below in the near future.
-              </div>
+                      For general audience, follow the steps below in the near future.
+                    </div>
             <ol>
               <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
               <li>Organize converged calculations, run <pre>cathub organize {'<foldername>'}</pre></li>
               <li>Turn organized folder into sqlite database, run <pre>cathub folder2db {'<foldername>'}.organized --userhandle {this.state.userInfo.email}</pre></li>
               <li>Upload database, run <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre></li>
               <li>Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
-              </li>
+                            </li>
             </ol>
           </div>
               }
@@ -377,44 +413,44 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 onClick={() => { this.getDatasets(); }}
               >
                 <MdRefresh /> Fetch Data Sets
-              </Button>
+                  </Button>
             </Grid>
           </Grid>
           {_.isEmpty(this.state.datasets) ? null :
-              this.state.datasets.map((dataset, i) => (
-                <Paper key={`ds_${i}`} className={this.props.classes.paper}>
-                  {prettyPrintReference(dataset)}
-                  {(this.state.userInfo.email !== _.get(this.state.pubEntries,
-                    `${dataset.pubId}.0.username`, '')) ?
-                      <div>
-                        <Button
-                          raised
-                          onClick={() => {
-                            this.handleEndorse(dataset);
-                          }}
-                        >
-                    Endorse {'\u00A0\u00A0'} <MdThumbUp />
+                  this.state.datasets.map((dataset, i) => (
+                    <Paper key={`ds_${i}`} className={this.props.classes.paper}>
+                      {prettyPrintReference(dataset)}
+                      {(this.state.userInfo.email !== _.get(this.state.pubEntries,
+                        `${dataset.pubId}.0.username`, '')) ?
+                          <div>
+                            <Button
+                              raised
+                              onClick={() => {
+                                this.handleEndorse(dataset);
+                              }}
+                            >
+                              Endorse {'\u00A0\u00A0'} <MdThumbUp />
 
-                        </Button> {'\u00A0\u00A0'}
-                      </div>
-                      : <div>
-                        <Button
-                          raised
-                          onClick={() => { this.setDataset(dataset); }}
-                        > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
-                        <Button
-                          raised
-                          onClick={() => {
-                            this.handleRelease(dataset);
-                          }}
-                        >
-                    Release {'\u00A0\u00A0'} <MdPublic />
-                        </Button>
-                      </div>
-                  }
-                </Paper>
-              ))
-          }
+                            </Button> {'\u00A0\u00A0'}
+                          </div>
+                          : <div>
+                            <Button
+                              raised
+                              onClick={() => { this.setDataset(dataset); }}
+                            > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
+                            <Button
+                              raised
+                              onClick={() => {
+                                this.handleRelease(dataset);
+                              }}
+                            >
+                              Release {'\u00A0\u00A0'} <MdPublic />
+                            </Button>
+                          </div>
+                      }
+                    </Paper>
+                  ))
+              }
         </Paper>
         }
         {_.isEmpty(this.state.pubId) ? null :
@@ -440,7 +476,10 @@ const mapStateToProps = createStructuredSelector({
   Upload: makeSelectUpload(),
 });
 
-const mapDispatchToProps = () => ({
+const mapDispatchToProps = (dispatch) => ({
+  openSnackbar: (message) => {
+    dispatch(snackbarActions.open(message));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Upload));
