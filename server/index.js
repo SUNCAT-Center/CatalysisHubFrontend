@@ -1,7 +1,7 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
-/* const cors = require('cors');*/
+const cors = require('cors');
 const csp = require('helmet-csp');
 const helmet = require('helmet');
 const sslRedirect = require('heroku-ssl-redirect');
@@ -81,23 +81,23 @@ app.use(csp({
 }));
 app.use(sslRedirect());
 
-/* const allowedOrigins = ['https://catappdatabase2-pr-63.herokuapp.com', 'https://api.catalysis-hub.org'];*/
-/* app.use(cors({*/
-/* origin: function(origin, callback){*/
-/* // allow requests with no origin */
-/* // (like mobile apps or curl requests)*/
-/* if(!origin) return callback(null, true);*/
-/* if(allowedOrigins.indexOf(origin) === -1){*/
-/* var msg = 'The CORS policy for this site does not ' +*/
-/* 'allow access from the specified Origin.';*/
-/* return callback(new Error(msg), false);*/
-/* }*/
-/* return callback(null, true);*/
-/* }*/
-/* }));*/
+const allowedOrigins = ['https://catappdatabase2-pr-63.herokuapp.com', 'https://api.catalysis-hub.org'];
+app.use(cors({
+  origin(origin, callback) {
+    // allow requests with no origin
+    // (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not ' +
+        'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+}));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Origin', 'https://catappdatabase2-pr-63.herokuapp.com');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Pingother, Content-Type, Accept');
   next();
 });
 

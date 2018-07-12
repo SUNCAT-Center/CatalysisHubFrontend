@@ -93,8 +93,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     const datasetQuery = `{publications { totalCount edges { node {
     title authors doi pubId journal volume pages year
   } } }}`;
-    axios({
-      url: uploadGraphqlRoot,
+    axios.default.withCredentials = true;
+    axios.post(uploadGraphqlRoot, {}, {
       method: 'POST',
       data: {
         query: datasetQuery,
@@ -196,8 +196,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   windowLogin() {
-    /* console.log("WINDOW LOGIN")*/
     const uploadUrl = `${apiRoot}/apps/upload/`;
+    /* console.log("WINDOW LOGIN")*/
     /* console.log(uploadUrl)*/
     axios(uploadUrl, {
       method: 'POST',
