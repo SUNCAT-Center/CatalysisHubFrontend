@@ -137,7 +137,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       action: 'Endorse a Dataset',
       label: dataset.pubId,
     });
-    axios.put(endorseUrl, {
+    axios.post(endorseUrl, {
       dataset,
       userInfo: this.state.userInfo,
     }).then(() => {
@@ -145,7 +145,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   handleRelease(dataset) {
-    axios.put(releaseUrl, {
+    axios.post(releaseUrl, {
       dataset,
       userInfo: this.state.userInfo,
     }).then(() => {
