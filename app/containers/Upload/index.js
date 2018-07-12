@@ -158,7 +158,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         dataset,
         userInfo: this.state.userInfo,
         corresponding_email: response.data.data.reactions.edges[0].node.username,
-      }).then(() => {
+      }).then((messageResponse) => {
+        this.props.openSnackbar(messageResponse.data.message);
       });
     });
   }
@@ -183,7 +184,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         dataset,
         userInfo: this.state.userInfo,
         corresponding_email: response.data.data.reactions.edges[0].node.username,
-      }).then(() => {
+      }).then((messageResponse) => {
+        this.props.openSnackbar(messageResponse.data.message);
       });
     });
   }
@@ -471,6 +473,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
 Upload.propTypes = {
   classes: PropTypes.object,
+  openSnackbar: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
