@@ -137,25 +137,26 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       action: 'Endorse a Dataset',
       label: dataset.pubId,
     });
-    axios(endorseUrl, {
-      data: { dataset },
-      withCredentials: true,
+    axios.put(endorseUrl, {
+      dataset,
+      userInfo: this.state.userInfo,
     }).then(() => {
     });
   }
+
+  handleRelease(dataset) {
+    axios.put(releaseUrl, {
+      dataset,
+      userInfo: this.state.userInfo,
+    }).then(() => {
+    });
+  }
+
   handleSocialLogin() {
   }
 
 
   handleSocialLoginFailure() {
-  }
-
-  handleRelease(dataset) {
-    axios.get(releaseUrl, {
-      data: { dataset },
-      withCredentials: true,
-    }).then(() => {
-    });
   }
 
   fetchUserInfo() {
@@ -200,7 +201,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     /* console.log("WINDOW LOGIN")*/
     /* console.log(uploadUrl)*/
     axios(uploadUrl, {
-      method: 'POST',
+      method: 'get',
       mode: 'no-cors',
       headers: {
         Accept: 'application/json',
