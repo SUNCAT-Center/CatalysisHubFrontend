@@ -300,6 +300,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
               : null}
         </h2>
+        <h3>(beta)</h3>
         <Paper className={this.props.classes.paper}>
           {!_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row" justify="flex-end">
