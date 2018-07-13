@@ -387,25 +387,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           </div>
               }
         </Paper>
-        {/*
-        <Paper className={this.props.classes.paper}>
-          <h3>Method 2: using terminal + git (WIP).</h3>
-          <ol>
-            <li>Install catkit: pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</li>
-            <li>Run catkit organize foldername</li>
-            <li>Push your organized folder as one directory to e.g. github.</li>
-            <li>Get a DOI for your repository: https://guides.github.com/activities/citable-code/</li>
-            <li>Enter the respository URL below.</li>
-          </ol>
-        </Paper>
-        <Paper className={this.props.classes.paper}>
-          <h3>Method 3: drag and drop (WIP).</h3>
-          <ol>
-            <li>Go to your results folder using e.g. Finder on Mac, Nautilus on Linux, etc.</li>
-            <li>Drag and drop your folder (up to 10 MB)<Button>HERE</Button>.</li>
-          </ol>
-        </Paper>
-        */}
         {_.isEmpty(this.state.userInfo) ? null :
         <Paper className={this.props.classes.paper}>
           <Grid container justify="space-between" direction="row">
