@@ -27,7 +27,11 @@ import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 
 import { MdChevronRight } from 'react-icons/lib/md';
-import { FaExternalLink, FaCube, FaArrowDown } from 'react-icons/lib/fa';
+import {
+  FaExternalLink,
+  FaCube,
+  FaArrowDown,
+} from 'react-icons/lib/fa';
 
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -361,87 +365,88 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         }
         {_.isEmpty(reactions) ? <LinearProgress className={this.props.classes.progress} /> : [(this.state.tableView ?
 
-          <Paper
-            className={this.props.classes.paper}
-          >
-            <Table className={this.props.classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="none">
-                    <div>Geometry</div></TableCell>
-                  <TableCell padding="none">
-                    <TableSortLabel
-                      active={this.state.orderBy === 'Equation'}
-                      direction={this.state.order}
-                      onClick={this.createSortHandler('Equation')}
-                    >
-                      <div>Reaction</div>
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell padding="none">
-                    <TableSortLabel
-                      active={this.state.orderBy === 'reactionEnergy'}
-                      direction={this.state.order}
-                      onClick={this.createSortHandler('reactionEnergy')}
-                    >
-                      <div>Reaction Energy</div>
-                    </TableSortLabel>
-                  </TableCell>
-                  <Hidden smDown>
-                    <TableCell>
+          <div>
+            <Paper
+              className={this.props.classes.paper}
+            >
+              <Table className={this.props.classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="none">
+                      <div>Geometry</div></TableCell>
+                    <TableCell padding="none">
                       <TableSortLabel
-                        active={this.state.orderBy === 'activationEnergy'}
+                        active={this.state.orderBy === 'Equation'}
                         direction={this.state.order}
-                        onClick={this.createSortHandler('activationEnergy')}
+                        onClick={this.createSortHandler('Equation')}
                       >
-                        <div>Activation Energy</div>
+                        <div>Reaction</div>
                       </TableSortLabel>
                     </TableCell>
-                  </Hidden>
-                  <TableCell padding="none">
-                    <TableSortLabel
-                      active={this.state.orderBy === 'surfaceComposition'}
-                      direction={this.state.order}
-                      onClick={this.createSortHandler('surfaceComposition')}
-                    >
-                      <div>Surface</div>
-                    </TableSortLabel>
-                  </TableCell>
-                  <Hidden smDown>
-                    <TableCell>
+                    <TableCell padding="none">
                       <TableSortLabel
-                        active={this.state.orderBy === 'facet'}
+                        active={this.state.orderBy === 'reactionEnergy'}
                         direction={this.state.order}
-                        onClick={this.createSortHandler('facet')}
+                        onClick={this.createSortHandler('reactionEnergy')}
                       >
-                        <div>Facet</div>
+                        <div>Reaction Energy</div>
                       </TableSortLabel>
                     </TableCell>
-                  </Hidden>
-                  <Hidden smDown>
-                    <TableCell>
+                    <Hidden smDown>
+                      <TableCell>
+                        <TableSortLabel
+                          active={this.state.orderBy === 'activationEnergy'}
+                          direction={this.state.order}
+                          onClick={this.createSortHandler('activationEnergy')}
+                        >
+                          <div>Activation Energy</div>
+                        </TableSortLabel>
+                      </TableCell>
+                    </Hidden>
+                    <TableCell padding="none">
                       <TableSortLabel
-                        active={this.state.orderBy === 'sites'}
+                        active={this.state.orderBy === 'surfaceComposition'}
                         direction={this.state.order}
-                        onClick={this.createSortHandler('sites')}
+                        onClick={this.createSortHandler('surfaceComposition')}
                       >
-                        <div>Sites</div>
+                        <div>Surface</div>
                       </TableSortLabel>
                     </TableCell>
-                  </Hidden>
-                  <TableCell>
-                    <TableSortLabel
-                      active={this.state.orderBy === 'dftFunctional'}
-                      direction={this.state.order}
-                      onClick={this.createSortHandler('dftFunctional')}
-                    >
-                      <div>XC Functional</div>
-                    </TableSortLabel>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {
+                    <Hidden smDown>
+                      <TableCell>
+                        <TableSortLabel
+                          active={this.state.orderBy === 'facet'}
+                          direction={this.state.order}
+                          onClick={this.createSortHandler('facet')}
+                        >
+                          <div>Facet</div>
+                        </TableSortLabel>
+                      </TableCell>
+                    </Hidden>
+                    <Hidden smDown>
+                      <TableCell>
+                        <TableSortLabel
+                          active={this.state.orderBy === 'sites'}
+                          direction={this.state.order}
+                          onClick={this.createSortHandler('sites')}
+                        >
+                          <div>Sites</div>
+                        </TableSortLabel>
+                      </TableCell>
+                    </Hidden>
+                    <TableCell>
+                      <TableSortLabel
+                        active={this.state.orderBy === 'dftFunctional'}
+                        direction={this.state.order}
+                        onClick={this.createSortHandler('dftFunctional')}
+                      >
+                        <div>XC Functional</div>
+                      </TableSortLabel>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
                   /* eslint-disable arrow-body-style */
                   reactions
                     .slice(this.state.page * this.state.rowsPerPage, (this.state.page + 1) * this.state.rowsPerPage)
@@ -451,8 +456,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                           hover
                           key={`row_${i}`}
                           onClick={() => {
-                            /* this.props.selectReaction(result);*/
-                            /* this.fetchRow(result);*/
+                            this.getStructures(result, i);
                           }}
                           className={this.props.classes.clickableRow}
                         >
@@ -476,26 +480,28 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                     })
                   /* eslint-enable */
                 }
-              </TableBody>
-              <TableFooter
-                className={this.props.classes.tableFooter}
-              >
-                <TableRow>
-                  <TablePagination
-                    count={this.state.resultSize}
-                    rowsPerPage={this.state.rowsPerPage}
-                    page={this.state.page}
-                    onChangePage={this.handlePageChange}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    rowsPerPageOptions={[10, 25, 100, 1000]}
-                    className={this.props.classes.tableFooter}
-                    labelRowsPerPage=""
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-            {!this.state.hasMoreReactions ? null :
-            <div>
+                </TableBody>
+                <TableFooter
+                  className={this.props.classes.tableFooter}
+                >
+                  <TableRow>
+                    <TablePagination
+                      count={this.state.resultSize}
+                      rowsPerPage={this.state.rowsPerPage}
+                      page={this.state.page}
+                      onChangePage={this.handlePageChange}
+                      onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                      rowsPerPageOptions={[10, 25, 100, 1000]}
+                      className={this.props.classes.tableFooter}
+                      labelRowsPerPage=""
+                    />
+                  </TableRow>
+                </TableFooter>
+              </Table>
+
+
+              {!this.state.hasMoreReactions ? null :
+              <div>
                   Switch to
                   <Button
                     className={this.props.classes.publicationAction}
@@ -507,7 +513,72 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   </Button> and scroll down to load remaining reactions.
                 </div>
             }
-          </Paper>
+            </Paper>
+            <Paper className={this.props.classes.structuresDiv}>
+              <Grid direction="row" justify="center">
+                <Grid item>
+                  <h2><FaArrowDown /> scroll down for more structures</h2>
+                  <Grid container justify="flex-start" direction="row">
+                    {this.state.structures.map((image, i) => (
+                      <Grid item key={`item_${i}`}>
+                        <Grid container direction="row" justify="center">
+                          <Grid item>
+                            <h2>{structures[i].Formula}  ({structures[i].energy} eV)</h2>
+                            <GeometryCanvasWithOptions
+                              cifdata={structures[i].Cifdata}
+                              uniqueId={`slab_preview_${i}`}
+                              key={`slab_preview_${i}`}
+                              id={`slab_preview_${i}`}
+                              x={1} y={1} z={1}
+                            />
+
+                            {_.isEmpty(this.state.structureQuery) ? null :
+                            <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
+                              <Grid item>
+                                <GraphQlbutton
+                                  query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
+  edges {
+    node {
+      DftCode
+      DftFunctional
+      Facet
+      Formula
+      InputFile(format:"cif")
+      Pbc
+      cell
+      energy
+      keyValuePairs
+      magmom
+      magmoms
+      mass
+      natoms
+      numbers
+      positions
+      tags
+      uniqueId
+      volume
+    }
+  }
+}}`}
+                                  newSchema
+                                />
+                              </Grid>
+                            </Grid>
+                                }
+
+
+
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                          ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+
+            </Paper>
+
+          </div>
           :
 
           <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
