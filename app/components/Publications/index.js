@@ -49,6 +49,8 @@ import PublicationSystems from './publicationSystems';
 
 import { styles } from './styles';
 
+const shareIconSize = 28;
+
 class Publications extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -185,18 +187,24 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             <Grid>
               <Grid container direction="row" className={this.props.classes.shareButtons}>
                 <Grid item>
+                  <EmailShareButton
+                    subject={this.state.reference.title}
+                    body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)}`}
+                  ><EmailIcon size={shareIconSize} round /></EmailShareButton>
+                </Grid>
+                <Grid item>
                   <TwitterShareButton
                     url={window.location.href}
                     title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
                     hashtags={[this.state.reference.pubId]}
-                  > <TwitterIcon size={22} round /> </TwitterShareButton>
+                  > <TwitterIcon size={shareIconSize} round /> </TwitterShareButton>
                 </Grid>
                 <Grid item>
                   <FacebookShareButton
                     url={window.location.href}
                     quote={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
                   >
-                    <FacebookIcon size={22} round />
+                    <FacebookIcon size={shareIconSize} round />
                   </FacebookShareButton>
                 </Grid>
                 <Grid item>
@@ -205,21 +213,15 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     title={this.state.reference.title}
                     description={`${plainPrintReference(this.state.reference)}`}
                   >
-                    <LinkedinIcon size={22} round />
+                    <LinkedinIcon size={shareIconSize} round />
                   </LinkedinShareButton>
-                </Grid>
-                <Grid item>
-                  <EmailShareButton
-                    subject={this.state.reference.title}
-                    body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)}`}
-                  ><EmailIcon size={22} round /></EmailShareButton>
                 </Grid>
                 <Grid item>
                   <WhatsappShareButton
                     url={window.location.href}
                     title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
 
-                  ><WhatsappIcon size={22} round /></WhatsappShareButton>
+                  ><WhatsappIcon size={shareIconSize} round /></WhatsappShareButton>
                 </Grid>
               </Grid>
 
