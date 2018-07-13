@@ -210,7 +210,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                 <Grid item>
                   <LinkedinShareButton
                     title={this.state.reference.title}
-                    description={`${window.location.href} ${plainPrintReference(this.state.reference)}`}
+                    description={`${plainPrintReference(this.state.reference)}`}
                     url={window.location.href}
                   >
                     <LinkedinIcon size={shareIconSize} round />
