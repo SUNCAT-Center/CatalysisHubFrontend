@@ -193,6 +193,15 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   ><EmailIcon size={shareIconSize} round /></EmailShareButton>
                 </Grid>
                 <Grid item>
+                  <LinkedinShareButton
+                    title={this.state.reference.title}
+                    description={`${plainPrintReference(this.state.reference)}`}
+                    url={window.location.href}
+                  >
+                    <LinkedinIcon size={shareIconSize} round />
+                  </LinkedinShareButton>
+                </Grid>
+                <Grid item>
                   <TwitterShareButton
                     url={window.location.href}
                     title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
@@ -206,15 +215,6 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   >
                     <FacebookIcon size={shareIconSize} round />
                   </FacebookShareButton>
-                </Grid>
-                <Grid item>
-                  <LinkedinShareButton
-                    title={this.state.reference.title}
-                    description={`${plainPrintReference(this.state.reference)}`}
-                    url={window.location.href}
-                  >
-                    <LinkedinIcon size={shareIconSize} round />
-                  </LinkedinShareButton>
                 </Grid>
                 <Grid item>
                   <WhatsappShareButton
