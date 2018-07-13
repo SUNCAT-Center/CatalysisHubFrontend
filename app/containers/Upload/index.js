@@ -376,7 +376,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <ol>
               <li>Install catkit: <pre>pip install git+https://github.com/SUNCAT-Center/CatKit.git#egg=catkit</pre></li>
               <li>Organize converged calculations, run <pre>cathub organize {'<foldername>'}</pre></li>
-              <li>Turn organized folder into sqlite database, run <pre>cathub folder2db {'<foldername>'}.organized --userhandle {this.state.userInfo.email}</pre></li>
+              <li>Turn organized folder into sqlite database, run <pre>cathub folder2db --userhandle {this.state.userInfo.email} {'<foldername>'}.organized</pre></li>
               <li>Upload database, run <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre></li>
               <li>Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
                             </li>
