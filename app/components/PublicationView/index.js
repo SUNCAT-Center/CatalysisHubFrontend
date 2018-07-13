@@ -359,7 +359,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           </div>
         </Paper>
         }
-        {_.isEmpty(reactions) ? null : [(this.state.tableView ?
+        {_.isEmpty(reactions) ? <LinearProgress className={this.props.classes.progress} /> : [(this.state.tableView ?
+
           <Paper
             className={this.props.classes.paper}
           >
