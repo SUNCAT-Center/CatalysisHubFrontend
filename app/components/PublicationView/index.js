@@ -520,7 +520,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   <h2><FaArrowDown /> scroll down for more structures</h2>
                   <Grid container justify="flex-start" direction="row">
                     {this.state.structures.map((image, i) => (
-                      <Grid item key={`item_${i}`}>
+                      <Grid item key={`structure_${i}`}>
                         <Grid container direction="row" justify="center">
                           <Grid item>
                             <h2>{structures[i].Formula}  ({structures[i].energy} eV)</h2>
