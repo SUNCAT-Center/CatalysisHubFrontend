@@ -82,11 +82,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   componentDidMount() {
     if (_.get(this.props, 'location.query.login') === 'success') {
       this.fetchUserInfo();
+      this.getDatasets();
     }
   }
+
   componentWillReceiveProps(nextProps) {
     if (_.get(nextProps, 'location.query.login') === 'success') {
       this.fetchUserInfo();
+      this.getDatasets();
     }
   }
 
