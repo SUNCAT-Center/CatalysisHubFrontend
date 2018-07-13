@@ -26,9 +26,8 @@ import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 
-
 import { MdChevronRight } from 'react-icons/lib/md';
-import { FaExternalLink, FaCube } from 'react-icons/lib/fa';
+import { FaExternalLink, FaCube, FaArrowDown } from 'react-icons/lib/fa';
 
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -627,6 +626,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             <Grid item md={7} sm={12}>
               {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
               <Paper className={this.props.classes.structuresDiv}>
+                <h2><FaArrowDown /> scroll down for more structures</h2>
                 <Grid container justify="flex-start" direction="column">
                   {this.state.structures.map((image, i) => (
                     <Grid item key={`item_${i}`}>
