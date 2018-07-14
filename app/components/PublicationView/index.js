@@ -116,6 +116,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.state.loadingReactions === true) {
+      return true;
+    }
     const { pubId } = nextProps;
     const publicationQuery = {
       ttl: 300,
@@ -134,7 +137,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 }}` };
 
-    axios(this.props.graphqlRoot,
+    return axios(this.props.graphqlRoot,
       {
         method: 'post',
         data: publicationQuery,
@@ -157,10 +160,10 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
 
   getReactions() {
     const { pubId } = this.props;
-    this.setState({
-      loadingReactions: true,
-    });
     if (this.state.hasMoreReactions) {
+      this.setState({
+        loadingReactions: true,
+      });
       const reactionQuery = {
         ttl: 300,
         query: `query{reactions (pubId: "${pubId}",
