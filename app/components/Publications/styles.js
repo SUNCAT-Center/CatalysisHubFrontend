@@ -26,6 +26,9 @@ export const styles = (theme) => ({
       textAlign: 'center',
     },
   },
+  yearPaper: {
+    marginBottom: theme.spacing.unit * 7,
+  },
   paper: {
     padding: theme.spacing.unit,
     marginBottom: theme.spacing.unit,

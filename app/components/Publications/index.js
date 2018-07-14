@@ -242,9 +242,10 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   unmountOnExit
                   timeout={200 * i}
                   direction="left"
+                  className={this.props.classes.yearPaper}
                 >
                   <div>
-                    <Paper key={`div_year_${i}`} className={this.props.classes.paper}>
+                    <Paper key={`div_year_${i}`} className={[this.props.classes.paper, this.props.classes.yearPaper]}>
                       {(this.state.references[year] || []).length === 0 ? null :
                       <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
                       }
