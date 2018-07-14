@@ -31,6 +31,8 @@ import {
   FaExternalLink,
   FaCube,
   FaArrowDown,
+  FaTable,
+  FaList,
 } from 'react-icons/lib/fa';
 
 import axios from 'axios';
@@ -348,7 +350,15 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 this.toggleView();
               }}
             >
-              {this.state.tableView ? 'List View' : 'Table View' }
+              {this.state.tableView ?
+                <div>
+                  <FaList /> List View
+                  </div>
+                  :
+                  <div>
+                    <FaTable /> Table View
+                  </div>
+              }
             </Button>
             {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
             {_.isEmpty(publication.doi) ? null :
