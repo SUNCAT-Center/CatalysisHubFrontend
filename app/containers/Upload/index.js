@@ -11,6 +11,7 @@ import Script from 'react-load-script';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import Popover from 'material-ui/Popover';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import {
@@ -33,11 +34,12 @@ import axios from 'axios';
 import * as snackbarActions from 'containers/AppSnackBar/actions';
 import PublicationView from 'components/PublicationView';
 import { prettyPrintReference } from 'utils/functions';
+import { apiRoot } from 'utils/constants';
 
 import { styles } from './styles';
 import makeSelectUpload from './selectors';
 
-const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com';
+/* const apiRoot = 'https://catappdatabase2-pr-63.herokuapp.com';*/
 /* const apiRoot = 'http://localhost:5000';*/
 const backendRoot = `${apiRoot}/apps/upload`;
 const url = `${backendRoot}/upload_dataset/`;
@@ -65,6 +67,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       pubId: '',
       showHelp: true,
       pubEntries: {},
+      popoverAnchorElement: null,
     };
 
     this.logout = this.logout.bind(this);
@@ -76,6 +79,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handleRelease = this.handleRelease.bind(this);
     this.handleEndorse = this.handleEndorse.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
+    this.handlePopoverClose = this.handlePopoverClose.bind(this);
     this.login = this.login.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -135,6 +140,18 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   setDataset(dataset) {
     this.setState({
       pubId: dataset.pubId,
+    });
+  }
+
+  handlePopoverOpen(event) {
+    this.setState({
+      popoverAnchorElement: event.currentTarget,
+    });
+  }
+
+  handlePopoverClose() {
+    this.setState({
+      popoverAnchorElement: null,
     });
   }
 
@@ -345,12 +362,54 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               <Button
                 raised
                 color="primary"
-                onClick={() => {
-                  this.windowLogin();
+                variant="contained"
+                onClick={(event) => {
+                  this.handlePopoverOpen(event);
                 }}
               >
                       Login
                     </Button>
+              <Popover
+                open={Boolean(this.state.popoverAnchorElement)}
+                anchorEl={this.state.popoverAnchorElement}
+                onClose={this.handlePopoverClose}
+                origin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+              ><div
+                className={this.props.classes.loginPopover}
+              >
+                <Button
+                  onClick={this.windowLogin}
+                >
+                        Slack
+                        </Button>
+              </div>
+              </Popover>
+            </Grid>
+          </Grid>
+              }
+          {_.isEmpty(this.state.userInfo) ? null :
+          <Grid container direction="row" justify="flex-end">
+            {/*
+            <Grid item>
+              <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
+              <FileDrop
+                frame={document}
+                onDrop={this.handleFileDrop}
+                dropEffect="move"
+
+              >
+                <div
+
+                      }}
+                    >
+                    </Popover>
             </Grid>
           </Grid>
               }

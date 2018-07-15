@@ -96,7 +96,7 @@ app.use(cors({
   },
 }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://catappdatabase2-pr-63.herokuapp.com');
+  res.setHeader('Access-Control-Allow-Origin', 'https://api.catalysis-hub.org');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Pingother, Content-Type, Accept');
   next();
 });

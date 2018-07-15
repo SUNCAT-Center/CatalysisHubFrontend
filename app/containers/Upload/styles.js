@@ -5,6 +5,9 @@ export const styles = (theme) => ({
     padding: theme.spacing.unit,
     width: '100%',
   },
+  loginPopover: {
+    padding: theme.spacing.unit,
+  },
   fileDropActive: {
     width: 500,
     height: 500,
