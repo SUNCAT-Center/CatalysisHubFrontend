@@ -523,8 +523,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                               }}
                             >
                               Release {'\u00A0\u00A0'} <MdPublic />
-                            </Button>
-                            <Button
+                            </Button> <Button
                               raised
                               onClick={() => {
                                 this.handleDelete(dataset);
