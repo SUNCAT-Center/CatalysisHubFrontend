@@ -18,6 +18,7 @@ import {
   MdThumbUp,
   MdChevronRight,
   MdPublic,
+  MdDelete,
 } from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
 import IFrame from 'react-iframe';
@@ -44,6 +45,7 @@ const userInfoUrl = `${backendRoot}/user_info`;
 const logoutUrl = `${backendRoot}/logout`;
 const releaseUrl = `${backendRoot}/release`;
 const endorseUrl = `${backendRoot}/endorse`;
+const deleteUrl = `${backendRoot}/delete`;
 
 // TODO: COMMENT OUT IN PRODUCTION
 /* const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';*/
@@ -73,6 +75,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handleSocialLoginFailure = this.handleSocialLoginFailure.bind(this);
     this.handleRelease = this.handleRelease.bind(this);
     this.handleEndorse = this.handleEndorse.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.login = this.login.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -192,6 +195,35 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       });
     });
   }
+
+  handleDelete(dataset) {
+    // TODO: Implement confirmation dialogue
+    const correspondentQuery = `{reactions(first: 1, pubId: "${dataset.pubId}") {
+  edges {
+    node {
+      id
+      username
+    }
+  }
+}}`;
+    axios.post(uploadGraphqlRoot, {}, {
+      method: 'POST',
+      data: {
+        query: correspondentQuery,
+      },
+      withCredentials: true,
+    }).then((response) => {
+      axios.post(deleteUrl, {
+        dataset,
+        userInfo: this.state.userInfo,
+        corresponding_email: response.data.data.reactions.edges[0].node.username,
+      }).then((messageResponse) => {
+        this.props.openSnackbar(messageResponse.data.message);
+        this.getDatasets();
+      });
+    });
+  }
+
 
   handleSocialLogin() {
   }
@@ -432,6 +464,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                               }}
                             >
                               Release {'\u00A0\u00A0'} <MdPublic />
+                            </Button>
+                            <Button
+                              raised
+                              onClick={() => {
+                                this.handleDelete(dataset);
+                              }}
+                            >
+                              Delete {'\u00A0\u00A0'} <MdDelete />
                             </Button>
                           </div>
                       }
