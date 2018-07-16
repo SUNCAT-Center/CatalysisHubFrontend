@@ -231,13 +231,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         elevation={0}
                       >
                         <h3> <FaNewspaperO size={20} /> Publications</h3>
-                        <div className={this.props.classes.paperInfo}>A collection of scientic publications with atomic geometries.</div>
+                        <div className={this.props.classes.paperInfo}>A collection of scientific publications with atomic geometries.</div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
                             <Chip label={this.state.publications} />
                           </Grid>
                           <Grid item className={this.props.classes.bold}>
-                            See our publications <MdArrowForward />
+                            See publications <MdArrowForward />
                           </Grid>
                         </Grid>
                       </Paper>
