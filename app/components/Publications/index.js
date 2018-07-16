@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+import { isMobile } from 'react-device-detect';
 import { LinearProgress } from 'material-ui/Progress';
 import {
   MdChevronRight,
@@ -260,8 +261,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                       <IoDocument size={24} /> {prettyPrintReference(reference)}
 
                                     </span>
-                                    <Grid container direction="row" justify="flex-end" className={this.props.classes.publicationActions}>
-
+                                    <Grid container direction={isMobile ? 'column' : 'row'} justify="flex-end" className={this.props.classes.publicationActions}>
                                       <Grid item>
 
                                         <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}>
