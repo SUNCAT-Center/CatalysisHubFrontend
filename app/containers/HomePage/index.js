@@ -215,7 +215,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={withCommas(this.state.reactions)} />
                           </Grid>
                           <Grid item>
-                            <div className={this.props.classes.bold}>See our reactions <MdArrowForward /></div>
+                            <div className={this.props.classes.bold}>See reactions <MdArrowForward /></div>
                           </Grid>
                         </Grid>
                       </Paper>
