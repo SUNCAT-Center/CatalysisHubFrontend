@@ -22,6 +22,7 @@ import {
   MdDelete,
 } from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
+import { CircularProgress } from 'material-ui/Progress';
 import IFrame from 'react-iframe';
 import ReactGA from 'react-ga';
 
@@ -68,6 +69,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       showHelp: true,
       pubEntries: {},
       popoverAnchorElement: null,
+      deleting: false,
     };
 
     this.logout = this.logout.bind(this);
@@ -223,6 +225,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     }
   }
 }}`;
+    this.setState({
+      deleting: true,
+    });
     axios.post(uploadGraphqlRoot, {}, {
       method: 'POST',
       data: {
@@ -237,6 +242,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       }).then((messageResponse) => {
         this.props.openSnackbar(messageResponse.data.message);
         this.getDatasets();
+        this.setState({
+          deleting: false,
+        });
       });
     });
   }
@@ -286,12 +294,15 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     });
   }
 
-  windowLogin() {
+  windowLogin(provider = 'slack') {
     const uploadUrl = `${apiRoot}/apps/upload/`;
     /* console.log("WINDOW LOGIN")*/
     /* console.log(uploadUrl)*/
     axios(uploadUrl, {
       method: 'get',
+      params: {
+        provider,
+      },
       mode: 'no-cors',
       headers: {
         Accept: 'application/json',
@@ -362,7 +373,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               <Button
                 raised
                 color="primary"
-                variant="contained"
                 onClick={(event) => {
                   this.handlePopoverOpen(event);
                 }}
@@ -385,10 +395,11 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 className={this.props.classes.loginPopover}
               >
                 <Button
-                  onClick={this.windowLogin}
-                >
-                        Slack
-                        </Button>
+                  onClick={() => this.windowLogin('slack')}
+                > Slack </Button>
+                <Button
+                  onClick={() => this.windowLogin('google')}
+                > Google </Button>
               </div>
               </Popover>
             </Grid>
@@ -530,6 +541,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                               }}
                             >
                               Delete {'\u00A0\u00A0'} <MdDelete />
+                              { this.state.deleting ? <CircularProgress size={16} /> : null }
                             </Button>
                           </div>
                       }
