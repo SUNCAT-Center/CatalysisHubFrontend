@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { LinearProgress } from 'material-ui/Progress';
 import {
@@ -16,6 +16,9 @@ import {
 import {
   IoDocument,
 } from 'react-icons/lib/io';
+import {
+  TiDocumentAdd,
+} from 'react-icons/lib/ti';
 import _ from 'lodash';
 import ReactGA from 'react-ga';
 import Script from 'react-load-script';
@@ -172,6 +175,20 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <div>
+        <Link
+          className={this.props.classes.buttonLink}
+          to={'/upload'}
+        >
+          <Button
+            fab
+            className={this.props.classes.fab}
+            raised
+            color="primary"
+          >
+            <TiDocumentAdd />
+
+          </Button>
+        </Link>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="/static/ChemDoodleWeb.js" />
         {!_.isEmpty(this.state.pubId) ? <div>
@@ -246,7 +263,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   className={this.props.classes.yearPaper}
                 >
                   <div>
-                    <Paper key={`div_year_${i}`} className={[this.props.classes.paper, this.props.classes.yearPaper]}>
+                    <Paper key={`div_year_${i}`} className={[this.props.classes.paper, this.props.classes.yearPaper].join(' ')}>
                       {(this.state.references[year] || []).length === 0 ? null :
                       <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
                       }

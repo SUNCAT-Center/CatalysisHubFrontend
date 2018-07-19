@@ -1,5 +1,11 @@
 import _ from 'lodash';
 export const styles = (theme) => ({
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 4,
+    right: theme.spacing.unit * 4,
+    zIndex: 1000,
+  },
   shareButtons: {
     paddingRight: 2 * theme.spacing.unit,
   },
