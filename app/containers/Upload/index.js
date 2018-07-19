@@ -375,7 +375,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               >
                 {this.state.showHelp ? 'Hide Help' : 'Show Help' }
               </Button>
-
             </Grid>
             <Grid item>
               <Button
@@ -412,6 +411,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               }
           {_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row" justify="flex-end">
+            <Grid item>
+              <Button
+                raised
+                onClick={() => { this.toggleHelp(); }}
+              >
+                {this.state.showHelp ? 'Hide Help' : 'Show Help' }
+              </Button>
+            </Grid>
             <Grid item>
               <Button
                 onClick={() => this.logout()}
