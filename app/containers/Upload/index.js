@@ -20,6 +20,7 @@ import {
   MdChevronRight,
   MdPublic,
   MdDelete,
+  MdWarning,
 } from 'react-icons/lib/md';
 import Modal from 'material-ui/Modal';
 import { CircularProgress } from 'material-ui/Progress';
@@ -359,16 +360,23 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             display="initial"
           />
         </Modal>
-        <h2>Upload Datasets
+        <h2>Upload Datasets [beta]
           {!_.isEmpty(this.state.userInfo) ?
               `\u00A0\u00A0(${this.state.userInfo.email})`
 
-              : null}
-        </h2>
-        <h3>(beta)</h3>
+              : null} </h2>
         <Paper className={this.props.classes.paper}>
           {!_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row" justify="flex-end">
+            <Grid item>
+              <Button
+                raised
+                onClick={() => { this.toggleHelp(); }}
+              >
+                {this.state.showHelp ? 'Hide Help' : 'Show Help' }
+              </Button>
+
+            </Grid>
             <Grid item>
               <Button
                 raised
@@ -404,42 +412,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               }
           {_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row" justify="flex-end">
-            {/*
-            <Grid item>
-              <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
-              <FileDrop
-                frame={document}
-                onDrop={this.handleFileDrop}
-                dropEffect="move"
-
-              >
-                <div
-
-                      }}
-                    >
-                    </Popover>
-            </Grid>
-          </Grid>
-              }
-          {_.isEmpty(this.state.userInfo) ? null :
-          <Grid container direction="row" justify="flex-end">
-            {/*
-            <Grid item>
-              <MdFileUpload />{'\u00A0\u00A0'}Drag directory as zip file or gzipped tar archive here.
-              <FileDrop
-                frame={document}
-                onDrop={this.handleFileDrop}
-                dropEffect="move"
-
-              >
-                <div
-                  className={this.props.classes.fileDropActive}
-                >
-                  Drop File Here.
-                </div>
-              </FileDrop>
-            </Grid>
-            */}
             <Grid item>
               <Button
                 onClick={() => this.logout()}
@@ -453,22 +425,20 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           <div className={this.props.classes.error}>{this.state.uploadError}</div>
               }
         </Paper>
+        {!this.state.showHelp ? null :
         <Paper className={this.props.classes.paper}>
-          <Grid container direction="row" justify="space-between">
-            <Grid item>
-              <h3>How to Submit Reactions from Terminal</h3>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() => { this.toggleHelp(); }}
-              >
-                {this.state.showHelp ? 'Got it' : 'Show help' }
-              </Button>
-
-            </Grid>
-          </Grid>
-          {!this.state.showHelp ? null :
           <div>
+            <Paper className={this.props.classes.paper}>
+              <MdWarning /> Disclaimer: data submitted to the preview section can be seen by all registered users
+              of catalysis-hub.org.
+            </Paper>
+            <h3>Why should I submit calculations of reactions energies?</h3>
+            <ul>
+              <li>Create an easy-to-use interactive supplementary information for a publication with its own URL.</li>
+              <li>Accelerate transfer of theoretical insight to experimentalists in the field.</li>
+              <li>Support ongoing machine-learning efforts by providing first-principles based training data.</li>
+            </ul>
+            <h3>How to Submit Reactions from Terminal</h3>
             <div>
                       For SUNCAT Users: check <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a> for info how to upload data.
                     </div>
@@ -484,8 +454,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                             </li>
             </ol>
           </div>
-              }
         </Paper>
+              }
         {_.isEmpty(this.state.userInfo) ? null :
         <Paper className={this.props.classes.paper}>
           <Grid container justify="space-between" direction="row">
