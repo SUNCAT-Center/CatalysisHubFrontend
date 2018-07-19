@@ -397,9 +397,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 <Button
                   onClick={() => this.windowLogin('slack')}
                 > Slack </Button>
-                <Button
-                  onClick={() => this.windowLogin('google')}
-                > Google </Button>
               </div>
               </Popover>
             </Grid>
