@@ -522,16 +522,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                           : <div>
                             <Button
                               raised
-                              onClick={() => { this.setDataset(dataset); }}
-                            > Details <MdChevronRight /> </Button> {'\u00A0\u00A0'}
-                            <Button
-                              raised
                               onClick={() => {
                                 this.handleRelease(dataset);
                               }}
                             >
                               Release {'\u00A0\u00A0'} <MdPublic />
-                            </Button> <Button
+                            </Button>
+                            {'\u00A0\u00A0\u00A0'}
+                            <Button
                               raised
                               onClick={() => {
                                 this.handleDelete(dataset);
@@ -540,6 +538,11 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                               Delete {'\u00A0\u00A0'} <MdDelete />
                               { this.state.deleting ? <CircularProgress size={16} /> : null }
                             </Button>
+                            {'\u00A0\u00A0\u00A0'}
+                            <Button
+                              raised
+                              onClick={() => { this.setDataset(dataset); }}
+                            > Details <MdChevronRight /> </Button>
                           </div>
                       }
                     </Paper>
