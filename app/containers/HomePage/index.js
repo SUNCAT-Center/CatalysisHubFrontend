@@ -24,7 +24,7 @@ import {
   MdApps,
   MdKeyboardArrowUp,
   MdKeyboardArrowDown,
-  MdArrowForward,
+  MdChevronRight,
 } from 'react-icons/lib/md';
 import Slide from 'material-ui/transitions/Slide';
 
@@ -193,7 +193,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={apps.length} />
                           </Grid>
                           <Grid item>
-                            <div className={this.props.classes.bold}>See our apps <MdArrowForward /></div>
+                            <div className={this.props.classes.bold}>See our apps <MdChevronRight /></div>
                           </Grid>
                         </Grid>
                       </Paper>
@@ -215,7 +215,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={withCommas(this.state.reactions)} />
                           </Grid>
                           <Grid item>
-                            <div className={this.props.classes.bold}>See reactions <MdArrowForward /></div>
+                            <div className={this.props.classes.bold}>See reactions <MdChevronRight /></div>
                           </Grid>
                         </Grid>
                       </Paper>
@@ -237,7 +237,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={this.state.publications} />
                           </Grid>
                           <Grid item className={this.props.classes.bold}>
-                            See publications <MdArrowForward />
+                            See publications <MdChevronRight />
                           </Grid>
                         </Grid>
                       </Paper>

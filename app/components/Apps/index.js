@@ -15,6 +15,9 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Slide from 'material-ui/transitions/Slide';
 import Tooltip from 'material-ui/Tooltip';
+import {
+  MdChevronRight,
+} from 'react-icons/lib/md';
 
 import { getAppIcon } from 'utils/functions';
 
@@ -35,10 +38,11 @@ const styles = () => ({
     textAlign: 'left',
   },
   appPaper: {
-    padding: 25,
-    minWidth: 240,
+    padding: 10,
+    paddingTop: 5,
+    minWidth: 280,
     maxWidth: 300,
-    textAlign: 'center',
+    textAlign: 'left',
     backgroundColor: '#eeeeee',
     cornerRadius: 40,
   },
@@ -75,7 +79,7 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                           {getAppIcon(app.title)}
                           {'\u00A0'}{app.title}</h3>
                       </Tooltip>
-                      <div className={this.props.classes.appHint}>{app.tooltip}</div>
+                      <div className={this.props.classes.appHint}>{app.tooltip} <MdChevronRight /></div>
                     </Paper>
                   </Link>
                 </Grid>

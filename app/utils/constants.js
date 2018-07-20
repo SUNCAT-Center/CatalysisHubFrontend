@@ -69,12 +69,12 @@ module.exports = {
       tooltip: 'Calculated structures sorted by publications.',
     }, {
       title: 'Surface Reactions',
-      tooltip: 'Explore calculated reaction energetics',
+      tooltip: 'Explore calculated reaction energetics.',
       route: '/energies',
     }, {
       title: 'Scaling Relations',
       route: '/scalingRelations',
-      tooltip: 'App for exploring scaling relations -- WIP.',
+      tooltip: 'App for exploring scaling relations.',
     }, {
       title: 'Upload Datasets',
       route: '/upload',
