@@ -78,7 +78,7 @@ module.exports = {
     }, {
       title: 'Upload Datasets',
       route: '/upload',
-      tooltip: 'Expand mankinds knowledge by providing your calculations.',
+      tooltip: 'Contribute reaction energy calculations.',
     }, {
       title: 'Wyckoff Bulk Generator',
       route: '/bulkGenerator',
