@@ -1,5 +1,8 @@
 import _ from 'lodash';
 export const styles = (theme) => ({
+  filterInput: {
+    margin: theme.spacing.unit * 2,
+  },
   fab: {
     position: 'fixed',
     bottom: theme.spacing.unit * 4,

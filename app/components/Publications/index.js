@@ -8,10 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import Input from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
 import {
   MdChevronRight,
   MdChevronLeft,
+  MdFilterList,
   MdViewList } from 'react-icons/lib/md';
 import {
   IoDocument,
@@ -71,6 +73,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       publicationQuery: '',
       pubId: _.get(props, 'routeParams.pubId', ''),
       reference: {},
+      publicationFilter: '',
     };
     this.clickPublication = this.clickPublication.bind(this);
     this.backToList = this.backToList.bind(this);
@@ -89,6 +92,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       volume
       journal
       doi
+      pubtextsearch
     }
   }
 }}` };
@@ -118,7 +122,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           years,
         });
         years.map((year) => {
-          const query = `{publications (year: ${year}) { edges { node {  doi title year authors journal pages pubId  } } }}`;
+          const query = `{publications (year: ${year}) { edges { node {  doi title year authors journal pages pubId pubtextsearch  } } }}`;
           return axios.post(newGraphQLRoot, {
             query,
           })
@@ -170,6 +174,14 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       reference,
     });
     this.props.router.push(`/publications/${pubId}`);
+  }
+
+  handleChange(name) {
+    return (event) => {
+      this.setState({
+        [name]: event.target.value,
+      });
+    };
   }
 
   render() {
@@ -249,7 +261,22 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         </div>
             : <div>
 
-              <h1>Publications and Datasets</h1>
+              <Grid
+                container direction={isMobile ? 'column' : 'row'}
+                justify="space-between"
+              >
+                <Grid item>
+                  <h1>Publications and Datasets</h1>
+                </Grid>
+                <Grid item>
+                  <Input
+                    className={this.props.classes.filterInput}
+                    value={this.state.publicationFilter}
+                    onChange={this.handleChange('publicationFilter')}
+                    endAdornment={<MdFilterList />}
+                  />
+                </Grid>
+              </Grid>
 
               {this.state.references === {} ? <LinearProgress color="primary" /> : null }
               {this.state.years.map((year, i) => (
@@ -267,24 +294,33 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                       {(this.state.references[year] || []).length === 0 ? null :
                       <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
                       }
-                      {(this.state.references[year] || [])
-                          .map((reference, j) => {
-                            if (this.state.titles[year][j] !== null) {
-                              return (
+                      {(this.state.references[year] || []).map((reference, j) => {
+                        const notFound = this.state.publicationFilter.trim().split(' ').map((term) => {
+                          if ((reference.pubtextsearch || '').toLowerCase().indexOf(term.toLowerCase()) === -1) {
+                            return false;
+                          }
+                          return true;
+                        });
+                        if (!notFound.every((x) => x)) {
+                          return null;
+                        }
 
-                                <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                                  <Paper className={this.props.classes.smallPaper}>
-                                    <span className={this.props.classes.publicationEntry}>
-                                      <IoDocument size={24} /> {prettyPrintReference(reference)}
+                        if (this.state.titles[year][j] !== null) {
+                          return (
 
-                                    </span>
-                                    <Grid container direction={isMobile ? 'column' : 'row'} justify="flex-end" className={this.props.classes.publicationActions}>
-                                      <Grid item>
+                            <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
+                              <Paper className={this.props.classes.smallPaper}>
+                                <span className={this.props.classes.publicationEntry}>
+                                  <IoDocument size={24} /> {prettyPrintReference(reference)}
 
-                                        <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}>
-                                          <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
-                                        </Button>
-                                        {(this.state.dois[year][j] === null
+                                </span>
+                                <Grid container direction={isMobile ? 'column' : 'row'} justify="flex-end" className={this.props.classes.publicationActions}>
+                                  <Grid item>
+
+                                    <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}>
+                                      <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                                    </Button>
+                                    {(this.state.dois[year][j] === null
                                           || typeof this.state.dois[year][j] === 'undefined'
                                           || this.state.dois[year][j] === ''
                                         ) ? null :
@@ -299,31 +335,31 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                               </Button>
                                         </ReactGA.OutboundLink>
                                         }
-                                      </Grid>
-                                    </Grid>
+                                  </Grid>
+                                </Grid>
 
-                                    <div>
-                                      { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                                      <span>
-                                        {this.state.loading === true ? <LinearProgress color="primary" /> : null}
+                                <div>
+                                  { this.state.openedPublication !== `elem_${year}_${j}` ? null :
+                                  <span>
+                                    {this.state.loading === true ? <LinearProgress color="primary" /> : null}
 
-                                        {/*
+                                    {/*
                         true || this.state.reactionEnergies.length === 0 ? null :
                         <PublicationReactions {...this.state} />
                         */}
-                                        {this.state.systems.length === 0 ? null :
-                                        <PublicationSystems {...this.state} />
+                                    {this.state.systems.length === 0 ? null :
+                                    <PublicationSystems {...this.state} />
                         }
-                                      </span>
+                                  </span>
                                       }
-                                    </div>
-                                    <br />
-                                  </Paper>
                                 </div>
-                              );
-                            }
-                            return null;
-                          })}
+                                <br />
+                              </Paper>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
                     </Paper>
                   </div>
                 </Slide>
