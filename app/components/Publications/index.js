@@ -311,7 +311,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                             <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
                               <Paper className={this.props.classes.smallPaper}>
                                 <span className={this.props.classes.publicationEntry}>
-                                  <IoDocument size={24} /> {prettyPrintReference(reference)}
+                                  <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
 
                                 </span>
                                 <Grid container direction={isMobile ? 'column' : 'row'} justify="flex-end" className={this.props.classes.publicationActions}>

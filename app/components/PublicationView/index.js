@@ -342,7 +342,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   This is just a preview. The final dataset will appear under <a>{`https://www.catalysis-hub.org/publications/${publication.pubId}`}</a>
           </div>
               }
-          {prettyPrintReference(publication)}
+          {prettyPrintReference(publication)} {`#${publication.pubId}.`}
           <div>
             <Button
               className={this.props.classes.publicationAction}
