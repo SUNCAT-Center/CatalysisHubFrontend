@@ -33,6 +33,11 @@ export const styles = (xtheme) => ({
     color: 'white',
     textDecoration: 'none',
   },
+  activeAppBarLink: {
+    borderBottomWidth: 3,
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'white',
+  },
   appBarTitle: {
     marginTop: 13,
     marginLeft: 0,

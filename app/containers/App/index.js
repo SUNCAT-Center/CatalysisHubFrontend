@@ -234,8 +234,14 @@ class App extends React.Component {
                   className={this.props.classes.appBarGridItem}
                 >
 
-                  <Grid container direction="row" justify="flex-end">
-                    <Grid item>
+                  <Grid container direction="row" justify="flex-end" >
+                    <Grid
+                      item className={(
+                  window.location.href.endsWith('/publications') ||
+                  window.location.href.endsWith('/about') ||
+                  window.location.href.endsWith('/')
+                ) ? null : this.props.classes.activeAppBarLink}
+                    >
                       <Link to="/appsIndex" className={this.props.classes.textLink}>
                         <Tooltip title="Open Apps Index">
                           <div>
@@ -250,11 +256,11 @@ class App extends React.Component {
 
 
 
-                    <Grid item>
+                    <Grid item className={window.location.href.indexOf('/publications') === -1 ? null : this.props.classes.activeAppBarLink}>
                       <Link to="/publications" className={this.props.classes.textLink}>
                         <Tooltip title="Browse Publications with Geometries">
                           <div>
-                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open Apps Index" >
+                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open List of Publications" >
                               <FaNewspaperO />
                             </IconButton>
                             <div className={this.props.classes.barText}>Publications</div>
@@ -264,7 +270,7 @@ class App extends React.Component {
                     </Grid>
 
 
-                    <Grid item>
+                    <Grid item className={window.location.href.indexOf('/about') === -1 ? null : this.props.classes.activeAppBarLink}>
                       <Link to="/about" className={this.props.classes.textLink}>
                         <Tooltip title="About This Website">
                           <div>
