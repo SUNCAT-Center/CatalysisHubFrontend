@@ -10,13 +10,7 @@ import IFrame from 'react-iframe';
 
 import PropTypes from 'prop-types';
 
-
-const styles = (theme) => ({
-  mainDiv: {
-    paddingTop: 3 * theme.spacing.unit,
-  },
-
-});
+import { styles } from './styles';
 
 
 class FeedBackForm extends React.Component { // eslint-disable-line react/prefer-stateless-function

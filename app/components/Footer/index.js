@@ -6,41 +6,19 @@ import List, { ListItem } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
 import Tooltip from 'material-ui/Tooltip';
 
-import { whiteLabel } from 'utils/constants';
+import {
+  GoBook,
+  GoCode,
+  GoComment,
+  GoMarkGithub,
+
+} from 'react-icons/lib/go';
 import Img from 'containers/App/Img';
+import { docRoot, whiteLabel } from 'utils/constants';
 import WhiteBanner from 'components/Header/banner_white.png';
 import Wrapper from './Wrapper';
 
-const styles = (xtheme) => ({
-  footerLink: {
-    textColor: 'white',
-    color: 'white',
-    textDecoration: 'none',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: xtheme.palette.coolgrey[500],
-    paddingLeft: '5%',
-    paddingRight: '5%',
-    [xtheme.breakpoints.down('sm')]: {
-      visibility: 'hidden',
-    },
-  },
-  footerList: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  footerListItem: {
-    whiteSpace: 'nowrap',
-  },
-  banner: {
-    [xtheme.breakpoints.up('xl')]: {
-      marginLeft: 220,
-    },
-  },
-});
+import { styles } from './styles';
 
 class Footer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -73,11 +51,23 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               className={this.props.classes.footerListItem}
             >
               <ReactGA.OutboundLink
+                eventLabel={docRoot}
+                to={docRoot}
+                className={this.props.classes.footerLink}
+                target="_blank"
+              >
+                <GoBook /> Docs
+              </ReactGA.OutboundLink>
+            </ListItem>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
+              <ReactGA.OutboundLink
                 to="/yourNextApp"
                 eventLabel="/yourNextApp"
                 className={this.props.classes.footerLink}
               >
-                  Build Your Own App
+                <GoCode /> Build Your Own App
               </ReactGA.OutboundLink>
             </ListItem>
             <ListItem
@@ -87,7 +77,8 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 to="/feedback"
                 eventLabel="/feedback"
                 className={this.props.classes.footerLink}
-              >Send Us Your Feedback
+              >
+                <GoComment /> Send Us Your Feedback
               </ReactGA.OutboundLink>
 
             </ListItem>
@@ -101,7 +92,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                Made&nbsp;
+                  <GoMarkGithub /> Visit&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
@@ -111,7 +102,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                in&nbsp;
+                us on&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout backend code on GitHub">
@@ -121,7 +112,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                Menlo Park&nbsp;
+                GitHub&nbsp;
               </ReactGA.OutboundLink>
               </Tooltip>
             </ListItem>

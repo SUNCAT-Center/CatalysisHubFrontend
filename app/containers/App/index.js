@@ -16,7 +16,6 @@ import ReactGA from 'react-ga';
 
 import { isIOS, isMobile } from 'react-device-detect';
 
-import Flexbox from 'flexbox-react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 
@@ -26,17 +25,15 @@ import withProgressBar from 'components/ProgressBar';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 import AppSnackBar from 'containers/AppSnackBar';
+import { getAppIcon } from 'utils/functions';
 
 import { MdChevronLeft,
   MdSearch,
   MdApps,
-  MdSettings,
-  MdFeedback,
 } from 'react-icons/lib/md';
 
 import { FaNewspaperO } from 'react-icons/lib/fa';
 
-import { GoBook } from 'react-icons/lib/go';
 import Paper from 'material-ui/Paper';
 import Tooltip from 'material-ui/Tooltip';
 import AppBar from 'material-ui/AppBar';
@@ -54,8 +51,10 @@ import List, { ListItem } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import withWidth from 'material-ui/utils/withWidth';
 
-import { apps, appBar, suBranding, version, whiteLabel, docRoot } from 'utils/constants';
+import { apps, appBar, suBranding, version, whiteLabel } from 'utils/constants';
 import { theme } from 'utils/theme';
+
+import { styles } from './styles';
 
 const AppWrapper = styled.div`
   max-width: calc(1200px + 16px * 2);
@@ -66,190 +65,7 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-const boldFooterWeight = 500;
-const lightFooterWeight = 200;
-const drawerWidth = 240;
 
-const styles = (xtheme) => ({
-  toolbar: {
-    padding: '0 3.1em 0 0',
-  },
-  appBarGridItem: {
-    /* border: '1px solid black',*/
-    /* leave here for debugging layout*/
-  },
-  mainContainer: {
-    minHeight: '100vh',
-    overflow: 'hidden',
-    display: 'block',
-    position: 'relative',
-    paddingBottom: 200,
-  },
-  backLink: {
-    color: 'white',
-    marginLeft: -xtheme.spacing.unit * 3,
-  },
-  textLink: {
-    color: 'white',
-    textDecoration: 'none',
-  },
-  appBarTitle: {
-    marginTop: 13,
-    marginLeft: 0,
-    [xtheme.breakpoints.down('sm')]: {
-      marginLeft: -20,
-    },
-    color: 'white',
-    decoration: 'none',
-    textDecoration: 'none',
-    textDecorationStyle: 'none',
-  },
-  root: {
-    width: '100%',
-    marginTop: xtheme.spacing.unit * 3,
-    zIndex: 1,
-  },
-  subListHeader: {
-    marginTop: 10,
-    marginBottom: 20,
-    height: 25,
-    padding: 5,
-  },
-  menuItem: {
-    padding: 5,
-  },
-  inactiveTopMenuLink: {
-    cursor: 'pointer',
-    color: '#cccccc',
-    fontSize: 15,
-    fontWeight: 'bolder',
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: '100%',
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 10,
-  },
-  topMenuLink: {
-    cursor: 'pointer',
-    color: xtheme.palette.cardinalred[900],
-    fontSize: 15,
-    fontWeight: 'bolder',
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: '100%',
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 10,
-    '&:hover': {
-      backgroundColor: xtheme.palette.cardinalred[100],
-    },
-  },
-  menuLink: {
-    cursor: 'pointer',
-    color: xtheme.palette.cardinalred[900],
-    fontSize: 15,
-    marginLeft: xtheme.spacing.unit * 4,
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: '100%',
-    height: 25,
-    '&:hover': {
-      backgroundColor: xtheme.palette.cardinalred[100],
-    },
-  },
-  inactiveLink: {
-    cursor: 'pointer',
-    color: '#cccccc',
-    fontSize: 15,
-    marginLeft: xtheme.spacing.unit * 4,
-    textDecoration: 'none',
-    textTransform: 'none',
-    width: '100%',
-    height: 25,
-  },
-  menuButton: {
-    textDecoration: 'none',
-    textTransform: 'none',
-  },
-  divider: {
-    marginTop: xtheme.spacing.unit * 3,
-    marginBottom: xtheme.spacing.unit * 0,
-  },
-  footer: {
-    [xtheme.breakpoints.down('lg')]: {
-      visibility: 'hidden',
-    },
-  },
-  barIcon: {
-    [xtheme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  barText: {
-    marginTop: 10,
-    textDecoration: 'none',
-    decoration: 'none',
-    [xtheme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
-  },
-  helmet: {
-    [xtheme.breakpoints.down('sm')]: {
-      marginBottom: '-20px',
-    },
-  },
-  appFrame: {
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-  },
-  drawerHeader: xtheme.mixins.toolbar,
-  navIconHide: {
-    [xtheme.breakpoints.up('xl')]: {
-      display: 'none',
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    [xtheme.breakpoints.up('xl')]: {
-      width: drawerWidth,
-      position: 'relative',
-      height: '100%',
-    },
-  },
-  appBar: {
-    [xtheme.breakpoints.up('xl')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-  },
-  mainPaper: {
-    margin: 0,
-    marginTop: (appBar ? '20px' : '20px'),
-    padding: '40px',
-    [xtheme.breakpoints.down('md')]: {
-      padding: '10px',
-      paddingBottom: '40px',
-    },
-    [xtheme.breakpoints.down('sm')]: {
-      padding: '2px',
-      paddingBottom: '40px',
-    },
-  },
-  content: {
-    backgroundColor: xtheme.palette.background.default,
-    width: '100%',
-    padding: xtheme.spacing.unit * 0,
-    paddingTop: xtheme.spacing.unit * 1,
-    height: 'calc(100% - 56px)',
-    marginTop: (appBar ? 36 : 0),
-    [xtheme.breakpoints.up('lg')]: {
-      height: 'calc(100% - 64px)',
-      marginTop: 80,
-    },
-  },
-});
 
 
 class App extends React.Component {
@@ -312,7 +128,7 @@ class App extends React.Component {
                   onClick={this.handleDrawerToggle}
                   className={!_.isEmpty(app.route) ? this.props.classes.menuLink : this.props.classes.inactiveLink}
                 >
-                  {app.title}
+                  {getAppIcon(app.title)} {app.title}
 
                 </Link>
               </ListItem>
@@ -339,40 +155,6 @@ class App extends React.Component {
           )}
         </List>
 
-        <Divider className={this.props.classes.divider} />
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link to="/settings" onClick={this.handleDrawerToggle} className={this.props.classes.topMenuLink}>
-              <MdSettings />{'\u00A0\u00A0 '}Settings
-            </Link>
-          </ListSubheader>}
-        >
-        </List>
-
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link
-              className={this.props.classes.topMenuLink}
-              to={docRoot}
-              target="_blank"
-            >
-              <GoBook />{'\u00A0\u00A0 '}Docs
-            </Link>
-          </ListSubheader>}
-        >
-        </List>
-        <List
-          subheader={<ListSubheader className={this.props.classes.subListHeader}>
-            <Link
-              className={this.props.classes.topMenuLink}
-              to="/feedback"
-            >
-              <MdFeedback /> Feedback
-            </Link>
-          </ListSubheader>
-          }
-        >
-        </List>
         <Divider className={this.props.classes.divider} />
       </div>
     );
@@ -452,8 +234,14 @@ class App extends React.Component {
                   className={this.props.classes.appBarGridItem}
                 >
 
-                  <Grid container direction="row" justify="flex-end">
-                    <Grid item>
+                  <Grid container direction="row" justify="flex-end" >
+                    <Grid
+                      item className={(
+                  window.location.href.endsWith('/publications') ||
+                  window.location.href.endsWith('/about') ||
+                  window.location.href.endsWith('/')
+                ) ? null : this.props.classes.activeAppBarLink}
+                    >
                       <Link to="/appsIndex" className={this.props.classes.textLink}>
                         <Tooltip title="Open Apps Index">
                           <div>
@@ -468,11 +256,11 @@ class App extends React.Component {
 
 
 
-                    <Grid item>
+                    <Grid item className={window.location.href.indexOf('/publications') === -1 ? null : this.props.classes.activeAppBarLink}>
                       <Link to="/publications" className={this.props.classes.textLink}>
                         <Tooltip title="Browse Publications with Geometries">
                           <div>
-                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open Apps Index" >
+                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open List of Publications" >
                               <FaNewspaperO />
                             </IconButton>
                             <div className={this.props.classes.barText}>Publications</div>
@@ -482,7 +270,7 @@ class App extends React.Component {
                     </Grid>
 
 
-                    <Grid item>
+                    <Grid item className={window.location.href.indexOf('/about') === -1 ? null : this.props.classes.activeAppBarLink}>
                       <Link to="/about" className={this.props.classes.textLink}>
                         <Tooltip title="About This Website">
                           <div>
@@ -562,66 +350,7 @@ class App extends React.Component {
             {React.Children.toArray(this.props.children)}
           </AppWrapper>
         </main>
-        {suBranding === false ? null :
-        <div>
-          <Flexbox id="global-footer" flexDirection="column" justifyContent="space-around" style={{ marginTop: '0px' }}>
-            <Flexbox flexDirection="row" justifyContent="space-around">
-              <Flexbox flexDirection="column" justifyContent="space-around">
-                <Flexbox flexDirection="row" justifyContent="space-around">
-                  <Flexbox width="25vh" />
-                  <Flexbox flexDirection="column" justifyContent="center">
-                    <Flexbox>
-                      <ReactGA.OutboundLink
-                        to="http://www.stanford.edu"
-                        eventLabel="http://www.stanford.edu"
-                        target="_blank"
-                      >
-                        <img src="https://www.stanford.edu/su-identity/images/footer-stanford-logo@2x.png" alt="Stanford University" width="105" height="49" />
-                      </ReactGA.OutboundLink>
-                    </Flexbox>
-                  </Flexbox>
-                  <Flexbox width="10vh" />
 
-                  <Flexbox flexDirection="column" justifyContent="space-around" className={this.props.classes.footer}>
-                    <Flexbox height="10vh" />
-                    <Flexbox
-                      id="bottom-text"
-                      className="span10"
-                      height="5vh"
-                      style={{
-                        fontFamily: ['Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
-                      }}
-                    >
-                      <ul >
-                        <li className="home"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu" eventLabel="http://www.stanford.edu" target="_blank">Stanford Home</ReactGA.OutboundLink></li>
-                        <li className="maps alt"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://visit.stanford.edu/plan/maps.html" eventLabel="http://visit.stanford.edu/plan/maps.html">Maps &amp; Directions</ReactGA.OutboundLink></li>
-                        <li className="search-stanford"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu/search/" eventLabel="http://www.stanford.edu/search/">Search Stanford</ReactGA.OutboundLink></li>
-                        <li className="terms alt"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://www.stanford.edu/site/terms.html" eventLabel="http://www.stanford.edu/site/terms.html">Terms of Use</ReactGA.OutboundLink></li>
-                        <li className="emergency-info"><ReactGA.OutboundLink style={{ fontWeight: boldFooterWeight }} to="http://emergency.stanford.edu" eventLabel="http://emergency.stanford.edu">Emergency Info</ReactGA.OutboundLink></li>
-                      </ul>
-                    </Flexbox>
-                    <Flexbox height="1vh" />
-                    <Flexbox className="clear">
-                      <p
-                        className="copyright vcard"
-                        style={{
-                          margin: 0,
-                          fontFamily: ['Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
-                          fontWeight: lightFooterWeight,
-                        }}
-                      >&copy; <span className="fn org">Stanford University</span>.&nbsp;&nbsp;<span className="adr"> <span className="locality">Stanford</span>, <span className="region">California</span> <span className="postal-code">94305</span></span>.&nbsp;&nbsp;
-                            <span id="copyright-complaint"></span>
-                      </p>
-                    </Flexbox>
-                    <Flexbox height="20vh" />
-                  </Flexbox>
-                </Flexbox>
-              </Flexbox>
-              <Flexbox width="10vh" />
-            </Flexbox>
-          </Flexbox>
-        </div>
-        }
         <Footer />
       </div>
     );

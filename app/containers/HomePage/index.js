@@ -24,7 +24,7 @@ import {
   MdApps,
   MdKeyboardArrowUp,
   MdKeyboardArrowDown,
-  MdArrowForward,
+  MdChevronRight,
 } from 'react-icons/lib/md';
 import Slide from 'material-ui/transitions/Slide';
 
@@ -39,62 +39,8 @@ import CenteredSection from './CenteredSection';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
+import { styles } from './styles';
 
-const styles = () => ({
-  bold: {
-    fontWeight: 'bold',
-  },
-  welcomeHeader: {
-    marginTop: 0,
-    marginBottom: '5%',
-  },
-  centeredSection: {
-    marginLeft: '10%',
-    marginRight: '10%',
-    textAlign: 'justify',
-  },
-  truncated: {
-    marginRight: '10%',
-    textAlign: 'justify',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    maxHeight: '120px',
-  },
-  expanded: {
-    marginRight: '10%',
-    textAlign: 'justify',
-  },
-  textLink: {
-    textDecoration: 'none',
-    textColor: 'black',
-    color: 'black',
-  },
-  banner: {
-    marginTop: 50,
-    width: '100%',
-  },
-  welcome: {
-    marginRight: '10%',
-    textAlign: 'left',
-  },
-  homePaper: {
-    backgroundColor: '#eeeeee',
-    cornerRadius: 40,
-    padding: 10,
-    paddingTop: 5,
-    minWidth: 280,
-    maxWidth: 300,
-    textAlign: 'left',
-    align: 'left',
-  },
-  paperInfo: {
-    minHeight: 30,
-    marginBottom: 10,
-    color: 'black',
-    textColor: 'black',
-  },
-
-});
 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -251,7 +197,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={apps.length} />
                           </Grid>
                           <Grid item>
-                            <div className={this.props.classes.bold}>See our apps <MdArrowForward /></div>
+                            <div className={this.props.classes.bold}>See our apps <MdChevronRight /></div>
                           </Grid>
                         </Grid>
                       </Paper>
@@ -273,7 +219,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                             <Chip label={withCommas(this.state.reactions)} />
                           </Grid>
                           <Grid item>
-                            <div className={this.props.classes.bold}>See our reactions <MdArrowForward /></div>
+                            <div className={this.props.classes.bold}>See reactions <MdChevronRight /></div>
                           </Grid>
                         </Grid>
                       </Paper>
@@ -289,13 +235,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         elevation={0}
                       >
                         <h3> <FaNewspaperO size={20} /> Publications</h3>
-                        <div className={this.props.classes.paperInfo}>A collection of scientic publications with atomic geometries.</div>
+                        <div className={this.props.classes.paperInfo}>A collection of scientific publications with atomic geometries.</div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
                             <Chip label={this.state.publications} />
                           </Grid>
                           <Grid item className={this.props.classes.bold}>
-                            See our publications <MdArrowForward />
+                            See publications <MdChevronRight />
                           </Grid>
                         </Grid>
                       </Paper>

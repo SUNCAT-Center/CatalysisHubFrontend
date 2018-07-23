@@ -30,67 +30,15 @@ import { apiRoot } from 'utils/constants';
 import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 
 import * as actions from './actions';
+import { styles } from './styles';
 
 export const outputFormats = ['abinit', 'castep-cell', 'cfg', 'cif', 'dlp4', 'eon', 'espresso-in', 'extxyz', 'findsym',
   'gen', 'gromos', 'json', 'jsv', 'nwchem', 'proteindatabank', 'py', 'turbomole', 'v-sim', 'vasp', 'xsf', 'xyz'];
 
-
-const styles = (theme) => ({
-  avatar: {
-    fontColor: '#000000',
-    fontSize: 18,
-    backgroundColor: '#ffffff',
-    marginLeft: -14,
-    marginRight: -14,
-    marginTop: -5,
-    textTranformation: 'none',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 12,
-    },
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  fsIconButton: {
-    fontColor: '#000000',
-    backgroundColor: '#ffffff',
-    marginTop: theme.spacing.unit,
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 12,
-      height: 15,
-      width: 15,
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 12,
-      height: 10,
-      width: 10,
-    },
-  },
-  iconButton: {
-    fontColor: '#000000',
-    backgroundColor: '#ffffff',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 12,
-      height: 15,
-      width: 15,
-    },
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 12,
-      height: 10,
-      width: 10,
-    },
-  },
-  iconButtonIcon: {
-    fontColor: '#000000',
-    backgroundColor: '#ffffff',
-    marginTop: 7,
-  },
-});
-
 const initialState = {
   open: false,
-  height: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
-  width: Math.max(Math.min(window.innerWidth * 0.5, 600), 300),
+  height: Math.max(Math.min(window.innerWidth * 0.5, 200), 300),
+  width: Math.max(Math.min(window.innerWidth * 0.5, 200), 300),
   color: '#fff',
   x: 2,
   y: 2,
@@ -334,10 +282,13 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
           x={this.state.x}
           y={this.state.y}
           z={this.state.z}
+          height={this.props.height}
+          width={this.props.width}
           setRotationMatrix={this.props.setRotationMatrix}
           perspective={this.state.stereographic}
           parent={this}
         />
+        {this.props.showButtons === false ? null :
         <Grid
           container
           direction="row"
@@ -483,7 +434,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
             </Grid>
           </Grid>
         </Grid>
-
+        }
       </div>
     );
   }
@@ -491,6 +442,9 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
 
 GeometryCanvasWithOptions.defaultProps = {
   extraSlug: '',
+  showButtons: true,
+  height: 600,
+  width: 600,
 };
 
 GeometryCanvasWithOptions.propTypes = {
@@ -503,13 +457,15 @@ GeometryCanvasWithOptions.propTypes = {
   xRepeat: PropTypes.number,
   yRepeat: PropTypes.number,
   zRepeat: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
   rotationMatrix: PropTypes.array,
-
   setXRepeat: PropTypes.func,
   setYRepeat: PropTypes.func,
   setZRepeat: PropTypes.func,
   setRotationMatrix: PropTypes.func,
   setStereographic: PropTypes.func,
+  showButtons: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

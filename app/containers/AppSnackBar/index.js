@@ -16,12 +16,7 @@ import CloseIcon from 'material-ui-icons/Close';
 
 import * as actions from './actions';
 
-const styles = (theme) => ({
-  close: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
-  },
-});
+import { styles } from './styles';
 
 const initialState = {
   isOpen: false,

@@ -12,7 +12,8 @@ module.exports = {
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
   /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',*/
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
-  docRoot: '//docs.catalysis-hub.org',
+  uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
+  docRoot: 'http://docs.catalysis-hub.org',
   whiteLabel: false,
   suBranding: false,
   appBar: true,
@@ -68,16 +69,17 @@ module.exports = {
       tooltip: 'Calculated structures sorted by publications.',
     }, {
       title: 'Surface Reactions',
-      tooltip: 'Explore calculated reaction energetics',
+      tooltip: 'Explore calculated reaction energetics.',
       route: '/energies',
     }, {
       title: 'Scaling Relations',
       route: '/scalingRelations',
-      tooltip: 'App for exploring scaling relations -- WIP.',
+      tooltip: 'App for exploring scaling relations.',
     }, {
-      /* title: 'Upload Datasets',*/
-      /* route: '/upload',*/
-      /* }, {*/
+      title: 'Upload Datasets',
+      route: '/upload',
+      tooltip: 'Contribute reaction energy calculations.',
+    }, {
       title: 'Wyckoff Bulk Generator',
       route: '/bulkGenerator',
       tooltip: 'Construct arbitrary bulk lattices.',

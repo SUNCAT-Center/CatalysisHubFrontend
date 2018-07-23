@@ -15,6 +15,7 @@ import { FormGroup } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import { MdSearch } from 'react-icons/lib/md';
 
@@ -23,26 +24,27 @@ import { newGraphQLRoot } from 'utils/constants';
 
 import ReactionAutosuggest from './ReactionAutosuggest';
 import StructureView from './StructureView';
+import { styles } from './styles';
 
 const initialState = {
   plotTitle: '',
   reaction1: {
-    label: 'H2O(g) + * -> OH* + 0.5H2(g)',
+    label: 'H2O(g) - 0.5H2(g) + * -> OH*',
     reaction: [
       { node: {
         Equation: 'H2O(g) + * -> OH* + 0.5H2(g)',
-        products: '{"H2gas": 0.5, "OHstar": 1}',
-        reactants: '{"star": 1, "H2Ogas": 1}',
+        products: '{"OHstar": 1}',
+        reactants: '{"H2gas": 0.5, "star": 1, "H2Ogas": 1}',
       } },
     ],
   },
   reaction2: {
-    label: '2.0H2O(g) + * -> OOH* + 1.5H2(g)',
+    label: '2.0H2O(g) - 1.5H2(g) + * -> OOH*',
     reaction: [
       { node: {
         Equation: '2.0H2O(g) + * -> OOH* + 1.5H2(g)',
-        products: '{"H2gas": 1.5, "OOHstar": 1}',
-        reactants: '{"star": 1, "H2Ogas": 2.0}',
+        products: '{"OOHstar": 1}',
+        reactants: '{"H2gas": 1.5, "star": 1, "H2Ogas": 2.0}',
       } }],
   },
   reactionsSuggestions: [],
@@ -54,50 +56,6 @@ const initialState = {
   geometries: [],
 };
 
-const styles = (theme) => ({
-  mainPaper: {
-    minHeight: 200,
-    padding: 15,
-  },
-  container: {
-    flexGrow: 1,
-    position: 'relative',
-    float: 'left',
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-  },
-  input: {
-    padding: '10 20 10 20',
-    float: 'left',
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-  },
-  suggestionsContainerOpen: {
-    position: 'absolute',
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 3,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
-  suggestion: {
-    display: 'block',
-    zIndex: 10,
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: 'none',
-    zIndex: 10,
-  },
-  textField: {
-    width: '100%',
-  },
-  progressBar: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
-});
 
 function reactionQuery(reactants, products) {
   return {
@@ -122,7 +80,7 @@ function reactionQuery(reactants, products) {
 } ` };
 }
 
-const mergeReactions = (reactions1, reactions2) => {
+const mergeReactions = (reactions1, reactions2, equation1, equation2) => {
   let systems = {};
   let tempL;
 
@@ -146,10 +104,18 @@ const mergeReactions = (reactions1, reactions2) => {
   }));
 
 
+
   systems = _.fromPairs(
     _.toPairs(systems)
-    .filter((x) => x[1].length === 2
-    ));
+    .filter((x) => x[1].length >= 2
+    ).filter((x) => !(
+        (x[1][0].node.Equation.indexOf(equation1) > -1 && x[1][1].node.Equation.indexOf(equation1) > -1) ||
+        (x[1][0].node.Equation.indexOf(equation2) > -1 && x[1][1].node.Equation.indexOf(equation2) > -1)
+      )).map((x) => [
+        x[0],
+          [x[1][0], x[1][1]],
+      ])
+  );
 
 
 
@@ -216,7 +182,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
 }}` }).then((response) => (response.data.data.systems.edges[0].node)));
     Promise.all(results).then((structures) => {
       this.setState({
-        structures,
+        structures: _.sortBy(structures, 'energy'),
         loadingStructures: false,
       });
     });
@@ -249,6 +215,8 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           const systems = mergeReactions(
             response1.data.data.reactions.edges,
             response2.data.data.reactions.edges,
+            reaction1.label,
+            reaction2.label,
           );
 
           const scatterData = {
@@ -276,7 +244,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
             _.zip(scatterData.x,
               scatterData.y)
           );
-          const sortedX = scatterData.x.concat().sort();
+          const sortedX = _.sortBy(scatterData.x.concat());
           const linRegData = {
             type: 'scatter',
             mode: 'lines',
@@ -362,34 +330,44 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
             </Button>
           </FormGroup>
           { this.state.systems.length === 0 ? null :
-          <Plot
-            data={[
-              this.state.scatterData,
-              this.state.linRegData,
-            ]}
-            layout={{
-              hovermode: 'closest',
-              title: this.state.plotTitle,
-              xaxis: {
-                title: this.state.reaction1.label,
-              },
-              yaxis: {
-                title: this.state.reaction2.label,
-              },
-            }}
-            config={{
-              scrollZoom: false,
-              displayModeBar: false,
-              legendPosition: true,
-              showTips: false,
-            }}
-            onClick={(event) => {
-              this.getStructures(event);
-            }}
-          />
+          <Grid container direction="row" justify="center">
+            <Grid item>
+              <Paper>
+                <Plot
+                  data={[
+                    this.state.scatterData,
+                    this.state.linRegData,
+                  ]}
+                  layout={{
+                    hovermode: 'closest',
+                    title: this.state.plotTitle,
+                    xaxis: {
+                      title: this.state.reaction1.label,
+                    },
+                    yaxis: {
+                      title: this.state.reaction2.label,
+                    },
+                  }}
+                  config={{
+                    scrollZoom: false,
+                    displayModeBar: false,
+                    legendPosition: true,
+                    showTips: false,
+                  }}
+                  onClick={(event) => {
+                    this.getStructures(event);
+                  }}
+                />
+              </Paper>
+            </Grid>
+          </Grid>
           }
         </Paper>
-        {!this.state.loadingStructures ? null : <LinearProgress className={this.props.classes.progressBar} />}
+        {!this.state.loadingStructures ?
+            null
+            : <LinearProgress
+              className={this.props.classes.progressBar}
+            />}
         <StructureView geoms={this.state.structures} />
       </div>
     );

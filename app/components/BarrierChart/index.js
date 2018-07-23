@@ -12,11 +12,7 @@ import GeometryCanvasUuid from 'components/GeometryCanvasUuid';
 
 import ScatterPlot from './scatterPlot';
 
-const styles = {
-  width: 500,
-  height: 420,
-  padding: 30,
-};
+import { styles } from './styles';
 
 
 class BarrierChart extends React.Component { // eslint-disable-line react/prefer-stateless-function

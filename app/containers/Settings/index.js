@@ -21,11 +21,7 @@ import Slide from 'material-ui/transitions/Slide';
 import { createStructuredSelector } from 'reselect';
 import makeSelectSettings from './selectors';
 
-const styles = (theme) => ({
-  paper: {
-    padding: theme.spacing.unit,
-  },
-});
+import { styles } from './styles';
 
 export class Settings extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {

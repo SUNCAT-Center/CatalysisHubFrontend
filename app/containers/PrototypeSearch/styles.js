@@ -1,4 +1,7 @@
 export const styles = (theme) => ({
+  preview: {
+    paddingRight: theme.spacing.unit,
+  },
   infoText: {
     margin: theme.spacing.unit * 3,
   },
@@ -12,6 +15,11 @@ export const styles = (theme) => ({
   },
   button: {
     margin: theme.spacing.unit,
+  },
+  buttonLink: {
+    textDecoration: 'none',
+    textColor: 'black',
+
   },
   subheader: {
     margin: theme.spacing.unit,
