@@ -11,12 +11,14 @@ export const styles = () => ({
     marginRight: '10%',
   },
   truncated: {
-    textAlign: 'left',
+    marginRight: '10%',
+    textAlign: 'justify',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    maxHeight: '100px',
+    maxHeight: '120px',
   },
   expanded: {
+    marginRight: '10%',
     textAlign: 'justify',
   },
   textLink: {
@@ -29,6 +31,7 @@ export const styles = () => ({
     width: '100%',
   },
   welcome: {
+    marginRight: '10%',
     textAlign: 'left',
   },
   homePaper: {
