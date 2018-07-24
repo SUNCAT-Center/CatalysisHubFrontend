@@ -11,7 +11,7 @@ export const styles = (xtheme) => ({
     backgroundColor: xtheme.palette.coolgrey[500],
     paddingLeft: '5%',
     paddingRight: '5%',
-    [xtheme.breakpoints.down('sm')]: {
+    [xtheme.breakpoints.down('xs')]: {
       visibility: 'hidden',
     },
   },
@@ -21,6 +21,12 @@ export const styles = (xtheme) => ({
   },
   footerListItem: {
     whiteSpace: 'nowrap',
+  },
+  footerListItemText: {
+    whiteSpace: 'nowrap',
+    [xtheme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   banner: {
     [xtheme.breakpoints.up('xl')]: {

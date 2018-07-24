@@ -56,7 +56,11 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 className={this.props.classes.footerLink}
                 target="_blank"
               >
-                <GoBook /> Docs
+                <GoBook /> <span
+                  className={this.props.classes.footerListItemText}
+                >
+                Docs
+                </span>
               </ReactGA.OutboundLink>
             </ListItem>
             <ListItem
@@ -67,7 +71,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 eventLabel="/yourNextApp"
                 className={this.props.classes.footerLink}
               >
-                <GoCode /> Build Your Own App
+                <GoCode /> <span className={this.props.classes.footerListItemText}>
+                Build Your Own App
+                </span>
               </ReactGA.OutboundLink>
             </ListItem>
             <ListItem
@@ -78,7 +84,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 eventLabel="/feedback"
                 className={this.props.classes.footerLink}
               >
-                <GoComment /> Send Us Your Feedback
+                <GoComment /> <span className={this.props.classes.footerListItemText}>
+                Send Us Your Feedback
+                </span>
               </ReactGA.OutboundLink>
 
             </ListItem>
@@ -92,8 +100,10 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                  <GoMarkGithub /> Visit&nbsp;
-              </ReactGA.OutboundLink>
+                  <GoMarkGithub /> <span className={this.props.classes.footerListItemText}>
+                  Visit&nbsp;
+                  </span>
+                </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout command line tools on GitHub">
                 <ReactGA.OutboundLink
@@ -101,9 +111,10 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   eventLabel="https://github.com/SUNCAT-Center/CatKit"
                   target="_blank"
                   className={this.props.classes.footerLink}
-                >
+                > <span className={this.props.classes.footerListItemText}>
                 us on&nbsp;
-              </ReactGA.OutboundLink>
+                  </span>
+                </ReactGA.OutboundLink>
               </Tooltip>
               <Tooltip title="Checkout backend code on GitHub">
                 <ReactGA.OutboundLink
@@ -111,9 +122,10 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   eventLabel="https://github.com/SUNCAT-Center/CatalysisHubBackend"
                   target="_blank"
                   className={this.props.classes.footerLink}
-                >
+                > <span className={this.props.classes.footerListItemText}>
                 GitHub&nbsp;
-              </ReactGA.OutboundLink>
+                  </span>
+                </ReactGA.OutboundLink>
               </Tooltip>
             </ListItem>
           </List>
