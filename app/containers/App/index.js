@@ -213,15 +213,17 @@ class App extends React.Component {
                   <Grid container direction="row" justify={isIOS ? 'space-around' : 'space-between'}>
                     <Grid item>
                       <Grid container direction="column" justify="center">
-                        <Grid item>
-                          <Tooltip title={`v${version}`}>
-                            <Link to="/" className={this.props.classes.appBarTitle} >
-                              <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                                {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
-                              </Typography>
-                            </Link>
-                          </Tooltip>
-                        </Grid>
+                        <Hidden xsDown>
+                          <Grid item>
+                            <Tooltip title={`v${version}`}>
+                              <Link to="/" className={this.props.classes.appBarTitle} >
+                                <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
+                                  {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
+                                </Typography>
+                              </Link>
+                            </Tooltip>
+                          </Grid>
+                        </Hidden>
                       </Grid>
                     </Grid>
                   </Grid>
