@@ -360,11 +360,26 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             display="initial"
           />
         </Modal>
-        <h2>Upload Datasets [beta]
+        <Grid container direction="row" justify="space-between">
+          <Grid item>
+            <h2>Upload Datasets [beta]
           {!_.isEmpty(this.state.userInfo) ?
               `\u00A0\u00A0(${this.state.userInfo.email})`
 
               : null} </h2>
+          </Grid>
+          <Grid item>
+            {_.isEmpty(this.state.userInfo) ? null :
+            <img
+              src={this.state.userInfo.picture}
+              height="72"
+              width="72"
+              alt="Portrait"
+            />
+            }
+          </Grid>
+        </Grid>
+
         <Paper className={this.props.classes.paper}>
           {!_.isEmpty(this.state.userInfo) ? null :
           <Grid container direction="row" justify="flex-end">
@@ -401,6 +416,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               ><div
                 className={this.props.classes.loginPopover}
               >
+                <Button
+                  onClick={() => this.windowLogin('google')}
+                > Google </Button>
                 <Button
                   onClick={() => this.windowLogin('slack')}
                 > Slack </Button>
