@@ -460,6 +460,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <h3>Why should I submit calculations of reactions energies?</h3>
             <ul>
               <li>Create an easy-to-use interactive supplementary information for a publication with its own URL.</li>
+              <li>Inspect your data with a growing number of web apps (activity maps, scaling relations)</li>
               <li>Accelerate transfer of theoretical insight to experimentalists in the field.</li>
               <li>Support ongoing machine-learning efforts by providing first-principles based training data.</li>
             </ul>
