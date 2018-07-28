@@ -139,30 +139,48 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.
                     </div>
                 </div>
-                {this.state.truncated ?
-                  <Button
-                    mini
-                    onClick={() => {
-                      this.setState({
-                        truncated: false,
-                      });
-                    }}
-                    role="button"
-                  >Read More <MdKeyboardArrowDown /></Button>
+                <Grid container direction="row" justify="space-between">
+                  <Grid item>
+                    <Link
+                      className={this.props.classes.buttonLink}
+                      to={'/upload'}
+                    >
+                      <Button
+                        raised
+                        color="primary"
+                      >
+                      Upload Surface Reactions <MdChevronRight />
+
+                      </Button>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    {this.state.truncated ?
+                      <Button
+                        mini
+                        onClick={() => {
+                          this.setState({
+                            truncated: false,
+                          });
+                        }}
+                        role="button"
+                      >Read More <MdKeyboardArrowDown /></Button>
 
                       :
-                  <Button
-                    mini
-                    onClick={() => {
-                      this.setState({
-                        truncated: true,
-                      });
-                    }}
-                    role="button"
-                  >
+                      <Button
+                        mini
+                        onClick={() => {
+                          this.setState({
+                            truncated: true,
+                          });
+                        }}
+                        role="button"
+                      >
                         Read Less <MdKeyboardArrowUp />
-                  </Button>
+                      </Button>
                   }
+                  </Grid>
+                </Grid>
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
                 <a href="https://suncat.stanford.edu" target="_blank">
