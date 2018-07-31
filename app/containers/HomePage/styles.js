@@ -2,6 +2,14 @@ export const styles = () => ({
   bold: {
     fontWeight: 'bold',
   },
+  buttonLink: {
+    textTransformation: 'none',
+    textDecoration: 'none',
+    fontColor: 'white',
+    color: 'white',
+    fontWeight: 'bold',
+
+  },
   welcomeHeader: {
     marginTop: 0,
     marginBottom: '5%',
