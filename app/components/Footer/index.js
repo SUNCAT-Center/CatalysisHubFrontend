@@ -83,6 +83,7 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 to="https://gitter.im/catalysis-hub-org/Lobby#"
                 eventLabel="https://gitter.im/catalysis-hub-org/Lobby#"
                 className={this.props.classes.footerLink}
+                target="_blank"
               >
                 <GoComment /> <span className={this.props.classes.footerListItemText}>
                   Chat with Us
