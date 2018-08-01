@@ -24,5 +24,8 @@ export const styles = (theme) => ({
     marginBottom: theme.spacing.unit,
     paddingLeft: theme.spacing.unit * 3,
   },
+  textField: {
+    margin: theme.spacing.unit,
+  },
 });
 

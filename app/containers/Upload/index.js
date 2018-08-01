@@ -13,6 +13,8 @@ import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Popover from 'material-ui/Popover';
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
+
 import Grid from 'material-ui/Grid';
 import {
   MdRefresh,
@@ -459,10 +461,10 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             </Paper>
             <h3>Why should I submit calculations of reactions energies?</h3>
             <ul>
-              <li>Create an easy-to-use interactive supplementary information for a publication with its own URL.</li>
+              <li>Create an easy-to-use interactive supplementary information for your publication with its own URL.</li>
               <li>Inspect your data with a growing number of web apps (activity maps, scaling relations)</li>
-              <li>Accelerate transfer of theoretical insight to experimentalists in the field.</li>
-              <li>Support ongoing machine-learning efforts by providing first-principles based training data.</li>
+              <li>Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
+              <li>Support ongoing machine-learning efforts in the community by providing first-principles based training data.</li>
             </ul>
             <h3>How to Submit Reactions from Terminal</h3>
             <div>
@@ -482,11 +484,133 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           </div>
         </Paper>
               }
+        {true ? null :
+        <Paper className={this.props.classes.paper}>
+          <h1>Manual Upload</h1>
+          <TextField
+            className={this.props.classes.textField}
+            id="title"
+            label="Title *"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Highly Efficient Catalyst from Non-Toxic Earth Abundant Materials for XY"
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            className={this.props.classes.textField}
+            id="authors"
+            label="Authors *"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="A Einstein"
+            fullWidth
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="Volume"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="8"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="Number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="13"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="Pages"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="2140-2267"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="Year *"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="2018"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="Publisher"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Wiley"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="DOI"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="10.1002/cssc.201500322"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="DFT Code"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Quantum Espresso"
+            margin="normal"
+          />
+
+          <TextField
+            className={this.props.classes.textField}
+            label="DFT Functional(s)"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="BEEF-vdW"
+            margin="normal"
+          />
+          <h2>Reactions</h2>
+          <div>
+            <Button
+              raised
+            >
+            + Reactant
+          </Button>
+            <Button
+              raised
+            >
+            + Product
+          </Button>
+          </div>
+
+        </Paper>
+        }
+
         {_.isEmpty(this.state.userInfo) ? null :
         <Paper className={this.props.classes.paper}>
           <Grid container justify="space-between" direction="row">
             <Grid item>
-              <h1>Data sets</h1>
+              <h1>Data Sets</h1>
             </Grid>
             <Grid item>
               <Button
