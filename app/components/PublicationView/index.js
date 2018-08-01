@@ -25,6 +25,7 @@ import { withStyles } from 'material-ui/styles';
 import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
+import * as Scroll from 'react-scroll';
 
 import { MdChevronRight } from 'react-icons/lib/md';
 import {
@@ -352,11 +353,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             >
               {this.state.tableView ?
                 <div>
-                  <FaList /> List View
+                  <FaList /> List
                   </div>
                   :
                   <div>
-                    <FaTable /> Table View
+                    <FaTable /> Table
                   </div>
               }
             </Button>
@@ -469,6 +470,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                           hover
                           key={`row_${i}`}
                           onClick={() => {
+                            Scroll.scroller.scrollTo('Structures',
+                              {offset: -50});
                             this.getStructures(result, i);
                           }}
                           className={this.props.classes.clickableRow}
@@ -527,10 +530,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 </div>
             }
             </Paper>
-            <Paper className={this.props.classes.structuresDiv}>
+            <Paper className={this.props.classes.structuresDiv} name="Structures">
               <Grid direction="row" justify="center">
                 <Grid item>
                   <h2><FaArrowDown /> scroll down for more structures</h2>
+                  {this.state.loadingStructures ? <CircularProgress size={30} /> : null}
                   <Grid container justify="flex-start" direction="row">
                     {this.state.structures.map((image, i) => (
                       <Grid item key={`structure_${i}`}>
