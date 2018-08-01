@@ -76,6 +76,8 @@ app.use(csp({
       'data:',
       'api.catalysis-hub.org',
       'www.google-analytics.com',
+      'lh5.googleusercontent.com',
+      'secure.gravatar.com',
     ],
   },
 }));
