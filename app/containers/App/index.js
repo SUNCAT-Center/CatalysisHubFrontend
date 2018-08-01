@@ -240,6 +240,7 @@ class App extends React.Component {
                     <Grid
                       item className={(
                   window.location.href.endsWith('/publications') ||
+                  window.location.href.indexOf('/publications') > -1 ||
                   window.location.href.endsWith('/about') ||
                   window.location.href.endsWith('/')
                 ) ? null : this.props.classes.activeAppBarLink}
