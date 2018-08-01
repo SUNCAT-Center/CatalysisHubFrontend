@@ -80,12 +80,12 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
               className={this.props.classes.footerListItem}
             >
               <ReactGA.OutboundLink
-                to="/feedback"
-                eventLabel="/feedback"
+                to="https://gitter.im/catalysis-hub-org/Lobby#"
+                eventLabel="https://gitter.im/catalysis-hub-org/Lobby#"
                 className={this.props.classes.footerLink}
               >
                 <GoComment /> <span className={this.props.classes.footerListItemText}>
-                Send Us Your Feedback
+                  Chat with Us
                 </span>
               </ReactGA.OutboundLink>
 
