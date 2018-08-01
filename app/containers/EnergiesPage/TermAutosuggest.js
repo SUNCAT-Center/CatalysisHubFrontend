@@ -130,6 +130,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
     };
     /* this.getSuggestions = this.getSuggestions.bind(this);*/
     this.onFocus = this.onFocus.bind(this);
+    this.clearValue = this.clearValue.bind(this);
   }
   componentDidMount() {
     this.getRawSuggestions(false);
@@ -246,7 +247,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
         return keep;
       });
   }
-  clearValue = () => {
+  clearValue() {
     this.setState({
       value: '',
     });
@@ -256,6 +257,7 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
       this.props.keyUp();
     }, 500);
   }
+
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value),
@@ -319,14 +321,13 @@ class TermAutosuggest extends React.Component { // eslint-disable-line react/pre
         />
         {this.state.value === '' ? null :
         <IconButton
+          onClick={() => { this.clearValue(); }}
           style={{
             marginLeft: '-35px',
             marginTop: '-10px',
           }}
         >
-          <MdClear
-            onClick={this.clearValue}
-          />
+          <MdClear />
         </IconButton>
       }
       </div>
