@@ -113,6 +113,14 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
             {tabValue === 2 && typeof this.props.reactionSystems[2] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[2]} selectedUUID={this.props.reactionSystems[2].uniqueId} /> }
             {tabValue === 3 && typeof this.props.reactionSystems[3] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[3]} selectedUUID={this.props.reactionSystems[3].uniqueId} /> }
             {tabValue === 4 && typeof this.props.reactionSystems[4] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[4]} selectedUUID={this.props.reactionSystems[4].uniqueId} /> }
+            {tabValue === 5 && typeof this.props.reactionSystems[5] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[5]} selectedUUID={this.props.reactionSystems[4].uniqueId} /> }
+            {tabValue === 6 && typeof this.props.reactionSystems[6] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[6]} selectedUUID={this.props.reactionSystems[6].uniqueId} /> }
+            {tabValue === 7 && typeof this.props.reactionSystems[7] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[7]} selectedUUID={this.props.reactionSystems[7].uniqueId} /> }
+            {tabValue === 8 && typeof this.props.reactionSystems[8] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[8]} selectedUUID={this.props.reactionSystems[8].uniqueId} /> }
+            {tabValue === 9 && typeof this.props.reactionSystems[9] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[9]} selectedUUID={this.props.reactionSystems[9].uniqueId} /> }
+            {tabValue === 10 && typeof this.props.reactionSystems[10] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[10]} selectedUUID={this.props.reactionSystems[10].uniqueId} /> }
+            {tabValue === 11 && typeof this.props.reactionSystems[11] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[11]} selectedUUID={this.props.reactionSystems[11].uniqueId} /> }
+            {tabValue === 12 && typeof this.props.reactionSystems[12] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[12]} selectedUUID={this.props.reactionSystems[12].uniqueId} /> }
           </TabContainer>
         </Grid>
       </Paper>
