@@ -471,7 +471,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                           key={`row_${i}`}
                           onClick={() => {
                             Scroll.scroller.scrollTo('Structures',
-                              {offset: -50});
+                              { offset: -50 });
                             this.getStructures(result, i);
                           }}
                           className={this.props.classes.clickableRow}
