@@ -308,25 +308,23 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                 />
               </Grid>
               { _.isEmpty(this.props.adsorbateParams) || _.isEmpty(this.props.adsorbateParams.mean) ? null :
-              <div>
-                <h2>Estimated adsorbate energies</h2>
-                <Grid container direction="row" justify="space-between">
-                  <Grid item>
-                    <h4>Estimated adsorbate energy</h4>
-                    <div>
-                      {this.props.adsorbateParams.mean[this.state.activeImage]}
-                    </div>
+              <Grid item>
+                <div>
+                  <h2>Estimated adsorbate energies </h2>
+                  <Grid container direction="row" justify="space-between">
+                    <Grid item>
+                      <h4> Energy </h4>
+                      <div>
+                        {Number((this.props.adsorbateParams.mean[this.state.activeImage]).toFixed(2))}{' eV \xb1 '}{Number((this.props.adsorbateParams.uncertainty[this.state.activeImage]).toFixed(2))}{' eV'}
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <h4>versus</h4>
+                      <div>{this.props.adsorbateParams.references[this.state.activeImage]}</div>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <h4>Uncertainty</h4>
-                    <div>{this.props.adsorbateParams.uncertainty[this.state.activeImage]}</div>
-                  </Grid>
-                  <Grid item>
-                    <h4>versus</h4>
-                    <div>{this.props.adsorbateParams.references[this.state.activeImage]}</div>
-                  </Grid>
-                </Grid>
-              </div>
+                </div>
+              </Grid>
                 }
               <Grid item >
                 <Grid container direction="column" justify="center" className={this.props.classes.flipButton}>
