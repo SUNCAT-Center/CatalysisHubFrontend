@@ -218,7 +218,14 @@ class App extends React.Component {
                             <Tooltip title={`v${version}`}>
                               <Link to="/" className={this.props.classes.appBarTitle} >
                                 <Typography type="body1" color="inherit" className={this.props.classes.appBarTitle} >
-                                  {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
+                                  <div
+                                    className={
+                                      (window.location.href === 'https://www.catalysis-hub.org/')
+                                        ? this.props.classes.activeAppBarLink
+                                        : null}
+                                  >
+                                    {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
+                                  </div>
                                 </Typography>
                               </Link>
                             </Tooltip>
