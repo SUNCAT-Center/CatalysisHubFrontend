@@ -10,14 +10,15 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
-
+import Switch from 'material-ui/Switch';
 import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import { LinearProgress } from 'material-ui/Progress';
-import { FormGroup, FormControl } from 'material-ui/Form';
+import { FormGroup, FormControl, FormControlLabel } from 'material-ui/Form';
 import { InputLabel } from 'material-ui/Input';
 import { MdChevronLeft, MdChevronRight, MdCheckCircle } from 'react-icons/lib/md';
 import { FaList } from 'react-icons/lib/fa';
+import Tooltip from 'material-ui/Tooltip';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -43,6 +44,7 @@ const initialState = {
   activeImage: 0,
   siteNames: [],
   siteTypes: [],
+  checkedCatLearn: false,
 };
 
 const siteNames = [
@@ -75,6 +77,13 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
     });
   }
 
+  handleSwitch(name) {
+    return (event, checked) => {
+      this.setState({ [name]: checked });
+      this.updateAdsorptionSites({ callCatLearn: event.target.value });
+    };
+  }
+
   resetPageFlip() {
     this.setState({
       activeImage: 0,
@@ -90,6 +99,7 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
       placeHolder: options.placeHolder || this.state.placeHolder,
       adsorbate: options.adsorbate || this.state.adsorbate,
       format: this.props.cookies.get('preferredFormat'),
+      callCatLearn: this.state.checkedCatLearn,
     };
     const params = { params: {
       bulk_cif: this.props.bulkCif,
@@ -108,6 +118,9 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
         equations: response.data.equations,
         molecules: response.data.molecules,
         inputs: response.data.inputImages,
+        mean: response.data.mean,
+        uncertainty: response.data.uncertainty,
+        references: response.data.references,
       });
       this.props.saveAdsorptionSites(response.data.data);
 
@@ -245,6 +258,19 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                               </FormGroup>
                             </Grid>
 
+                            <Grid item>
+                              <Tooltip title="Powered by CatLearn">
+                                <FormControlLabel
+                                  control={
+                                    <Switch
+                                      checked={this.state.checkedCatLearn}
+                                      onChange={this.handleSwitch('checkedCatLearn')}
+                                    />
+                                  }
+                                  label="Estimate energies"
+                                />
+                              </Tooltip>
+                            </Grid>
 
                           </Grid>
                         </Grid>
@@ -281,6 +307,25 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                   altLabels={this.props.altLabels[0]}
                 />
               </Grid>
+              { _.isEmpty(this.props.adsorbateParams) || _.isEmpty(this.props.adsorbateParams.mean) ? null :
+              <Grid item>
+                <div>
+                  <h2>Estimated adsorbate energies </h2>
+                  <Grid container direction="row" justify="space-between">
+                    <Grid item>
+                      <h4> Energy </h4>
+                      <div>
+                        {Number((this.props.adsorbateParams.mean[this.state.activeImage]).toFixed(2))}{' eV \xb1 '}{Number((this.props.adsorbateParams.uncertainty[this.state.activeImage]).toFixed(2))}{' eV'}
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <h4>versus</h4>
+                      <div>{this.props.adsorbateParams.references[this.state.activeImage]}</div>
+                    </Grid>
+                  </Grid>
+                </div>
+              </Grid>
+                }
               <Grid item >
                 <Grid container direction="column" justify="center" className={this.props.classes.flipButton}>
                   <Grid item>
@@ -320,9 +365,6 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
           </Grid>
         </Grid>
         }
-
-
-
 
         <Grid container justify="flex-end" direction="row">
           <Grid item>

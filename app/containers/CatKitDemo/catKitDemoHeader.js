@@ -25,11 +25,11 @@ class CatKitDemoHeader extends React.Component { // eslint-disable-line react/pr
             <div
               className={this.props.classes.infoText}
             >Powered by <ReactGA.OutboundLink
-              eventLabel="https://github.com/jboes/CatKit"
-              to="https://github.com/jboes/CatKit"
+              eventLabel="https://github.com/SUNCAT-Center/CatKit"
+              to="https://github.com/SUNCAT-Center/CatKit"
               target="_blank"
             >
-                github.com/jboes/CatKit
+                github.com/SUNCAT-Center/CatKit
               </ReactGA.OutboundLink>
             </div>
           </Grid>
