@@ -9,6 +9,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Script from 'react-load-script';
 import { connect } from 'react-redux';
+import FileDrop from 'react-file-drop';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Popover from 'material-ui/Popover';
@@ -52,11 +54,14 @@ const logoutUrl = `${backendRoot}/logout`;
 const releaseUrl = `${backendRoot}/release`;
 const endorseUrl = `${backendRoot}/endorse`;
 const deleteUrl = `${backendRoot}/delete`;
+/* const fileDropUrl = `${apiRoot}/apps/catKitDemo/convert_atoms`;*/
+const fileDropUrl = `${apiRoot}/apps/bulkEnumerator/get_wyckoff_from_structure`;
 
 // TODO: COMMENT OUT IN PRODUCTION
 /* const uploadGraphqlRoot = 'http://localhost:5000/apps/upload/graphql';*/
 const uploadGraphqlRoot = `${apiRoot}/apps/upload/graphql`;
 
+const showUploadForm = false;
 
 
 export class Upload extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -73,6 +78,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       pubEntries: {},
       popoverAnchorElement: null,
       deleting: false,
+      molecules: [],
+      reactions: [],
     };
 
     this.logout = this.logout.bind(this);
@@ -86,6 +93,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handleDelete = this.handleDelete.bind(this);
     this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
     this.handlePopoverClose = this.handlePopoverClose.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
     this.login = this.login.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
@@ -146,6 +154,28 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.setState({
       pubId: dataset.pubId,
     });
+  }
+
+  handleDrop(field) {
+    return (files, event) => {
+      const formData = new FormData();
+      formData.append('file', files[0]);
+      formData.append('field', field);
+      formData.append('event', JSON.stringify(event));
+      axios.post(fileDropUrl, formData,
+        { headers:
+        {
+          'content-type': 'multipart/form-data',
+        } }).then((response) => {
+          this.setState({
+            loading: false,
+            molecules: _.concat(
+            this.state.molecules,
+            [response.data.cif]
+            ),
+          });
+        });
+    };
   }
 
   handlePopoverOpen(event) {
@@ -365,10 +395,10 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         <Grid container direction="row" justify="space-between">
           <Grid item>
             <h2>Upload Datasets [beta]
-          {!_.isEmpty(this.state.userInfo) ?
-              `\u00A0\u00A0(${this.state.userInfo.email})`
+              {!_.isEmpty(this.state.userInfo) ?
+                  `\u00A0\u00A0(${this.state.userInfo.email})`
 
-              : null} </h2>
+                  : null} </h2>
           </Grid>
           <Grid item>
             {_.isEmpty(this.state.userInfo) ? null :
@@ -378,7 +408,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               width="72"
               alt="Portrait"
             />
-            }
+                }
           </Grid>
         </Grid>
 
@@ -443,8 +473,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               <Button
                 onClick={() => this.logout()}
               >
-                Logout
-              </Button>
+                        Logout
+                      </Button>
             </Grid>
           </Grid>
               }
@@ -457,8 +487,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
           <div>
             <Paper className={this.props.classes.paper}>
               <MdWarning /> Disclaimer: data submitted to the preview section can be seen by all registered users
-              of catalysis-hub.org.
-            </Paper>
+                      of catalysis-hub.org.
+                    </Paper>
             <h3>Why should I submit calculations of reactions energies?</h3>
             <ul>
               <li>Create an easy-to-use interactive supplementary information for your publication with its own URL.</li>
@@ -483,8 +513,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             </ol>
           </div>
         </Paper>
-              }
-        {true ? null :
+            }
+        {!showUploadForm ? null :
         <Paper className={this.props.classes.paper}>
           <h1>Manual Upload</h1>
           <TextField
@@ -589,22 +619,97 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             placeholder="BEEF-vdW"
             margin="normal"
           />
+          <h2>Gas Phase Molecules</h2>
+          <div>
+            <input
+              accept="text/*"
+              id="molecule-upload-button"
+              type="file"
+              ref={(node) => { this.moleculeInput = node; }}
+              className={this.props.classes.input}
+              multiple
+            />
+            <label
+              htmlFor="molecule-upload-button"
+            >
+              <Button
+                raised
+                type="file"
+                className={this.props.classes.button}
+                component="span"
+              >
+        + Molecule
+        <FileDrop
+          onDrop={this.handleDrop('molecule')}
+          frame={this.props.moleculeUploadButton}
+        >
+          (Drop)
+        </FileDrop>
+              </Button>
+            </label>
+          </div>
+          <div>
+            <Grid container direction="row" justify="space-around">
+              {this.state.molecules.map((molecule, i) => (
+                <Grid
+                  item
+                  key={`ml_${i}`}
+                >
+                  <GeometryCanvasWithOptions
+                    key={`mc_${i}`}
+                    cifdata={molecule}
+                    unique_id={`molecule_${i}`}
+                    id={`molecule_${i}`}
+                    height={200}
+                    width={200}
+                    x={1} y={1} z={2}
+                  />
+                </Grid>
+      ))}
+            </Grid>
+          </div>
           <h2>Reactions</h2>
           <div>
-            <Button
-              raised
+            <input
+              accept="text/*"
+              id="reactants-upload-button"
+              type="file"
+              className={this.props.classes.input}
+              multiple
+            />
+            <label
+              htmlFor="reactants-upload-button"
             >
-            + Reactant
-          </Button>
-            <Button
-              raised
+              <Button
+                raised
+                component="span"
+                className={this.props.classes.button}
+              >
+        + Reactant
+      </Button>
+            </label>
+            <input
+              accept="text/*"
+              id="products-upload-button"
+              type="file"
+              className={this.props.classes.input}
+              multiple
+            />
+            <label
+              htmlFor="products-upload-button"
             >
-            + Product
-          </Button>
+              <Button
+                raised
+                component="span"
+                className={this.props.classes.button}
+              >
+        + Product
+      </Button>
+            </label>
           </div>
 
         </Paper>
-        }
+            }
 
         {_.isEmpty(this.state.userInfo) ? null :
         <Paper className={this.props.classes.paper}>
@@ -619,57 +724,57 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 onClick={() => { this.getDatasets(); }}
               >
                 <MdRefresh /> Fetch Data Sets
-                  </Button>
+                      </Button>
             </Grid>
           </Grid>
           {_.isEmpty(this.state.datasets) ? null :
-                  this.state.datasets.map((dataset, i) => (
-                    <Paper key={`ds_${i}`} className={this.props.classes.paper}>
-                      {prettyPrintReference(dataset)}
-                      {(this.state.userInfo.email !== _.get(this.state.pubEntries,
-                        `${dataset.pubId}.0.username`, '')) ?
-                          <div>
-                            <Button
-                              raised
-                              onClick={() => {
-                                this.handleEndorse(dataset);
-                              }}
-                            >
-                              Endorse {'\u00A0\u00A0'} <MdThumbUp />
+                      this.state.datasets.map((dataset, i) => (
+                        <Paper key={`ds_${i}`} className={this.props.classes.paper}>
+                          {prettyPrintReference(dataset)}
+                          {(this.state.userInfo.email !== _.get(this.state.pubEntries,
+                            `${dataset.pubId}.0.username`, '')) ?
+                              <div>
+                                <Button
+                                  raised
+                                  onClick={() => {
+                                    this.handleEndorse(dataset);
+                                  }}
+                                >
+                                  Endorse {'\u00A0\u00A0'} <MdThumbUp />
 
-                            </Button> {'\u00A0\u00A0'}
-                          </div>
-                          : <div>
-                            <Button
-                              raised
-                              onClick={() => {
-                                this.handleRelease(dataset);
-                              }}
-                            >
-                              Release {'\u00A0\u00A0'} <MdPublic />
-                            </Button>
-                            {'\u00A0\u00A0\u00A0'}
-                            <Button
-                              raised
-                              onClick={() => {
-                                this.handleDelete(dataset);
-                              }}
-                            >
-                              Delete {'\u00A0\u00A0'} <MdDelete />
-                              { this.state.deleting ? <CircularProgress size={16} /> : null }
-                            </Button>
-                            {'\u00A0\u00A0\u00A0'}
-                            <Button
-                              raised
-                              onClick={() => { this.setDataset(dataset); }}
-                            > Details <MdChevronRight /> </Button>
-                          </div>
-                      }
-                    </Paper>
-                  ))
-              }
+                                </Button> {'\u00A0\u00A0'}
+                              </div>
+                              : <div>
+                                <Button
+                                  raised
+                                  onClick={() => {
+                                    this.handleRelease(dataset);
+                                  }}
+                                >
+                                  Release {'\u00A0\u00A0'} <MdPublic />
+                                </Button>
+                                {'\u00A0\u00A0\u00A0'}
+                                <Button
+                                  raised
+                                  onClick={() => {
+                                    this.handleDelete(dataset);
+                                  }}
+                                >
+                                  Delete {'\u00A0\u00A0'} <MdDelete />
+                                  { this.state.deleting ? <CircularProgress size={16} /> : null }
+                                </Button>
+                                {'\u00A0\u00A0\u00A0'}
+                                <Button
+                                  raised
+                                  onClick={() => { this.setDataset(dataset); }}
+                                > Details <MdChevronRight /> </Button>
+                              </div>
+                          }
+                        </Paper>
+                      ))
+                  }
         </Paper>
-        }
+            }
         {_.isEmpty(this.state.pubId) ? null :
         <Paper>
           <PublicationView
@@ -679,7 +784,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             privilegedAccess
           />
         </Paper>
-        }
+            }
       </div>
     );
   }
@@ -687,6 +792,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
 Upload.propTypes = {
   classes: PropTypes.object,
+  moleculeUploadButton: PropTypes.element,
   openSnackbar: PropTypes.func,
 };
 

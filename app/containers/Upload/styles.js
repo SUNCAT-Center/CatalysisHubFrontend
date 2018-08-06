@@ -1,4 +1,10 @@
 export const styles = (theme) => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  input: {
+    display: 'none',
+  },
   fileDrop: {
     margin: theme.spacing.unit,
     height: 100,
