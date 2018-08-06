@@ -269,7 +269,7 @@ class SlabInput extends React.Component { // eslint-disable-line react/prefer-st
                         <IconButton
                           className={this.props.classes.iconButton}
                           color="primary"
-                          disable={this.state.fixed >= this.state.layers}
+                          disabled={this.state.fixed >= this.state.layers}
                           onClick={() => { this.handleChange('fixed')({ target: { value: parseInt(this.state.fixed, 10) + 1 } }, true); }}
                         >+</IconButton>
                       </Grid>
