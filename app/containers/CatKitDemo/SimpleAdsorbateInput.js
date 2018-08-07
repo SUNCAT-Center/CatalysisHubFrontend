@@ -281,20 +281,22 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
               }
 
           { _.isEmpty(this.props.adsorbateParams) || _.isEmpty(this.props.adsorbateParams.mean) ? null :
-          <Grid item>
-            <Grid container direction="row" justify="space-between">
-              <Grid item>
-                <h4> Estimated adsorbate energy </h4>
-                <div>
-                  {Number((this.props.adsorbateParams.mean[this.state.activeImage]).toFixed(2))}{' eV \xb1 '}{Number((this.props.adsorbateParams.uncertainty[this.state.activeImage]).toFixed(2))}{' eV'}
-                </div>
-              </Grid>
-              <Grid item>
-                <h4>versus</h4>
-                <div>{this.props.adsorbateParams.references[this.state.activeImage]}</div>
+          <Paper className={this.props.classes.paper}>
+            <Grid item>
+              <Grid container direction="row" justify="space-between">
+                <Grid item>
+                  <h4> Estimated adsorbate energy </h4>
+                  <div>
+                    {Number((this.props.adsorbateParams.mean[this.state.activeImage]).toFixed(2))}{' eV \xb1 '}{Number((this.props.adsorbateParams.uncertainty[this.state.activeImage]).toFixed(2))}{' eV'}
+                  </div>
+                </Grid>
+                <Grid item>
+                  <h4>versus</h4>
+                  <div>{this.props.adsorbateParams.references[this.state.activeImage]}</div>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Paper>
           }
 
           <Paper className={this.props.classes.paper}>
