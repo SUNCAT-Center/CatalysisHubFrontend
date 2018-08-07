@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import { isMobile } from 'react-device-detect';
+import Helmet from 'react-helmet';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
 import Hidden from 'material-ui/Hidden';
@@ -41,6 +42,7 @@ import { newGraphQLRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
 import CompositionBar from 'components/CompositionBar';
+import { plainPrintReference } from 'utils/functions';
 
 import { styles } from './styles';
 
@@ -334,6 +336,26 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     const { publication, reactions, structures } = this.state;
     return (
       <div>
+        <Helmet>
+          <script type="application/ld+json">{`{
+          "@context": "http://schema.org",
+          "@type": "Dataset",
+          "name": "${publication.title}",
+          "citation": "${plainPrintReference(publication)}",
+          "description": "Reaction Energies and Structures",
+          "identifier": "${publication.doi}",
+          "datePublished": "${publication.year}",
+          "url": "${window.location.href}",
+          "distribution": [
+            {
+              "@type": "DataDownload",
+              "encodingFormat": "JSON",
+              "contentUrl": "http://api.catalysis-hub.org/graphql?query=%7B%0A%20%20reactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%20%20%20%20reactants%0A%20%20%20%20%20%20%20%20products%0A%20%20%20%20%20%20%20%20surfaceComposition%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
+              
+            }
+          ]
+        }`}</script>
+        </Helmet>
         {this.state.loadingPublication ? <LinearProgress className={this.props.classes.progress} /> : null }
 
         {_.isEmpty(publication) ? null :
