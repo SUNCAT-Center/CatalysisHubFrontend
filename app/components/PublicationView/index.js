@@ -12,6 +12,7 @@ import Helmet from 'react-helmet';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
 import Hidden from 'material-ui/Hidden';
+import Popover from 'material-ui/Popover';
 import Table, {
   TableBody,
   TableCell,
@@ -117,6 +118,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     this.getStructures = this.getStructures.bind(this);
     this.getReactions = this.getReactions.bind(this);
     this.handleReactionsScroll = this.handleReactionsScroll.bind(this);
+    this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
+    this.handlePopoverClose = this.handlePopoverClose.bind(this);
     this.sortReactions = this.sortReactions.bind(this);
   }
 
@@ -269,6 +272,17 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     });
   }
 
+  handlePopoverOpen(event) {
+    this.setState({
+      popoverAnchorElement: event.currentTarget,
+    });
+  }
+
+  handlePopoverClose() {
+    this.setState({
+      popoverAnchorElement: null,
+    });
+  }
   handleReactionsScroll(e) {
     const bottom = e.target.scrollHeight - e.target.scrollTop >= (e.target.clientHeight);
     if (bottom && this.state.hasMoreReactions) {
@@ -383,7 +397,40 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   </div>
               }
             </Button>
-            {_.isEmpty(this.state.publicationQuery) ? null : <GraphQlbutton query={this.state.publicationQuery.query} newSchema />}
+            {_.isEmpty(this.state.publicationQuery) ? null :
+            <span>
+              <GraphQlbutton query={this.state.publicationQuery.query} newSchema />
+              <Button
+                className={this.props.classes.publicationAction}
+                onClick={(event) => {
+                  this.handlePopoverOpen(event);
+                }}
+              >
+                <FaTable /> Fetch CSV
+              </Button>
+              <Popover
+                open={Boolean(this.state.popoverAnchorElement)}
+                anchorEl={this.state.popoverAnchorElement}
+                onClose={this.handlePopoverClose}
+                origin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+              >
+                <div className={this.props.classes.paper}>
+                  <ol>
+                    <li>brew install jq</li>
+                    <li>{`curl "http://api.catalysis-hub.org/graphql?query=%7Breactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20edges%20%7B%0A%20%20%20%20node%20%7B%0A%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20facet%0A%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%7D" | jq -r '.data.reactions.edges[].node | [.chemicalComposition,.facet,.Equation,.reactionEnergy] | @csv'`}
+                    </li>
+                  </ol>
+                </div>
+              </Popover>
+            </span>
+                }
             {_.isEmpty(publication.doi) ? null :
             <ReactGA.OutboundLink
               eventLabel={`http://dx.doi.org/${publication.doi}`}
