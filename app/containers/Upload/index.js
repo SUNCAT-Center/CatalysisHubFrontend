@@ -79,7 +79,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       popoverAnchorElement: null,
       deleting: false,
       molecules: [],
-      reactions: [],
+      reactions: [{}],
     };
 
     this.logout = this.logout.bind(this);
@@ -95,9 +95,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     this.handlePopoverClose = this.handlePopoverClose.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
     this.login = this.login.bind(this);
+    this.removeMolecule = this.removeMolecule.bind(this);
     this.setDataset = this.setDataset.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
     this.windowLogin = this.windowLogin.bind(this);
+
+    this.moleculeInput = null;
+    this.reactantInput = null;
+    this.productInput = null;
   }
 
   componentDidMount() {
@@ -156,8 +161,15 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     });
   }
 
+  removeMolecule(i) {
+    this.setState({
+      molecules: this.state.molecules.filter((elem, x) => x !== i),
+    });
+  }
+
   handleDrop(field) {
     return (files, event) => {
+      /* console.log(event.toElement.innerText)*/
       const formData = new FormData();
       formData.append('file', files[0]);
       formData.append('field', field);
@@ -167,6 +179,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         {
           'content-type': 'multipart/form-data',
         } }).then((response) => {
+          /* console.log(response)*/
           this.setState({
             loading: false,
             molecules: _.concat(
@@ -624,8 +637,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             <input
               accept="text/*"
               id="molecule-upload-button"
+              ref={(el) => { this.moleculeInput = el; }}
               type="file"
-              ref={(node) => { this.moleculeInput = node; }}
               className={this.props.classes.input}
               multiple
             />
@@ -639,39 +652,65 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 component="span"
               >
         + Molecule
-        <FileDrop
-          onDrop={this.handleDrop('molecule')}
-          frame={this.props.moleculeUploadButton}
-        >
+          {/* frame={this.moleculeInput}*/}
+                <FileDrop
+                  onDrop={this.handleDrop('molecule')}
+                  dropEffect="copy"
+                >
           (Drop)
         </FileDrop>
               </Button>
             </label>
           </div>
           <div>
-            <Grid container direction="row" justify="space-around">
+            <Grid container direction="row" justify="flex-start">
               {this.state.molecules.map((molecule, i) => (
                 <Grid
                   item
                   key={`ml_${i}`}
                 >
-                  <GeometryCanvasWithOptions
-                    key={`mc_${i}`}
-                    cifdata={molecule}
-                    unique_id={`molecule_${i}`}
-                    id={`molecule_${i}`}
-                    height={200}
-                    width={200}
-                    x={1} y={1} z={2}
-                  />
+                  <Grid container direction="column" justify="flex-start">
+                    <Grid item>
+                      <GeometryCanvasWithOptions
+                        key={`mc_${i}`}
+                        cifdata={molecule}
+                        unique_id={`molecule_${i}`}
+                        id={`molecule_${i}`}
+                        height={400}
+                        width={400}
+                        showButtons={false}
+                        x={1} y={1} z={2}
+                      />
+                    </Grid>
+                    <Grid>
+                      <Grid container direction="row" justify="flex-start">
+                        <Grid item>
+                          <Button
+                            onClick={() => { this.removeMolecule(i); }}
+                            raised
+                          >
+                            <MdDelete /> Remove
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
       ))}
             </Grid>
           </div>
           <h2>Reactions</h2>
+          <Grid container direction="column" justify="flex-start">
+            {this.state.reactions.map((reaction, i) => (
+              <Grid item key={`reaction_${i}`}>
+                <h3>Reaction {i + 1}</h3>
+              </Grid>
+              ))}
+          </Grid>
           <div>
             <input
               accept="text/*"
+              ref={(el) => { this.reactantInput = el; }}
               id="reactants-upload-button"
               type="file"
               className={this.props.classes.input}
@@ -686,13 +725,21 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 className={this.props.classes.button}
               >
         + Reactant
-      </Button>
+          {/* frame={this.reactantInput}*/}
+                <FileDrop
+                  onDrop={this.handleDrop('molecule')}
+                  dropEffect="copy"
+                >
+          (Drop)
+        </FileDrop>
+              </Button>
             </label>
             <input
               accept="text/*"
               id="products-upload-button"
               type="file"
               className={this.props.classes.input}
+              ref={(el) => { this.productInput = el; }}
               multiple
             />
             <label
@@ -704,7 +751,14 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                 className={this.props.classes.button}
               >
         + Product
-      </Button>
+          {/* frame={this.productInput}*/}
+                <FileDrop
+                  onDrop={this.handleDrop('molecule')}
+                  dropEffect="copy"
+                >
+          (Drop)
+        </FileDrop>
+              </Button>
             </label>
           </div>
 
@@ -792,7 +846,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
 Upload.propTypes = {
   classes: PropTypes.object,
-  moleculeUploadButton: PropTypes.element,
   openSnackbar: PropTypes.func,
 };
 
