@@ -188,7 +188,7 @@ class App extends React.Component {
               >
                 {isMobile ?
                   <Grid
-                    item sm={1} md={1} lg={1}
+                    item sm={2} md={2} lg={1}
                     className={this.props.classes.appBarGridItem}
                   >
                     { (!isIOS || this.props.history === null) ? null :
