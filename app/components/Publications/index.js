@@ -65,6 +65,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       years: [],
       references: {},
       previewCifs: {},
+      totalCounts: {},
       dois: {},
       titles: {},
       pubIds: {},
@@ -189,6 +190,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 
   loadPreviewCif(pubId) {
     const cifQuery = `{reactions(pubId:"${pubId}", first: 1, order:"reactionEnergy") {
+    totalCount
   edges {
     node {
       id
@@ -201,13 +203,16 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
   }
 }}`;
     const previewCifs = this.state.previewCifs;
+    const totalCounts = this.state.totalCounts;
     axios.post(newGraphQLRoot, { query: cifQuery })
       .then((response) => {
+        totalCounts[pubId] = response.data.data.reactions.totalCount;
         previewCifs[pubId] = _.sortBy(
           response.data.data.reactions.edges[0].node.systems,
           'energy')[0];
         this.setState({
           previewCifs,
+          totalCounts,
         });
       });
   }
@@ -373,7 +378,9 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                       raised
                                       onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}
                                     >
-                                      <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                                      <MdViewList /> {'\u00A0\u00A0'}Checkout {
+                                          this.state.totalCounts[reference.pubId]
+                                      } Reactions {'\u00A0\u00A0'} <MdChevronRight />
                                     </Button>
                                     {(this.state.dois[year][j] === null
                                           || typeof this.state.dois[year][j] === 'undefined'
