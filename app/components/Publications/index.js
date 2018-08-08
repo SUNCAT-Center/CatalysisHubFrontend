@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import Input from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
 import {
@@ -63,6 +64,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     this.state = {
       years: [],
       references: {},
+      previewCifs: {},
       dois: {},
       titles: {},
       pubIds: {},
@@ -76,6 +78,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
       publicationFilter: '',
     };
     this.clickPublication = this.clickPublication.bind(this);
+    this.loadPreviewCif = this.loadPreviewCif.bind(this);
     this.backToList = this.backToList.bind(this);
 
     if (_.get(props, 'routeParams.pubId', '') !== '') {
@@ -182,6 +185,31 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         [name]: event.target.value,
       });
     };
+  }
+
+  loadPreviewCif(pubId) {
+    const cifQuery = `{reactions(pubId:"${pubId}", first: 1, order:"reactionEnergy") {
+  edges {
+    node {
+      id
+      reactionEnergy
+      systems {
+        energy
+        Cifdata
+      }
+    }
+  }
+}}`;
+    const previewCifs = this.state.previewCifs;
+    axios.post(newGraphQLRoot, { query: cifQuery })
+      .then((response) => {
+        previewCifs[pubId] = _.sortBy(
+          response.data.data.reactions.edges[0].node.systems,
+          'energy')[0];
+        this.setState({
+          previewCifs,
+        });
+      });
   }
 
   render() {
@@ -314,10 +342,37 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                   <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
 
                                 </span>
-                                <Grid container direction={isMobile ? 'column' : 'row'} justify="flex-end" className={this.props.classes.publicationActions}>
+                                <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                                  <Grid item>
+                                    {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
+                                      <Button
+                                        onClick={() => {
+                                          this.loadPreviewCif(reference.pubId);
+                                        }}
+                                        className={this.props.classes.publicationAction}
+                                        raised
+                                      >
+                                      Preview
+                                    </Button>
+                                        :
+                                    <GeometryCanvasWithOptions
+                                      key={`mc_${reference.pubId}`}
+                                      cifdata={this.state.previewCifs[reference.pubId].Cifdata}
+                                      unique_id={`molecule_${reference.pubId}`}
+                                      id={`molecule_${reference.pubId}`}
+                                      height={300}
+                                      width={300}
+                                      showButtons={false}
+                                      x={1} y={1} z={2}
+                                    />
+                                    }
+                                  </Grid>
                                   <Grid item>
 
-                                    <Button onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}>
+                                    <Button
+                                      raised
+                                      onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}
+                                    >
                                       <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
                                     </Button>
                                     {(this.state.dois[year][j] === null
@@ -330,7 +385,10 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                           target="_blank"
                                           className={this.props.classes.outboundLink}
                                         >
-                                          <Button className={this.props.classes.publicationAction}>
+                                          <Button
+                                            raised
+                                            className={this.props.classes.publicationAction}
+                                          >
                                             <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
                                               </Button>
                                         </ReactGA.OutboundLink>
