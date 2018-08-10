@@ -60,6 +60,10 @@ module.exports = {
       route: '/pourbaixDiagrams',
       tooltip: 'Interactive electrochemical phase diagrams.',
     }, {
+      title: 'Profiles',
+      route: '/profile',
+      tooltip: 'Contributions by indidual (co-)authors.',
+    }, {
       title: 'Prototype Search',
       route: '/prototypeSearch',
       tooltip: 'Search for structures using Wyckoff points.',

@@ -8,16 +8,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactGA from 'react-ga';
+import Script from 'react-load-script';
+import _ from 'lodash';
 import { Link } from 'react-router';
+import { isMobile } from 'react-device-detect';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
+import {
+  IoDocument,
+} from 'react-icons/lib/io';
+import {
+  MdChevronRight,
+  MdViewList } from 'react-icons/lib/md';
+import {
+  TiDocumentAdd,
+} from 'react-icons/lib/ti';
+import {
+  FaExternalLink,
+} from 'react-icons/lib/fa';
 
 import { LinearProgress } from 'material-ui/Progress';
+import Paper from 'material-ui/Paper';
 
 import axios from 'axios';
-import { graphQLRoot } from 'utils/constants';
+import { newGraphQLRoot } from 'utils/constants';
+import { prettyPrintReference } from 'utils/functions';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import * as actions from './actions';
-import ReactionEnergies from './ReactionEnergies';
-import { ReactionStructures } from './ReactionStructures';
+import { styles } from './styles';
 
 
 /* Turn the first letter of a string into uppercase*/
@@ -61,34 +81,35 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
   constructor(props) {
     super(props);
     this.state = {
+      previewCifs: {},
+      totalCounts: {},
       totalCount: -1,
       systems: [],
       reactionEnergies: [],
       loading: true,
       allAuthors: [],
     };
+    this.loadPreviewCif = this.loadPreviewCif.bind(this);
   }
   componentDidMount() {
     this.reloadData();
   }
   reloadData() {
-    const allAuthorsQuery = `{catapp(publication_Authors:"~", distinct: true) {
-  totalCount
+    const allAuthorsQuery = `{publications(authors:"~", distinct: true) {
   edges {
     node {
-      
-      PublicationAuthors
+      authors
     }
   }
 }}`;
 
 
-    axios.post(graphQLRoot, { query: allAuthorsQuery })
+    axios.post(newGraphQLRoot, { query: allAuthorsQuery })
       .then((response) => {
         this.setState({
           allAuthors:
           [...new Set(
-            [].concat.apply([], response.data.data.catapp.edges.map((edge) => (JSON.parse(edge.node.PublicationAuthors.replace(/'/g, '"') // eslint-disable-line prefer-spread
+            [].concat.apply([], response.data.data.publications.edges.map((edge) => (JSON.parse(edge.node.authors.replace(/'/g, '"') // eslint-disable-line prefer-spread
 .replace('.', '')
 .replace('\\\\o', 'o')
 .replace('{\\o}', 'o')
@@ -115,27 +136,25 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       });
 
     if (this.props.routeParams.name) {
-      const authorQuery = `{catapp( publication_Authors:"~${toAuthorFormat(this.props.routeParams.name)}") {
+      const authorQuery = `{publications( authors:"~${toAuthorFormat(this.props.routeParams.name)}") {
     totalCount
     edges{
     node {
-      dftCode
-      dftFunctional
-      reactants
-      products
-      aseIds
-      facet
-      chemicalComposition
-      reactionEnergy
-      activationEnergy
-      surfaceComposition
+      pubId
+      title
+      authors
+      year
+      doi
+      pages
+      volume
+
   } } }}`;
-      axios.post(graphQLRoot, { query: authorQuery })
+      axios.post(newGraphQLRoot, { query: authorQuery })
       .then((response) => {
         this.setState({
-          totalCount: response.data.data.catapp.totalCount,
+          totalCount: response.data.data.publications.totalCount,
         });
-        this.props.receiveReactions(response.data.data.catapp.edges.map((edge) => edge.node));
+        this.props.receiveReactions(response.data.data.publications.edges.map((edge) => edge.node));
       });
     } else {
       this.setState({
@@ -143,6 +162,36 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       });
     }
   }
+
+  loadPreviewCif(pubId) {
+    const cifQuery = `{reactions(pubId:"${pubId}", first: 1, order:"reactionEnergy") {
+    totalCount
+  edges {
+    node {
+      id
+      reactionEnergy
+      systems {
+        energy
+        Cifdata
+      }
+    }
+  }
+}}`;
+    const previewCifs = this.state.previewCifs;
+    const totalCounts = this.state.totalCounts;
+    axios.post(newGraphQLRoot, { query: cifQuery })
+      .then((response) => {
+        totalCounts[pubId] = response.data.data.reactions.totalCount;
+        previewCifs[pubId] = _.sortBy(
+          response.data.data.reactions.edges[0].node.systems,
+          'energy')[0];
+        this.setState({
+          previewCifs,
+          totalCounts,
+        });
+      });
+  }
+
   render() {
     if (this.state.totalCount === -1) {
       return (
@@ -152,43 +201,134 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       );
     } else if (this.state.totalCount === 0) {
       return (
-        <div>
-          <h2>All Authors</h2>
-          <ul>
+        <Paper className={this.props.classes.paper}>
+          <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+          <Script url="/static/ChemDoodleWeb.js" />
+          <Link
+            className={this.props.classes.buttonLink}
+            to={'/upload'}
+          >
+            <Button
+              fab
+              className={this.props.classes.fab}
+              raised
+              color="primary"
+            >
+              <TiDocumentAdd />
+
+            </Button>
+          </Link>
+          <h2>All Contributors</h2>
+          <ul className={this.props.classes.authorList}>
             {this.state.allAuthors.map((author, i) => (
-              <li key={`li_${i}`}>
-                <Link key={`link_${i}`} to={`/profile/${toSlugFormat(author)}`}> {author} </Link> </li>
+              <li key={`li_${i}`} className={this.props.classes.authorEntry}>
+                <Link
+                  to={`/profile/${toSlugFormat(author)}`}
+                  onClick={() => {
+                    this.reloadData();
+                  }}
+                  key={`link_${i}`}
+                > {author} </Link> </li>
             ))}
           </ul>
-        </div>
+        </Paper>
       );
     } else { // eslint-disable-line no-else-return
       return (
         <div>
+          <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+          <Script url="/static/ChemDoodleWeb.js" />
           <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
-          <ReactGA.OutboundLink
-            eventLabel={`http://suncat.stanford.edu/theory/people/${this.props.routeParams.name}`}
-            to={`http://suncat.stanford.edu/theory/people/${this.props.routeParams.name}`}
-            target="_blank"
-          >
-          SUNCAT Profile
-        </ReactGA.OutboundLink>
-          <ReactionEnergies {...this.props} />
-          <ReactionStructures {...this.props} />
-          <h2>All Authors</h2>
-          <ul>
-            {this.state.allAuthors.map((author, i) => (
-              <li key={`li_${i}`}>
-                <Link
-                  to={`/profile/${toSlugFormat(author)}`}
-                  onClick={() => {
-                    this.props.selectedAuthor(author);
-                    /* this.reloadData();*/
-                  }}
-                > {author} </Link>
-              </li>
+          <Paper className={this.props.classes.paper}>
+            <h2>Datasets</h2>
+            {this.props.reactions.map((reference, i) => (
+              <Paper
+                className={this.props.classes.smallPaper}
+                key={`sp_${i}`}
+              >
+                <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
+                <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                  <Grid item>
+                    {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
+                      <Button
+                        onClick={() => {
+                          this.loadPreviewCif(reference.pubId);
+                        }}
+                        className={this.props.classes.publicationAction}
+                        raised
+                      >
+                                      Preview
+                                    </Button>
+                                        :
+                                    <GeometryCanvasWithOptions
+                                      key={`mc_${reference.pubId}`}
+                                      cifdata={this.state.previewCifs[reference.pubId].Cifdata}
+                                      unique_id={`molecule_${reference.pubId}`}
+                                      id={`molecule_${reference.pubId}`}
+                                      height={300}
+                                      width={300}
+                                      showButtons={false}
+                                      x={1} y={1} z={2}
+                                    />
+                                    }
+                  </Grid>
+                  <Grid item>
+                    {_.isEmpty(reference.doi) ? null :
+                    <ReactGA.OutboundLink
+                      eventLabel={`http://dx.doi.org/${reference.doi}`}
+                      to={`http://dx.doi.org/${reference.doi}`}
+                      target="_blank"
+                      className={this.props.classes.outboundLink}
+                    >
+                      <Button className={this.props.classes.publicationAction}>
+                        <FaExternalLink />{'\u00A0\u00A0'} DOI: {reference.doi}.
+                      </Button>
+                    </ReactGA.OutboundLink>
+                }
+                    <Link to={`/publications/${reference.pubId}`} >
+                      <Button
+                        raised
+                        className={this.props.classes.publicationAction}
+                      >
+                        <MdViewList />
+                        {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                      </Button>
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Paper>
+          )
+        )}
+          </Paper>
+          <Paper className={this.props.classes.paper}>
+            <Link
+              className={this.props.classes.buttonLink}
+              to={'/upload'}
+            >
+              <Button
+                fab
+                className={this.props.classes.fab}
+                raised
+                color="primary"
+              >
+                <TiDocumentAdd />
+
+              </Button>
+            </Link>
+            <h2>All Contributors</h2>
+            <ul className={this.props.classes.authorList}>
+              {this.state.allAuthors.map((author, i) => (
+                <li key={`li_${i}`} className={this.props.classes.authorEntry}>
+                  <Link
+                    onClick={() => {
+                      this.reloadData();
+                    }}
+                    to={`/profile/${toSlugFormat(author)}`}
+                  > {author} </Link>
+                </li>
             ))}
-          </ul>
+            </ul>
+          </Paper>
         </div>
       );
     }
@@ -198,7 +338,8 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
 Profile.propTypes = {
   routeParams: PropTypes.object,
   receiveReactions: PropTypes.func,
-  selectedAuthor: PropTypes.string,
+  classes: PropTypes.object,
+  reactions: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
@@ -225,4 +366,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default withStyles(styles, { withTheme: true })(
+  connect(mapStateToProps, mapDispatchToProps)(Profile)
+);

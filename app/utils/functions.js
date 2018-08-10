@@ -14,6 +14,7 @@ import {
 } from 'react-icons/lib/io';
 import {
   MdSearch,
+  MdFace,
   MdBubbleChart,
   MdFormatShapes,
   MdShowChart,
@@ -123,6 +124,8 @@ export const getAppIcon = (title) => {
     return <IoSocialBuffer />;
   } else if (title === 'Surface Reactions') {
     return <MdSearch />;
+  } else if (title === 'Profiles') {
+    return <MdFace />;
   } else if (title === 'Publications') {
     return <FaNewspaperO />;
   } else if (title === 'Your Next App ...') {
