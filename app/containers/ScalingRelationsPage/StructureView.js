@@ -150,6 +150,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                     </li>
                   </div>
                         }
+                  <li>Reactions <a href={`/publications/${publication.pubId}`}> Dataset </a> </li>
                 </ul>
               </Paper>
             </Grid>

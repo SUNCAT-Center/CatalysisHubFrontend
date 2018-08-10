@@ -176,6 +176,8 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
         journal
         doi
         volume
+        year
+        pubId
       }
     }
   }

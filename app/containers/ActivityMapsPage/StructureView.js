@@ -152,10 +152,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                                   DOI: {publication.doi} <FaExternalLink />
                                 </ReactGA.OutboundLink>
                     </li>
-                    <li>Reactions <a href={`/publications/${publication.pubId}`}>
-                      Dataset
-                      </a>
-                    </li>
+                    <li>Reactions <a href={`/publications/${publication.pubId}`}> Dataset </a> </li>
                   </div>
                         }
                 </ul>
