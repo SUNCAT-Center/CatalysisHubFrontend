@@ -504,8 +504,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                     </Paper>
             <h3>Why should I submit calculations of reactions energies?</h3>
             <ul>
-              <li>Create an easy-to-use interactive supplementary information for your publication with its own URL.</li>
-              <li>Inspect your data with a growing number of web apps (activity maps, scaling relations)</li>
+              <li>Create an easy-to-use interactive supplementary information for your <a href="/publications">publication</a> with its own URL.</li>
+              <li>Get your own <a href="/profile">profile page</a></li>
+              <li>Inspect your data with a growing number of web <a href="/appsIndex">apps</a> (activity maps, scaling relations)</li>
               <li>Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
               <li>Support ongoing machine-learning efforts in the community by providing first-principles based training data.</li>
             </ul>
