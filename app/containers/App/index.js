@@ -14,7 +14,7 @@ import compose from 'recompose/compose';
 import { Link, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import { isIOS, isMobile } from 'react-device-detect';
+import { isIOS, isMobile, isTablet } from 'react-device-detect';
 
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
@@ -206,6 +206,7 @@ class App extends React.Component {
                   </Grid>
                         : '\u00A0\u00A0'
                     }
+                {isTablet ? null :
                 <Grid
                   item sm={4} md={isMobile ? 5 : 6} lg={isMobile ? 6 : 7}
                   className={this.props.classes.appBarGridItem}
@@ -235,6 +236,7 @@ class App extends React.Component {
                     </Grid>
                   </Grid>
                 </Grid>
+                    }
 
 
 
