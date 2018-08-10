@@ -57,6 +57,7 @@ class TopSystems extends React.Component { // eslint-disable-line react/prefer-s
               doi
               pages
               year
+              pubId
             }
           }
           }

@@ -10,6 +10,9 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import {
+  FaExternalLink,
+} from 'react-icons/lib/fa';
 
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -146,8 +149,12 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                                   to={`http://dx.doi.org/${publication.doi}`}
                                   target="_blank"
                                 >
-                                  DOI: {publication.doi}
+                                  DOI: {publication.doi} <FaExternalLink />
                                 </ReactGA.OutboundLink>
+                    </li>
+                    <li>Reactions <a href={`/publications/${publication.pubId}`}>
+                      Dataset
+                      </a>
                     </li>
                   </div>
                         }

@@ -165,6 +165,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
               doi
               pages
               year
+              pubId
             }
           }
           }
