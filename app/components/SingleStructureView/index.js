@@ -9,6 +9,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import Grid from 'material-ui/Grid';
+import {
+  FaExternalLink,
+} from 'react-icons/lib/fa';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -24,6 +27,7 @@ const initialState = {
   PublicationNumber: '',
   PublicationJournal: '',
   PublicationPages: '',
+  PublicationPubId: '',
   DftCode: '',
   DftFunctional: '',
 };
@@ -78,11 +82,15 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
                             to={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
                             target="_blank"
                           >
-                            DOI: {this.props.selectedSystem.publication[0].doi}
+                            DOI: {this.props.selectedSystem.publication[0].doi} <FaExternalLink />
                           </ReactGA.OutboundLink>
               </li>
             </div>
                   }
+            <li>Reactions <a href={`/publications/${this.props.selectedSystem.publication[0].pubId}`}>
+                Dataset
+                </a>
+            </li>
           </ul>
         </div>
         }

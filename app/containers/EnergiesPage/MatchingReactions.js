@@ -129,6 +129,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         number
         journal
         pages
+        pubId
       }}
       }
       }
@@ -162,6 +163,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         number
         journal
         pages
+        pubId
       }
     }
   }
