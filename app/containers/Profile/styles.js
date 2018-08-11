@@ -1,10 +1,19 @@
 import _ from 'lodash';
 export const styles = (theme) => ({
+  filterInput: {
+    margin: theme.spacing.unit * 2,
+  },
   paper: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit,
     marginTop: theme.spacing.unit,
     width: '100%',
+  },
+  buttonLink: {
+    textDecoration: 'none',
+  },
+  outboundLink: {
+    textDecoration: 'none',
   },
   smallPaper: {
     padding: theme.spacing.unit,
