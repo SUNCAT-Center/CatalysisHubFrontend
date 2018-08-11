@@ -106,7 +106,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
     };
   }
 
-  reloadData() {
+  reloadData(authorName = '') {
     const allAuthorsQuery = `{publications(authors:"~", distinct: true) {
   edges {
     node {
@@ -139,6 +139,12 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
 .replace(/ and$/gi, '')
 .replace(/^and /gi, '')
             ))))
+            .map((x) => {
+              if(x.match(/,/g) !== null &&  x.match(/,/g).length > 1) {
+                return x.split(',')[0]
+              }
+              return x
+            })
             .map((x) => x.replace('.', ''))
             .map((x) => x.replace('{\\o}', 'o'))
             .map((x) => x.replace('\\o}', 'o'))
@@ -153,13 +159,19 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
               }
               return x.split(/\s+/).reverse().join(', ');
             })
+            .map((x) => x.replace(/(<=,) ?[A-Z]$/, ''))
+            .map((x) => x.replace(/, and$/, ''))
+            .filter((x) => x !== 'others')
+            .filter((x) => x !== 'catapp')
+            .filter((x) => x !== 'Catapp')
+
           )].sort()
           ,
         });
       });
 
     if (this.props.routeParams.name) {
-      const authorQuery = `{publications( authors:"~${toAuthorFormat(this.props.routeParams.name)}") {
+      const authorQuery = `{publications( authors:"~${toAuthorFormat(authorName || this.props.routeParams.name)}") {
     totalCount
     edges{
     node {
@@ -336,14 +348,18 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                   }
                   return x.match(new RegExp(this.state.authorFilter, 'ig'));
                 }).map((author, i) => (
-                  <li key={`li_${i}`} className={this.props.classes.authorEntry}>
                     <Link
-                      onClick={() => {
-                        this.reloadData();
-                      }}
                       to={`/profile/${toSlugFormat(author)}`}
-                    > {author} </Link>
+                    >
+                  <li
+                    key={`li_${i}`} className={this.props.classes.authorEntry}
+                    onClick={() => {
+                      this.reloadData(toSlugFormat(author));
+                    }}
+                  >
+                      {author}
                   </li>
+                    </Link>
             ))}
             </ul>
           </Paper>
