@@ -140,10 +140,10 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
 .replace(/^and /gi, '')
             ))))
             .map((x) => {
-              if(x.match(/,/g) !== null &&  x.match(/,/g).length > 1) {
-                return x.split(',')[0]
+              if (x.match(/,/g) !== null && x.match(/,/g).length > 1) {
+                return x.split(',')[0];
               }
-              return x
+              return x;
             })
             .map((x) => x.replace('.', ''))
             .map((x) => x.replace('{\\o}', 'o'))
@@ -348,18 +348,18 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                   }
                   return x.match(new RegExp(this.state.authorFilter, 'ig'));
                 }).map((author, i) => (
-                    <Link
-                      to={`/profile/${toSlugFormat(author)}`}
-                    >
-                  <li
-                    key={`li_${i}`} className={this.props.classes.authorEntry}
+                  <Link
+                    to={`/profile/${toSlugFormat(author)}`}
                     onClick={() => {
                       this.reloadData(toSlugFormat(author));
                     }}
                   >
+                    <li
+                      key={`li_${i}`} className={this.props.classes.authorEntry}
+                    >
                       {author}
-                  </li>
-                    </Link>
+                    </li>
+                  </Link>
             ))}
             </ul>
           </Paper>
