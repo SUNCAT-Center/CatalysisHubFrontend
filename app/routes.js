@@ -356,6 +356,14 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/developerGuide',
+      name: 'yourNextApp',
+      getComponent(location, cb) {
+        import('components/YourNextApp')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
