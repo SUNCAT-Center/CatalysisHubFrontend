@@ -502,7 +502,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               <MdWarning /> Disclaimer: data submitted to the preview section can be seen by all registered users
                       of catalysis-hub.org.
                     </Paper>
-            <h3>Why should I submit calculations of reactions energies?</h3>
+            <h3>Why should I submit calculations of reaction energies?</h3>
             <ul>
               <li>Create an easy-to-use interactive supplementary information for your <a href="/publications">publication</a> with its own URL.</li>
               <li>Get your own <a href="/profile">profile page</a></li>
