@@ -246,6 +246,20 @@ class App extends React.Component {
                 >
 
                   <Grid container direction="row" justify="flex-end" >
+                    <Grid item className={window.location.href.indexOf('/publications') === -1 ? null : this.props.classes.activeAppBarLink}>
+                      <Link to="/publications" className={this.props.classes.textLink}>
+                        <Tooltip title="Browse Publications with Geometries">
+                          <div>
+                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open List of Publications" >
+                              <FaNewspaperO />
+                            </IconButton>
+                            <div className={this.props.classes.barText}>Publications</div>
+                          </div>
+                        </Tooltip>
+                      </Link>
+                    </Grid>
+
+
                     <Grid
                       item className={(
                   window.location.href.endsWith('/publications') ||
@@ -266,20 +280,6 @@ class App extends React.Component {
                       </Link>
                     </Grid>
 
-
-
-                    <Grid item className={window.location.href.indexOf('/publications') === -1 ? null : this.props.classes.activeAppBarLink}>
-                      <Link to="/publications" className={this.props.classes.textLink}>
-                        <Tooltip title="Browse Publications with Geometries">
-                          <div>
-                            <IconButton className={this.props.classes.barIcon} size="small" color="inherit" aria-label="Open List of Publications" >
-                              <FaNewspaperO />
-                            </IconButton>
-                            <div className={this.props.classes.barText}>Publications</div>
-                          </div>
-                        </Tooltip>
-                      </Link>
-                    </Grid>
 
 
                     <Grid item className={window.location.href.indexOf('/about') === -1 ? null : this.props.classes.activeAppBarLink}>

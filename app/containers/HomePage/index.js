@@ -200,29 +200,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               <div>
                 <Grid container justify="space-between">
                   <Grid item>
-                    <Link to="/appsIndex" className={this.props.classes.textLink}>
-                      <Paper
-                        className={this.props.classes.homePaper}
-                      >
-                        <h3><MdApps size={20} /> Apps</h3>
-                        <div className={this.props.classes.paperInfo}>
-                          Web apps for exploring calculations
-                          and finding new catalysts.
-                        </div>
-
-                        <Grid container direction="row" justify="space-between">
-                          <Grid item>
-                            <Chip label={apps.length} />
-                          </Grid>
-                          <Grid item>
-                            <div className={this.props.classes.bold}>See our apps <MdChevronRight /></div>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    </Link>
-                  </Grid>
-
-                  <Grid item>
                     <Link to="/energies" className={this.props.classes.textLink}>
                       <Paper
                         className={this.props.classes.homePaper}
@@ -265,6 +242,32 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       </Paper>
                     </Link>
                   </Grid>
+
+
+                  <Grid item>
+                    <Link to="/appsIndex" className={this.props.classes.textLink}>
+                      <Paper
+                        className={this.props.classes.homePaper}
+                      >
+                        <h3><MdApps size={20} /> Apps</h3>
+                        <div className={this.props.classes.paperInfo}>
+                          Web apps for exploring calculations
+                          and finding new catalysts.
+                        </div>
+
+                        <Grid container direction="row" justify="space-between">
+                          <Grid item>
+                            <Chip label={apps.length} />
+                          </Grid>
+                          <Grid item>
+                            <div className={this.props.classes.bold}>See our apps <MdChevronRight /></div>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Link>
+                  </Grid>
+
+
                 </Grid>
               </div>
             </Slide>
