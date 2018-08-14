@@ -2,6 +2,9 @@ export const styles = () => ({
   bold: {
     fontWeight: 'bold',
   },
+  'centerGrid Grid': {
+    marginBottom: 60,
+  },
   buttonLink: {
     textTransformation: 'none',
     textDecoration: 'none',
@@ -47,8 +50,8 @@ export const styles = () => ({
     cornerRadius: 40,
     padding: 10,
     paddingTop: 5,
-    minWidth: 280,
-    maxWidth: 300,
+    minWidth: 340,
+    maxWidth: 340,
     textAlign: 'left',
     align: 'left',
   },

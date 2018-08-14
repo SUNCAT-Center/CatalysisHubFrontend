@@ -25,6 +25,7 @@ import {
   MdKeyboardArrowUp,
   MdKeyboardArrowDown,
   MdChevronRight,
+  MdFace,
 } from 'react-icons/lib/md';
 import Slide from 'material-ui/transitions/Slide';
 
@@ -53,6 +54,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       geometries: 0,
       reactions: 0,
       publications: 0,
+      contributors: 0,
       loading: true,
       error: false,
       truncated: true,
@@ -91,6 +93,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           });
         }
       });
+
+    axios.post(newGraphQLRoot, {
+      query: '{publications { edges { node { authors } } }}',
+    }).then((response) => {
+      const contributors = new Set();
+      response.data.data.publications.edges.map((edge) => JSON.parse(edge.node.authors).map((author) => contributors.add(author)));
+      this.setState({
+        contributors: contributors.size,
+      });
+    });
   }
 
   render() {
@@ -198,7 +210,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <CenteredSection className={this.props.classes.centeredSection}>
             <Slide mountOnEnter unmountOnExit in direction="left">
               <div>
-                <Grid container justify="space-between">
+                <Grid container justify="space-between" className={this.props.classes.centerGrid}>
+
+
                   <Grid item>
                     <Link to="/energies" className={this.props.classes.textLink}>
                       <Paper
@@ -220,6 +234,31 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       </Paper>
                     </Link>
                   </Grid>
+
+
+
+                  <Grid item>
+                    <Link to="/profile" className={this.props.classes.textLink}>
+                      <Paper
+                        className={this.props.classes.homePaper}
+                        elevation={0}
+                      >
+                        <h3> <MdFace size={20} /> Contributors</h3>
+                        <div className={this.props.classes.paperInfo}>
+                          See the people (and co-authors) behind those datasets of reaction energies.
+                        </div>
+                        <Grid container direction="row" justify="space-between">
+                          <Grid item>
+                            <Chip label={withCommas(this.state.contributors)} />
+                          </Grid>
+                          <Grid item>
+                            <div className={this.props.classes.bold}>See contributors <MdChevronRight /></div>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Link>
+                  </Grid>
+
 
 
 
