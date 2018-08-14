@@ -171,7 +171,15 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       });
 
     if (this.props.routeParams.name) {
-      const authorQuery = `{publications( authors:"~${toAuthorFormat(authorName || this.props.routeParams.name)}") {
+      let author = toAuthorFormat(authorName || this.props.routeParams.name);
+      if (author === 'Norskov, Jens') {
+        author = 'N{\\\\o}rskov, Jens K.';
+      } else {
+        author = `~${author}`;
+      }
+
+
+      const authorQuery = `{publications( authors:"${author}") {
     totalCount
     edges{
     node {
@@ -350,12 +358,13 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                 }).map((author, i) => (
                   <Link
                     to={`/profile/${toSlugFormat(author)}`}
+                    key={`li_${i}`}
                     onClick={() => {
                       this.reloadData(toSlugFormat(author));
                     }}
                   >
                     <li
-                      key={`li_${i}`} className={this.props.classes.authorEntry}
+                      className={this.props.classes.authorEntry}
                     >
                       {author}
                     </li>
