@@ -221,7 +221,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       >
                         <h3> <FaDatabase size={20} /> Surface Reactions</h3>
                         <div className={this.props.classes.paperInfo}>
-                          A database of first-principles reaction energies and barriers.
+                          A database of reaction energies and barriers.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
@@ -245,7 +245,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       >
                         <h3> <MdFace size={20} /> Contributors</h3>
                         <div className={this.props.classes.paperInfo}>
-                          See the people (and co-authors) behind those datasets of reaction energies.
+                          The people (and co-authors) behind the datasets.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
@@ -269,7 +269,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         elevation={0}
                       >
                         <h3> <FaNewspaperO size={20} /> Publications</h3>
-                        <div className={this.props.classes.paperInfo}>A collection of scientific publications with atomic geometries.</div>
+                        <div className={this.props.classes.paperInfo}>A collection of scientific publications with geometries.</div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
                             <Chip label={this.state.publications} />
@@ -291,7 +291,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <h3><MdApps size={20} /> Apps</h3>
                         <div className={this.props.classes.paperInfo}>
                           Web apps for exploring calculations
-                          and finding new catalysts.
+                          and catalysts.
                         </div>
 
                         <Grid container direction="row" justify="space-between">
