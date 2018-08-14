@@ -29,6 +29,18 @@ import {
 import {
   FaExternalLink,
 } from 'react-icons/lib/fa';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+  EmailShareButton,
+  EmailIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from 'react-share';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
@@ -42,6 +54,7 @@ import * as actions from './actions';
 import { styles } from './styles';
 
 
+const shareIconSize = 28;
 /* Turn the first letter of a string into uppercase*/
 /* and the rest into lower case*/
 function toTitleCase(str) {
@@ -252,7 +265,53 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
           <div>
             <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
             <Paper className={this.props.classes.paper}>
-              <h2>Datasets</h2>
+              <Grid container direction="row" justify="space-between">
+                <Grid item>
+                  <h2>Datasets</h2>
+                </Grid>
+                <Grid item>
+                  <Grid container direction="row" className={this.props.classes.shareButtons}>
+                    <Grid item>
+                      <EmailShareButton
+                        url={window.location.href}
+                        subject={this.props.routeParams.name}
+                        body={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
+                      ><EmailIcon size={shareIconSize} round /></EmailShareButton>
+                    </Grid>
+                    <Grid item>
+                      <LinkedinShareButton
+                        title={toTitleFormat(this.props.routeParams.name)}
+                        description={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                        url={window.location.href}
+                      >
+                        <LinkedinIcon size={shareIconSize} round />
+                      </LinkedinShareButton>
+                    </Grid>
+                    <Grid item>
+                      <TwitterShareButton
+                        url={window.location.href}
+                        title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                        hashtags={['catalysis-hub.org', toSlugFormat(this.props.routeParams.name)]}
+                      > <TwitterIcon size={shareIconSize} round /> </TwitterShareButton>
+                    </Grid>
+                    <Grid item>
+                      <FacebookShareButton
+                        url={window.location.href}
+                        quote={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
+                      >
+                        <FacebookIcon size={shareIconSize} round />
+                      </FacebookShareButton>
+                    </Grid>
+                    <Grid item>
+                      <WhatsappShareButton
+                        url={window.location.href}
+                        title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                      ><WhatsappIcon size={shareIconSize} round /></WhatsappShareButton>
+                    </Grid>
+                  </Grid>
+
+                </Grid>
+              </Grid>
               {this.props.reactions.map((reference, i) => (
                 <Paper
                   className={this.props.classes.smallPaper}
