@@ -183,7 +183,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
         });
       });
 
-    if (this.props.routeParams.name) {
+    if (authorName || this.props.routeParams.name) {
       let author = toAuthorFormat(authorName || this.props.routeParams.name);
       if (author === 'Norskov, Jens') {
         author = 'N{\\\\o}rskov, Jens K.';
