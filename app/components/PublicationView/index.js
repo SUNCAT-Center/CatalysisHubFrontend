@@ -22,7 +22,6 @@ import Table, {
   TablePagination,
   TableSortLabel,
 } from 'material-ui/Table';
-
 import { withStyles } from 'material-ui/styles';
 import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
@@ -30,6 +29,9 @@ import Button from 'material-ui/Button';
 import * as Scroll from 'react-scroll';
 
 import { MdChevronRight } from 'react-icons/lib/md';
+import {
+  IoSocialPython,
+} from 'react-icons/lib/io';
 import {
   FaExternalLink,
   FaCube,
@@ -406,7 +408,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   this.handlePopoverOpen(event);
                 }}
               >
-                <FaTable /> Fetch CSV
+                <FaTable /> {'\u00A0\u00A0'}Fetch CSV
               </Button>
               <Popover
                 open={Boolean(this.state.popoverAnchorElement)}
@@ -429,6 +431,18 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                   </ol>
                 </div>
               </Popover>
+
+              <ReactGA.OutboundLink
+                eventLabel={'http://nbviewer.jupyter.org/gist/mhoffman/c418acb6b3f928eb4ef71f4001d120d9'}
+                to={'http://nbviewer.jupyter.org/gist/mhoffman/c418acb6b3f928eb4ef71f4001d120d9'}
+                target="_blank"
+                className={this.props.classes.outboundLink}
+              >
+                <Button className={this.props.classes.publicationAction}>
+                  <IoSocialPython />{'\u00A0\u00A0'} ASE Atoms
+                      </Button>
+              </ReactGA.OutboundLink>
+
             </span>
                 }
             {_.isEmpty(publication.doi) ? null :
