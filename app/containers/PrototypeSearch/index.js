@@ -478,7 +478,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
             <Hidden xsDown>
               <Paper className={this.props.classes.facetPanel}>
                 <FormControl component="div">
-                  <FormLabel component="legend">Repositories</FormLabel>
+                  <FormLabel component="legend">Repositories (#structures)</FormLabel>
                   <FormGroup>
                     {this.props.searchResults.repositories
                           .map((repository, si) => (
@@ -529,7 +529,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   </Grid>
                 </Grid>
                 <FormControl component="div">
-                  <FormLabel component="legend">Stoichiometry</FormLabel>
+                  <FormLabel component="legend">Stoichiometry (#structures)</FormLabel>
                   <FormGroup>
                     {this.props.searchResults.stoichiometries
                           .sort((a, b) => {
@@ -593,7 +593,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   </Grid>
                 </Grid>
                 <FormControl component="div">
-                  <FormLabel component="legend">#Species</FormLabel>
+                  <FormLabel component="legend">#Species (#structures)</FormLabel>
                   <FormGroup>
                     {this.props.searchResults.n_species
                           .sort((a, b) => {
@@ -655,7 +655,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   </Grid>
                 </Grid>
                 <FormControl component="div">
-                  <FormLabel component="legend">#Atoms</FormLabel>
+                  <FormLabel component="legend">#Atoms (#structures)</FormLabel>
                   <FormGroup>
                     {this.props.searchResults.n_atoms
                           .sort((a, b) => {
@@ -762,7 +762,9 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   </Grid>
                 </Grid>
                 <FormControl component="div">
-                  <FormLabel component="legend">Spacegroups [HM-Symbol]</FormLabel>
+                  <FormLabel component="legend">
+                    <a href="https://en.wikipedia.org/wiki/List_of_space_groups" target="_blank">
+                    Spacegroups [HM-Symbol] </a></FormLabel>
                   <FormGroup>
                     {this.props.searchResults.spacegroups
                           .sort((a, b) => {
