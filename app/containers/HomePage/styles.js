@@ -1,6 +1,7 @@
 export const styles = () => ({
   bold: {
     fontWeight: 'bold',
+    fontStyle: 'italic',
   },
   'centerGrid Grid': {
     marginBottom: 60,
