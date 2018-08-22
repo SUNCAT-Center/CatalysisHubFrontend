@@ -397,7 +397,7 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                 value={this.state.searchString}
                 label="Search ..."
                 placeholder="stoichiometry:AB2 species:AgO n_species:2-5 repository:AMCSD,catalysis-hub"
-                className={this.props.classes.textField}
+                className={this.props.classes.searchField}
                 onKeyDown={((event) => {
                   if (event.nativeEvent.keyCode === 13) {
                     this.submitSearch();
@@ -449,22 +449,24 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                   }
                 </Grid>
 
-                <Grid container justify="space-between" direction="row">
-                  {!_.isEmpty(this.props.searchResults) ? null :
-                  <Hidden smDown>
-                    <Grid item className={this.props.classes.paper}>
-                      <div className={this.props.classes.paper}>
-                        <div>
+                {!_.isEmpty(this.props.searchResults) && (this.state.searchString).indexOf(' ') > -1 ? null :
+                <Grid
+                  container
+                  justify="space-between"
+                  direction="row"
+                >
+                  <Grid item className={this.props.classes.paper}>
+                    <div className={this.props.classes.paper}>
+                      <div>
                               Example searches:
                             </div>
-                        <Typography>
-                              stoichiometry:AB species:GaPd crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
+                      <Typography>
+                              stoichiometry:AB species:GaPd n_species:2 crystal_system:tetragonal repository:AMCSD,catalysis-hub spacegroup:120-150,23
                             </Typography>
-                      </div>
-                    </Grid>
-                  </Hidden>
-                  }
+                    </div>
+                  </Grid>
                 </Grid>
+                  }
               </Grid>
             </Grid>
           </Grid>
@@ -824,11 +826,14 @@ export class PrototypeSearch extends React.Component { // eslint-disable-line re
                                     Source: {ptype.repository}:{ptype.handle}
                             </ReactGA.OutboundLink>
                             <Grid container direction="row" justify="space-between">
-                              <Grid item>
+                              <Grid
+                                item
+                                className={this.props.classes.structureInfo}
+                              >
                                 <ul>
                                   <li>
                                     <CompositionBar
-                                      width={360}
+                                      width={160}
                                       height={10}
                                       composition={
                                               ptype.species.replace(/\[],'/g, '')}
