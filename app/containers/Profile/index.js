@@ -395,7 +395,12 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
             </Link>
             <Grid container direction="row" justify="space-between">
               <Grid item>
-                <h2>All Contributors</h2>
+                <h2>All Contributors ({this.state.allAuthors.filter((x) => {
+                  if (this.state.authorFilter === '') {
+                    return true;
+                  }
+                  return x.match(new RegExp(this.state.authorFilter, 'ig'));
+                }).length})</h2>
               </Grid>
               <Grid item>
                 <Input
