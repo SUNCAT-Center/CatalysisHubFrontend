@@ -236,7 +236,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Grid>
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
-                {_.isEmpty(this.state.randomSystems) ?
+                {_.isEmpty(this.state.randomSystems) || this.state.image % 10 === 5 ?
                   <a href="https://suncat.stanford.edu" target="_blank">
                     <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
                   </a>
