@@ -40,12 +40,6 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
           </List>
         </section>
         <section>
-          <List>
-            <ListItem>
-            </ListItem>
-          </List>
-        </section>
-        <section>
           <List className={this.props.classes.footerList}>
             <ListItem
               className={this.props.classes.footerListItem}
