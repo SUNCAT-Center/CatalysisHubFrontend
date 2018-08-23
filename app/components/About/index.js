@@ -15,6 +15,16 @@ import stanfordLogo from 'components/Header/stanford_crop.png';
 import { people } from 'utils/constants';
 import { styles } from './styles';
 
+function toSlugFormat(s) {
+  return s.split(',')
+    .reverse()
+    .map((x) => x.trim())
+    .join(' ')
+    .replace('.', '')
+    .replace(/\s/g, '-')
+    .toLowerCase();
+}
+
 
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -36,7 +46,9 @@ Catalysis-Hub.Org is a frontend for browsing the SUNCAT CatApp database containi
           <ul className={this.props.classes.peopleList}>
             {people.map((name, i) => (
               <li key={`person_${i}`}>
-                {name}
+                <a href={`http://suncat.stanford.edu/people/${toSlugFormat(name)}`} target="_blank">
+                  {name}
+                </a>
               </li>
               ))}
 

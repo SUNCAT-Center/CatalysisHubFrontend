@@ -95,9 +95,9 @@ module.exports = {
   ],
   people: [
     'Ankit Jain',
-    'Jake Boes',
+    'Jacob Russell Boes',
     'Kirsten Winther',
-    'Martin Hansen',
+    'Martin Hangaard Hansen',
     'Max Hoffmann',
     'Meng Zhao',
     'Michal Bajdich',
