@@ -6,7 +6,9 @@
 
 import React from 'react';
 import { isMobile } from 'react-device-detect';
+import _ from 'lodash';
 import Helmet from 'react-helmet';
+import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Paper from 'material-ui/Paper';
@@ -14,6 +16,7 @@ import Chip from 'material-ui/Chip';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { LinearProgress } from 'material-ui/Progress';
+import Script from 'react-load-script';
 import { Link } from 'react-router';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
@@ -58,6 +61,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       loading: true,
       error: false,
       truncated: true,
+      randomReaction: {},
+      randomSystems: [],
+      image: 0,
     };
   }
 
@@ -76,6 +82,41 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           this.setState({
             loading: false,
             reactions: response.data.data.reactions.totalCount,
+          });
+          const nRandom = parseInt(Math.random() * response.data.data.reactions.totalCount, 10);
+          axios.post(newGraphQLRoot, {
+            query: `{ reactions(first: ${nRandom}, last: 1) {
+              totalCount
+              edges {
+                node {
+                  Equation
+                  chemicalComposition
+                  reactionEnergy
+                  systems {
+                    energy
+                    Cifdata
+                  }
+                  publication {
+                    pubId
+                  }
+                }
+              }
+            }
+          }
+          ` }).then((innerResponse) => {
+            const randomReaction = _.get(innerResponse, 'data.data.reactions.edges[0].node');
+            const randomSystems = _.orderBy(randomReaction.systems, 'energy');
+            this.setState({
+              randomReaction,
+              randomSystems,
+            });
+
+            setInterval(
+                () => {
+                  this.setState({
+                    image: this.state.image + 1,
+                  });
+                }, 3000);
           });
         }
       });
@@ -195,9 +236,54 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Grid>
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
-                <a href="https://suncat.stanford.edu" target="_blank">
-                  <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
-                </a>
+                {_.isEmpty(this.state.randomSystems) ?
+                  <a href="https://suncat.stanford.edu" target="_blank">
+                    <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
+                  </a>
+                  :
+                  <Grid
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    style={{
+                      height: '280px',
+                    }}
+                  >
+                    <Grid item >
+                      <GeometryCanvasWithOptions
+                        key={`mc_${this.state.randomReaction.publication.pubId}`}
+                        cifdata={this.state.randomSystems[this.state.image % this.state.randomSystems.length].Cifdata}
+                        uniqueId={`molecule_${this.state.randomReaction.publication.pubId}`}
+                        id={`molecule_${this.state.randomReaction.publication.pubId}`}
+                        height={280}
+                        width={280}
+                        showButtons={false}
+                        x={1} y={1} z={2}
+                      />
+                    </Grid>
+
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="column"
+                        justify="space-around"
+                        style={{
+                          height: '310px',
+                        }}
+                      >
+                        <Grid item>
+                          <Link to={`/publications/${this.state.randomReaction.publication.pubId}`}>
+                            <Button fab color="primary" height="100%" >
+                              <MdChevronRight size={30} />
+                            </Button>
+                          </Link>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+
+                }
 
               </Grid>
             </Grid>
@@ -312,6 +398,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </Slide>
           </CenteredSection>
         </div>
+        <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
+        <Script url="/static/ChemDoodleWeb.js" />
       </article>
     );
   }
