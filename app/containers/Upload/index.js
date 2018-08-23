@@ -207,7 +207,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
     ReactGA.event({
       category: 'Endorse',
       action: 'Endorse a Dataset',
-      label: dataset.pubId,
+      label: ` endorse ${dataset.pubId}`,
     });
 
     const correspondentQuery = `{reactions(first: 1, pubId: "${dataset.pubId}") {
@@ -236,6 +236,12 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   handleRelease(dataset) {
+    ReactGA.event({
+      category: 'Upload',
+      action: 'upload a dataset',
+      label: ` uploaded ${dataset.pubId}`,
+    });
+
     const correspondentQuery = `{reactions(first: 1, pubId: "${dataset.pubId}") {
   edges {
     node {
@@ -342,8 +348,13 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
 
   windowLogin(provider = 'slack') {
     const uploadUrl = `${apiRoot}/apps/upload/`;
-    /* console.log("WINDOW LOGIN")*/
-    /* console.log(uploadUrl)*/
+
+    ReactGA.event({
+      category: 'Login',
+      action: 'User Login',
+      label: ` login with ${provider}`,
+    });
+
     axios(uploadUrl, {
       method: 'get',
       params: {
