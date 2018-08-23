@@ -135,7 +135,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   </H1>
                 <div className={this.state.truncated ? this.props.classes.truncated : this.props.classes.expanded}>
                   <div>
-             Catalysis-Hub.org is a web-platform for sharing data and software for computational catalysis research. The Surface Reactions database (CatApp v 2.0) contains thousands of reaction energies and barriers from density functional theory (DFT) calculations on surface systems.
+             Catalysis-Hub.org is a web-platform for sharing data and software for computational catalysis research. The Surface Reactions database (CatApp v2.0) contains thousands of reaction energies and barriers from density functional theory (DFT) calculations on surface systems.
                     </div>
                   <div>
                       Under Publications, reactions and surface geometries can also be browsed for each publication or dataset. With an increasing number of Apps, the platform allows comprehensive and user-friendly access to heterogeneous catalysis concepts and commonly used graphical representations such as scaling relations and activity maps.
