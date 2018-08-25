@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
-import { isMobile } from 'react-device-detect';
+import { isMobileOnly } from 'react-device-detect';
 import Helmet from 'react-helmet';
 import _ from 'lodash';
 import Grid from 'material-ui/Grid';
@@ -629,6 +629,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                               uniqueId={`slab_preview_${i}`}
                               key={`slab_preview_${i}`}
                               id={`slab_preview_${i}`}
+                              height={isMobileOnly ? 320 : 400}
+                              width={isMobileOnly ? 320 : 400}
                               x={1} y={1} z={1}
                             />
 
@@ -681,8 +683,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           </div>
           :
 
-          <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between">
-            <Grid item md={5} sm={12}>
+          <Grid container direction={isMobileOnly ? 'column' : 'row'} justify="space-between">
+            <Grid item lg={5} md={5} sm={12}>
               {(this.state.loadingReactions && !this.state.loadingMoreReactions) ? <LinearProgress className={this.props.classes.progress} /> : null }
               <Paper
                 className={this.props.classes.reactionsDiv}
@@ -795,7 +797,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               </Paper>
             </Grid>
             {this.state.structures.length === 0 ? null :
-            <Grid item md={7} sm={12}>
+            <Grid item lg={7} md={7} sm={12}>
               {this.state.loadingStructures ? <LinearProgress className={this.props.classes.progress} /> : null }
               <Paper className={this.props.classes.structuresDiv}>
                 <h2><FaArrowDown /> scroll down for more structures</h2>

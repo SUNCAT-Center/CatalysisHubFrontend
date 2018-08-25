@@ -36,6 +36,7 @@ export const styles = (theme) => ({
   reactionsDiv: {
     overflowY: 'scroll',
     height: '70vh',
+    marginTop: theme.spacing.unit * 2,
 
   },
   structuresDiv: {
@@ -43,6 +44,7 @@ export const styles = (theme) => ({
     height: '70vh',
     paddingLeft: 30,
     paddingRight: 30,
+    marginTop: theme.spacing.unit * 2,
   },
   reaction: {
   },
