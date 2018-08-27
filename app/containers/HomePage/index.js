@@ -26,7 +26,6 @@ import {
   MdWarning,
   MdApps,
   MdKeyboardArrowUp,
-  MdKeyboardArrowDown,
   MdChevronRight,
   MdFace,
 } from 'react-icons/lib/md';
@@ -209,15 +208,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   </Grid>
                   <Grid item>
                     {this.state.truncated ?
-                      <Button
-                        mini
-                        onClick={() => {
-                          this.setState({
-                            truncated: false,
-                          });
-                        }}
-                        role="button"
-                      >Read More <MdKeyboardArrowDown /></Button>
+                      <Link to="/about" className={this.props.classes.textLink}>
+                        <Button
+                          mini
+                          role="button"
+                        >Read More <MdChevronRight /></Button>
+                      </Link>
 
                       :
                       <Button
@@ -237,9 +233,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
                 {_.isEmpty(this.state.randomSystems) || this.state.image % 10 === 5 ?
-                  <a href="https://suncat.stanford.edu" target="_blank">
-                    <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
-                  </a>
+                  <Grid
+                    container
+                    direction="column"
+                    justify="center"
+                    style={{
+                      height: '280px',
+                    }}
+                  >
+                    <Grid item>
+                      <a href="https://suncat.stanford.edu" target="_blank">
+                        <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
+                      </a>
+                    </Grid>
+                  </Grid>
                   :
                   <Grid
                     container
