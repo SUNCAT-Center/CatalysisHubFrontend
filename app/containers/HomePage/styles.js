@@ -1,4 +1,6 @@
-export const styles = () => ({
+import _ from 'lodash';
+
+export const styles = (theme) => ({
   bold: {
     fontWeight: 'bold',
     fontStyle: 'italic',
@@ -46,13 +48,23 @@ export const styles = () => ({
     marginRight: '10%',
     textAlign: 'left',
   },
+  publicationPaper: {
+    backgroundColor: '#eeeeee',
+    cornerRadius: 40,
+    padding: 10,
+    paddingTop: 5,
+    textAlign: 'left',
+    align: 'left',
+    width: '100%',
+    marginTop: theme.spacing.unit * 2,
+  },
   homePaper: {
     backgroundColor: '#eeeeee',
     cornerRadius: 40,
     padding: 10,
     paddingTop: 5,
-    minWidth: 220,
-    maxWidth: 220,
+    minWidth: 230,
+    maxWidth: 230,
     textAlign: 'left',
     align: 'left',
   },
@@ -61,6 +73,14 @@ export const styles = () => ({
     marginBottom: 10,
     color: 'black',
     textColor: 'black',
+  },
+  publicationAction: {
+    margin: theme.spacing.unit,
+    height: 6,
+    backgroundColor: _.get(theme, 'palette.sandhill.50'),
+    '&:hover': {
+      backgroundColor: _.get(theme, 'palette.sandhill.300'),
+    },
   },
 
 });

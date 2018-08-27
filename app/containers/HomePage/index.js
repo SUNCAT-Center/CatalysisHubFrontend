@@ -7,6 +7,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
+import ReactGA from 'react-ga';
 import Helmet from 'react-helmet';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import { connect } from 'react-redux';
@@ -21,14 +22,18 @@ import { Link } from 'react-router';
 import Img from 'containers/App/Img';
 import Banner from 'components/Header/banner.png';
 import { withStyles } from 'material-ui/styles';
-import { FaDatabase, FaNewspaperO } from 'react-icons/lib/fa';
+import { FaDatabase, FaNewspaperO, FaExternalLink } from 'react-icons/lib/fa';
 import {
   MdWarning,
   MdApps,
   MdKeyboardArrowUp,
   MdChevronRight,
+  MdViewList,
   MdFace,
 } from 'react-icons/lib/md';
+import {
+  IoDocument,
+} from 'react-icons/lib/io';
 import Slide from 'material-ui/transitions/Slide';
 
 import axios from 'axios';
@@ -37,7 +42,7 @@ import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
-import { withCommas } from 'utils/functions';
+import { withCommas, prettyPrintReference } from 'utils/functions';
 import CenteredSection from './CenteredSection';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
@@ -63,6 +68,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       randomReaction: {},
       randomSystems: [],
       image: 0,
+      lastPublication: {},
+      lastPublicationTime: '',
     };
   }
 
@@ -116,6 +123,37 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     image: this.state.image + 1,
                   });
                 }, 3000);
+          });
+          axios.post(newGraphQLRoot, {
+            query: `{systems(order:"ctime", last: 1) {
+  edges {
+    node {
+     Ctime
+     publication {
+       pubId
+     }
+    }
+  }
+}}`,
+          }).then((lpidResponse) => {
+            const lastPubId = _.get(lpidResponse, 'data.data.systems.edges[0].node.publication[0].pubId');
+            const lastPublicationTime = _.get(lpidResponse, 'data.data.systems.edges[0].node.Ctime');
+            const pubTimeArray = lastPublicationTime.split(' ');
+            pubTimeArray.splice(3, 1, ',');
+            this.setState({
+              lastPublicationTime: pubTimeArray.join(' ').replace(' ,', ''),
+            });
+            axios.post(newGraphQLRoot, {
+              query: `{publications(pubId:"${lastPubId}") {
+  edges {
+    node { title authors journal pages volume year doi pubId }
+  }
+}}`,
+            }).then((lpResponse) => {
+              this.setState({
+                lastPublication: _.get(lpResponse, 'data.data.publications.edges[0].node'),
+              });
+            });
           });
         }
       });
@@ -303,7 +341,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <CenteredSection className={this.props.classes.centeredSection}>
             <Slide mountOnEnter unmountOnExit in direction="left">
               <div>
-                <Grid container justify="space-between" className={this.props.classes.centerGrid}>
+                <Grid container justify="space-between" direction="row" className={this.props.classes.centerGrid}>
 
 
                   <Grid item>
@@ -401,6 +439,54 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
 
                 </Grid>
+                {_.isEmpty(this.state.lastPublication) ? null :
+                <Paper className={this.props.classes.publicationPaper}>
+                  <h3>Latest Dataset: {`${this.state.lastPublicationTime}`}.</h3>
+                  <span className={this.props.classes.publicationEntry}>
+                    <IoDocument size={24} /> {prettyPrintReference(this.state.lastPublication)} {`#${this.state.lastPublication.pubId}.`}
+
+                  </span>
+                  <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                    <Grid item>
+                    </Grid>
+                    <Grid item>
+
+                      <Link
+                        to={`/publications/${this.state.lastPublication.pubId}`}
+                        className={this.props.classes.textLink}
+                      >
+
+                        <Button
+                          raised
+                          className={this.props.classes.publicationAction}
+                        >
+                          <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                        </Button>
+                      </Link>
+                      {(this.state.lastPublication.doi === null
+                                          || typeof this.state.lastPublication.doi === 'undefined'
+                                          || this.state.lastPublication.doi === ''
+                                        ) ? null :
+                                        <ReactGA.OutboundLink
+                                          eventLabel={`http://dx.doi.org/${this.state.lastPublication.doi}`}
+                                          to={`http://dx.doi.org/${this.state.lastPublication.doi}`}
+                                          target="_blank"
+                                          className={this.props.classes.textLink}
+                                        >
+                                          <Button
+                                            raised
+                                            className={this.props.classes.publicationAction}
+                                          >
+                                            <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.lastPublication.doi}.
+                                              </Button>
+                                        </ReactGA.OutboundLink>
+                                        }
+                    </Grid>
+                  </Grid>
+
+                  <br />
+                </Paper>
+                }
               </div>
             </Slide>
           </CenteredSection>
