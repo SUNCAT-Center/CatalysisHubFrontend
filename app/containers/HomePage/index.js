@@ -236,6 +236,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <Button
                           mini
                           role="button"
+                          className={this.props.classes.readMoreButton}
                         >Read More <MdChevronRight /></Button>
                       </Link>
 
@@ -358,8 +359,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                           <Grid item>
                             <Chip label={withCommas(this.state.reactions)} />
                           </Grid>
-                          <Grid item>
-                            <div className={this.props.classes.bold}>See reactions <MdChevronRight /></div>
+                          <Grid item className={this.props.classes.bold}>
+                            See reactions <MdChevronRight />
                           </Grid>
                         </Grid>
                       </Paper>
@@ -382,8 +383,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                           <Grid item>
                             <Chip label={withCommas(this.state.contributors)} />
                           </Grid>
-                          <Grid item>
-                            <div className={this.props.classes.bold}>See contributors <MdChevronRight /></div>
+                          <Grid item className={this.props.classes.bold}>
+                            See contributors <MdChevronRight />
                           </Grid>
                         </Grid>
                       </Paper>
@@ -429,8 +430,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                           <Grid item>
                             <Chip label={apps.length} />
                           </Grid>
-                          <Grid item>
-                            <div className={this.props.classes.bold}>See our apps <MdChevronRight /></div>
+                          <Grid item className={this.props.classes.bold}>
+                            See our apps <MdChevronRight />
                           </Grid>
                         </Grid>
                       </Paper>

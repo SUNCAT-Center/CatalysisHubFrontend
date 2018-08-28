@@ -58,6 +58,11 @@ export const styles = (theme) => ({
     width: '100%',
     marginTop: theme.spacing.unit * 2,
   },
+  readMoreButton: {
+    '&:hover': {
+      backgroundColor: _.get(theme, 'palette.sandhill.300'),
+    },
+  },
   homePaper: {
     backgroundColor: '#eeeeee',
     cornerRadius: 40,
@@ -67,6 +72,9 @@ export const styles = (theme) => ({
     maxWidth: 230,
     textAlign: 'left',
     align: 'left',
+    '&:hover': {
+      backgroundColor: _.get(theme, 'palette.sandhill.300'),
+    },
   },
   paperInfo: {
     minHeight: 30,
