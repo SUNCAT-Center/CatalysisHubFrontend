@@ -231,20 +231,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
                 <Grid container direction="row" justify="space-between">
                   <Grid item>
-                    <Link
-                      className={this.props.classes.buttonLink}
-                      to={'/upload'}
-                    >
-                      <Button
-                        raised
-                        color="primary"
-                      >
-                      Upload Surface Reactions <MdChevronRight />
-
-                      </Button>
-                    </Link>
-                  </Grid>
-                  <Grid item>
                     {this.state.truncated ?
                       <Link to="/about" className={this.props.classes.textLink}>
                         <Button
@@ -266,6 +252,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         Read Less <MdKeyboardArrowUp />
                       </Button>
                   }
+                  </Grid>
+                  <Grid item>
+                    <Link
+                      className={this.props.classes.buttonLink}
+                      to={'/upload'}
+                    >
+                      <Button
+                        raised
+                        color="primary"
+                      >
+                      Upload Surface Reactions <MdChevronRight />
+
+                      </Button>
+                    </Link>
                   </Grid>
                 </Grid>
               </Grid>
