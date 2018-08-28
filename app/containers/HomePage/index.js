@@ -236,7 +236,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                         <Button
                           mini
                           role="button"
-                          className={this.props.classes.readMoreButton}
+                          className={this.props.classes.hoverButton}
                         >Read More <MdChevronRight /></Button>
                       </Link>
 
@@ -260,6 +260,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       to={'/upload'}
                     >
                       <Button
+                        className={this.props.classes.hoverButton}
                         raised
                         color="primary"
                       >
@@ -319,7 +320,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       >
                         <Grid item>
                           <Link to={`/publications/${this.state.randomReaction.publication.pubId}`}>
-                            <Button fab color="primary" height="100%" >
+                            <Button
+                              className={this.props.classes.hoverButton}
+                              fab
+                              color="primary"
+                              height="100%"
+                            >
                               <MdChevronRight size={30} />
                             </Button>
                           </Link>

@@ -58,7 +58,7 @@ export const styles = (theme) => ({
     width: '100%',
     marginTop: theme.spacing.unit * 2,
   },
-  readMoreButton: {
+  hoverButton: {
     '&:hover': {
       backgroundColor: _.get(theme, 'palette.sandhill.300'),
     },
@@ -85,7 +85,6 @@ export const styles = (theme) => ({
   publicationAction: {
     margin: theme.spacing.unit,
     height: 6,
-    backgroundColor: _.get(theme, 'palette.sandhill.50'),
     '&:hover': {
       backgroundColor: _.get(theme, 'palette.sandhill.300'),
     },
