@@ -253,6 +253,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   <EmailShareButton
                     subject={this.state.reference.title}
                     body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)}`}
+                    url={window.location.href}
                   ><EmailIcon size={shareIconSize} round /></EmailShareButton>
                 </Grid>
                 <Grid item>
