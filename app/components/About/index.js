@@ -74,20 +74,20 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
             direction="row"
             justify="space-between"
             style={{
-              padding: '10%',
+              padding: '4%',
             }}
           >
-            <Grid item lg={3} className={this.props.classes.bannerBox}>
+            <Grid item lg={4} className={this.props.classes.bannerBox}>
               <a href="https://www6.slac.stanford.edu/" target="_blank">
                 <img src={slacLogo} alt="SLAC Logo" style={{ width: '240px', height: 'auto', display: 'block', margin: '0 auto' }} />
               </a>
             </Grid>
-            <Grid item lg={3} className={this.props.classes.bannerBox}>
+            <Grid item lg={4} className={this.props.classes.bannerBox}>
               <a href="https://www.stanford.edu/" target="_blank">
                 <img src={stanfordLogo} alt="Stanford Logo" style={{ width: '300px', height: 'auto', display: 'block', margin: '0 auto' }} />
               </a>
             </Grid>
-            <Grid item lg={3} className={this.props.classes.bannerBox}>
+            <Grid item lg={4} className={this.props.classes.bannerBox}>
               <a href="https://www.energy.gov/" target="_blank">
                 <img src={doeLogo} alt="Department of Energy Logo" style={{ width: '260px', height: 'auto', display: 'block', margin: '0 auto' }} />
               </a>

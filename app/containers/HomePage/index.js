@@ -229,12 +229,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.
                     </div>
                 </div>
-                <Grid container direction="row" justify="space-between">
+                <Grid
+                  container direction="row"
+                  justify="space-between"
+                  className={this.props.classes.mainButtons}
+                >
                   <Grid item>
                     {this.state.truncated ?
                       <Link to="/about" className={this.props.classes.textLink}>
                         <Button
                           mini
+                          raised
                           role="button"
                           className={this.props.classes.hoverButton}
                         >Read More <MdChevronRight /></Button>
