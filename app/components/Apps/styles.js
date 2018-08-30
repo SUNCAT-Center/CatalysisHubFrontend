@@ -31,7 +31,7 @@ export const styles = (theme) => ({
     backgroundColor: '#eeeeee',
     cornerRadius: 40,
     '&:hover': {
-      backgroundColor: theme.palette.sandhill[100],
+      backgroundColor: theme.palette.sandhill[300],
     },
   },
 });
