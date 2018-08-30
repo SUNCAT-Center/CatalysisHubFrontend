@@ -19,8 +19,19 @@ export const styles = (theme) => ({
     paddingTop: 5,
     marginBottom: theme.spacing.unit * 2,
     textAlign: 'left',
-    backgroundColor: '#eeeeee',
     cornerRadius: 40,
+  },
+  browse: {
+    backgroundColor: theme.palette.sky[400],
+  },
+  analyze: {
+    backgroundColor: theme.palette.cardinalred[400],
+  },
+  create: {
+    backgroundColor: theme.palette.poppy[400],
+  },
+  contribute: {
+    backgroundColor: theme.palette.mint[400],
   },
   appPaper: {
     padding: 10,

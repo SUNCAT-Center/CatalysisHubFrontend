@@ -1,6 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
@@ -19,7 +20,8 @@ class FilteredApps extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <Paper
-        className={this.props.classes.appsPaper}
+        className={[this.props.classes.appsPaper,
+          _.get(this.props.classes, this.props.title.toLowerCase())].join(' ')}
       >
         {this.props.title === '' ? null : <h2>{this.props.title}</h2>}
         <Grid container justify="flex-start">
