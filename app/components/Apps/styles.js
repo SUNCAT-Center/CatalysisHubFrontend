@@ -30,5 +30,8 @@ export const styles = (theme) => ({
     textAlign: 'left',
     backgroundColor: '#eeeeee',
     cornerRadius: 40,
+    '&:hover': {
+      backgroundColor: theme.palette.sandhill[100],
+    },
   },
 });
