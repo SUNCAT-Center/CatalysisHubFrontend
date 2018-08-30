@@ -30,11 +30,10 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
             <FilteredApps
               title="Browse"
               apps={apps} filter={[
+                'Surface Reactions',
                 'Profiles',
                 'Publications',
                 'GraphQL API',
-                'Prototype Search',
-                'Surface Reactions',
               ]}
             />
 
@@ -42,10 +41,10 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
               title="Analyze"
               apps={apps} filter={[
                 'Activity Maps',
-                'Pourbaix Diagrams',
                 'CatLearn',
+                'Pourbaix Diagrams',
+                'Prototype Search',
                 'Scaling Relations',
-
               ]}
             />
             <FilteredApps

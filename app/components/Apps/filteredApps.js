@@ -23,32 +23,32 @@ class FilteredApps extends React.Component { // eslint-disable-line react/prefer
       >
         {this.props.title === '' ? null : <h2>{this.props.title}</h2>}
         <Grid container justify="flex-start">
-          {this.props.apps
-                  .filter((app) => (this.props.filter.length === 0
-                      || this.props.filter.indexOf(app.title) > -1))
-                  .map((app, i) => (
-                    <Grid item key={`griditem_${i}`}>
-                      <Link
-                        to={app.route}
-                        style={{
-                          textDecoration: 'none',
-                          color: 'black',
-                        }}
-                      >
-                        <Paper
-                          className={this.props.classes.appPaper}
-                          elevation={0}
-                        >
-                          <Tooltip title={app.tooltip} placement="top">
-                            <h3>
-                              {getAppIcon(app.title)}
-                              {'\u00A0'}{app.title}</h3>
-                          </Tooltip>
-                          <div className={this.props.classes.appHint}>{app.tooltip} <MdChevronRight /></div>
-                        </Paper>
-                      </Link>
-                    </Grid>
-              )) }
+          {this.props.filter.map((appTitle, i) => {
+            const app = this.props.apps.filter((_app) => _app.title === appTitle)[0];
+            return (
+              <Grid item key={`griditem_${i}`}>
+                <Link
+                  to={app.route}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'black',
+                  }}
+                >
+                  <Paper
+                    className={this.props.classes.appPaper}
+                    elevation={0}
+                  >
+                    <Tooltip title={app.tooltip} placement="top">
+                      <h3>
+                        {getAppIcon(app.title)}
+                        {'\u00A0'}{app.title}</h3>
+                    </Tooltip>
+                    <div className={this.props.classes.appHint}>{app.tooltip} <MdChevronRight /></div>
+                  </Paper>
+                </Link>
+              </Grid>
+            );
+          })}
         </Grid>
       </Paper>
     );
