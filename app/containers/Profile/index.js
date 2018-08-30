@@ -42,7 +42,7 @@ import {
   TwitterIcon,
 } from 'react-share';
 
-import { LinearProgress } from 'material-ui/Progress';
+import { CircularProgress, LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 
 import axios from 'axios';
@@ -132,6 +132,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
     axios.post(newGraphQLRoot, { query: allAuthorsQuery })
       .then((response) => {
         this.setState({
+          loading: false,
           allAuthors:
           [...new Set(
             [].concat.apply([], response.data.data.publications.edges.map((edge) => (JSON.parse(edge.node.authors.replace(/'/g, '"') // eslint-disable-line prefer-spread
@@ -400,7 +401,9 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                     return true;
                   }
                   return x.match(new RegExp(this.state.authorFilter, 'ig'));
-                }).length})</h2>
+                }).length})
+                {this.state.loading ? <CircularProgress size={30} color="primary" /> : null}
+                </h2>
               </Grid>
               <Grid item>
                 <Input
