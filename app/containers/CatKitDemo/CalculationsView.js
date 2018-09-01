@@ -344,6 +344,7 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                             </Grid>
                             <Grid>
                               <Button
+                                raised
                                 onClick={this.handleLogin}
                               >Login</Button>{'\u00A0\u00A0'}
                               {this.state.loggingIn ? <CircularProgress color="primary" /> : null}
