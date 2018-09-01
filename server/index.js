@@ -33,6 +33,8 @@ app.use(csp({
       'www.google-analytics.com',
       'catappdatabase2-pr-63.herokuapp.com',
       'slac-suncat.slack.com',
+      'newt.nersc.gov',
+
     ],
     fontSrc: [
       "'self'",

@@ -20,11 +20,18 @@ import { MdClear,
   MdClose,
   MdContentCopy,
   MdDelete,
+  MdFileUpload,
   MdFileDownload } from 'react-icons/lib/md';
+import {
+  IoLogIn,
+  IoLogOut,
+} from 'react-icons/lib/io';
 import { withStyles } from 'material-ui/styles';
-import { LinearProgress } from 'material-ui/Progress';
+import { LinearProgress, CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
+import Popover from 'material-ui/Popover';
 import Slide from 'material-ui/transitions/Slide';
+import TextField from 'material-ui/TextField';
 
 
 import * as moment from 'moment/moment';
@@ -38,6 +45,13 @@ const fireworksUrl = `${fireworksRoot}/schedule_workflows`;
 
 const initialState = {
   loading: false,
+  loggingIn: false,
+  nerscLoggedIn: false,
+  loginModalOpen: false,
+  popoverAnchorElement: null,
+  nersc_username: '',
+  nersc_password: '',
+  newt_sessionid: '',
 };
 
 
@@ -50,6 +64,11 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.editCalculation = this.editCalculation.bind(this);
     this.downloadCalculations = this.downloadCalculations.bind(this);
     this.queueCalculations = this.queueCalculations.bind(this);
+    this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
+    this.handlePopoverClose = this.handlePopoverClose.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.submitNersc = this.submitNersc.bind(this);
   }
   clearCalculations() {
     this.props.clearCalculations();
@@ -151,11 +170,92 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
     this.setState({ loading: false });
   }
 
+  handleChange = (name) => (event) => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
+  handleLogin() {
+    this.setState({
+      loggingIn: true,
+    });
+    const formData = new FormData();
+    formData.append('username', this.state.nersc_username);
+    formData.append('password', this.state.nersc_password);
+    axios({
+      method: 'post',
+      url: 'https://newt.nersc.gov/newt/auth',
+      withCredentials: true,
+      data: formData }).then((response) => {
+        if (response.data.auth) {
+          this.setState({
+            nerscLoggedIn: true,
+            loggingIn: false,
+          });
+        }
+      });
+  }
+
+  handleLogout() {
+    this.setState({
+      nerscLoggedIn: false,
+      newt_sessionid: '',
+    });
+    axios({
+      method: 'post',
+      url: 'https://newt.nersc.gov/newt/logout',
+      withCredentials: true,
+    });
+  }
+
+  handlePopoverOpen(event) {
+    this.setState({
+      popoverAnchorElement: event.currentTarget,
+    });
+  }
+
+  handlePopoverClose() {
+    this.setState({
+      popoverAnchorElement: null,
+    });
+  }
+
+
   queueCalculations() {
     const params = { params: {
       calculations: JSON.stringify(this.props.calculations),
     } };
     axios.get(fireworksUrl, params).then(() => {
+    });
+  }
+
+  submitNersc() {
+    const data = new FormData();
+    const calculations = _.cloneDeep(this.props.calculations);
+    calculations.map((calculation) => {
+      delete calculation.adsorbateParams.cifs;  // eslint-disable-line no-param-reassign
+      delete calculation.adsorbateParams.inputs;  // eslint-disable-line no-param-reassign
+      delete calculation.bulkParams.cif;  // eslint-disable-line no-param-reassign
+      delete calculation.bulkParams.input;  // eslint-disable-line no-param-reassign
+      delete calculation.bulkParams.wyckoff.cif;  // eslint-disable-line no-param-reassign
+      delete calculation.slabParams.cif;  // eslint-disable-line no-param-reassign
+      delete calculation.slabParams.input;  // eslint-disable-line no-param-reassign
+      return null;
+    });
+
+    const executable = `/usr/bin/python3 /project/projectdirs/m2997/catalysisHub/runner.py '${JSON.stringify(calculations)}' `;
+    data.append('executable', executable);
+    /* data.append('loginenv', true);*/
+    axios({
+      url: 'https://newt.nersc.gov/newt/command/cori',
+      method: 'post',
+      withCredentials: true,
+      data,
+    }).then((response) => {
+      this.props.openSnackbar(`Successfully ran: "${response.data.output}".`);
+    }).catch((response) => {
+      this.props.openSnackbar(`Hit a bug "${response}".`);
     });
   }
 
@@ -170,7 +270,92 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
           direction="up"
         >
           <Paper className={this.props.classes.paper} height={8}>
-            <h4>Stored Calculations</h4>
+            <Grid container direction="row" justify="space-between">
+              <Grid item>
+                <h4>Stored Calculations</h4>
+              </Grid>
+              <Grid item>
+                {this.state.nerscLoggedIn ?
+                  <Button
+                    raised
+                    onClick={(event) => {
+                      this.handleLogout();
+                      this.handlePopoverClose(event);
+                    }}
+                  ><IoLogOut />{'\u00A0'} Log out of NERSC</Button>
+                    :
+                  <div>
+                    <Button
+                      raised
+                      onClick={(event) => {
+                        this.handlePopoverOpen(event);
+                      }}
+                    >
+                      <IoLogIn />{'\u00A0'} Log into NERSC
+                </Button>
+                    <Popover
+                      open={Boolean(this.state.popoverAnchorElement)}
+                      anchorEl={this.state.popoverAnchorElement}
+                      onClose={this.handlePopoverClose}
+                      origin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                    >
+                      <div className={this.props.classes.loginForm}>
+                        <form>
+                          <Grid
+                            container
+                            direction="column"
+                            justify="flex-start"
+                          >
+                            <Grid item>
+
+                              <TextField
+                                id="nersc_username"
+                                label="NERSC Username"
+                                value={this.state.nersc_username}
+                                onChange={this.handleChange('nersc_username')}
+                                onKeyDown={((event) => {
+                                  if (event.nativeEvent.keyCode === 13) {
+                                    this.handleLogin();
+                                  }
+                                })}
+                                helperText="Just your username (not email)."
+                              />
+                            </Grid>
+                            <Grid item>
+                              <TextField
+                                id="nersc_password"
+                                type="password"
+                                label="NERSC Password"
+                                value={this.state.nersc_password}
+                                onChange={this.handleChange('nersc_password')}
+                                onKeyDown={((event) => {
+                                  if (event.nativeEvent.keyCode === 13) {
+                                    this.handleLogin();
+                                  }
+                                })}
+                              />
+                            </Grid>
+                            <Grid>
+                              <Button
+                                onClick={this.handleLogin}
+                              >Login</Button>{'\u00A0\u00A0'}
+                              {this.state.loggingIn ? <CircularProgress color="primary" /> : null}
+                            </Grid>
+                          </Grid>
+                        </form>
+                      </div>
+                    </Popover>
+                  </div>
+                }
+              </Grid>
+            </Grid>
             <Table>
               <TableHead>
                 <TableRow>
@@ -272,6 +457,18 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
                   color="primary"
                 ><MdFileDownload />{'\u00A0'} Download</Button>
               </Grid>
+              {!this.state.nerscLoggedIn ? null :
+              <Grid item>
+                <Button
+                  raised
+                  color="primary"
+                  onClick={() => this.submitNersc()}
+                  className={this.props.classes.button}
+                >
+                  <MdFileUpload />{'\u00A0'} Submit to NERSC
+                </Button>
+              </Grid>
+              }
               {/*
               <Grid item>
                 <Button
@@ -303,6 +500,7 @@ CalculationsView.propTypes = {
   editCalculation: PropTypes.func,
   stepperHandleReset: PropTypes.func,
   classes: PropTypes.object,
+  openSnackbar: PropTypes.func,
 };
 
 module.exports = {

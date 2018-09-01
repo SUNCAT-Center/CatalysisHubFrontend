@@ -94,6 +94,10 @@ export const styles = (theme) => ({
   },
   row: {
   },
+  loginForm: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
+  },
 
 });
 

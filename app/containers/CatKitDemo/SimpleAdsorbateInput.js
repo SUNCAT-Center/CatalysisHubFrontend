@@ -16,7 +16,10 @@ import Select from 'material-ui/Select';
 import { LinearProgress } from 'material-ui/Progress';
 import { FormGroup, FormControl, FormControlLabel } from 'material-ui/Form';
 import { InputLabel } from 'material-ui/Input';
-import { MdChevronLeft, MdChevronRight, MdCheckCircle } from 'react-icons/lib/md';
+import { MdLoop, MdChevronLeft, MdChevronRight, MdCheckCircle } from 'react-icons/lib/md';
+import {
+  IoCube,
+} from 'react-icons/lib/io';
 import { FaList } from 'react-icons/lib/fa';
 import Tooltip from 'material-ui/Tooltip';
 
@@ -355,12 +358,16 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
               </Grid>
               <Grid item>
                 <div>Start new structure from scratch:
-                    <Button onClick={this.props.stepperHandleReset} className={this.props.classes.button}> Start Over </Button> </div>
+                  <Button
+                    onClick={this.props.stepperHandleReset}
+                    raised
+                    className={this.props.classes.button}
+                  ><MdLoop />{'\u00A0'} Start Over </Button> </div>
               </Grid>
               <Grid item>
                   Find and start from an existing structure
                   <Link to="/prototypeSearch" className={this.props.classes.buttonLink}>
-                    <Button onClick={this.props.stepperHandleReset} className={this.props.classes.button}> Prototype Search </Button>
+                    <Button raised onClick={this.props.stepperHandleReset} className={this.props.classes.button}><IoCube /> {'\u00A0'} Prototype Search </Button>
                   </Link>
               </Grid>
             </Grid>
