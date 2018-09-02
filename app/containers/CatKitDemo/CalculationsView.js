@@ -193,8 +193,23 @@ class CalculationsView extends React.Component { // eslint-disable-line react/pr
             nerscLoggedIn: true,
             loggingIn: false,
           });
+        this.props.openSnackbar("Login successful.");
+        } else {
+          this.setState({
+            nerscLoggedIn: false,
+            loggingIn: false,
+            popoverAnchorElement: null,
+          });
+        this.props.openSnackbar("Login failed.");
         }
-      });
+      })
+      .catch((error) => {
+        this.props.openSnackbar(error);
+          this.setState({
+            nerscLoggedIn: false,
+            loggingIn: false,
+          });
+      }) ;
   }
 
   handleLogout() {
