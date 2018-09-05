@@ -262,73 +262,82 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
         <div>
           <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
           <Script url="/static/ChemDoodleWeb.js" />
-          {(this.state.totalCount === 0) ? null :
-          <div>
-            <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
+          {(this.state.totalCount === 0) ?
             <Paper className={this.props.classes.paper}>
-              <Grid container direction="row" justify="space-between">
-                <Grid item>
-                  <h2>Datasets</h2>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="row" className={this.props.classes.shareButtons}>
-                    <Grid item>
-                      <EmailShareButton
-                        url={window.location.href}
-                        subject={this.props.routeParams.name}
-                        body={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
-                      ><EmailIcon size={shareIconSize} round /></EmailShareButton>
-                    </Grid>
-                    <Grid item>
-                      <LinkedinShareButton
-                        title={toTitleFormat(this.props.routeParams.name)}
-                        description={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
-                        url={window.location.href}
-                      >
-                        <LinkedinIcon size={shareIconSize} round />
-                      </LinkedinShareButton>
-                    </Grid>
-                    <Grid item>
-                      <TwitterShareButton
-                        url={window.location.href}
-                        title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
-                        hashtags={['catalysis-hub.org', toSlugFormat(this.props.routeParams.name)]}
-                      > <TwitterIcon size={shareIconSize} round /> </TwitterShareButton>
-                    </Grid>
-                    <Grid item>
-                      <FacebookShareButton
-                        url={window.location.href}
-                        quote={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
-                      >
-                        <FacebookIcon size={shareIconSize} round />
-                      </FacebookShareButton>
-                    </Grid>
-                    <Grid item>
-                      <WhatsappShareButton
-                        url={window.location.href}
-                        title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
-                      ><WhatsappIcon size={shareIconSize} round /></WhatsappShareButton>
-                    </Grid>
+              <h1>
+                  Profile not found :-/
+                </h1>
+              <div>
+                  But you can <Link to={'/upload'} >upload reaction geometries</Link> for {toTitleFormat(this.props.routeParams.name)} to create one :-).
+                </div>
+            </Paper>
+              :
+            <div>
+              <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
+              <Paper className={this.props.classes.paper}>
+                <Grid container direction="row" justify="space-between">
+                  <Grid item>
+                    <h2>Datasets</h2>
                   </Grid>
-
-                </Grid>
-              </Grid>
-              {this.props.reactions.map((reference, i) => (
-                <Paper
-                  className={this.props.classes.smallPaper}
-                  key={`sp_${i}`}
-                >
-                  <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
-                  <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
-                    <Grid item>
-                      {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
-                        <Button
-                          onClick={() => {
-                            this.loadPreviewCif(reference.pubId);
-                          }}
-                          className={this.props.classes.publicationAction}
-                          raised
+                  <Grid item>
+                    <Grid container direction="row" className={this.props.classes.shareButtons}>
+                      <Grid item>
+                        <EmailShareButton
+                          url={window.location.href}
+                          subject={this.props.routeParams.name}
+                          body={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
+                        ><EmailIcon size={shareIconSize} round /></EmailShareButton>
+                      </Grid>
+                      <Grid item>
+                        <LinkedinShareButton
+                          title={toTitleFormat(this.props.routeParams.name)}
+                          description={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                          url={window.location.href}
                         >
+                          <LinkedinIcon size={shareIconSize} round />
+                        </LinkedinShareButton>
+                      </Grid>
+                      <Grid item>
+                        <TwitterShareButton
+                          url={window.location.href}
+                          title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                          hashtags={['catalysis-hub.org', toSlugFormat(this.props.routeParams.name)]}
+                        > <TwitterIcon size={shareIconSize} round /> </TwitterShareButton>
+                      </Grid>
+                      <Grid item>
+                        <FacebookShareButton
+                          url={window.location.href}
+                          quote={`${window.location.href} Datasets by ${this.props.routeParams.name}`}
+                        >
+                          <FacebookIcon size={shareIconSize} round />
+                        </FacebookShareButton>
+                      </Grid>
+                      <Grid item>
+                        <WhatsappShareButton
+                          url={window.location.href}
+                          title={`Datasets by ${toTitleFormat(this.props.routeParams.name)}`}
+                        ><WhatsappIcon size={shareIconSize} round /></WhatsappShareButton>
+                      </Grid>
+                    </Grid>
+
+                  </Grid>
+                </Grid>
+                {this.props.reactions.map((reference, i) => (
+                  <Paper
+                    className={this.props.classes.smallPaper}
+                    key={`sp_${i}`}
+                  >
+                    <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
+                    <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                      <Grid item>
+                        {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
+                          <Button
+                            onClick={() => {
+                              this.loadPreviewCif(reference.pubId);
+                            }}
+                            className={this.props.classes.publicationAction}
+                            raised
+                          >
                                       Preview
                                     </Button>
                                         :
@@ -343,41 +352,41 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                                       x={1} y={1} z={2}
                                     />
                                     }
-                    </Grid>
-                    <Grid item>
-                      {_.isEmpty(reference.doi) ? null :
-                      <ReactGA.OutboundLink
-                        eventLabel={`http://dx.doi.org/${reference.doi}`}
-                        to={`http://dx.doi.org/${reference.doi}`}
-                        target="_blank"
-                        className={this.props.classes.outboundLink}
-                      >
-                        <Button
-                          raised
-                          className={this.props.classes.publicationAction}
+                      </Grid>
+                      <Grid item>
+                        {_.isEmpty(reference.doi) ? null :
+                        <ReactGA.OutboundLink
+                          eventLabel={`http://dx.doi.org/${reference.doi}`}
+                          to={`http://dx.doi.org/${reference.doi}`}
+                          target="_blank"
+                          className={this.props.classes.outboundLink}
                         >
-                          <FaExternalLink />{'\u00A0\u00A0'} DOI: {reference.doi}.
+                          <Button
+                            raised
+                            className={this.props.classes.publicationAction}
+                          >
+                            <FaExternalLink />{'\u00A0\u00A0'} DOI: {reference.doi}.
                       </Button>
-                      </ReactGA.OutboundLink>
+                        </ReactGA.OutboundLink>
                 }
-                      <Link
-                        className={this.props.classes.buttonLink}
-                        to={`/publications/${reference.pubId}`}
-                      >
-                        <Button
-                          raised
-                          className={this.props.classes.publicationAction}
+                        <Link
+                          className={this.props.classes.buttonLink}
+                          to={`/publications/${reference.pubId}`}
                         >
-                          <MdViewList />
-                          {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
-                        </Button>
-                      </Link>
+                          <Button
+                            raised
+                            className={this.props.classes.publicationAction}
+                          >
+                            <MdViewList />
+                            {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                          </Button>
+                        </Link>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Paper>
+                  </Paper>
           )
         )}
-            </Paper> </div>
+              </Paper> </div>
           }
           <Paper className={this.props.classes.paper}>
             <Link
