@@ -263,14 +263,18 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
           <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
           <Script url="/static/ChemDoodleWeb.js" />
           {(this.state.totalCount === 0) ?
-            <Paper className={this.props.classes.paper}>
-              <h1>
+            <div>
+              {_.isEmpty(this.props.routeParams.name) ? null :
+              <Paper className={this.props.classes.paper}>
+                <h1>
                   Profile not found :-/
                 </h1>
-              <div>
+                <div>
                   But you can <Link to={'/upload'} >upload reaction geometries</Link> for {toTitleFormat(this.props.routeParams.name || '')} to create one :-).
                 </div>
-            </Paper>
+              </Paper>
+              }
+            </div>
               :
             <div>
               <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
