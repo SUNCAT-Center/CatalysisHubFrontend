@@ -370,19 +370,22 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "@context": "http://schema.org",
           "@type": "Dataset",
           "name": "${publication.title}",
+          "headline": "${publication.title}",
           "author":[${authorList} ],
           "citation": "${plainPrintReference(publication)}",
           "description": "Reaction energies and atomic structures from first-principles electronic structure calculations.",
-          "keywords": "${publication.title || ''} ${publication.pubtextsearch || ''}",
+          "keywords": "${publication.title || ''} ${publication.authors}",
           "identifier": "${publication.pubId}",
           "datePublished": "${publication.year}",
           "sameAs": "https://dx.doi.org/${publication.doi}",
           "url": "${window.location.href}",
           "variableMeasured": "reaction energy [eV]",
+          "measurementTechnique": "Density Functional Theory",
           "distribution": [
             {
               "@type": "DataDownload",
               "encodingFormat": "JSON",
+              "headline": "${publication.title}",
               "contentUrl": "http://api.catalysis-hub.org/graphql?query=%7B%0A%20%20reactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%20%20%20%20reactants%0A%20%20%20%20%20%20%20%20products%0A%20%20%20%20%20%20%20%20surfaceComposition%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
               
             }
