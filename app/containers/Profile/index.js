@@ -268,7 +268,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                   Profile not found :-/
                 </h1>
               <div>
-                  But you can <Link to={'/upload'} >upload reaction geometries</Link> for {toTitleFormat(this.props.routeParams.name)} to create one :-).
+                  But you can <Link to={'/upload'} >upload reaction geometries</Link> for {toTitleFormat(this.props.routeParams.name || '')} to create one :-).
                 </div>
             </Paper>
               :
@@ -431,21 +431,26 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
                     return true;
                   }
                   return x.match(new RegExp(this.state.authorFilter, 'ig'));
-                }).map((author, i) => (
-                  <Link
-                    to={`/profile/${toSlugFormat(author)}`}
-                    key={`li_${i}`}
-                    onClick={() => {
-                      this.reloadData(toSlugFormat(author));
-                    }}
-                  >
-                    <li
-                      className={this.props.classes.authorEntry}
-                    >
-                      {author}
-                    </li>
-                  </Link>
-            ))}
+                })
+                .map((author) => author.trim())
+                .sort()
+                .map((author, i) =>
+                  /* console.log(`<url><loc>https://www.catalysis-hub.org/profile/${toSlugFormat(author)}</loc></url>`)*/
+                   (
+                     <Link
+                       to={`/profile/${toSlugFormat(author)}`}
+                       key={`li_${i}`}
+                       onClick={() => {
+                         this.reloadData(toSlugFormat(author));
+                       }}
+                     >
+                       <li
+                         className={this.props.classes.authorEntry}
+                       >
+                         {author}
+                       </li>
+                     </Link>
+                  ))}
             </ul>
           </Paper>
         </div>
