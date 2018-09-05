@@ -359,6 +359,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "@context": "http://schema.org",
           "@type": "Dataset",
           "name": "${publication.title}",
+          "authors":"${publication.authors}",
+          "author":"${publication.authors}",
           "citation": "${plainPrintReference(publication)}",
           "description": "Reaction energies and atomic structures from first-principles electronic structure calculations.",
           "keywords": "${publication.title || ''} ${publication.authors || ''} ${publication.pubtextsearch || ''}",
