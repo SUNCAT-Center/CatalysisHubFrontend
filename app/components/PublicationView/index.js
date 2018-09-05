@@ -374,7 +374,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "author":[${authorList} ],
           "citation": "${plainPrintReference(publication)}",
           "description": "Reaction energies and atomic structures from first-principles electronic structure calculations.",
-          "keywords": "${publication.title || ''} ${publication.authors}",
+          "keywords": "${publication.title || ''}",
           "identifier": "${publication.pubId}",
           "datePublished": "${publication.year}",
           "sameAs": "https://dx.doi.org/${publication.doi}",
