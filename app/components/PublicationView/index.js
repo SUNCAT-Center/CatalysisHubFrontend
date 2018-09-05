@@ -143,6 +143,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       volume
       journal
       doi
+      year
+      pubtextsearch
     }
   }
 }}` };
@@ -358,10 +360,13 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "@type": "Dataset",
           "name": "${publication.title}",
           "citation": "${plainPrintReference(publication)}",
-          "description": "Reaction Energies and Structures",
-          "identifier": "${publication.doi}",
+          "description": "Reaction energies and atomic structures from first-principles electronic structure calculations.",
+          "keywords": "${publication.pubtextsearch}",
+          "identifier": "${publication.pubId}",
           "datePublished": "${publication.year}",
+          "sameAs": "https://dx.doi.org/${publication.doi}"
           "url": "${window.location.href}",
+          "variableMeasured": "reaction energy [eV]",
           "distribution": [
             {
               "@type": "DataDownload",
