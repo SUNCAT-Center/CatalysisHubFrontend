@@ -351,7 +351,18 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     });
   }
   render() {
+    let authorList;
     const { publication, reactions, structures } = this.state;
+    if (_.isEmpty(publication.authors)) {
+      authorList = '';
+    } else {
+      authorList = JSON.parse(publication.authors).map((author) => (
+        `{
+         "@type": "Person",
+         "name": "${author}"
+      }`
+      )).join(', ');
+    }
     return (
       <div>
         <Helmet>
@@ -359,11 +370,10 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "@context": "http://schema.org",
           "@type": "Dataset",
           "name": "${publication.title}",
-          "authors":"${publication.authors}",
-          "author":"${publication.authors}",
+          "author":[${authorList} ],
           "citation": "${plainPrintReference(publication)}",
           "description": "Reaction energies and atomic structures from first-principles electronic structure calculations.",
-          "keywords": "${publication.title || ''} ${publication.authors || ''} ${publication.pubtextsearch || ''}",
+          "keywords": "${publication.title || ''} ${publication.pubtextsearch || ''}",
           "identifier": "${publication.pubId}",
           "datePublished": "${publication.year}",
           "sameAs": "https://dx.doi.org/${publication.doi}",
