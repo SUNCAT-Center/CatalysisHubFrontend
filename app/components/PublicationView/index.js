@@ -364,7 +364,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "keywords": "${publication.pubtextsearch}",
           "identifier": "${publication.pubId}",
           "datePublished": "${publication.year}",
-          "sameAs": "https://dx.doi.org/${publication.doi}"
+          "sameAs": "https://dx.doi.org/${publication.doi}",
           "url": "${window.location.href}",
           "variableMeasured": "reaction energy [eV]",
           "distribution": [
