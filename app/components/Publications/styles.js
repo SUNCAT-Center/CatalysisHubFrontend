@@ -19,6 +19,7 @@ export const styles = (theme) => ({
     '&:hover': {
       backgroundColor: _.get(theme, 'palette.sandhill.300'),
     },
+    textDecoration: 'none',
   },
   outboundLink: {
     textDecoration: 'none',

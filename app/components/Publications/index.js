@@ -303,6 +303,24 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                   <h1>Publications and Datasets</h1>
                 </Grid>
                 <Grid item>
+                  <Grid container direction="column" justify="flex-end">
+                    <Grid item>
+
+                      <Link
+                        to={'/profile'}
+                        className={this.props.classes.outboundLink}
+                      >
+                        <Button
+                          raised
+                          className={this.props.classes.publicationAction}
+                        >
+                      Contributors
+                    </Button>
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
                   <Input
                     className={this.props.classes.filterInput}
                     value={this.state.publicationFilter}
