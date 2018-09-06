@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router';
 import {
   FaMapO,
   FaTerminal,
@@ -70,7 +71,21 @@ export const prettyPrintReference = (ref) =>
   // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
   (<span>
     {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <strong>{`"${toTitleCase(restoreSC(ref.title))}"`}. </strong> : null }
-    {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span> {restoreSC(typeof ref.authors === 'string' ? JSON.parse(ref.authors).join('; ').replace(/[,;](?! )/g, ', ') : ref.authors.join('; ').replace(/[,;](?! )/g, ', '))}. </span> : null }
+    {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span> {(typeof ref.authors === 'string' ? JSON.parse(ref.authors).map((author, i) => (
+      <Link
+        key={`a${i}`}
+        to={`/profile/${restoreSC(toSlugFormat(author))}`}
+      >
+        {restoreSC(author)}
+      </Link>
+    )).reduce((prev, curr) => [prev, '; ', curr]) : ref.authors.map((author, i) => (
+      <Link
+        key={`a${i}`}
+        to={`/profile/${restoreSC(toSlugFormat(author))}`}
+      >
+        {restoreSC(author)}
+      </Link>
+    )).reduce((prev, curr) => [prev, '; ', curr]))}. </span> : null }
     {(ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) ? <i>{ref.journal}, </i> : null }
     {(ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) ? <span>{ref.volume} </span> : null}
     {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year}). </span> : null}

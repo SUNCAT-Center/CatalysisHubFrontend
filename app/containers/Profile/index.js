@@ -52,6 +52,7 @@ import {
   toAuthorFormat,
   toTitleFormat,
   toSlugFormat,
+  restoreSC,
 } from 'utils/functions';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -77,6 +78,11 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
   }
   componentDidMount() {
     this.reloadData();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.routeParams.name !== this.props.routeParams.name) {
+      this.reloadData();
+    }
   }
 
   handleChange(name) {
@@ -245,7 +251,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
             </div>
               :
             <div>
-              <h1>{toTitleFormat(this.props.routeParams.name)}</h1>
+              <h1>{restoreSC(toTitleFormat(this.props.routeParams.name))}</h1>
               <Paper className={this.props.classes.paper}>
                 <Grid container direction="row" justify="space-between">
                   <Grid item>

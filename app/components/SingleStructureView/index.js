@@ -12,6 +12,9 @@ import Grid from 'material-ui/Grid';
 import {
   FaExternalLink,
 } from 'react-icons/lib/fa';
+import {
+  prettyPrintReference,
+} from 'utils/functions';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -69,10 +72,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{`Title: "${this.props.selectedSystem.publication[0].title}"`}</li>
-            <li>Authors: {typeof this.props.selectedSystem.publication === 'undefined' || this.props.selectedSystem.publication === '' ? null :
-                    JSON.parse(this.props.selectedSystem.publication[0].authors).join('; ').replace('\\o', 'ø')}</li>
-            <li>Year: {this.props.selectedSystem.publication[0].year}</li>
+            <li>{prettyPrintReference(this.props.selectedSystem.publication[0])}</li>
             {_.isEmpty(this.props.selectedSystem.publication[0].doi) ? null :
             <div>
               <li>
