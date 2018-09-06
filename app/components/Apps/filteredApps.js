@@ -37,7 +37,10 @@ class FilteredApps extends React.Component { // eslint-disable-line react/prefer
                   }}
                 >
                   <Paper
-                    className={this.props.classes.appPaper}
+                    className={[
+                      this.props.classes.appPaper,
+                      _.get(this.props.classes, `${this.props.title.toLowerCase()}Paper`),
+                    ].join(' ')}
                     elevation={0}
                   >
                     <Tooltip title={app.tooltip} placement="top">

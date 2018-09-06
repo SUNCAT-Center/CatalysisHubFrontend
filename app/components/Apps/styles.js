@@ -21,18 +21,6 @@ export const styles = (theme) => ({
     textAlign: 'left',
     cornerRadius: 40,
   },
-  browse: {
-    backgroundColor: theme.palette.sky[400],
-  },
-  analyze: {
-    backgroundColor: theme.palette.cardinalred[400],
-  },
-  create: {
-    backgroundColor: theme.palette.poppy[400],
-  },
-  contribute: {
-    backgroundColor: theme.palette.mint[400],
-  },
   appPaper: {
     padding: 10,
     paddingTop: 5,
@@ -44,5 +32,43 @@ export const styles = (theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.sandhill[300],
     },
+  },
+
+  browsePaper: {
+    backgroundColor: theme.palette.sky[100],
+    '&:hover': {
+      backgroundColor: theme.palette.sky[50],
+    },
+  },
+  analyzePaper: {
+    backgroundColor: theme.palette.cardinalred[100],
+    '&:hover': {
+      backgroundColor: theme.palette.cardinalred[50],
+    },
+  },
+  createPaper: {
+    backgroundColor: theme.palette.poppy[100],
+    '&:hover': {
+      backgroundColor: theme.palette.poppy[50],
+    },
+  },
+  contributePaper: {
+    backgroundColor: theme.palette.mint[100],
+    '&:hover': {
+      backgroundColor: theme.palette.mint[50],
+    },
+  },
+
+  browse: {
+    backgroundColor: theme.palette.sky[400],
+  },
+  analyze: {
+    backgroundColor: theme.palette.cardinalred[400],
+  },
+  create: {
+    backgroundColor: theme.palette.poppy[400],
+  },
+  contribute: {
+    backgroundColor: theme.palette.mint[400],
   },
 });
