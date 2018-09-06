@@ -47,7 +47,12 @@ import Paper from 'material-ui/Paper';
 
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
-import { prettyPrintReference } from 'utils/functions';
+import {
+  prettyPrintReference,
+  toAuthorFormat,
+  toTitleFormat,
+  toSlugFormat,
+} from 'utils/functions';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
 import * as actions from './actions';
@@ -55,43 +60,6 @@ import { styles } from './styles';
 
 
 const shareIconSize = 28;
-/* Turn the first letter of a string into uppercase*/
-/* and the rest into lower case*/
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-}
-
-
-/* Turn the author name provided as slug in URL*/
-/* into form typically used in citation reference*/
-function toAuthorFormat(s) {
-  let res;
-  res = s.split('-');
-  res = res.map(toTitleCase);
-  res = [res[res.length - 1]].concat(res.slice(0, 1)).join('@ ').replace('@', ',').replace(/@/g, ' ');
-  return res;
-}
-
-
-/* Turn the authorname provided as slug in URL*/
-/* into form presentable as title at top of page*/
-function toTitleFormat(s) {
-  let res;
-  res = s.split('-');
-  res = res.map(toTitleCase);
-  return res.join(' ');
-}
-
-function toSlugFormat(s) {
-  return s.split(',')
-    .reverse()
-    .map((x) => x.trim())
-    .join(' ')
-    .replace('.', '')
-    .replace(/\s/g, '-')
-    .toLowerCase();
-}
-
 class Profile extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);

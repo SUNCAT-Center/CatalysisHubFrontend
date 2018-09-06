@@ -140,3 +140,33 @@ export const getAppIcon = (title) => {
   return null;
 };
 
+/* Turn the author name provided as slug in URL*/
+/* into form typically used in citation reference*/
+export function toAuthorFormat(s) {
+  let res;
+  res = s.split('-');
+  res = res.map(toTitleCase);
+  res = [res[res.length - 1]].concat(res.slice(0, 1)).join('@ ').replace('@', ',').replace(/@/g, ' ');
+  return res;
+}
+
+
+/* Turn the authorname provided as slug in URL*/
+/* into form presentable as title at top of page*/
+export function toTitleFormat(s) {
+  let res;
+  res = s.split('-');
+  res = res.map(toTitleCase);
+  return res.join(' ');
+}
+
+export function toSlugFormat(s) {
+  return s.split(',')
+    .reverse()
+    .map((x) => x.trim())
+    .join(' ')
+    .replace('.', '')
+    .replace(/\s/g, '-')
+    .toLowerCase();
+}
+
