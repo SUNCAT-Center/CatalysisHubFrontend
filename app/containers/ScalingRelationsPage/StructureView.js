@@ -19,6 +19,9 @@ import { MdChevronLeft, MdChevronRight } from 'react-icons/lib/md';
 
 import GraphQlbutton from 'components/GraphQlbutton';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
+import {
+  prettyPrintReference,
+} from 'utils/functions';
 
 import { styles } from './styles';
 
@@ -132,10 +135,7 @@ class StructureView2 extends React.Component { // eslint-disable-line react/pref
                   <li>Total Energy: {structure.energy.toFixed(2)} eV</li>
                   <li>DFT Code: {structure.dftCode}</li>
                   <li>DFT Functional: {structure.dftFunctional}</li>
-                  <li>{`Title: "${publication.title}"`}</li>
-                  <li>Authors: {publication.authors === 'undefined' || publication.authors === '' ? null :
-                          JSON.parse(publication.authors).join('; ').replace('\\o', 'ø')}</li>
-                  <li>Year: {publication.year}</li>
+                  <li>{prettyPrintReference(publication)}</li>
                   {_.isEmpty(publication.doi) ? null :
                   <div>
                     <li>
