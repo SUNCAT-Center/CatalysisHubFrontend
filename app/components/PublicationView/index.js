@@ -45,7 +45,11 @@ import { newGraphQLRoot } from 'utils/constants';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import GraphQlbutton from 'components/GraphQlbutton';
 import CompositionBar from 'components/CompositionBar';
-import { plainPrintReference } from 'utils/functions';
+import {
+  plainPrintReference,
+  prettyPrintReference,
+  restoreSC,
+} from 'utils/functions';
 
 import { styles } from './styles';
 
@@ -71,45 +75,6 @@ const initialState = {
   hasMoreReactions: true,
   tableView: false,
 };
-
-const restoreSC = (str) => {
-  let res = str;
-  if (str === null || typeof str === 'undefined') {
-    return '';
-  }
-  if (typeof str === 'object') {
-    res = str.join(' ');
-  }
-  return res
-    .replace('{\\o}', 'ø')
-    .replace('\\o', 'ø')
-    .replace('{"A}', 'Ä')
-    .replace('{"U}', 'Ü')
-    .replace('{"O}', 'Ö')
-    .replace('{"a}', 'ä')
-    .replace('{"u}', 'ü')
-    .replace('{"o}', 'ö')
-    .replace('{\\ss}', 'ß')
-    .replace('--', '–')
-    .replace('Norskov', 'Nørskov')
-
-    .replace('{', '')
-    .replace('}', '');
-};
-
-
-const prettyPrintReference = (ref) =>
-  // TODO Integrate with crossref.org api
-  // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
-  (<span>
-    {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <h2>{`${restoreSC(ref.title)}`}</h2> : null }
-    {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span>{restoreSC(typeof ref.authors === 'string' ? JSON.parse(ref.authors).join('; ') : ref.authors.join('; '))}. </span> : null }
-    {(ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) ? <i>{ref.journal}, </i> : null }
-    {(ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) ? <span>{ref.volume} </span> : null}
-    {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year}): </span> : null}
-    {(ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) ? <span>{ref.pages}. </span> : null}
-  </span>);
-
 
 
 class PublicationView extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -359,7 +324,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       authorList = JSON.parse(publication.authors).map((author) => (
         `{
          "@type": "Person",
-         "name": "${author}"
+         "name": "${restoreSC(author)}"
       }`
       )).join(', ');
     }
