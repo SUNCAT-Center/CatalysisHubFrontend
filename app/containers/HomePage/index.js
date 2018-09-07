@@ -20,7 +20,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import Script from 'react-load-script';
 import { Link } from 'react-router';
 import Img from 'containers/App/Img';
-/* import Banner from 'components/Header/banner.png'; */
+import Banner from 'components/Header/banner.png';
 import CathubBanner from 'components/Header/cathub_sky.png';
 import { withStyles } from 'material-ui/styles';
 import { FaDatabase, FaNewspaperO, FaExternalLink } from 'react-icons/lib/fa';
@@ -123,7 +123,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   this.setState({
                     image: this.state.image + 1,
                   });
-                }, 3000);
+                }, 2000);
           });
           axios.post(newGraphQLRoot, {
             query: `{systems(order:"ctime", last: 1) {
@@ -278,7 +278,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Grid>
               </Grid>
               <Grid item xs={isMobile ? 12 : 6}>
-                {_.isEmpty(this.state.randomSystems) || this.state.image % 10 === 5 ?
+                {_.isEmpty(this.state.randomSystems) || this.state.image % 5 === 0 ?
                   <Grid
                     container
                     direction="column"
@@ -289,7 +289,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   >
                     <Grid item>
                       <a href="https://suncat.stanford.edu" target="_blank">
-                        <Img className={this.props.classes.banner} src={CathubBanner} alt="Catalysis-Hub.Org - Logo" />
+                        { this.state.image % 10 === 0 ?
+                          <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
+                            :
+                          <Img className={this.props.classes.banner} src={CathubBanner} alt="Catalysis-Hub.Org - Logo" />
+                        }
                       </a>
                     </Grid>
                   </Grid>
