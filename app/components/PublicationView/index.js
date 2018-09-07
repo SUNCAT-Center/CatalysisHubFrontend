@@ -355,7 +355,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           "sameAs": "https://dx.doi.org/${publication.doi}",
           "url": "${window.location.href}",
           "variableMeasured": "reaction energy [eV]",
-          "measurementTechnique": "Density Functional Theory",
+          "measurementTechnique": "Density Functional Theory; ${_.get(reactions, '0.dftCode')};  ${_.get(reactions, '0.dftFunctional')}",
           "distribution": [
             {
               "@type": "DataDownload",
