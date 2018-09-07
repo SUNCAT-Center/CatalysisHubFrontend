@@ -451,31 +451,36 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
 
                 </Grid>
-                {_.isEmpty(this.state.lastPublication) ? null :
-                <Paper className={this.props.classes.publicationPaper}>
-                  <h3>Latest Dataset: {`${this.state.lastPublicationTime}`}.</h3>
-                  <span className={this.props.classes.publicationEntry}>
-                    <IoDocument size={24} /> {prettyPrintReference(this.state.lastPublication)} {`#${this.state.lastPublication.pubId}.`}
+                {_.isEmpty(this.state.lastPublication) ?
+                  <LinearProgress
+                    color="primary"
+                    className={this.props.classes.spaced}
+                  />
+                    :
+                    <Paper className={this.props.classes.publicationPaper}>
+                      <h3>Latest Dataset: {`${this.state.lastPublicationTime}`}.</h3>
+                      <span className={this.props.classes.publicationEntry}>
+                        <IoDocument size={24} /> {prettyPrintReference(this.state.lastPublication)} {`#${this.state.lastPublication.pubId}.`}
 
-                  </span>
-                  <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
-                    <Grid item>
-                    </Grid>
-                    <Grid item>
+                      </span>
+                      <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                        <Grid item>
+                        </Grid>
+                        <Grid item>
 
-                      <Link
-                        to={`/publications/${this.state.lastPublication.pubId}`}
-                        className={this.props.classes.textLink}
-                      >
+                          <Link
+                            to={`/publications/${this.state.lastPublication.pubId}`}
+                            className={this.props.classes.textLink}
+                          >
 
-                        <Button
-                          raised
-                          className={this.props.classes.publicationAction}
-                        >
-                          <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
-                        </Button>
-                      </Link>
-                      {(this.state.lastPublication.doi === null
+                            <Button
+                              raised
+                              className={this.props.classes.publicationAction}
+                            >
+                              <MdViewList /> {'\u00A0\u00A0'}Checkout Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                            </Button>
+                          </Link>
+                          {(this.state.lastPublication.doi === null
                                           || typeof this.state.lastPublication.doi === 'undefined'
                                           || this.state.lastPublication.doi === ''
                                         ) ? null :
@@ -493,11 +498,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                                               </Button>
                                         </ReactGA.OutboundLink>
                                         }
-                    </Grid>
-                  </Grid>
+                        </Grid>
+                      </Grid>
 
-                  <br />
-                </Paper>
+                      <br />
+                    </Paper>
                 }
               </div>
             </Slide>

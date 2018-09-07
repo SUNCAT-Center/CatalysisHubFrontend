@@ -27,6 +27,10 @@ export const styles = (theme) => ({
     marginLeft: '10%',
     marginRight: '10%',
   },
+  spaced: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+  },
   truncated: {
     marginRight: '0%',
     textAlign: 'justify',
