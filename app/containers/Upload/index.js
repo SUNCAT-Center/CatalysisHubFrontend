@@ -520,6 +520,7 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
               <li>Inspect your data with a growing number of web <a href="/appsIndex">apps</a> (<a href="/activityMaps">activity maps</a>, <a href="/scalingRelations">scaling relations</a>)</li>
               <li>Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
               <li>Support <a href="/catLearn">ongoing machine-learning efforts</a> in the community by providing first-principles based training data.</li>
+              <li>Get your dataset referenced in <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>.</li>
             </ul>
             <h3>How to Submit Reactions from Terminal</h3>
             <div>
