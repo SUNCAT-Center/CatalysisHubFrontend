@@ -11,6 +11,7 @@ import ReactGA from 'react-ga';
 import Script from 'react-load-script';
 import _ from 'lodash';
 import { Link } from 'react-router';
+import Helmet from 'react-helmet';
 import { isMobile } from 'react-device-detect';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
@@ -234,6 +235,10 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
     } else { // eslint-disable-line no-else-return
       return (
         <div>
+          <Helmet>
+            <meta name="description" content={`Datasets containing first-principles reaction energies and reaction structures by ${toTitleFormat(this.props.routeParams.name || 'many contributors')}`} />
+            <meta name="keywords" content={`${toTitleFormat(this.props.routeParams.name || 'contributed')}, reaction energies, adsorbate structures, slab calculations, density functional theory, adsorption energies, reaction energies, high-symmetry sites`} />
+          </Helmet>
           <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
           <Script url="/static/ChemDoodleWeb.js" />
           {(this.state.totalCount === 0) ?

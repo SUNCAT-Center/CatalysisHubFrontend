@@ -8,6 +8,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 
 import Script from 'react-load-script';
 import Slide from 'material-ui/transitions/Slide';
@@ -33,6 +34,12 @@ export class ActivityMapsPage extends React.Component { // eslint-disable-line r
   render() {
     return (
       <div>
+        <Helmet>
+          <title>{`Activity Map for ${this.props.reaction}`}</title>
+          <meta name="keywords" content={`activity map, heterogeneous catalysis, ${this.props.reaction}, catalytic material, reaction energy, sabatier principle, bronsted evans polanyi`} />
+          <meta name="description" content={`An interactive first-principles derived activity map for ${this.props.reaction} and allows to explore various candidate catalytic materials from density functional theory calculations.`} />
+
+        </Helmet>
         <Script url="/static/ChemDoodleWeb.js" />
         <Slide
           onMountEnter

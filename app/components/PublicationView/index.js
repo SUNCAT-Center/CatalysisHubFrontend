@@ -331,6 +331,10 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     return (
       <div>
         <Helmet>
+          <title>{(publication.title || '').replace('"', '')}</title>
+          <meta name="DC.title" content={(publication.title || '').replace('"', '')} />
+          <meta name="description" content={'Reaction Energies and Atomic Structures for this Publication'} />
+          <meta name="keywords" content={'reaction energies, surface reaction, density functional theory, dft, surface structure, catalytic materials, chemical reactions on surfaces'} />
           <script type="application/ld+json">{`{
           "@context": "http://schema.org",
           "@type": "Dataset",
