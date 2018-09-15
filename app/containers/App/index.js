@@ -340,6 +340,7 @@ class App extends React.Component {
         <main className={this.props.classes.content}>
           <Helmet
             defaultTitle="Catalysis-Hub.Org"
+            titleTemplate="%s | Catalysis-Hub.Org"
             title={`${(_.startCase(this.props.location.pathname.replace('/', '')).match(/[A-Z][a-z]+/g) || ['Index']).join(' ')}`}
             link={suBranding === false && appBar === false ? [] : [
                 { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
@@ -353,7 +354,7 @@ Features include search for specific reaction energies, transition states, struc
 All code pertaining to this project is hosted as open-source under a liberal MIT license on github to encourage derived work and collaboration. The frontend is developed using the React Javascript framework based on react boilerplate. New components (apps) can be quickly spun-off and added to the project. The backend is developed using the Flask Python framework providing the GraphQL API as well as further APIs for specific apps.
 As such Catalysis-Hub.org aims to serve as a starting point for trend studies and atomic based heterogeneous catalysis explorations.`}
             />
-            <meta name="keywords" description={'heterogeneous catalysis,metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw,data sets,electronic structure'} />
+            <meta name="keywords" description={'heterogeneous catalysis, catalysis, adsorption, reaction energy, activation energy, chemistry, metals,density functional theory,scaling relations, activity maps,pourbaix diagrams,machine learning,quantum espresso,vasp,gpaw,data sets,electronic structure'} />
             <meta name="DC.title" content="Catalysis-Hub.org" />
 
           </Helmet>

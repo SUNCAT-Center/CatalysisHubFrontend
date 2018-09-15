@@ -236,6 +236,7 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
       return (
         <div>
           <Helmet>
+            <title>{toTitleFormat(this.props.routeParams.name || 'Profiles')}</title>
             <meta name="description" content={`Datasets containing first-principles reaction energies and reaction structures by ${toTitleFormat(this.props.routeParams.name || 'many contributors')}`} />
             <meta name="keywords" content={`${toTitleFormat(this.props.routeParams.name || 'contributed')}, reaction energies, adsorbate structures, slab calculations, density functional theory, adsorption energies, reaction energies, high-symmetry sites`} />
           </Helmet>

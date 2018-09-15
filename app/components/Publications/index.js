@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import Helmet from 'react-helmet';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 import Input from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
@@ -220,6 +221,11 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
   render() {
     return (
       <div>
+        <Helmet>
+          <title>Publications and Datasets</title>
+          <meta name="description" content="List of Publication and Datasets by year indexed on Catalysis-Hub.Org" />
+          <meta name="keywords" content="catalysis, catalyst, chemistry, activation energy, adsorption, datasets, calculations, reaction energies, publications, csv, json, ASE atoms objects, ASE db, cathub, catkit, postgresql" />
+        </Helmet>
         <Link
           className={this.props.classes.buttonLink}
           to={'/upload'}

@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 import { withStyles } from 'material-ui/styles';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
@@ -105,6 +106,11 @@ export class BulkGenerator extends React.Component { // eslint-disable-line reac
         direction="left"
       >
         <div>
+          <Helmet>
+            <title>Wyckoff Bulk Generator</title>
+            <meta name="description" content="Wyckoff Bulk Generator is an online tools that helps in creating arbitrary atomistic bulk structure using the symmetry derived primitives of spacegroups and Wyckoff positions." />
+            <meta name="keywords" content="wyckoff, spacegroups, symmetry, bulk structure, atoms, nano technology, crystall structure, crystallography, cif, ankit jain, suncat, stanford" />
+          </Helmet>
           <BulkEnumeratorHeader />
           <Paper className={this.props.classes.stepperPaper}>
             <Grid
