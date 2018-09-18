@@ -17,6 +17,9 @@ export const styles = (theme) => ({
   buttongrid: {
     padding: theme.spacing.unit,
   },
+  outboundLink: {
+    textDecoration: 'none',
+  },
   buttonLink: {
     textTransformation: 'none',
     textDecoration: 'none',

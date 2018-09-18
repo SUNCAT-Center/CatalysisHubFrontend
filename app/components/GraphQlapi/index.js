@@ -8,6 +8,7 @@ import React from 'react';
 import PropTypes, { instanceOf } from 'prop-types';
 
 import IFrame from 'react-iframe';
+import Helmet from 'react-helmet';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
@@ -45,6 +46,10 @@ class GraphQlapi extends React.Component { // eslint-disable-line react/prefer-s
         direction="left"
       >
         <div>
+          <Helmet>
+            <title>GraphQL Console</title>
+            <meta keywords="graphql, api, database, catalysis, chemical reactions, density functional theory, surface structures, cif, input files" />
+          </Helmet>
           <Grid container direction="row" justify="space-between">
             <Grid item>
               <h2>CatApp Database API</h2>

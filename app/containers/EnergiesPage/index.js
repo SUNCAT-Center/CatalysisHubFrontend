@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
+import Helmet from 'react-helmet';
 import Slide from 'material-ui/transitions/Slide';
 
 
@@ -28,6 +29,11 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
         direction="left"
       >
         <div>
+          <Helmet>
+            <title>Surface Reactions</title>
+            <meta name="description" content="Search for first-principles reaction energies based on reactants, products, surface, or facet." />
+            <meta name="keywords" content="reaction energies, activations energies, catalysis, heterogeneous catalysis, surface structure, adsorbates, search" />
+          </Helmet>
           {/* Required for ChemDoodle later below */}
           <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
           <Script url="/static/ChemDoodleWeb.js" />

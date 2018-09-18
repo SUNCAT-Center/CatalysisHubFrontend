@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cachios from 'cachios';
+import Helmet from 'react-helmet';
 
 import { MenuItem } from 'material-ui/Menu';
 import { InputLabel } from 'material-ui/Input';
@@ -93,6 +94,10 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
   render() {
     return (
       <div>
+        <Helmet>
+          <title>CatLearn</title>
+          <meta name="keywords" content="machine learning, first-principles, gaussian processes, gp, molecular, slab geometry, adsorption energies" />
+        </Helmet>
         <Grid container direction="row" justify="space-between">
           <Grid item>
             <h2>CatLearn</h2>
