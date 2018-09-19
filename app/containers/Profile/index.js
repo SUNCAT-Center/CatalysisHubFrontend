@@ -54,6 +54,7 @@ import {
   toTitleFormat,
   toSlugFormat,
   restoreSC,
+  withCommas,
 } from 'utils/functions';
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
 
@@ -389,12 +390,12 @@ class Profile extends React.Component { // eslint-disable-line react/prefer-stat
             </Link>
             <Grid container direction="row" justify="space-between">
               <Grid item>
-                <h2>All Contributors ({this.state.allAuthors.filter((x) => {
+                <h2>All Contributors ({withCommas(this.state.allAuthors.filter((x) => {
                   if (this.state.authorFilter === '') {
                     return true;
                   }
                   return x.match(new RegExp(this.state.authorFilter, 'ig'));
-                }).length})
+                }).length || '')})
                 {this.state.loading ? <CircularProgress size={30} color="primary" /> : null}
                 </h2>
               </Grid>
