@@ -49,7 +49,7 @@ import {
 
 import axios from 'axios';
 import { newGraphQLRoot } from 'utils/constants';
-import { prettyPrintReference, plainPrintReference } from 'utils/functions';
+import { prettyPrintReference, plainPrintReference, withCommas } from 'utils/functions';
 
 import PublicationView from 'components/PublicationView';
 import PublicationSystems from './publicationSystems';
@@ -404,7 +404,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                                       onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}
                                     >
                                       <MdViewList /> {'\u00A0\u00A0'}Checkout {
-                                          this.state.totalCounts[reference.pubId]
+                                          (withCommas(this.state.totalCounts[reference.pubId] || ''))
                                       } Reactions {'\u00A0\u00A0'} <MdChevronRight />
                                     </Button>
                                     {(this.state.dois[year][j] === null

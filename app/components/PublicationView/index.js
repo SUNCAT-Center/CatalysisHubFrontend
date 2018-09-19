@@ -49,6 +49,7 @@ import {
   plainPrintReference,
   prettyPrintReference,
   restoreSC,
+  withCommas,
 } from 'utils/functions';
 
 import { styles } from './styles';
@@ -695,7 +696,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                 >
                   <Grid item>
                     <h3>
-                      {this.state.totalCount} reactions.
+                      {withCommas(this.state.totalCount || '')} reactions.
                     </h3>
                   </Grid>
                 </Grid>
