@@ -209,11 +209,26 @@ class AdsorbateInput extends React.Component { // eslint-disable-line react/pref
                                     value={this.state.adsorbate}
                                     onChange={this.handleChange('adsorbate')}
                                   >
-                                    <MenuItem value="H">H</MenuItem>
                                     <MenuItem value="C">C</MenuItem>
+                                    <MenuItem value="CH">CH</MenuItem>
+                                    <MenuItem value="CHH">CHH</MenuItem>
+                                    <MenuItem value="CHHH">CHHH</MenuItem>
+                                    <MenuItem value="CO">CO</MenuItem>
+                                    <MenuItem value="COH">COH</MenuItem>
+                                    <MenuItem value="COO">COO</MenuItem>
+                                    <MenuItem value="H">H</MenuItem>
                                     <MenuItem value="N">N</MenuItem>
+                                    <MenuItem value="NH">NH</MenuItem>
+                                    <MenuItem value="NHH">NHH</MenuItem>
+                                    <MenuItem value="NO">NO</MenuItem>
                                     <MenuItem value="O">O</MenuItem>
+                                    <MenuItem value="OCHO">OCHO</MenuItem>
+                                    <MenuItem value="OH">OH</MenuItem>
+                                    <MenuItem value="OOH">OOH</MenuItem>
                                     <MenuItem value="S">S</MenuItem>
+                                    <MenuItem value="SH">SH</MenuItem>
+
+
                                   </Select>
                                 </FormControl>
 
