@@ -368,7 +368,6 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
       withCredentials: true,
       credentials: 'same-origin',
     }).then((response) => {
-      /* console.log(response)*/
       window.open(response.data.location);
       window.focus();
       window.close();
@@ -799,7 +798,8 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                         <Paper key={`ds_${i}`} className={this.props.classes.paper}>
                           {prettyPrintReference(dataset)}
                           {(this.state.userInfo.email !== _.get(this.state.pubEntries,
-                            `${dataset.pubId}.0.username`, '')) ?
+                            `${dataset.pubId}.0.username`, '') && _.get(this.state.pubEntries,
+                            `${dataset.pubId}.0.username`, '') !== 'anonymous') ?
                               <div>
                                 <Button
                                   raised
@@ -821,6 +821,12 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
                                   Release {'\u00A0\u00A0'} <MdPublic />
                                 </Button>
                                 {'\u00A0\u00A0\u00A0'}
+                                <div>
+                                  {JSON.stringify(this.state.userInfo)}
+                                </div>
+                                <div>
+                                  {_.get(this.state.pubEntries, `${dataset.pubId}.0.username`, '')}
+                                </div>
                                 <Button
                                   raised
                                   onClick={() => {

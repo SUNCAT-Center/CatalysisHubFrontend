@@ -104,7 +104,7 @@ app.use(cors({
   },
 }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://api.catalysis-hub.org');
+  res.setHeader('Access-Control-Allow-Origin', 'https://api.catalysis-hub.org, https://newt.nersc.gov');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Pingother, Content-Type, Accept');
   next();
 });
