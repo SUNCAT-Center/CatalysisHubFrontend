@@ -25,25 +25,30 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
     // const margin = {top: 5, right: 50, bottom: 20, left: 50};
     // const transform ='translate(' + margin.left + ',' + margin.top + ')';
     const reactionEnergy = this.props.selectedReaction.reactionEnergy;
-    let activationEnergy = this.props.selectedReaction.activationEnergy;
-    if (_.isEmpty(activationEnergy)) {
+    const activationEnergy = this.props.selectedReaction.activationEnergy;
+      console.log(this.props.selectedReaction.activationEnergy)
+      console.log(activationEnergy)
+      console.log(_.isEmpty(activationEnergy))
+      
+    /*if (_.isEmpty(activationEnergy)) {
       activationEnergy = reactionEnergy / 2.0;
-    }
-
+    }*/
+    
     const data = [
       { x: 0, y: 200 },
-      { x: 180, y: 200 },
-      { x: 200, y: 200 - (20 * activationEnergy) },
-      { x: 220, y: 200 - (20 * reactionEnergy) },
-      { x: 400, y: 200 - (20 * reactionEnergy) },
+      { x: 120, y: 200 },
+      { x: 200, y: 200 - (100 * activationEnergy) },
+      { x: 280, y: 200 - (100 * reactionEnergy) },
+      { x: 400, y: 200 - (100 * reactionEnergy) },
     ];
+      
 
     return (<g className="xy-axis">
       <Axis {...xSettings} />
       <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
       <line x1={0} x2={500} y1={200} y2={400} />
       <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">Reaction Energy {reactionEnergy.toFixed(2)} eV</text>
-      {activationEnergy === reactionEnergy / 2.0 ? null :
+      {activationEnergy === activationEnergy / 2.0 ? null :
           null
       }
     </g>);
