@@ -1,15 +1,18 @@
 import _ from 'lodash';
 
 export const styles = (theme) => ({
-  bold: {
+  bolditalic: {
     fontWeight: 'bold',
     fontStyle: 'italic',
+  },
+  bold: {
+    fontWeight: 'bold',
   },
   'centerGrid Grid': {
     marginBottom: 60,
   },
   mainButtons: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
   },
   buttonLink: {
     textTransformation: 'none',
@@ -32,14 +35,14 @@ export const styles = (theme) => ({
     marginBottom: theme.spacing.unit * 2,
   },
   truncated: {
-    marginRight: '0%',
     textAlign: 'justify',
+    width: '480px',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    maxHeight: '120px',
+    height: '160px',
   },
   expanded: {
-    marginRight: '5%',
+    width: '480px',
     textAlign: 'justify',
   },
   textLink: {
