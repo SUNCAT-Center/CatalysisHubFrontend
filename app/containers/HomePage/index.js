@@ -217,7 +217,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 >
                   <Grid item xs={isMobile ? 12 : 6}>
                     <H1 className={this.props.classes.welcome}>
-                    Welcome to Catalysis Hub -
+                    Welcome to Catalysis Hub
                     </H1>
                     <div className={this.state.truncated ? this.props.classes.truncated : this.props.classes.expanded}>
                       <div>
