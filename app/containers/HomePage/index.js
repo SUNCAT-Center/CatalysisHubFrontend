@@ -297,7 +297,7 @@ Read More
                             <a href="https://suncat.stanford.edu" target="_blank">
                               { this.state.image % 10 === 0
                                 ? <Img className={this.props.classes.banner} src={Banner} alt="SUNCAT - Logo" />
-                                : <Img className={this.props.classes.banner} src={CathubBanner} alt="Catalysis-Hub.Org - Logo" />
+                                : <Img className={this.props.classes.banner} src={CathubBanner} alt="Catalysis-Hub.org - Logo" />
                               }
                             </a>
                           </Grid>
