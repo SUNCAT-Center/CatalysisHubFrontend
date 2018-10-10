@@ -33,5 +33,8 @@ export const styles = (xtheme) => ({
       marginLeft: 220,
     },
   },
+  logo: {
+    width: '20px',
+  },
 });
 

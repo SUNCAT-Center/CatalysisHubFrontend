@@ -13,6 +13,7 @@ import {
   GoMarkGithub,
 
 } from 'react-icons/lib/go';
+import ccLogo from 'components/Footer/cc.svg';
 import Img from 'containers/App/Img';
 import { docRoot, whiteLabel } from 'utils/constants';
 import WhiteBanner from 'components/Header/banner_white.png';
@@ -27,14 +28,16 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
         <section>
           <List>
             <ListItem>
-              {whiteLabel ? null :
-              <ReactGA.OutboundLink
-                eventLabel="http://suncat.slac.stanford.edu/"
-                to="http://suncat.slac.stanford.edu/"
-                target="_blank"
-              >
-                <Img className={this.props.classes.banner} src={WhiteBanner} alt="SUNCAT - Logo" />
-              </ReactGA.OutboundLink>
+              {whiteLabel ? null
+                : (
+                  <ReactGA.OutboundLink
+                    eventLabel="http://suncat.slac.stanford.edu/"
+                    to="http://suncat.slac.stanford.edu/"
+                    target="_blank"
+                  >
+                    <Img className={this.props.classes.banner} src={WhiteBanner} alt="SUNCAT - Logo" />
+                  </ReactGA.OutboundLink>
+                )
               }
             </ListItem>
           </List>
@@ -50,7 +53,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 className={this.props.classes.footerLink}
                 target="_blank"
               >
-                <GoBook /> <span
+                <GoBook />
+                {' '}
+                <span
                   className={this.props.classes.footerListItemText}
                 >
                 Docs
@@ -65,7 +70,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 eventLabel="/yourNextApp"
                 className={this.props.classes.footerLink}
               >
-                <GoCode /> <span className={this.props.classes.footerListItemText}>
+                <GoCode />
+                {' '}
+                <span className={this.props.classes.footerListItemText}>
                 Build Your Own App
                 </span>
               </ReactGA.OutboundLink>
@@ -79,7 +86,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                 className={this.props.classes.footerLink}
                 target="_blank"
               >
-                <GoComment /> <span className={this.props.classes.footerListItemText}>
+                <GoComment />
+                {' '}
+                <span className={this.props.classes.footerListItemText}>
                   Chat with Us
                 </span>
               </ReactGA.OutboundLink>
@@ -95,7 +104,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   target="_blank"
                   className={this.props.classes.footerLink}
                 >
-                  <GoMarkGithub /> <span className={this.props.classes.footerListItemText}>
+                  <GoMarkGithub />
+                  {' '}
+                  <span className={this.props.classes.footerListItemText}>
                   Visit&nbsp;
                   </span>
                 </ReactGA.OutboundLink>
@@ -106,7 +117,9 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   eventLabel="https://github.com/SUNCAT-Center/CatKit"
                   target="_blank"
                   className={this.props.classes.footerLink}
-                > <span className={this.props.classes.footerListItemText}>
+                >
+                  {' '}
+                  <span className={this.props.classes.footerListItemText}>
                 us on&nbsp;
                   </span>
                 </ReactGA.OutboundLink>
@@ -117,8 +130,29 @@ class Footer extends React.Component { // eslint-disable-line react/prefer-state
                   eventLabel="https://github.com/SUNCAT-Center/CatalysisHubBackend"
                   target="_blank"
                   className={this.props.classes.footerLink}
-                > <span className={this.props.classes.footerListItemText}>
+                >
+                  {' '}
+                  <span className={this.props.classes.footerListItemText}>
                 GitHub&nbsp;
+                  </span>
+                </ReactGA.OutboundLink>
+              </Tooltip>
+            </ListItem>
+            <ListItem
+              className={this.props.classes.footerListItem}
+            >
+              <Tooltip title="Except where otherwise noted, content on Catalysis Hub is licensed under a Creative Commons Attribution 4.0 International License">
+                <ReactGA.OutboundLink
+                  eventLabel="https://creativecommons.org/licenses/by/4.0/"
+                  to="https://creativecommons.org/licenses/by/4.0/"
+                  className={this.props.classes.footerLink}
+                  target="_blank"
+                >
+                  <img className={this.props.classes.logo} src={ccLogo} alt="CCLogo" />
+                  {' '}
+                  {' '}
+                  <span className={this.props.classes.footerListItemText}>
+                    License
                   </span>
                 </ReactGA.OutboundLink>
               </Tooltip>
