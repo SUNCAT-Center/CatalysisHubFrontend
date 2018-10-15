@@ -5,6 +5,9 @@ export const styles = (theme) => ({
   preview: {
     paddingRight: theme.spacing.unit,
   },
+  outboundLink: {
+    textDecoration: 'none',
+  },
   infoText: {
     margin: theme.spacing.unit * 3,
   },

@@ -225,7 +225,7 @@ class App extends React.Component {
                                         ? this.props.classes.activeAppBarLink
                                         : null}
                                   >
-                                    {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.Org'}
+                                    {whiteLabel ? `${this.props.location.pathname}` : 'Catalysis-Hub.org'}
                                   </span>
                                 </Typography>
                               </Link>
@@ -339,8 +339,8 @@ class App extends React.Component {
         }
         <main className={this.props.classes.content}>
           <Helmet
-            defaultTitle="Catalysis-Hub.Org"
-            titleTemplate="%s | Catalysis-Hub.Org"
+            defaultTitle="Catalysis-Hub.org"
+            titleTemplate="%s | Catalysis-Hub.org"
             title={`${(_.startCase(this.props.location.pathname.replace('/', '')).match(/[A-Z][a-z]+/g) || ['Index']).join(' ')}`}
             link={suBranding === false && appBar === false ? [] : [
                 { rel: 'stylesheet', href: 'https://www.stanford.edu/su-identity/css/su-identity.css' },
