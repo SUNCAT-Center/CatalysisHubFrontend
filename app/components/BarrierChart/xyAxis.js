@@ -20,38 +20,70 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
     const line = d3.svg.line()
       .x((d) => d.x)
       .y((d) => d.y)
-      .interpolate('linear');
+      .interpolate('monotone');
 
     // const margin = {top: 5, right: 50, bottom: 20, left: 50};
     // const transform ='translate(' + margin.left + ',' + margin.top + ')';
     const reactionEnergy = this.props.selectedReaction.reactionEnergy;
     const activationEnergy = this.props.selectedReaction.activationEnergy;
-      console.log(this.props.selectedReaction.activationEnergy)
-      console.log(activationEnergy)
-      console.log(_.isEmpty(activationEnergy))
-      
-    /*if (_.isEmpty(activationEnergy)) {
-      activationEnergy = reactionEnergy / 2.0;
-    }*/
-    
+    let plotHeight = Math.abs(reactionEnergy);
+    let barrierHeight;
+    if (activationEnergy == null) {
+      barrierHeight = reactionEnergy / 2.0 / plotHeight;
+    } else {
+      plotHeight = activationEnergy + Math.abs(reactionEnergy);
+      barrierHeight = activationEnergy / plotHeight;
+    }
+    const reactHeight = reactionEnergy / plotHeight;
+    const offset = 180 + 100 * Math.max(reactHeight, barrierHeight);
     const data = [
-      { x: 0, y: 200 },
-      { x: 120, y: 200 },
-      { x: 200, y: 200 - (100 * activationEnergy) },
-      { x: 280, y: 200 - (100 * reactionEnergy) },
-      { x: 400, y: 200 - (100 * reactionEnergy) },
+      { x: 0, y: offset },
+      { x: 120, y: offset },
+      { x: 200, y: offset - (250 * barrierHeight) },
+      { x: 280, y: offset - (250 * reactHeight) },
+      { x: 400, y: offset - (250 * reactHeight) },
     ];
-      
-
-    return (<g className="xy-axis">
-      <Axis {...xSettings} />
-      <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
-      <line x1={0} x2={500} y1={200} y2={400} />
-      <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">Reaction Energy {reactionEnergy.toFixed(2)} eV</text>
-      {activationEnergy === activationEnergy / 2.0 ? null :
-          null
-      }
-    </g>);
+    if (activationEnergy == null) {
+      return (
+        <g className="xy-axis">
+          <Axis {...xSettings} />
+          <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
+          <line x1={0} x2={500} y1={200} y2={400} />
+          <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">
+            {' '}
+Reaction Energy
+            {reactionEnergy.toFixed(2)}
+            {' '}
+eV
+            {' '}
+          </text>
+        </g>
+      );
+    }
+    const labelHeight = offset - (250 * barrierHeight) - 30;
+    const labelReact = offset - (250 * reactHeight) + 40;
+    return (
+      <g className="xy-axis">
+        <Axis {...xSettings} />
+        <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
+        <line x1={0} x2={500} y1={200} y2={400} />
+        <text x={260} y={labelReact} fontFamily="sans-serif" fontSize="14px" fill="red">
+	  Reaction Energy
+          {' '}
+          {reactionEnergy.toFixed(2)}
+          {' '}
+eV
+          {' '}
+        </text>
+        <text x={120} y={labelHeight} fontFamily="sans-serif" fontSize="14px" fill="red">
+	  Activation Energy
+          {' '}
+          {activationEnergy.toFixed(2)}
+          {' '}
+eV
+        </text>
+      </g>
+    );
   }
 }
 
