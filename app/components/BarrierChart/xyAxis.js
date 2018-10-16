@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import d3 from 'd3';
-import _ from 'lodash';
 
 import Axis from './axis';
 
@@ -68,7 +67,7 @@ eV
         <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
         <line x1={0} x2={500} y1={200} y2={400} />
         <text x={260} y={labelReact} fontFamily="sans-serif" fontSize="14px" fill="red">
-	  Reaction Energy
+          Reaction Energy
           {' '}
           {reactionEnergy.toFixed(2)}
           {' '}
@@ -76,7 +75,7 @@ eV
           {' '}
         </text>
         <text x={120} y={labelHeight} fontFamily="sans-serif" fontSize="14px" fill="red">
-	  Activation Energy
+          Activation Energy
           {' '}
           {activationEnergy.toFixed(2)}
           {' '}
