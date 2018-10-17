@@ -127,10 +127,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           );
         });
         axios.post(newGraphQLRoot, {
-          query: `{systems(order:"ctime", last: 1) {
+          query: `{systems(order:"mtime", last: 1) {
   edges {
     node {
-     Ctime
+     Mtime
      publication {
        pubId
      }
@@ -139,7 +139,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 }}`,
         }).then((lpidResponse) => {
           const lastPubId = _.get(lpidResponse, 'data.data.systems.edges[0].node.publication[0].pubId');
-          const lastPublicationTime = _.get(lpidResponse, 'data.data.systems.edges[0].node.Ctime');
+          const lastPublicationTime = _.get(lpidResponse, 'data.data.systems.edges[0].node.Mtime');
           const pubTimeArray = lastPublicationTime.split(' ');
           pubTimeArray.splice(3, 1, ',');
           this.setState({
