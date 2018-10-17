@@ -49,12 +49,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
           <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
           <line x1={0} x2={500} y1={200} y2={400} />
           <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">
-            {' '}
-Reaction Energy
-            {reactionEnergy.toFixed(2)}
-            {' '}
-eV
-            {' '}
+            Reaction Energy {reactionEnergy.toFixed(2)} eV
           </text>
         </g>
       );
@@ -67,19 +62,9 @@ eV
         <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
         <line x1={0} x2={500} y1={200} y2={400} />
         <text x={260} y={labelReact} fontFamily="sans-serif" fontSize="14px" fill="red">
-          Reaction Energy
-          {' '}
-          {reactionEnergy.toFixed(2)}
-          {' '}
-eV
-          {' '}
-        </text>
+          Reaction Energy {reactionEnergy.toFixed(2)} eV </text>
         <text x={120} y={labelHeight} fontFamily="sans-serif" fontSize="14px" fill="red">
-          Activation Energy
-          {' '}
-          {activationEnergy.toFixed(2)}
-          {' '}
-eV
+          Activation Energy {activationEnergy.toFixed(2)} eV
         </text>
       </g>
     );
