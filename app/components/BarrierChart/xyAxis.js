@@ -34,7 +34,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
       barrierHeight = activationEnergy / plotHeight;
     }
     const reactHeight = reactionEnergy / plotHeight;
-    const offset = 180 + 100 * Math.max(reactHeight, barrierHeight);
+    const offset = 180 + (100 * Math.max(reactHeight, barrierHeight));
     const data = [
       { x: 0, y: offset },
       { x: 120, y: offset },
@@ -59,8 +59,8 @@ eV
         </g>
       );
     }
-    const labelHeight = offset - (250 * barrierHeight) - 30;
-    const labelReact = offset - (250 * reactHeight) + 40;
+    const labelHeight = offset - ((250 * barrierHeight) + 30);
+    const labelReact = offset - ((250 * reactHeight) - 40);
     return (
       <g className="xy-axis">
         <Axis {...xSettings} />
