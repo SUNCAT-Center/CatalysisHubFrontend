@@ -514,8 +514,7 @@ Apps
                   : (
                     <Paper className={this.props.classes.publicationPaper}>
                       <h3>
-Latest Dataset:
-                        {`${this.state.lastPublicationTime}`}
+Latest Dataset: {`${this.state.lastPublicationTime}`}
 .
                       </h3>
                       <span className={this.props.classes.publicationEntry}>
