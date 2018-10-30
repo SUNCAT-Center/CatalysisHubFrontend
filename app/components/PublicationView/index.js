@@ -764,8 +764,11 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
                               height={10}
                             />
                           </li>
-                          <li>Formula: {reaction.Equation}</li>
+                          <li>Reaction: {reaction.Equation}</li>
                           <li>Reaction Energy: {reaction.reactionEnergy.toFixed(2)} eV</li>
+                          {reaction.activationEnergy != null &&
+                          <li>Activation Energy: {reaction.activationEnergy.toFixed(2)} eV</li>
+                          }
                           <li>DFT Code: {reaction.dftCode}, DFT Functional: {reaction.dftFunctional}</li>
                         </ul>
                       </li>
