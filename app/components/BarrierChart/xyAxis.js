@@ -55,7 +55,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
           <Axis {...xSettings} />
           <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
           <line x1={0} x2={500} y1={200} y2={400} />
-          <text x={120} y={labelReact} fontFamily="sans-serif" fontSize="14px" fill="red">
+          <text x={120} y={360} fontFamily="sans-serif" fontSize="14px" fill="red">
             Reaction Energy {reactionEnergy.toFixed(2)} eV
           </text>
         </g>
