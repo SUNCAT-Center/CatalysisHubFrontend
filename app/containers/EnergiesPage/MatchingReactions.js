@@ -102,6 +102,28 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     };
   }
 
+  handlePageChange = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
+  createSortHandler = (property) => (event) => {
+    this.handleRequestSort(event, property);
+  }
+
+  handleRequestSort(event, property) {
+    this.setState({
+      loading: true,
+    });
+    this.props.handleRequestSort(event, property);
+    this.setState({
+      loading: false,
+    });
+  }
+
   fetchRow(reaction) {
     this.setState({
       loading: true,
@@ -152,7 +174,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     node {
       Formula
       energy
-      Cifdata
+      Cifdatax
       volume
       mass
     }
@@ -165,26 +187,26 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         const node = response.data.data.systems.edges[0].node;
         node.DFTCode = reaction.dftCode;
         node.DFTFunctional = reaction.dftFunctional;
-	node.Facet = reaction.facet;
-	node.publication = this.props.publication;
+        node.Facet = reaction.facet;
+        node.publication = this.props.publication;
         node.aseId = aseId;
         node.key = name;
         node.full_key = node.Formula;
-	let ads = name.replace('star', ' @');
+        const ads = name.replace('star', ' @');
         if (name.indexOf('gas') !== -1) {
           node.full_key = `Gas phase ${node.full_key}`;
-	} else if (name.indexOf('bulk') !== -1) {
+        } else if (name.indexOf('bulk') !== -1) {
           node.full_key = `Bulk ${node.full_key}`;
-	} else {
-	  if (name == 'star'){
-	      node.full_key = `Surface ${reaction.chemicalComposition}`;
-	  } else {
-	      node.full_key = `${ads} ${reaction.chemicalComposition}`;
-	  }
-	  if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
-          node.full_key = `${node.full_key} [${node.Facet}]`;
+        } else {
+          if (name === 'star') {
+            node.full_key = `Surface ${reaction.chemicalComposition}`;
+          } else {
+            node.full_key = `${ads} ${reaction.chemicalComposition}`;
           }
-	}
+          if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
+            node.full_key = `${node.full_key} [${node.Facet}]`;
+          }
+        }
         this.props.saveSystem(node);
         this.setState({
           loading: false,
@@ -196,27 +218,6 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       });
     });
   }
-  handlePageChange = (event, page) => {
-    this.setState({ page });
-  };
-  handleChangeRowsPerPage = (event) => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
-
-  createSortHandler = (property) => (event) => {
-    this.handleRequestSort(event, property);
-  }
-
-  handleRequestSort(event, property) {
-    this.setState({
-      loading: true,
-    });
-    this.props.handleRequestSort(event, property);
-    this.setState({
-      loading: false,
-    });
-  }
-
 
   render() {
     if (this.props.matchingReactions.length === 0) {
@@ -466,6 +467,7 @@ MatchingReactions.propTypes = {
   handleRequestSort: PropTypes.func,
   order: PropTypes.string,
   orderBy: PropTypes.string,
+  publication: PropTypes.object,
 };
 
 MatchingReactions.defaultProps = {
