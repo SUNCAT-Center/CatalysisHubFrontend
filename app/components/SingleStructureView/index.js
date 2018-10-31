@@ -46,8 +46,10 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
     let x;
     let y;
     let z;
-    if (Object.prototype.hasOwnProperty.call(this.props.selectedSystem, 'full_key') && this.props.selectedSystem.full_key.startsWith('Molec')) {
+    if (Object.prototype.hasOwnProperty.call(this.props.selectedSystem, 'full_key') && this.props.selectedSystem.full_key.startsWith('Gas')) {
       [x, y, z] = [1, 1, 1];
+    } else if (Object.prototype.hasOwnProperty.call(this.props.selectedSystem, 'full_key') && this.props.selectedSystem.full_key.startsWith('Bulk')) {
+      [x, y, z] = [2, 2, 2];
     } else {
       [x, y, z] = [2, 2, 1];
     }
@@ -72,22 +74,22 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{prettyPrintReference(this.props.selectedSystem.publication[0])}</li>
-            {_.isEmpty(this.props.selectedSystem.publication[0].doi) ? null :
+            <li>{prettyPrintReference(this.props.selectedSystem.publication)}</li>
+            {_.isEmpty(this.props.selectedSystem.publication.doi) ? null :
             <div>
               <li>
                           Source&nbsp;
                           <ReactGA.OutboundLink
-                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
-                            to={`http://dx.doi.org/${this.props.selectedSystem.publication[0].doi}`}
+                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.publication.doi}`}
+                            to={`http://dx.doi.org/${this.props.selectedSystem.publication.doi}`}
                             target="_blank"
                           >
-                            DOI: {this.props.selectedSystem.publication[0].doi} <FaExternalLink />
+                            DOI: {this.props.selectedSystem.publication.doi} <FaExternalLink />
                           </ReactGA.OutboundLink>
               </li>
             </div>
                   }
-            <li>Reactions <a href={`/publications/${this.props.selectedSystem.publication[0].pubId}`}>
+            <li>Reactions <a href={`/publications/${this.props.selectedSystem.publication.pubId}`}>
                 Dataset
                 </a>
             </li>
