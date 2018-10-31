@@ -174,7 +174,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     node {
       Formula
       energy
-      Cifdatax
+      Cifdata
       volume
       mass
     }
