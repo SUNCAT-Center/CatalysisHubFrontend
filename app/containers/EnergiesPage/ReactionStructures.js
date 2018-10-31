@@ -66,7 +66,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
       {_.isEmpty(this.props.selectedReaction) ? null :
       <Paper className={this.props.classes.paper}>
         <Grid container direction="column" width="100%">
-          <h2>{this.props.selectedReaction.Equation.replace('->', '→')} on {this.props.selectedReaction.surfaceComposition} {this.props.selectedReaction.facet} </h2>
+          <h2>{this.props.selectedReaction.Equation.replace('->', '→')} </h2>
           <BarrierChart {...this.props} />
           {this.props.reactionSystems.length > 1 ? null :
           <ul>
