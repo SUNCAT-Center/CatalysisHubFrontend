@@ -107,8 +107,10 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       loading: true,
     });
     let catappIds;
+    let catappNames;
     if (typeof reaction.reactionSystems !== 'undefined' && reaction.reactionSystems !== null) {
       catappIds = (reaction.reactionSystems.map((x) => x.aseId));
+      catappNames = (reaction.reactionSystems.map((x) => x.name));
     } else {
       catappIds = {};
       this.setState({
@@ -119,9 +121,8 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
 
     const pubQuery = {
       query: `{publications(pubId: "${reaction.pubId}"){
-      edges {
-      node
-      {
+    edges {
+      node {
         year
         doi
         authors
@@ -130,18 +131,18 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         journal
         pages
         pubId
-      }}
       }
-      }
-      `,
+    }
+  }}`,
     };
     cachios.post(newGraphQLRoot, pubQuery).then((response) => {
       this.props.savePublication(response.data.data.publications.edges[0].node);
     });
 
     this.props.clearSystems();
-    catappIds.map((key) => {
+    catappIds.map((key, index) => {
       let aseId = key;
+      const name = catappNames[index];
       if (typeof aseId === 'object') {
         aseId = aseId[1];
       }
@@ -154,17 +155,6 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       Cifdata
       volume
       mass
-      Facet
-      publication {
-        year
-        doi
-        authors
-        title
-        number
-        journal
-        pages
-        pubId
-      }
     }
   }
 }}`,
@@ -175,23 +165,26 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         const node = response.data.data.systems.edges[0].node;
         node.DFTCode = reaction.dftCode;
         node.DFTFunctional = reaction.dftFunctional;
+	node.Facet = reaction.facet;
+	node.publication = this.props.publication;
         node.aseId = aseId;
-        node.key = key
-          .replace(/.*TSstar/g, '‡')
-          .replace(/(.*)gas/g, (match, p1) => `${p1}(ℊ)`)
-          .replace(/(.+)star/, (match, p1) => `${p1}/${reaction.surfaceComposition}`)
-          .replace(/star/, reaction.surfaceComposition);
-
+        node.key = name;
         node.full_key = node.Formula;
-        if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
+	let ads = name.replace('star', ' @');
+        if (name.indexOf('gas') !== -1) {
+          node.full_key = `Gas phase ${node.full_key}`;
+	} else if (name.indexOf('bulk') !== -1) {
+          node.full_key = `Bulk ${node.full_key}`;
+	} else {
+	  if (name == 'star'){
+	      node.full_key = `Surface ${reaction.chemicalComposition}`;
+	  } else {
+	      node.full_key = `${ads} ${reaction.chemicalComposition}`;
+	  }
+	  if (typeof node.Facet !== 'undefined' && node.Facet !== '' && node.Facet !== null) {
           node.full_key = `${node.full_key} [${node.Facet}]`;
-        }
-        if (node.key.indexOf('(ℊ)') > -1) {
-          node.full_key = `Molecule ${node.full_key}`;
-        } else {
-          node.full_key = `Surface ${node.full_key}`;
-        }
-
+          }
+	}
         this.props.saveSystem(node);
         this.setState({
           loading: false,
