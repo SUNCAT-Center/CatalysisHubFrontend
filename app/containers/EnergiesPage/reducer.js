@@ -110,11 +110,16 @@ function energiesPageReducer(state = initialState, action) {
       return {
         ...state,
         selectedReaction: action.payload,
+        reactionSystems: [],
+        publication: [],
       };
     case constants.RECEIVE_REACTIONS:
       return {
         ...state,
         matchingReactions: action.payload,
+        selectedReaction: [],
+        reactionSystems: [],
+        publication: [],
       };
     case constants.RECEIVE_SYSTEMS:
       return {
