@@ -57,6 +57,7 @@ EnergiesPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  loading: state.get('energiesPageReducer').loading,
   selectedReaction: state.get('energiesPageReducer').selectedReaction,
   publication: state.get('energiesPageReducer').publication,
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
