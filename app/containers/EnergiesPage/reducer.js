@@ -8,6 +8,7 @@ import _ from 'lodash';
 import * as constants from './constants';
 
 const initialState = {
+  loading: false,
   selectedReaction: {},
   publication: {},
   matchingReactions: [],
