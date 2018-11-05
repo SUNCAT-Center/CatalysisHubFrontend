@@ -32,6 +32,10 @@ const styles = (theme) => ({
     marginBottom: theme.spacing.unit,
     padding: 2 * theme.spacing.unit,
   },
+  warning: {
+    display: 'inline-block',
+    backgroundColor: '#FEE994',
+  },
 });
 
 
@@ -103,30 +107,38 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
                   {tabValue === 12 && typeof this.props.reactionSystems[12] !== 'undefined' && <SingleStructureView selectedSystem={this.props.reactionSystems[12]} selectedUUID={this.props.reactionSystems[12].uniqueId} selectedPublication={this.props.publication} /> }
                 </TabContainer>
               </div>
-              :
-              <ul>
-                <li>DFT Code: {this.props.selectedReaction.dftCode}</li>
-                <li>DFT Functional: {this.props.selectedReaction.dftFunctional}</li>
-                <li>{prettyPrintReference(this.props.publication)}</li>
-                {_.isEmpty(this.props.publication.doi) ? null :
-                <div>
-                  <li>
-                          Source&nbsp;
-                          <ReactGA.OutboundLink
-                            eventLabel={`http://dx.doi.org/${this.props.publication.doi}`}
-                            to={`http://dx.doi.org/${this.props.publication.doi}`}
-                            target="_blank"
-                          >
-                            DOI: {this.props.publication.doi} <FaExternalLink />
-                          </ReactGA.OutboundLink>
-                  </li>
+             :
+              <div>
+                <div className={this.props.classes.warning}>
+                  Warning: This reaction stems from an old dataset. Please consult the publication for details.
                 </div>
-                }
-                <li>Reactions <a href={`/publications/${this.props.publication.pubId}`}>
-                Dataset
-                </a>
-                </li>
-              </ul>} </div>}
+                <ul>
+                  <li>DFT Code: {this.props.selectedReaction.dftCode}</li>
+                  <li>DFT Functional: {this.props.selectedReaction.dftFunctional}</li>
+                  <li>{prettyPrintReference(this.props.publication)}</li>
+                  {_.isEmpty(this.props.publication.doi) ? null :
+                  <div>
+                    <li>
+                            Source&nbsp;
+                            <ReactGA.OutboundLink
+                              eventLabel={`http://dx.doi.org/${this.props.publication.doi}`}
+                              to={`http://dx.doi.org/${this.props.publication.doi}`}
+                              target="_blank"
+                            >
+                              DOI: {this.props.publication.doi} <FaExternalLink />
+                            </ReactGA.OutboundLink>
+                    </li>
+                  </div>
+                  }
+                  <li>Reactions <a href={`/publications/${this.props.publication.pubId}`}>
+                  Dataset
+                  </a>
+                  </li>
+                </ul>
+              </div>
+            }
+          </div>
+          }
         </Grid>
       </Paper>
       }
