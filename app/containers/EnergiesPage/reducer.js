@@ -41,6 +41,11 @@ function energiesPageReducer(state = initialState, action) {
         publication: action.payload.publication,
       };
 
+    case constants.SAVE_LOADING:
+      return {
+        ...state,
+        publication: action.payload.loading,
+      };
     case constants.HANDLE_REQUEST_SORT:
       order = 'desc';
       orderBy = action.payload.property;

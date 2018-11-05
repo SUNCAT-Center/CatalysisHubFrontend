@@ -128,6 +128,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     this.setState({
       loading: true,
     });
+    this.props.saveLoading(true);
     let catappIds;
     let catappNames;
     if (typeof reaction.reactionSystems !== 'undefined' && reaction.reactionSystems !== null) {
@@ -135,9 +136,6 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       catappNames = (reaction.reactionSystems.map((x) => x.name));
     } else {
       catappIds = {};
-      this.setState({
-        loading: false,
-      });
       snackbarActions.open('Scroll down for detailed structure.');
     }
 
@@ -215,6 +213,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         this.setState({
           loading: false,
         });
+        this.props.saveLoading(false);
       });
     });
   }
@@ -457,6 +456,7 @@ MatchingReactions.propTypes = {
   clearSystems: PropTypes.func.isRequired,
   saveSystem: PropTypes.func.isRequired,
   savePublication: PropTypes.func.isRequired,
+  saveLoading: PropTypes.func.isRequired,
   matchingReactions: PropTypes.array.isRequired,
   searchSubmitted: PropTypes.bool,
   searchParams: PropTypes.object,
@@ -476,6 +476,7 @@ MatchingReactions.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  loading: state.get('energiesPageReducer').loading,
   filter: state.get('energiesPageReducer').filter,
   matchingReactions: state.get('energiesPageReducer').matchingReactions,
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
@@ -509,6 +510,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   savePublication: (x) => {
     dispatch(actions.savePublication(x));
+  },
+  saveLoading: (x) => {
+    dispatch(actions.saveLoading(x));
   },
   handleRequestSort: (event, property) => {
     dispatch(actions.handleRequestSort(event, property));
