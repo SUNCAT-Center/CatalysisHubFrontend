@@ -8,6 +8,7 @@ import _ from 'lodash';
 import * as constants from './constants';
 
 const initialState = {
+  loading: false,
   selectedReaction: {},
   publication: {},
   matchingReactions: [],
@@ -40,6 +41,11 @@ function energiesPageReducer(state = initialState, action) {
         publication: action.payload.publication,
       };
 
+    case constants.SAVE_LOADING:
+      return {
+        ...state,
+        publication: action.payload.loading,
+      };
     case constants.HANDLE_REQUEST_SORT:
       order = 'desc';
       orderBy = action.payload.property;
@@ -110,11 +116,16 @@ function energiesPageReducer(state = initialState, action) {
       return {
         ...state,
         selectedReaction: action.payload,
+        reactionSystems: [],
+        publication: [],
       };
     case constants.RECEIVE_REACTIONS:
       return {
         ...state,
         matchingReactions: action.payload,
+        selectedReaction: [],
+        reactionSystems: [],
+        publication: [],
       };
     case constants.RECEIVE_SYSTEMS:
       return {

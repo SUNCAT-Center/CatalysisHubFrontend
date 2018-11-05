@@ -126,6 +126,15 @@ export function savePublication(x) {
   };
 }
 
+export function saveLoading(x) {
+  return {
+    type: constants.SAVE_LOADING,
+    payload: {
+      loading: x,
+    },
+  };
+}
+
 export function saveSystem(system) {
   return {
     type: constants.SAVE_SYSTEM,

@@ -7,6 +7,7 @@ describe('energiesPageReducer', () => {
     expect(energiesPageReducer(undefined, {})).toEqual(({
       dbError: false,
       filter: {},
+      loading: false,
       matchingReactions: [],
       publication: {},
       order: 'desc',
@@ -34,7 +35,7 @@ describe('energiesPageReducer', () => {
   });
   it('handles RECEIVE_REACTIONS', () => {
     const receiveReactions = { type: constants.RECEIVE_REACTIONS };
-    expect(energiesPageReducer({}, receiveReactions)).toEqual({});
+    expect(energiesPageReducer({}, receiveReactions)).toEqual({ matchingReactions: undefined, publication: [], reactionSystems: [], selectedReaction: [] });
   });
   it('handles CLEAR_SYSTEMS', () => {
     const clearSystems = { type: constants.CLEAR_SYSTEMS };
@@ -42,7 +43,7 @@ describe('energiesPageReducer', () => {
   });
   it('handles SELECT_REACTION', () => {
     const selectReaction = { type: constants.SELECT_REACTION };
-    expect(energiesPageReducer({}, selectReaction)).toEqual({});
+    expect(energiesPageReducer({}, selectReaction)).toEqual({ publication: [], reactionSystems: [], selectedReaction: undefined });
   });
   it('handles SAVE_SYSTEM', () => {
     const saveSystem = { type: constants.SAVE_SYSTEM, payload: 'System' };

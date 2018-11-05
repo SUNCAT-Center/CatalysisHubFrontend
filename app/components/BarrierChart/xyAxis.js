@@ -27,35 +27,40 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
     const activationEnergy = this.props.selectedReaction.activationEnergy;
     let plotHeight = Math.abs(reactionEnergy);
     let barrierHeight;
+    let barrierValue;
     if (activationEnergy == null) {
-      barrierHeight = reactionEnergy / 2.0 / plotHeight;
+      barrierHeight = reactionEnergy / plotHeight;
+      barrierValue = reactionEnergy / 2.0 / plotHeight;
     } else {
-      plotHeight = activationEnergy + Math.abs(reactionEnergy);
+      plotHeight = activationEnergy - Math.min(reactionEnergy, 0);
       barrierHeight = activationEnergy / plotHeight;
+      barrierValue = barrierHeight;
     }
-    const reactHeight = reactionEnergy / plotHeight;
-    const offset = 180 + (100 * Math.max(reactHeight, barrierHeight));
+    const reactValue = reactionEnergy / plotHeight;
+    const offset = 70 + (250 * Math.max(barrierHeight, 0));
     const data = [
       { x: 0, y: offset },
       { x: 120, y: offset },
-      { x: 200, y: offset - (250 * barrierHeight) },
-      { x: 280, y: offset - (250 * reactHeight) },
-      { x: 400, y: offset - (250 * reactHeight) },
+      { x: 200, y: offset - (250 * barrierValue) },
+      { x: 280, y: offset - (250 * reactValue) },
+      { x: 400, y: offset - (250 * reactValue) },
     ];
+
+    const labelBarrier = offset - ((250 * barrierValue) + 30);
+    const labelReact = offset - ((250 * reactValue) - 40);
+
     if (activationEnergy == null) {
       return (
         <g className="xy-axis">
           <Axis {...xSettings} />
           <path stroke="black" fill="none" strokeWidth={8} className="line shadow" d={line(data)} />
           <line x1={0} x2={500} y1={200} y2={400} />
-          <text x={120} y={340} fontFamily="sans-serif" fontSize="14px" fill="red">
+          <text x={120} y={360} fontFamily="sans-serif" fontSize="14px" fill="red">
             Reaction Energy {reactionEnergy.toFixed(2)} eV
           </text>
         </g>
       );
     }
-    const labelHeight = offset - ((250 * barrierHeight) + 30);
-    const labelReact = offset - ((250 * reactHeight) - 40);
     return (
       <g className="xy-axis">
         <Axis {...xSettings} />
@@ -63,7 +68,7 @@ export default class XYAxis extends React.Component { // eslint-disable-line rea
         <line x1={0} x2={500} y1={200} y2={400} />
         <text x={260} y={labelReact} fontFamily="sans-serif" fontSize="14px" fill="red">
           Reaction Energy {reactionEnergy.toFixed(2)} eV </text>
-        <text x={120} y={labelHeight} fontFamily="sans-serif" fontSize="14px" fill="red">
+        <text x={120} y={labelBarrier} fontFamily="sans-serif" fontSize="14px" fill="red">
           Activation Energy {activationEnergy.toFixed(2)} eV
         </text>
       </g>
