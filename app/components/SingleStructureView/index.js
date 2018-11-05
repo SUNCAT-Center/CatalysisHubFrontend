@@ -74,22 +74,22 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{prettyPrintReference(this.props.selectedSystem.publication)}</li>
-            {_.isEmpty(this.props.selectedSystem.publication.doi) ? null :
+            <li>{prettyPrintReference(this.props.selectedPublication)}</li>
+            {_.isEmpty(this.props.selectedPublication.doi) ? null :
             <div>
               <li>
                           Source&nbsp;
                           <ReactGA.OutboundLink
-                            eventLabel={`http://dx.doi.org/${this.props.selectedSystem.publication.doi}`}
-                            to={`http://dx.doi.org/${this.props.selectedSystem.publication.doi}`}
+                            eventLabel={`http://dx.doi.org/${this.props.selectedPublication.doi}`}
+                            to={`http://dx.doi.org/${this.props.selectedPublication.doi}`}
                             target="_blank"
                           >
-                            DOI: {this.props.selectedSystem.publication.doi} <FaExternalLink />
+                            DOI: {this.props.selectedPublication.doi} <FaExternalLink />
                           </ReactGA.OutboundLink>
               </li>
             </div>
                   }
-            <li>Reactions <a href={`/publications/${this.props.selectedSystem.publication.pubId}`}>
+            <li>Reactions <a href={`/publications/${this.props.selectedPublication.pubId}`}>
                 Dataset
                 </a>
             </li>
@@ -102,6 +102,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
 }
 
 SingleStructureView.propTypes = {
+  selectedPublication: PropTypes.string.isRequired,
   selectedUUID: PropTypes.string.isRequired,
   selectedSystem: PropTypes.object.isRequired,
 };
