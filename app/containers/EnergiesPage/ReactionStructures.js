@@ -130,8 +130,8 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
                     </li>
                   </div>
                   }
-                  <li>Reactions <a href={`/publications/${this.props.publication.pubId}`}>
-                  Dataset
+                  <li> <a href={`/publications/${this.props.publication.pubId}`}>
+                  View all reactions in dataset
                   </a>
                   </li>
                 </ul>
