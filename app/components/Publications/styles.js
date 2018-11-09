@@ -21,6 +21,13 @@ export const styles = (theme) => ({
     },
     textDecoration: 'none',
   },
+  publicationOffAction: {
+    margin: theme.spacing.unit,
+    height: 6,
+    backgroundColor: _.get(theme, 'palette.sun.100'),
+    textDecoration: 'none',
+  },
+
   outboundLink: {
     textDecoration: 'none',
   },
@@ -52,5 +59,8 @@ export const styles = (theme) => ({
   publicationActions: {
     marginTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
+  },
+  table: {
+    minWidth: 700,
   },
 });
