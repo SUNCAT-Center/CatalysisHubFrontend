@@ -110,7 +110,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
              :
               <div>
                 <div className={this.props.classes.warning}>
-                  Warning: Atomic geometries are not available for this reaction. Please consult the publication for details.
+                  Warning: Atomic geometries are not available for this reaction. Please consult the publication or authors for details.
                 </div>
                 <ul>
                   <li>DFT Code: {this.props.selectedReaction.dftCode}</li>
