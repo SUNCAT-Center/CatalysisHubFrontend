@@ -39,7 +39,7 @@ const MButton = styled(Button)`
 
 const styles = (theme) => ({
   paper: {
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit * 3,
   },
   button: {
