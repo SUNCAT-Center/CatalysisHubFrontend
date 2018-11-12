@@ -34,7 +34,7 @@ const styles = (theme) => ({
   },
   warning: {
     display: 'inline-block',
-    backgroundColor: '#FEE994',
+    backgroundColor: theme.palette.sun[100],
   },
 });
 
@@ -110,7 +110,7 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
              :
               <div>
                 <div className={this.props.classes.warning}>
-                  Warning: This reaction stems from an old dataset. Please consult the publication for details.
+                  Warning: Atomic geometries are not available for this reaction. Please consult the publication for details.
                 </div>
                 <ul>
                   <li>DFT Code: {this.props.selectedReaction.dftCode}</li>
