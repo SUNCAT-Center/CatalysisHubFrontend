@@ -174,10 +174,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     });
 
     axios.post(newGraphQLRoot, {
-      query: '{publications { edges { node { authors } } }}',
+      query: '{publications (authors:"~", distinct: true) { edges { node { authors } } }}',
     }).then((response) => {
       const contributors = new Set();
-      response.data.data.publications.edges.map((edge) => JSON.parse(edge.node.authors).map((author) => contributors.add(author)));
+      response.data.data.publications.edges
+        .map((edge) => JSON.parse(edge.node.authors)
+        .filter((x) => x !== 'others')
+        .filter((x) => x !== 'catapp')
+        .filter((x) => x !== 'Catapp')
+        .map((author) => contributors.add(author)));
       this.setState({
         contributors: contributors.size,
       });
