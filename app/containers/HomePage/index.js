@@ -69,8 +69,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       randomReaction: {},
       randomSystems: [],
       image: 0,
-      lastPublication: {},
-      lastPublicationTime: '',
+      lastPublications: [],
+      lastPublicationTimes: [],
     };
   }
 
@@ -126,26 +126,39 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             }, 2000
           );
         });
-        axios.post(newGraphQLRoot, {
-          query: `{systems(order:"mtime", last: 1) {
+        const latestQuery = `{systems(username: "~", distinct: true) {
   edges {
     node {
      Mtime
+     mtime
      publication {
        pubId
      }
     }
   }
-}}`,
+}}`;
+        axios.post(newGraphQLRoot, {
+          query: latestQuery,
         }).then((lpidResponse) => {
-          const lastPubId = _.get(lpidResponse, 'data.data.systems.edges[0].node.publication[0].pubId');
-          const lastPublicationTime = _.get(lpidResponse, 'data.data.systems.edges[0].node.Mtime');
-          const pubTimeArray = lastPublicationTime.split(' ');
-          pubTimeArray.splice(3, 1, ',');
+          const N = 3;
+          const lpidResponseSorted = lpidResponse
+            .data
+            .data
+            .systems
+            .edges.map(
+              (x) => x.node).sort((x, y) => y.mtime - x.mtime)
+            .splice(0, N);
+
+          const lastPubIds = _.range(N).map((x) => (
+            lpidResponseSorted[x].publication[0].pubId
+          ));
+          const lastPublicationTimes = _.range(N).map((x) => (
+            lpidResponseSorted[x].Mtime
+          ));
           this.setState({
-            lastPublicationTime: pubTimeArray.join(' ').replace(' ,', ''),
+            lastPublicationTimes,
           });
-          axios.post(newGraphQLRoot, {
+          lastPubIds.map((lastPubId, i) => axios.post(newGraphQLRoot, {
             query: `{publications(pubId:"${lastPubId}") {
   edges {
     node { title authors journal pages volume year doi pubId }
@@ -153,9 +166,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 }}`,
           }).then((lpResponse) => {
             this.setState({
-              lastPublication: _.get(lpResponse, 'data.data.publications.edges[0].node'),
+              lastPublications: _.set(this.state.lastPublications,
+                  i, _.get(lpResponse, 'data.data.publications.edges[0].node')
+                ),
             });
-          });
+          }));
         });
       }
     });
@@ -465,7 +480,7 @@ Publications
                         <div className={this.props.classes.paperInfo}>A collection of scientific publications with geometries.</div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={this.state.publications} />
+                            <Chip label={withCommas(this.state.publications)} />
                           </Grid>
                           <Grid item className={this.props.classes.bolditalic}>
                             See publications
@@ -495,7 +510,7 @@ Apps
 
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={apps.length} />
+                            <Chip label={withCommas(apps.length)} />
                           </Grid>
                           <Grid item className={this.props.classes.bolditalic}>
                             See our apps
@@ -509,7 +524,7 @@ Apps
 
 
                 </Grid>
-                {_.isEmpty(this.state.lastPublication)
+                {_.isEmpty(this.state.lastPublications)
                   ? (
                     <LinearProgress
                       color="primary"
@@ -518,50 +533,57 @@ Apps
                   )
                   : (
                     <Paper className={this.props.classes.publicationPaper}>
-                      <h3>
-Latest Dataset: {`${this.state.lastPublicationTime}`}
-.
-                      </h3>
-                      <span className={this.props.classes.publicationEntry}>
-                        <IoDocument size={24} />
-                        {' '}
-                        {prettyPrintReference(this.state.lastPublication)}
-                        {' '}
-                        {`#${this.state.lastPublication.pubId}.`}
-
-                      </span>
-                      <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
-                        <Grid item>
-                        </Grid>
-                        <Grid item>
-
-                          <Link
-                            to={`/publications/${this.state.lastPublication.pubId}`}
-                            className={this.props.classes.textLink}
-                          >
-
-                            <Button
-                              raised
-                              className={this.props.classes.publicationAction}
-                            >
-                              <MdViewList />
+                      <h2>
+Latest Datasets
+                      </h2>
+                      {Object.keys(this.state.lastPublications).sort()
+                          .map((x) => this.state.lastPublications[x])
+                          .map((lastPublication, i) => (<div key={`lastPub_${i}`}>
+                            <span className={this.props.classes.publicationEntry}>
+                              <IoDocument size={24} />
+                              {' ['}
+                              {this.state.lastPublicationTimes[i]
+                            .split(' ')
+                            .filter((x, j) => j !== 3 && j !== 0).join('/')
+                        }
+                              {'] \u00A0|\u00A0'}
+                              {prettyPrintReference(lastPublication)}
                               {' '}
-                              {'\u00A0\u00A0'}
+                              {`#${lastPublication.pubId}.`}
+
+                            </span>
+                            <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                              <Grid item>
+                              </Grid>
+                              <Grid item>
+
+                                <Link
+                                  to={`/publications/${lastPublication.pubId}`}
+                                  className={this.props.classes.textLink}
+                                >
+
+                                  <Button
+                                    raised
+                                    className={this.props.classes.publicationAction}
+                                  >
+                                    <MdViewList />
+                                    {' '}
+                                    {'\u00A0\u00A0'}
 Checkout Reactions
                               {' '}
-                              {'\u00A0\u00A0'}
-                              {' '}
-                              <MdChevronRight />
-                            </Button>
-                          </Link>
-                          {(this.state.lastPublication.doi === null
-                                          || typeof this.state.lastPublication.doi === 'undefined'
-                                          || this.state.lastPublication.doi === ''
+                                    {'\u00A0\u00A0'}
+                                    {' '}
+                                    <MdChevronRight />
+                                  </Button>
+                                </Link>
+                                {(lastPublication.doi === null
+                                          || typeof lastPublication.doi === 'undefined'
+                                          || lastPublication.doi === ''
                           ) ? null
                             : (
                               <ReactGA.OutboundLink
-                                eventLabel={`http://dx.doi.org/${this.state.lastPublication.doi}`}
-                                to={`http://dx.doi.org/${this.state.lastPublication.doi}`}
+                                eventLabel={`http://dx.doi.org/${lastPublication.doi}`}
+                                to={`http://dx.doi.org/${lastPublication.doi}`}
                                 target="_blank"
                                 className={this.props.classes.textLink}
                               >
@@ -574,14 +596,15 @@ Checkout Reactions
                                   {' '}
 DOI:
                                   {' '}
-                                  {this.state.lastPublication.doi}
+                                  {lastPublication.doi}
 .
                                 </Button>
                               </ReactGA.OutboundLink>
                             )
                           }
-                        </Grid>
-                      </Grid>
+                              </Grid>
+                            </Grid>
+                          </div>))}
 
                       <br />
                     </Paper>
