@@ -61,6 +61,8 @@ export function toTitleCase(str) {
         'a',
         'the',
         'an',
+        'and',
+        'or',
         'aboard',
         'about',
         'above',
