@@ -9,7 +9,7 @@ export const styles = (theme) => ({
   },
   peopleList: {
     display: 'flex',
-    height: '150px',
+    listStyleType: 'none',
     flexDirection: 'column',
     flexWrap: 'wrap',
   },

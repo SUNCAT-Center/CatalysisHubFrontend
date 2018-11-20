@@ -1,16 +1,16 @@
-/* Import Icons*/
+/* Import Icons */
 
 import packageJson from './package.json';
 
 module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
-  /* flaskRoot: 'http://localhost:5001',*/
+  /* flaskRoot: 'http://localhost:5001', */
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
   apiRoot: 'https://api.catalysis-hub.org/',
-  /* apiRoot: 'http://localhost:5000',*/
+  /* apiRoot: 'http://localhost:5000', */
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
-  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql',*/
+  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql', */
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
   docRoot: 'http://docs.catalysis-hub.org',
@@ -93,17 +93,34 @@ module.exports = {
       tooltip: 'How to write your own apps.',
     },
   ],
-  people: [
-    'Ankit Jain',
-    'Jacob Russell Boes',
-    'Kirsten Winther',
-    'Martin Hangaard Hansen',
-    'Max Hoffmann',
-    'Meng Zhao',
-    'Michal Bajdich',
-    'Morten Winther',
-    'Osman Mamun',
-    'Paul Jennings',
-    'Thomas Bligaard',
-  ],
+  mainPeople: {
+    'Thomas Bligaard': ['Senior Staff Scientist, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/pi/thomas-bligaard'],
+    'Michal Bajdich': ['Staff Scientist, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/michal-bajdich'],
+    'Kirsten Winther': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/kirsten-winther'],
+    'Max Hoffmann': ['Software Engineer. Former postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/max-hoffmann'],
+  },
+  otherPeople: {
+    'Jens N\u00F8rskov': ['Villum Kann Rasmussen Professor, Technical University of Denmark',
+      'http://www.staff.dtu.dk/jkno'],
+    'Jacob Russell Boes': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/jacob-russel-boes'],
+    'Osman Mamun': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/osman-mamun'],
+    'Martin Hangaard Hansen': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/martin-hangaard-hansen'],
+    'Meng Zhao': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/meng-zhao'],
+    'Chuanxun Su': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/chuanxun-su'],
+    'Philomena Schlexer': ['Postdoc, SLAC National Accelerator Laboratory',
+      'http://suncat.stanford.edu/people/philomena-Schlexer'],
+    'Ankit Jain': ['Postdoc, Technical University of Denmark',
+      'https://www.dtu.dk/service/telefonbog/person?id=136226&tab=0'],
+    'Paul Jennings': ['Former postdoc, SLAC National Accelerator Laborator',
+      'https://suncat.stanford.edu/people/paul-jennings'],
+  },
 };
