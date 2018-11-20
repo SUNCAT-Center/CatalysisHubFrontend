@@ -92,7 +92,7 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
             ))}
             <li key="all_pup_people">
               <Link
-                to={'/profile}'}
+                to={'/profile'}
               >
             See all dataset contributors
               </Link>
