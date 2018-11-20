@@ -123,18 +123,19 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         data: publicationQuery,
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
-      this.setState({
-        publicationQuery,
-        reactions: [],
-        structures: [],
-        hasMoreReactions: true,
-        loadingPublication: false,
-        publication: response.data.data.publications.edges[0].node,
-      });
-      if (!this.state.loadingReactions) {
-        this.getReactions();
+        this.setState({
+          publicationQuery,
+          reactions: [],
+          structures: [],
+          hasMoreReactions: true,
+          loadingPublication: false,
+          publication: response.data.data.publications.edges[0].node,
+        });
+        if (!this.state.loadingReactions) {
+          this.getReactions();
+        }
       }
-    });
+    );
   }
 
 
@@ -186,7 +187,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
         const newReactions = _.concat(this.state.reactions,
-          response.data.data.reactions.edges.map((edge) => edge.node), );
+          response.data.data.reactions.edges.map((edge) => edge.node));
         this.setState({
           reactionQuery,
           reactions: newReactions,
@@ -236,7 +237,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           structureQuery,
           loadingStructures: false,
           structures: _.orderBy(_.concat(this.state.structures,
-            response.data.data.systems.edges[0].node, ), 'energy'),
+            response.data.data.systems.edges[0].node), 'energy'),
         });
       });
     });
@@ -247,7 +248,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       reaction,
       selectedReaction: i,
     });
-    console.log(this.state.reaction);
   }
 
   handlePopoverOpen(event) {
@@ -307,9 +307,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       loading: true,
     });
 
-
-
-    this.state.order = 'desc';
     if (this.state.orderBy === orderBy && this.state.order === 'desc') {
       order = 'asc';
     }
@@ -539,12 +536,12 @@ DOI:
                       <Hidden smDown>
                         <TableCell>
                           <TableSortLabel
-                active={this.state.orderBy === 'activationEnergy'}
-                direction={this.state.order}
-                onClick={this.createSortHandler('activationEnergy')}
-              >
-                <div>Activation Energy</div>
-              </TableSortLabel>
+                            active={this.state.orderBy === 'activationEnergy'}
+                            direction={this.state.order}
+                            onClick={this.createSortHandler('activationEnergy')}
+                          >
+                            <div>Activation Energy</div>
+                          </TableSortLabel>
                         </TableCell>
                       </Hidden>
                       <TableCell padding="none">
@@ -559,23 +556,23 @@ DOI:
                       <Hidden smDown>
                         <TableCell>
                           <TableSortLabel
-                active={this.state.orderBy === 'facet'}
-                direction={this.state.order}
-                onClick={this.createSortHandler('facet')}
-              >
-                <div>Facet</div>
-              </TableSortLabel>
+                            active={this.state.orderBy === 'facet'}
+                            direction={this.state.order}
+                            onClick={this.createSortHandler('facet')}
+                          >
+                            <div>Facet</div>
+                          </TableSortLabel>
                         </TableCell>
                       </Hidden>
                       <Hidden smDown>
                         <TableCell>
                           <TableSortLabel
-                active={this.state.orderBy === 'sites'}
-                direction={this.state.order}
-                onClick={this.createSortHandler('sites')}
-              >
-                <div>Sites</div>
-              </TableSortLabel>
+                            active={this.state.orderBy === 'sites'}
+                            direction={this.state.order}
+                            onClick={this.createSortHandler('sites')}
+                          >
+                            <div>Sites</div>
+                          </TableSortLabel>
                         </TableCell>
                       </Hidden>
                       <TableCell>
@@ -664,46 +661,48 @@ and scroll down to load remaining reactions.
                   )
                 }
               </Paper>
-              <Paper className={this.props.classes.structuresDiv} name="Structures">
-                <Grid direction="row" justify="center">
-                  <Grid item>
-                    <h2>
-                      <FaArrowDown />
-                      {' '}
-scroll down for more structures
-                    </h2>
-                    {this.state.loadingStructures ? <CircularProgress size={30} /> : null}
-                    <Grid container justify="flex-start" direction="row">
-                      {this.state.structures.map((image, i) => (
-                        <Grid item key={`structure_${i}`}>
-                          <Grid container direction="row" justify="center">
-                <Grid item>
-                              <h2>
-                                {structures[i].Formula}
-                                {' '}
-(
-                                {structures[i].energy}
-                                {' '}
-eV)
-                              </h2>
-                              <GeometryCanvasWithOptions
-                                cifdata={structures[i].Cifdata}
-                                uniqueId={`slab_preview_${i}`}
-                                key={`slab_preview_${i}`}
-                                id={`slab_preview_${i}`}
-                                height={isMobileOnly ? 320 : 400}
-                                width={isMobileOnly ? 320 : 400}
-                                x={1}
-                                y={1}
-                                z={1}
-                              />
+              {this.state.structures.length > 1
+                ? (
+                  <Paper className={this.props.classes.structuresDiv} name="Structures">
+                    <Grid direction="row" justify="center">
+                      <Grid item>
+                        <h2>
+                          <FaArrowDown />
+                          {' '}
+            scroll down for more structures
+                        </h2>
+                        {this.state.loadingStructures ? <CircularProgress size={30} /> : null}
+                        <Grid container justify="flex-start" direction="row">
+                          {this.state.structures.map((image, i) => (
+                            <Grid item key={`structure_${i}`}>
+                              <Grid container direction="row" justify="center">
+                                <Grid item>
+                                  <h2>
+                                    {structures[i].Formula}
+                                    {' '}
+                                    (
+                                    {structures[i].energy}
+                                    {' '}
+                                    eV)
+                                  </h2>
+                                  <GeometryCanvasWithOptions
+                                    cifdata={structures[i].Cifdata}
+                                    uniqueId={`slab_preview_${i}`}
+                                    key={`slab_preview_${i}`}
+                                    id={`slab_preview_${i}`}
+                                    height={isMobileOnly ? 320 : 400}
+                                    width={isMobileOnly ? 320 : 400}
+                                    x={1}
+                                    y={1}
+                                    z={1}
+                                  />
 
-                              {_.isEmpty(this.state.structureQuery) ? null
-                                : (
-                                  <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
-                                    <Grid item>
-                                      <GraphQlbutton
-                                        query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
+                                  {_.isEmpty(this.state.structureQuery) ? null
+                                    : (
+                                      <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
+                                        <Grid item>
+                                          <GraphQlbutton
+                                            query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
       DftCode
@@ -727,25 +726,32 @@ eV)
     }
   }
 }}`}
-                                        newSchema
-                                      />
-                                    </Grid>
-                                  </Grid>
-                                )
-                              }
+                                            newSchema
+                                          />
+                                        </Grid>
+                                      </Grid>
+                                    )
+                                  }
 
 
 
+                                </Grid>
+                              </Grid>
                             </Grid>
-              </Grid>
+                          ))}
                         </Grid>
-                      ))}
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
 
-              </Paper>
-
+                  </Paper>
+                )
+                : (
+                  <Paper className={this.props.classes.structuresDiv}>
+                    {_.isEmpty(this.state.reaction) ? null
+                      : <BarrierChart selectedReaction={this.state.reaction} />
+                    }
+                  </Paper>
+                )}
             </div>
           )
           : (
@@ -947,7 +953,7 @@ scroll down for more structures
                           <Grid item key={`item_${i}`}>
                             <Grid container direction="row" justify="center">
                               <Grid item>
-              <h2>
+                                <h2>
                                   {structures[i].Formula}
                                   {' '}
 (
@@ -955,7 +961,7 @@ scroll down for more structures
                                   {' '}
 eV)
                                 </h2>
-              <GeometryCanvasWithOptions
+                                <GeometryCanvasWithOptions
                                   cifdata={structures[i].Cifdata}
                                   uniqueId={`slab_preview_${i}`}
                                   key={`slab_preview_${i}`}
@@ -965,7 +971,7 @@ eV)
                                   z={1}
                                 />
 
-              {_.isEmpty(this.state.structureQuery) ? null
+                                {_.isEmpty(this.state.structureQuery) ? null
                                   : (
                                     <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                                       <Grid item>
@@ -1000,7 +1006,7 @@ eV)
                                     </Grid>
                                   )
                                 }
-            </Grid>
+                              </Grid>
                             </Grid>
                           </Grid>
                         ))}
@@ -1010,11 +1016,15 @@ eV)
                 )
                 : (
                   <Grid item lg={7} md={7} sm={12}>
-                    <Paper className={this.props.classes.structuresDiv}>
-                      {_.isEmpty(this.state.reaction) ? null
-                        : <BarrierChart selectedReaction={this.state.reaction} />
-                      }
-                    </Paper>
+                    {this.state.loadingStructures ? null
+                      : (
+                        <Paper className={this.props.classes.structuresDiv}>
+                          {_.isEmpty(this.state.reaction) ? null
+                            : <BarrierChart selectedReaction={this.state.reaction} />
+                          }
+                        </Paper>
+                      )
+                    }
                   </Grid>
                 )
               }
