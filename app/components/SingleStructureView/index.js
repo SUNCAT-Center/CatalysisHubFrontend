@@ -58,7 +58,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
       <div>
         {this.props.selectedUUID === '' ? null :
         <div>
-          <h2>{this.props.selectedSystem.full_key}</h2>
+          <h2 style={{ textAlign: 'center' }}>{this.props.selectedSystem.full_key}</h2>
           <Grid container direction="row" justify="space-around">
             <Grid item>
               <GeometryCanvasWithOptions
@@ -69,7 +69,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
               />
             </Grid>
           </Grid>
-          <ul>
+          <ul style={{ width: '50%' }}>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
@@ -89,8 +89,8 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
               </li>
             </div>
                   }
-            <li>Reactions <a href={`/publications/${this.props.selectedPublication.pubId}`}>
-                Dataset
+            <li> <a href={`/publications/${this.props.selectedPublication.pubId}`}>
+                View all reactions in dataset
                 </a>
             </li>
           </ul>

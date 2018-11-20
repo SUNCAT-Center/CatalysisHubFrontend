@@ -8,7 +8,7 @@ export const styles = (xtheme) => ({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: xtheme.palette.coolgrey[500],
+    backgroundColor: xtheme.palette.chocolate[500],
     paddingLeft: '5%',
     paddingRight: '5%',
     [xtheme.breakpoints.down('xs')]: {

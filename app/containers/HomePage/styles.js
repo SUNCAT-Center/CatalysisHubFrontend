@@ -52,7 +52,7 @@ export const styles = (theme) => ({
   },
   banner: {
     marginTop: 50,
-    width: '100%',
+    width: '80%',
   },
   welcome: {
     marginRight: '0%',

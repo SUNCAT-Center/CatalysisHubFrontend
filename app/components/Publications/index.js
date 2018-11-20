@@ -373,32 +373,39 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 
                                 </span>
                                 <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                                  {year > 2014 ?
+                                    <Grid item>
+                                      {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
+                                        <Button
+                                          onClick={() => {
+                                            this.loadPreviewCif(reference.pubId);
+                                          }}
+                                          className={this.props.classes.publicationAction}
+                                          raised
+                                        >
+                                          Preview
+                                        </Button>
+                                          :
+                                        <GeometryCanvasWithOptions
+                                          key={`mc_${reference.pubId}`}
+                                          cifdata={this.state.previewCifs[reference.pubId].Cifdata}
+                                          unique_id={`molecule_${reference.pubId}`}
+                                          id={`molecule_${reference.pubId}`}
+                                          height={300}
+                                          width={300}
+                                          showButtons={false}
+                                          x={1} y={1} z={2}
+                                        />
+                                      }
+                                    </Grid>
+                                     :
+                                    <Grid item>
+                                      <Button className={this.props.classes.publicationOffAction}>
+                                        Geometries not available
+                                      </Button>
+                                    </Grid>
+                                  }
                                   <Grid item>
-                                    {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
-                                      <Button
-                                        onClick={() => {
-                                          this.loadPreviewCif(reference.pubId);
-                                        }}
-                                        className={this.props.classes.publicationAction}
-                                        raised
-                                      >
-                                      Preview
-                                    </Button>
-                                        :
-                                    <GeometryCanvasWithOptions
-                                      key={`mc_${reference.pubId}`}
-                                      cifdata={this.state.previewCifs[reference.pubId].Cifdata}
-                                      unique_id={`molecule_${reference.pubId}`}
-                                      id={`molecule_${reference.pubId}`}
-                                      height={300}
-                                      width={300}
-                                      showButtons={false}
-                                      x={1} y={1} z={2}
-                                    />
-                                    }
-                                  </Grid>
-                                  <Grid item>
-
                                     <Button
                                       raised
                                       onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}

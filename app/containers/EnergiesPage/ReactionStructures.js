@@ -30,11 +30,11 @@ const styles = (theme) => ({
   paper: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
-    padding: 2 * theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
   },
   warning: {
     display: 'inline-block',
-    backgroundColor: '#FEE994',
+    backgroundColor: theme.palette.sun[100],
   },
 });
 
@@ -69,11 +69,21 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
     return (<div> {/* div necessary before wrapping ternary expression */}
       {_.isEmpty(this.props.selectedReaction) ? null :
       <Paper className={this.props.classes.paper}>
-        <Grid container direction="column" width="100%">
-          <h2>{this.props.selectedReaction.Equation.replace('->', '→')} </h2>
+        {(this.props.selectedReaction.facet !== 'undefined' && this.props.selectedReaction.facet !== '') ?
+          <h2>
+            {this.props.selectedReaction.Equation.replace('->', '→')} &nbsp; @  &nbsp; {this.props.selectedReaction.surfaceComposition} [{this.props.selectedReaction.facet}]
+          </h2>
+            :
+          <h2>
+            {this.props.selectedReaction.Equation.replace('->', '→')} &nbsp;
+            on &nbsp; {this.props.selectedReaction.surfaceComposition}
+          </h2>
+        }
+        <Grid container direction="column">
           <BarrierChart {...this.props} />
           {this.props.loading ? null :
           <div>
+            <h2 style={{ marginBlockEnd: '8px', marginLeft: '16px' }}> Reaction Geometries </h2>
             {this.props.reactionSystems.length > 1 ?
               <div>
                 <Tabs
@@ -110,9 +120,9 @@ class ReactionStructures extends React.Component { // eslint-disable-line react/
              :
               <div>
                 <div className={this.props.classes.warning}>
-                  Warning: This reaction stems from an old dataset. Please consult the publication for details.
+                  Warning: Atomic geometries are not available for this reaction. Please consult the publication or authors for details.
                 </div>
-                <ul>
+                <ul style={{ width: '50%' }}>
                   <li>DFT Code: {this.props.selectedReaction.dftCode}</li>
                   <li>DFT Functional: {this.props.selectedReaction.dftFunctional}</li>
                   <li>{prettyPrintReference(this.props.publication)}</li>

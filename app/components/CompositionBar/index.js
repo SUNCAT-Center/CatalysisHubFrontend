@@ -28,7 +28,7 @@ class CompositionBar extends React.Component { // eslint-disable-line react/pref
             <rect
               key={`slot_${i}`}
               title={elem}
-              height="35"
+              height={this.props.height}
               x={i * d}
               width={d}
               fill={jmolColors[1 + atomicNumbers[elem]]}
@@ -48,7 +48,7 @@ CompositionBar.propTypes = {
 
 
 CompositionBar.defaultProps = {
-  height: 35,
+  height: 20,
   width: isMobile ? 150 : 250,
 };
 
