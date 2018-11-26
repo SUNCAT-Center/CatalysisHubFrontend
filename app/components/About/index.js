@@ -16,17 +16,6 @@ import { people } from 'utils/constants';
 import { styles } from './styles';
 import ccLogoBig from './ccLogoBig.svg';
 
-function toSlugFormat(s) {
-  return s.split(',')
-    .reverse()
-    .map((x) => x.trim())
-    .join(' ')
-    .replace('.', '')
-    .replace(/\s/g, '-')
-    .toLowerCase();
-}
-
-
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -70,14 +59,15 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
         <Paper className={this.props.classes.paper}>
           <h2>People</h2>
           <ul className={this.props.classes.peopleList}>
-            {people.map((name, i) => (
+            {Object.keys(people).map((name, i) => (
               <li key={`person_${i}`}>
-                <a href={`http://suncat.stanford.edu/people/${toSlugFormat(name)}`} target="_blank">
+                <a href={people[name][1]} target="_blank">
                   {name}
                 </a>
+                {'  '}
+                {people[name][0]}
               </li>
             ))}
-
           </ul>
         </Paper>
         <Paper className={this.props.classes.paper}>

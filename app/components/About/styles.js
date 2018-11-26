@@ -4,12 +4,12 @@ export const styles = (theme) => ({
     height: '150px',
   },
   paragraph: {
-    textIndent: '2em',
+    textIndent: '1em',
     marginBottom: 2 * theme.spacing.unit,
   },
   peopleList: {
     display: 'flex',
-    height: '150px',
+    listStyleType: 'none',
     flexDirection: 'column',
     flexWrap: 'wrap',
   },
