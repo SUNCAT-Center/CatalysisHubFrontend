@@ -9,24 +9,12 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import { Link } from 'react-router';
 import slacLogo from 'components/Header/SLAC_Logo.png';
 import doeLogo from 'components/Header/DOE_Logo.gif';
 import stanfordLogo from 'components/Header/stanford_crop.png';
-import { mainPeople, otherPeople } from 'utils/constants';
+import { people } from 'utils/constants';
 import { styles } from './styles';
 import ccLogoBig from './ccLogoBig.svg';
-
-function toSlugFormat(s) {
-  return s.split(',')
-    .reverse()
-    .map((x) => x.trim())
-    .join(' ')
-    .replace('.', '')
-    .replace(/\s/g, '-')
-    .toLowerCase();
-}
-
 
 class About extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -71,32 +59,15 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
         <Paper className={this.props.classes.paper}>
           <h2>People</h2>
           <ul className={this.props.classes.peopleList}>
-            {Object.keys(mainPeople).map((name, i) => (
+            {Object.keys(people).map((name, i) => (
               <li key={`person_${i}`}>
-                <a href={mainPeople[name][1]} target="_blank">
+                <a href={people[name][1]} target="_blank">
                   {name}
                 </a>
                 {'  '}
-                {mainPeople[name][0]}
+                {people[name][0]}
               </li>
             ))}
-          </ul>
-          <h2>Contributors & Collaborators</h2>
-          <ul className={this.props.classes.peopleList}>
-            {Object.keys(otherPeople).map((name, i) => (
-              <li key={`person_${i}`}>
-                <a href={`http://suncat.stanford.edu/people/${toSlugFormat(name)}`} target="_blank">
-                  {name}
-                </a>
-              </li>
-            ))}
-            <li key="all_pup_people">
-              <Link
-                to={'/profile'}
-              >
-            See all dataset contributors
-              </Link>
-            </li>
           </ul>
         </Paper>
         <Paper className={this.props.classes.paper}>
