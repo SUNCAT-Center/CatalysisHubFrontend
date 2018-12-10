@@ -538,119 +538,87 @@ Disclaimer: data submitted to the preview section can be seen by all registered 
                 <h3>Why should I submit calculations of reaction energies?</h3>
                 <ul>
                   <li>
-Create an easy-to-use interactive supplementary information for your
+                    Create an easy-to-use interactive supplementary information for your
+                    {' '}
                     <a href="/publications">publication</a>
                     {' '}
-with its own URL.
+                    with its own URL.
                   </li>
                   <li>
-Get your own
+                    Get your own
+                    {' '}
                     <a href="/profile">profile page</a>
                   </li>
                   <li>
-Inspect your data with a growing number of web
-                    <a href="/appsIndex">apps</a>
+                    Inspect your data with a growing number of web
                     {' '}
-(
-                    <a href="/activityMaps">activity maps</a>
-,
-                    <a href="/scalingRelations">scaling relations</a>
-)
+                    <a href="/appsIndex">apps</a> (<a href="/activityMaps">activity maps</a>, <a href="/scalingRelations">scaling relations</a>)
                   </li>
-                  <li>Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
                   <li>
-Support
+                    Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
+                  <li>
+                    Support
+                    {' '}
                     <a href="/catLearn">ongoing machine-learning efforts</a>
-                    {' '}
-in the community by providing first-principles based training data.
+                    in the community by providing first-principles based training data.
                   </li>
                   <li>
-Get your dataset referenced in
-                    <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>
-.
+                    Get your dataset referenced in
+                    {' '}
+                    <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>.
                   </li>
                 </ul>
                 <h3>How to submit with the CatHub terminal client</h3>
                 <div>
-         Check
+                  Check
                   {' '}
                   <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a>
                   {' '}
-for a detailed guide on how to upload data. Below a short guide is provided. If you have problems, please contact Kirsten Winther (
-                  {'winther@stanford.edu'}
-) or use the
+                  for a detailed guide on how to upload data. Below a short guide is provided. If you have problems, please contact Kirsten Winther ({'winther@stanford.edu'}) or use the
                   {' '}
                   <a href="https://gitter.im/catalysis-hub-org/Lobby#"> Chat room </a>
                   {' '}
-for assistance.
+                  for assistance.
                 </div>
                 <ol>
                   <li>
-Install CatHub:
+                    Install CatHub:
                     <pre>pip install cathub --upgrade  --user --process-dependency-links </pre>
                   </li>
                   <li>
-                    {' '}
-For an overview of commands, run in your terminal:
+                    For an overview of commands, run in your terminal:
                     <pre>cathub --help </pre>
-                    {' '}
                     <pre>cathub make_folders --help </pre>
-                    {' '}
                     <pre>cathub organize --help </pre>
-                    {' '}
                   </li>
                   <li>
 Organize output files into a folder tree. Choose one of two options:
                     <ul>
                       <li>
-                        {' '}
-For easy organization (adsorption energies only):
-                        <pre>
-cathub organize
-                          {'<foldername>'}
-                        </pre>
-                        {' '}
-
+                        For automated organization of folders and files (adsorption energies only):
+                        <pre> cathub organize {'<foldername>'}</pre>
                       </li>
                       <li>
-                        {' '}
-For more complicated reactions, create an empty folder tree and dump the files yourself:
-                        <pre>
-cathub make_folders
-                          {'<template>'}
-                        </pre>
+                        For more complicated reactions, create an empty folder tree and dump the files yourself:
+                        <pre> cathub make_folders {'<template>'}</pre>
                       </li>
                     </ul>
                   </li>
                   <li>
-Turn organized folder into a database file (SQLite3 format):
+                    Turn organized folder into a database file (SQLite3 format):
                     <pre>
-cathub folder2db --userhandle
-                      {'<your Google or SLACK email address>'}
-                      {' '}
-                      {'<foldername>'}
-.organized
+                      cathub folder2db --userhandle {'<your Google or SLACK email address>'} {'<organized folder>'}
                     </pre>
                   </li>
                   <li>
-Upload the database file to the server:
-                    <pre>
-cathub db2server
-                      {'<NameTitlewordYear>'}
-.db
-                    </pre>
+                    Upload the database file to the server:
+                    <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre>
                   </li>
                   <li>
-Click on
-                    {'"Fetch Data Sets"'}
-                    {' '}
-to see your uploaded dataset.
+                    Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
                   </li>
                   <li>
-                    {' '}
-Check that the data looks right. Click on
-                    {'"Release"'}
-, and the dataset will be made available to the public as soon as possible.
+                    Check that the data looks right. Click on {'"Release"'}, and the dataset will be made available to the public as soon as possible.
                   </li>
                 </ol>
               </div>
