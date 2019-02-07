@@ -74,10 +74,14 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li>Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            <li>{prettyPrintReference(this.props.selectedPublication)}</li>
-            {_.isEmpty(this.props.selectedPublication.doi) ? null :
+            {_.isEmpty(this.props.selectedSystem.calculatorParameters) ? null :
+            <li> DFT parameters: {this.props.selectedSystem.calculatorParameters}</li>
+            }
+            <li>Publication: {prettyPrintReference(this.props.selectedPublication)}</li>
             <div>
-              <li>
+              {_.isEmpty(this.props.selectedPublication.doi) ? null :
+              <div>
+                <li>
                           Source&nbsp;
                           <ReactGA.OutboundLink
                             eventLabel={`http://dx.doi.org/${this.props.selectedPublication.doi}`}
@@ -86,9 +90,10 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
                           >
                             DOI: {this.props.selectedPublication.doi} <FaExternalLink />
                           </ReactGA.OutboundLink>
-              </li>
+                </li>
+              </div>
+              }
             </div>
-                  }
             <li> <a href={`/publications/${this.props.selectedPublication.pubId}`}>
                 View all reactions in dataset
                 </a>
