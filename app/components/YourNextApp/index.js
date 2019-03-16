@@ -173,7 +173,7 @@ npm run start`}
                 {'. bin/activate'}
               </SyntaxHighlighter>
               <p>
-              Now we are ready to install all dependnecies locally
+              Now we are ready to install all dependencies locally
             </p>
               <SyntaxHighlighter language={'bash'}>
                 {'pip install -r requirements.txt'}
@@ -253,7 +253,7 @@ npm run start`}
               <p>If now spin up the frontend using</p>
               <code>npm run start</code>
               <p>we can open a browser at <code>http://localhost:3000/myShinyApp</code> and should be greeted by an empty app.</p>
-              <p>Next we open <code>app/containers/MyShinyApp/index.js</code>, which should now like like
+              <p>Next we open <code>app/containers/MyShinyApp/index.js</code>, which should now look like
             </p>
               <SyntaxHighlighter language={'js'} showLineNumbers={this.state.showLineNumbers}>{`
 /*
