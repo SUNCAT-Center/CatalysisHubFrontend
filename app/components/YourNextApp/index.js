@@ -123,7 +123,7 @@ class YourNextApp extends React.Component { // eslint-disable-line react/prefer-
                 to="https://reactjs.org/"
                 target="_blank"
               > {'React.js'} </ReactGA.OutboundLink>{`
-            for its backend features. Both of these projects we are well documented and maintained have a large number of community contributions. This tutorial won't go through
+            for its frontend features. Both of these projects we are well documented and maintained have a large number of community contributions. This tutorial won't go through
             the details of any of those. Please refer to their respective documentation. This tutorial intends to give a few starting point to get started with your own app
             and get a feel for how different parts play together. Also we will go through some components that are specific to Catalysis-Hub.Org like GraphQL and plotting with Plotly
             as well as some project maintenance stuff like regression tests.
