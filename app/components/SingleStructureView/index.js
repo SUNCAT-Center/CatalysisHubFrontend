@@ -71,7 +71,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
           </Grid>
           <ul style={{ width: '50%' }}>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
-            <li>Total Energy: {energy.toFixed(2)} eV</li>
+            <li>DFT Total Energy: {energy.toFixed(2)} eV</li>
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
             {_.isEmpty(this.props.selectedSystem.calculatorParameters) ? null :
