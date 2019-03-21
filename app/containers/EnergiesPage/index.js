@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
@@ -15,7 +14,6 @@ import Slide from 'material-ui/transitions/Slide';
 
 import * as actions from './actions';
 import EnergiesPageInput from './Input';
-import EnergiesPageSimpleInput from './SimpleInput';
 import MatchingReactions from './MatchingReactions';
 import { ReactionStructures } from './ReactionStructures';
 
@@ -38,11 +36,8 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
           <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
           <Script url="/static/ChemDoodleWeb.js" />
 
-          {this.props.simpleSearch ?
-            <EnergiesPageSimpleInput />
-            :
-            <EnergiesPageInput {...this.props} />
-        }
+          <EnergiesPageInput {...this.props} />
+
           <MatchingReactions />
           <ReactionStructures {...this.props} />
         </div>
@@ -52,8 +47,6 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
 }
 
 EnergiesPage.propTypes = {
-  simpleSearch: PropTypes.bool,
-
 };
 
 const mapStateToProps = (state) => ({
