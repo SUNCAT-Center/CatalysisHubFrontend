@@ -4,7 +4,6 @@ export const styles = (theme) => ({
     height: '150px',
   },
   paragraph: {
-    textIndent: '1em',
     marginBottom: 2 * theme.spacing.unit,
   },
   peopleList: {

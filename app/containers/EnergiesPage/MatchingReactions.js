@@ -232,9 +232,8 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
             <Paper className={this.props.classes.paper}>
               <Grid container direction="row" justify="center">
                 <Grid item>
-                  <h2>Ooops! :-(</h2>
+                  <h2>No reaction energies found!</h2>
                   <div className={this.props.classes.emptyText}>
-                    No reaction energies found.
                     Here are a couple of things you could try.
                     <ul>
                       <li className={this.props.classes.li}>
