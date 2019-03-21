@@ -18,11 +18,10 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import { FormGroup } from 'material-ui/Form';
-import Tooltip from 'material-ui/Tooltip';
 
 import * as Scroll from 'react-scroll';
 
-import { MdSearch, MdChevronLeft, MdWarning } from 'react-icons/lib/md';
+import { MdSearch, MdWarning } from 'react-icons/lib/md';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
@@ -267,20 +266,17 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <Paper className={this.props.classes.paper}>
-        <Grid container justify="flex-end" direction="row">
-          <Grid item>
-            <Tooltip title="Try free text search.">
-              <Button
-                onClick={this.props.toggleSimpleSearch}
-                className={this.props.classes.button}
-              >
-                <MdChevronLeft /> Simple Search
-            </Button>
-            </Tooltip>
-          </Grid>
-        </Grid>
         {this.props.dbError ? <div><MdWarning />Failed to contact database. </div> : null }
         <h2>Surface Reactions</h2>
+        <h3>Search for chemical reactions across all publications and datasets!</h3>
+        <div style={{ width: '55%', textAlign: 'justify' }}>
+          <div> A quick guide: </div>
+          <ul>
+            <li> {"Leave fields blank if you don't want to impose any restrictions."} </li>
+            <li> {"For the <b>Reactants</b> and <b>Product</b> fields, choose the chemical species taking part in the left- and/or right hand side of the chemical reaction respectively. The phase of the molecules and elements can also be specified, such that {'CO2gas'} refers to CO<sub>2</sub> in the gas phase, whereas 'CO2*' refers to CO<sub>2</sub> adsorbed on the surface."} </li>
+            <li> {"In the <b>Surface</b> field, enter the (reduced) chemical composition of the surface, or a sum of elements that must be present, such as 'Ag+' or 'Ag+Sr'."} </li>
+          </ul>
+        </div>
         <div className={this.props.classes.hint}>{this.state.resultCount}</div>
 
         <FormGroup row>
@@ -318,7 +314,6 @@ EnergiesPageInput.propTypes = {
   saveResultSize: PropTypes.func,
   saveSearch: PropTypes.func,
   submitSearch: PropTypes.func.isRequired,
-  toggleSimpleSearch: PropTypes.func,
   setDbError: PropTypes.func,
   saveSearchQuery: PropTypes.func,
 };
