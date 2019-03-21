@@ -17,6 +17,7 @@ import {
 } from 'utils/functions';
 
 import GeometryCanvasWithOptions from 'components/GeometryCanvasWithOptions';
+import GraphQlbutton from 'components/GraphQlbutton';
 
 const initialState = {
   Formula: '',
@@ -39,10 +40,31 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
   constructor(props) {
     super(props);
     this.state = initialState;
+    this.state.printquery = `query{systems( uniqueId: "${this.props.selectedSystem.aseId}" ) {
+  edges {
+    node {
+      Formula
+      energy
+      numbers
+      initialMagmoms
+      magmoms
+      magmom
+      charges
+      momenta
+      calculator
+      keyValuePairs
+      calculatorParameters
+      publication {
+        title
+        authors
+        doi
+      }
+    }
+  }
+}}`;
   }
   render() {
     const energy = this.props.selectedSystem.energy || this.state.energy || 0.0;
-
     let x;
     let y;
     let z;
@@ -72,11 +94,11 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
           <ul style={{ width: '50%' }}>
             <li>Formula: {this.props.selectedSystem.Formula}</li>
             <li>DFT Total Energy: {energy.toFixed(2)} eV</li>
+            {this.props.selectedSystem.energyCorrection !== 0 &&
+              <li> Energy correction: {this.props.selectedSystem.energyCorrection}</li>
+            }
             <li>DFT Code: {this.props.selectedSystem.DFTCode}</li>
             <li>DFT Functional: {this.props.selectedSystem.DFTFunctional}</li>
-            {_.isEmpty(this.props.selectedSystem.calculatorParameters) ? null :
-            <li> DFT parameters: {this.props.selectedSystem.calculatorParameters}</li>
-            }
             <li>Publication: {prettyPrintReference(this.props.selectedPublication)}</li>
             <div>
               {_.isEmpty(this.props.selectedPublication.doi) ? null :
@@ -97,6 +119,9 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
             <li> <a href={`/publications/${this.props.selectedPublication.pubId}`}>
                 View all reactions in dataset
                 </a>
+            </li>
+            <li>
+               Open <GraphQlbutton query={this.state.printquery} newSchema /> to view calculational details.
             </li>
           </ul>
         </div>
