@@ -129,13 +129,15 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
       loading: true,
     });
     this.props.saveLoading(true);
-    let catappIds;
-    let catappNames;
+    let cathubIds;
+    let cathubNames;
+    let catenergyCorrections;
     if (typeof reaction.reactionSystems !== 'undefined' && reaction.reactionSystems !== null) {
-      catappIds = (reaction.reactionSystems.map((x) => x.aseId));
-      catappNames = (reaction.reactionSystems.map((x) => x.name));
+      cathubIds = (reaction.reactionSystems.map((x) => x.aseId));
+      cathubNames = (reaction.reactionSystems.map((x) => x.name));
+      catenergyCorrections = (reaction.reactionSystems.map((x) => x.energyCorrection));
     } else {
-      catappIds = {};
+      cathubIds = {};
       snackbarActions.open('Scroll down for detailed structure.');
     }
 
@@ -160,9 +162,10 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     });
 
     this.props.clearSystems();
-    catappIds.map((key, index) => {
+    cathubIds.map((key, index) => {
       let aseId = key;
-      const name = catappNames[index];
+      const name = cathubNames[index];
+      const energyCorrection = catenergyCorrections[index];
       if (typeof aseId === 'object') {
         aseId = aseId[1];
       }
@@ -189,6 +192,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
         node.Facet = reaction.facet;
         node.publication = this.props.publication;
         node.aseId = aseId;
+        node.energyCorrection = energyCorrection;
         node.key = name;
         node.full_key = node.Formula;
         const ads = name.replace('star', ' @');

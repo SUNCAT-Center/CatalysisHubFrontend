@@ -191,6 +191,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         chemicalComposition
         reactionSystems {
           name
+          energyCorrection
           aseId
         }
       }
