@@ -125,53 +125,35 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             }, 2000
           );
         });
-        axios.post(newGraphQLRoot, {
-          query: `{systems(order:"mtime", last: 1) {
+      }
+    });
+    axios.post(newGraphQLRoot, {
+      query: `{publications(stime: 0, op: ">", order: "stime", last: 1) {
+  totalCount
   edges {
     node {
-     Mtime
-     publication {
-       pubId
-     }
+      pubId
+      Stime
+      title
+      authors
+      journal
+      pages
+      volume
+      year
+      doi
     }
   }
 }}`,
-        }).then((lpidResponse) => {
-          const lastPubId = _.get(lpidResponse, 'data.data.systems.edges[0].node.publication[0].pubId');
-          const lastPublicationTime = _.get(lpidResponse, 'data.data.systems.edges[0].node.Mtime');
-          const pubTimeArray = lastPublicationTime.split(' ');
-          pubTimeArray.splice(3, 1, ',');
-          this.setState({
-            lastPublicationTime: pubTimeArray.join(' ').replace(' ,', ''),
-          });
-          axios.post(newGraphQLRoot, {
-            query: `{publications(pubId:"${lastPubId}") {
-  edges {
-    node { title authors journal pages volume year doi pubId }
-  }
-}}`,
-          }).then((lpResponse) => {
-            this.setState({
-              lastPublication: _.get(lpResponse, 'data.data.publications.edges[0].node'),
-            });
-          });
-        });
-      }
+    }).then((lpidResponse) => {
+      const lastPublicationTime = _.get(lpidResponse, 'data.data.publications.edges[0].node.Stime');
+      const pubTimeArray = lastPublicationTime.split(' ');
+      pubTimeArray.splice(3, 1, ',');
+      this.setState({
+        lastPublicationTime: pubTimeArray.join(' ').replace(' ,', ''),
+        lastPublication: _.get(lpidResponse, 'data.data.publications.edges[0].node'),
+        publications: _.get(lpidResponse, 'data.data.publications.totalCount'),
+      });
     });
-    axios.post(newGraphQLRoot, { query: '{publications(first: 0) { totalCount edges { node { id } } }}' }).then((response) => {
-      if (response.data.data.reactions === null) {
-        this.setState({
-          loading: false,
-          error: true,
-        });
-      } else {
-        this.setState({
-          loading: false,
-          publications: response.data.data.publications.totalCount,
-        });
-      }
-    });
-
     axios.post(newGraphQLRoot, {
       query: '{publications (authors:"~", distinct: true) { edges { node { authors } } }}',
     }).then((response) => {
