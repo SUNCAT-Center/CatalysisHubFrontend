@@ -82,115 +82,48 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     this.clickPublication = this.clickPublication.bind(this);
     this.loadPreviewCif = this.loadPreviewCif.bind(this);
     this.backToList = this.backToList.bind(this);
-
-    if (_.get(props, 'routeParams.pubId', '') !== '') {
-      const publicationQuery = {
-        ttl: 300,
-        query: `{publications(pubId: "${this.state.pubId}") {
-  edges {
-    node {
-      id
-      pubId
-      title
-      authors
-      pages
-      volume
-      journal
-      doi
-      pubtextsearch
-    }
-  }
-}}` };
-
-      axios(newGraphQLRoot,
-        {
-          method: 'post',
-          data: publicationQuery,
-        }).then((response) => {
-          this.setState({
-            reference: _.get(response,
-              'data.data.publications.edges[0].node',
-              {}),
-          });
-        });
-    }
   }
   componentDidMount() {
-    const mtimeQuery = `{systems(first:50, keyValuePairs: "~", jsonkey: "pub_id", distinct: true) {
-totalCount
-  edges {
-    node {
-      keyValuePairs
-      mtime
-    }
-  }
-}}`;
+    const yearQuery = '{publications { edges { node { year } } }}';
     axios.post(newGraphQLRoot, {
-      query: mtimeQuery,
+      query: yearQuery,
     })
-    .then((mtimeResponse) => {
-      const mtimes = mtimeResponse.data.data.systems.edges.map((n) => (n.node.mtime));
-      const sortedMtimes = mtimes.slice().sort((a, b) => b - a);
-      const systemPubIds = mtimeResponse.data.data.systems.edges.map((n) => (JSON.parse(n.node.keyValuePairs).pub_id));
-      let orderedPubIds = sortedMtimes.map((sortedMtime) => systemPubIds[mtimes.indexOf(sortedMtime)]);
-      orderedPubIds = Array.from(new Set(orderedPubIds));
-      const yearQuery = '{publications { edges { node { year } } }}';
-      axios.post(newGraphQLRoot, {
-        query: yearQuery,
-      })
-        .then((response) => {
-          let years = response.data.data.publications.edges.map((n) => n.node.year);
-          years = [...new Set(years)].sort().reverse().filter((x) => x !== null);
-          this.setState({
-            years,
-          });
-          years.map((year) => {
-            const query = `{publications (year: ${year}) { edges { node {  doi title year authors journal pages pubId pubtextsearch  } } }}`;
-            return axios.post(newGraphQLRoot, {
-              query,
-            })
-              .then((yearResponse) => {
-                let references = yearResponse.data.data.publications.edges
-                  .map((n) => (n.node));
-                references = [...new Set(references)];
-                const dois = yearResponse.data.data.publications.edges.map((n) => (n.node.doi));
-                const titles = yearResponse.data.data.publications.edges.map((n) => (n.node.title));
-                const pubIds = yearResponse.data.data.publications.edges.map((n) => (n.node.pubId));
-                const pubIndices = [];
-                orderedPubIds.map((orderedPubId) => {
-                  if (pubIds.includes(orderedPubId)) {
-                    pubIndices.push(pubIds.indexOf(orderedPubId));
-                  }
-                  return pubIndices;
-                });
-                pubIds.map((pubId, index) => {
-                  if (!orderedPubIds.includes(pubId)) {
-                    pubIndices.push(index);
-                  }
-                  return pubIndices;
-                });
-                const allReferences = this.state.references;
-                const allDois = this.state.dois;
-                const allTitles = this.state.titles;
-                const allPubIds = this.state.pubIds;
-
-                allReferences[year] = pubIndices.map((p) => references[p]);
-                allDois[year] = pubIndices.map((p) => dois[p]);
-                allTitles[year] = pubIndices.map((p) => titles[p]);
-                allPubIds[year] = pubIndices.map((p) => pubIds[p]);
-
-                this.setState({
-                  references: allReferences,
-                  dois: allDois,
-                  titles: allTitles,
-                });
-              })
-              .catch(() => {
-              })
-            ;
-          });
+      .then((response) => {
+        let years = response.data.data.publications.edges.map((n) => n.node.year);
+        years = [...new Set(years)].sort().reverse().filter((x) => x !== null);
+        this.setState({
+          years,
         });
-    });
+        years.map((year) => {
+          const query = `{publications (year: ${year}, order: "-stime") { edges { node {  doi title year authors journal volume number pages pubId pubtextsearch  } } }}`;
+          return axios.post(newGraphQLRoot, {
+            query,
+          })
+            .then((yearResponse) => {
+              let references = yearResponse.data.data.publications.edges
+                  .map((n) => (n.node));
+              references = [...new Set(references)];
+              const dois = yearResponse.data.data.publications.edges.map((n) => (n.node.doi));
+              const titles = yearResponse.data.data.publications.edges.map((n) => (n.node.title));
+
+              const allReferences = this.state.references;
+              const allDois = this.state.dois;
+              const allTitles = this.state.titles;
+
+              allReferences[year] = references;
+              allDois[year] = dois;
+              allTitles[year] = titles;
+
+              this.setState({
+                references: allReferences,
+                dois: allDois,
+                titles: allTitles,
+              });
+            })
+            .catch(() => {
+            });
+        });
+      });
   }
   backToList() {
     this.setState({
@@ -391,7 +324,6 @@ totalCount
                         if (!notFound.every((x) => x)) {
                           return null;
                         }
-
                         if (this.state.titles[year][j] !== null) {
                           return (
 

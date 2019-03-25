@@ -47,17 +47,18 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
 
         <Paper className={this.props.classes.paper}>
           <h2>License</h2>
-          <img src={ccLogoBig} alt="ccLogoBig" />
           <div className={this.props.classes.text}>
             Except where otherwise noted, content on Catalysis-Hub is licensed under a
             {' '}
             <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
 .
           </div>
+          <img src={ccLogoBig} alt="ccLogoBig" />
         </Paper>
 
         <Paper className={this.props.classes.paper}>
-          <h2>People</h2>
+          <h2>People and Contact</h2>
+          <div>The platform is developed at the SUNCAT Center for Interface Science and Catalysis, SLAC National Accelerator Laboratory, Stanford University. Contact information for the primary people involved is provided below. For technical support please contact postdoc Kirsten Winther at winther@stanford.edu.</div>
           <ul className={this.props.classes.peopleList}>
             {Object.keys(people).map((name, i) => (
               <li key={`person_${i}`}>

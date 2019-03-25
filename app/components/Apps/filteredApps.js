@@ -44,9 +44,17 @@ class FilteredApps extends React.Component { // eslint-disable-line react/prefer
                     elevation={0}
                   >
                     <Tooltip title={app.tooltip} placement="top">
-                      <h3>
-                        {getAppIcon(app.title)}
-                        {'\u00A0'}{app.title}</h3>
+                      {(app.title === 'Activity Maps' || app.title === 'Scaling Relations' || app.title === 'Pourbaix Diagrams') ?
+                        <h3>
+                          {getAppIcon(app.title)}
+                          {'\u00A0'}{app.title}{' (Beta) '}
+                        </h3>
+                        :
+                        <h3>
+                          {getAppIcon(app.title)}
+                          {'\u00A0'}{app.title}
+                        </h3>
+                      }
                     </Tooltip>
                     <div className={this.props.classes.appHint}>{app.tooltip} <MdChevronRight /></div>
                   </Paper>

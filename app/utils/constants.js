@@ -102,8 +102,6 @@ module.exports = {
       'http://suncat.stanford.edu/people/kirsten-winther'],
     'Max Hoffmann': ['Software Engineer. Former postdoc, SLAC National Accelerator Laboratory',
       'http://suncat.stanford.edu/people/max-hoffmann'],
-    'Jens N\u00F8rskov': ['Villum Kann Rasmussen Professor, Technical University of Denmark',
-      'http://www.staff.dtu.dk/jkno'],
     'Jacob Boes': ['Postdoc, SLAC National Accelerator Laboratory',
       'http://suncat.stanford.edu/people/jacob-russell-boes'],
     'Osman Mamun': ['Postdoc, SLAC National Accelerator Laboratory',
