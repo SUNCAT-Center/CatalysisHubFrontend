@@ -105,19 +105,23 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
               references = [...new Set(references)];
               const dois = yearResponse.data.data.publications.edges.map((n) => (n.node.doi));
               const titles = yearResponse.data.data.publications.edges.map((n) => (n.node.title));
+              const pubIds = yearResponse.data.data.publications.edges.map((n) => (n.node.pubId));
 
               const allReferences = this.state.references;
               const allDois = this.state.dois;
               const allTitles = this.state.titles;
+              const allPubIds = this.state.pubIds;
 
               allReferences[year] = references;
               allDois[year] = dois;
               allTitles[year] = titles;
+              allPubIds[year] = pubIds;
 
               this.setState({
                 references: allReferences,
                 dois: allDois,
                 titles: allTitles,
+                pubIds: allPubIds,
               });
             })
             .catch(() => {
