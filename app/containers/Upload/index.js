@@ -502,7 +502,7 @@ Slack
           }
           {_.isEmpty(this.state.userInfo) ? null
             : (
-              <Grid container direction="row" justify="flex-end">
+              <Grid container direction="row" justify="space-between">
                 <Grid item>
                   <Button
                     raised
@@ -528,13 +528,11 @@ Slack
         {!this.state.showHelp ? null
           : (
             <Paper className={this.props.classes.paper}>
-              <div>
-                <Paper className={this.props.classes.paper}>
-                  <MdWarning />
-                  {' '}
-Disclaimer: data submitted to the preview section can be seen by all registered users
-                      of catalysis-hub.org.
-                </Paper>
+              <div style={{ width: '62%', textAlign: 'justify', lineHeight: '24px' }}>
+                <MdWarning />
+                {' '}
+                 Disclaimer: data submitted to the preview section can be seen by all registered users
+                 of catalysis-hub.org.
                 <h3>Why should I submit calculations of reaction energies?</h3>
                 <ul>
                   <li>
@@ -548,11 +546,6 @@ Disclaimer: data submitted to the preview section can be seen by all registered 
                     Get your own
                     {' '}
                     <a href="/profile">profile page</a>
-                  </li>
-                  <li>
-                    Inspect your data with a growing number of web
-                    {' '}
-                    <a href="/appsIndex">apps</a> (<a href="/activityMaps">activity maps</a>, <a href="/scalingRelations">scaling relations</a>)
                   </li>
                   <li>
                     Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
@@ -583,36 +576,40 @@ Disclaimer: data submitted to the preview section can be seen by all registered 
                 <ol>
                   <li>
                     Install CatHub:
-                    <pre>pip install cathub --upgrade  --user --process-dependency-links </pre>
+                    <pre style={{ margin: '8px' }}>pip install cathub --upgrade --user </pre>
                   </li>
                   <li>
                     For an overview of commands, run in your terminal:
-                    <pre>cathub --help </pre>
-                    <pre>cathub make_folders --help </pre>
-                    <pre>cathub organize --help </pre>
+                    <pre style={{ margin: '8px' }}>cathub --help </pre>
+                    <pre style={{ margin: '8px' }}>cathub make_folders --help </pre>
+                    <pre style={{ margin: '8px' }}>cathub organize --help </pre>
                   </li>
                   <li>
-Organize output files into a folder tree. Choose one of two options:
+Organize your DFT output files into a folder tree. Choose one of two options:
                     <ul>
                       <li>
                         For automated organization of folders and files (adsorption energies only):
-                        <pre> cathub organize {'<foldername>'}</pre>
+                        <pre style={{ margin: '8px' }}> cathub organize {'<foldername>'} -a {'<adsorbate1,adsorbate2>'} </pre>
+                        <pre style={{ margin: '8px' }}> -c {'<dft-code>'} -x {'<xc-functional>'} -f {'<facet>'} </pre>
                       </li>
                       <li>
                         For more complicated reactions, create an empty folder tree and dump the files yourself:
-                        <pre> cathub make_folders {'<template>'}</pre>
+                        <pre style={{ margin: '8px' }}> cathub make_folders {'<template>'}</pre>
                       </li>
                     </ul>
                   </li>
                   <li>
                     Turn organized folder into a database file (SQLite3 format):
                     <pre>
-                      cathub folder2db --userhandle {'<your Google or SLACK email address>'} {'<organized folder>'}
+                      cathub folder2db {'<organized folder>'}
                     </pre>
                   </li>
                   <li>
                     Upload the database file to the server:
                     <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre>
+                  </li>
+                  <li>
+                    Go to www.catalysis-hub.org/upload and login with the email you provided together with your files.
                   </li>
                   <li>
                     Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
