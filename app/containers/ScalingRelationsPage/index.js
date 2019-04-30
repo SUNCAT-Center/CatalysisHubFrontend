@@ -11,25 +11,27 @@ import regression from 'regression';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Plot from 'react-plotly.js';
-import { FormGroup } from 'material-ui/Form';
+import { FormControl } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import { LinearProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 import { MdSearch } from 'react-icons/lib/md';
+import { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 
 import cachios from 'cachios';
 import { newGraphQLRoot } from 'utils/constants';
 
-import ReactionAutosuggest from './ReactionAutosuggest';
 import StructureView from './StructureView';
 import { styles } from './styles';
 
 const initialState = {
   plotTitle: '',
   reaction1: {
-    label: 'H2O(g) - 0.5H2(g) + * -> OH*',
+    name: 'H2O(g) - 0.5H2(g) + * -> OH*',
     reaction: [
       { node: {
         Equation: 'H2O(g) + * -> OH* + 0.5H2(g)',
@@ -39,7 +41,7 @@ const initialState = {
     ],
   },
   reaction2: {
-    label: '2.0H2O(g) - 1.5H2(g) + * -> OOH*',
+    name: '2.0H2O(g) - 1.5H2(g) + * -> OOH*',
     reaction: [
       { node: {
         Equation: '2.0H2O(g) + * -> OOH* + 1.5H2(g)',
@@ -47,7 +49,12 @@ const initialState = {
         reactants: '{"H2gas": 1.5, "star": 1, "H2Ogas": 2.0}',
       } }],
   },
+  publication: {
+    label: 'MichalLixCoO22017',
+    pubId: 'MichalLixCoO22017',
+  },
   reactionsSuggestions: [],
+  publicationsSuggestions: [],
   systems: [],
   loading: false,
   loadingStructures: false,
@@ -57,11 +64,11 @@ const initialState = {
 };
 
 
-function reactionQuery(reactants, products) {
+function reactionQuery(reactants, products, pubId) {
   return {
     ttl: 300,
     query: `{
-  reactions(reactants: "${reactants}", products:"${products}") {
+  reactions(reactants: "${reactants}", products:"${products}", pubId:"${pubId}") {
     totalCount
     edges {
       node {
@@ -87,8 +94,15 @@ const mergeReactions = (reactions1, reactions2, equation1, equation2) => {
   reactions1.map((reaction) => _.get(reaction, 'node.reactionSystems', []).map((system) => {
     if (system.name === 'star') {
       tempL = (systems[system.aseId] || []);
-      tempL.push(reaction);
-      systems[system.aseId] = tempL;
+      if (tempL.length > 0) {
+        if (tempL[0].node.reactionEnergy > reaction.node.reactionEnergy) {
+          tempL[0] = reaction;
+          systems[system.aseId] = tempL;
+        }
+      } else {
+        tempL.push(reaction);
+        systems[system.aseId] = tempL;
+      }
     }
     return null;
   }));
@@ -97,12 +111,18 @@ const mergeReactions = (reactions1, reactions2, equation1, equation2) => {
   reactions2.map((reaction) => _.get(reaction, 'node.reactionSystems', []).map((system) => {
     if (system.name === 'star') {
       tempL = (systems[system.aseId] || []);
-      tempL.push(reaction);
-      systems[system.aseId] = tempL;
+      if (tempL.length > 1) {
+        if (tempL[1].node.reactionEnergy > reaction.node.reactionEnergy) {
+          tempL[1] = reaction;
+          systems[system.aseId] = tempL;
+        }
+      } else {
+        tempL.push(reaction);
+        systems[system.aseId] = tempL;
+      }
     }
     return null;
   }));
-
 
 
   systems = _.fromPairs(
@@ -117,8 +137,6 @@ const mergeReactions = (reactions1, reactions2, equation1, equation2) => {
       ])
   );
 
-
-
   return systems;
 };
 
@@ -128,6 +146,7 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
   constructor(props) {
     super(props);
     this.state = initialState;
+    this.fetchAllPublications = this.fetchAllPublications.bind(this);
     this.fetchAllReactions = this.fetchAllReactions.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setSubstate = this.setSubstate.bind(this);
@@ -136,23 +155,9 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
   }
 
   componentDidMount() {
-    this.fetchAllReactions();
+    this.fetchAllPublications();
+    this.fetchAllReactions(this.state.publication.pubId);
   }
-
-  onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: this.getSuggestions(value),
-    });
-  }
-
-  // Autosuggest will call this function every time you need to clear suggestions.
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  }
-
-
 
   getStructures(e) {
     this.setState({
@@ -209,16 +214,16 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
       const products1 = Object.keys(JSON.parse(reaction1.products)).join('+');
       const products2 = Object.keys(JSON.parse(reaction2.products)).join('+');
 
-      const query1 = reactionQuery(reactants1, products1);
-      const query2 = reactionQuery(reactants2, products2);
+      const query1 = reactionQuery(reactants1, products1, this.state.publication.pubId);
+      const query2 = reactionQuery(reactants2, products2, this.state.publication.pubId);
 
       cachios.post(newGraphQLRoot, query1).then((response1) => {
         cachios.post(newGraphQLRoot, query2).then((response2) => {
           const systems = mergeReactions(
             response1.data.data.reactions.edges,
             response2.data.data.reactions.edges,
-            reaction1.label,
-            reaction2.label,
+            reaction1.name,
+            reaction2.name,
           );
 
           const scatterData = {
@@ -275,11 +280,39 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
     };
   }
 
-  fetchAllReactions() {
+  fetchAllPublications() {
     const query = {
       ttl: 300,
       query: `{
-  reactions(reactants:"~", products:"~", distinct: true) {
+  publications(year: 2014, op: ">", order: "-stime") {
+    edges {
+      node {
+        title
+        year
+        authors
+        pubId
+      }
+    }
+  }
+}` };
+
+    this.setState({
+      loading: true,
+    });
+
+    cachios.post(newGraphQLRoot, query).then((response) => {
+      this.setState({
+        publicationsSuggestions: response.data.data.publications.edges,
+        loading: false,
+      });
+    });
+  }
+
+  fetchAllReactions(pubId) {
+    const query = {
+      ttl: 300,
+      query: `{
+  reactions(reactants:"~", products:"~", distinct: true, pubId:"${pubId}") {
     totalCount
     edges {
       node {
@@ -303,10 +336,6 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
     });
   }
 
-  matchReactionEnergies() {
-
-  }
-
   render() {
     return (
       <div>
@@ -316,21 +345,104 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
           className={this.props.classes.mainPaper}
         >
           <h2>Scaling Relations</h2>
-          <FormGroup row>
-            <ReactionAutosuggest field="reaction1" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 1" autofocus initialValue={this.state.reaction1.label} />
-            <ReactionAutosuggest field="reaction2" reactionsSuggestions={this.state.reactionsSuggestions} setSubstate={this.setSubstate} submitForm={this.submitForm} label="Reaction 2" initialValue={this.state.reaction2.label} />
+          <div style={{ width: '75%', textAlign: 'justify' }}> Investigate the correlation between different adsorption and/or reaction energies.
+            <ul>
+              <li> Start by choosing a dataset. </li>
+              <li> Choose two different reactions, where the reaction energies of Reaction 1 and Reaction 2 will be plotted along the x and y- axis respectively. </li>
+              <li> If several adsorption sites are available for the same reaction and surface, the lowest energy site will be chosen by the appication. </li>
+            </ul>
+          </div>
+          <form>
+            <FormControl className={this.props.classes.formControl} >
+              <InputLabel
+                className={this.props.classes.formControl}
+                htmlFor="input-format-helper"
+              >
+                Publication
+              </InputLabel>
+              <Select
+                id="input-format-helper"
+                value={this.state.publication.pubId}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: '75%',
+                    },
+                  },
+                }}
+                onChange={(event) => {
+                  this.setState({
+                    publication: {
+                      pubId: event.target.value,
+                      label: event.target.value,
+                    },
+                    reactionsSuggestions: [],
+                  });
+                  this.fetchAllReactions(event.target.value);
+                }}
+              >
+                {this.state.publicationsSuggestions.map((pub, i) => (
+                  <MenuItem key={`pub_${i}`} value={pub.node.pubId}>{pub.node.pubId}</MenuItem>))}
+              </Select>
+            </FormControl>
+          </form>
+          <form>
+            <FormControl className={this.props.classes.formControl}>
+              <InputLabel
+                className={this.props.classes.formControl}
+                htmlFor="reaction1"
+              >
+                Reaction
+              </InputLabel>
+              <Select
+                id="reaction1"
+                value={this.state.reaction1.name}
+                onChange={(event) => {
+                  this.setState({
+                    reaction1: {
+                      reaction: [this.state.reactionsSuggestions[event.target.value]],
+                      name: event.target.value,
+                    },
+                  });
+                }}
+              >
+                {this.state.reactionsSuggestions.map((react1, i) => (
+                  <MenuItem key={`react_${i}`} value={`${i}`}>{react1.node.Equation}</MenuItem>))}
+              </Select>
+            </FormControl>
+            <FormControl className={this.props.classes.formControl} >
+              <InputLabel
+                className={this.props.classes.formControl}
+                htmlFor="reaction2"
+              >
+                Reaction
+              </InputLabel>
+              <Select
+                id="reaction2"
+                value={this.state.reaction2.name}
+                onChange={(event) => {
+                  this.setState({
+                    reaction2: {
+                      reaction: [this.state.reactionsSuggestions[event.target.value]],
+                      name: event.target.value,
+                    },
+                  });
+                }}
+              >
+                {this.state.reactionsSuggestions.map((react2, i) => (
+                  <MenuItem key={`react2_${i}`} value={`${i}`}>{react2.node.Equation}</MenuItem>))}
+              </Select>
+            </FormControl>
             <Button
-              disabled={_.isEmpty(_.get(this.state, 'reaction1.reaction', [])) ||
-                  _.isEmpty(_.get(this.state, 'reaction2.reaction', []))
-              }
+              disabled={_.isEmpty(_.get(this.state, 'reaction1.reaction', [])) || _.isEmpty(_.get(this.state, 'reaction2.reaction', []))
+                       }
               color="primary"
               onClick={() => { this.submitForm(); }}
               raised
             >
               <MdSearch /> Search
-
             </Button>
-          </FormGroup>
+          </form>
           { this.state.systems.length === 0 ? null :
           <Grid container direction="row" justify="center">
             <Grid item>
@@ -344,10 +456,10 @@ export class ScalingRelationsPage extends React.Component { // eslint-disable-li
                     hovermode: 'closest',
                     title: this.state.plotTitle,
                     xaxis: {
-                      title: this.state.reaction1.label,
+                      title: this.state.reaction1.reaction[0].node.Equation,
                     },
                     yaxis: {
-                      title: this.state.reaction2.label,
+                      title: this.state.reaction2.reaction[0].node.Equation,
                     },
                   }}
                   config={{
