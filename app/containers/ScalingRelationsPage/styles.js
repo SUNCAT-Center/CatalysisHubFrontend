@@ -2,7 +2,7 @@
 export const styles = (theme) => ({
   mainPaper: {
     minHeight: 200,
-    padding: 15,
+    padding: theme.spacing.unit * 2,
   },
   container: {
     flexGrow: 1,
@@ -59,6 +59,12 @@ export const styles = (theme) => ({
   progress: {
     marginTop: 2 * theme.spacing.unit,
     marginBottom: 2 * theme.spacing.unit,
+  },
+  formControl: {
+    padding: theme.spacing.unit * 2,
+    minWidth: 150,
+    maxHeight: '75%',
+    overflow: 'auto',
   },
 });
 
