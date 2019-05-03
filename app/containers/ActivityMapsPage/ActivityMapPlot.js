@@ -353,7 +353,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
             }
           </div>
           {_.isEmpty(this.state.reference) ? null :
-          <div>{`Activity Map taken from: ${this.state.reference}`}</div>
+          <div>{`Activity map taken from: ${this.state.reference}`}</div>
           }
         </Paper>
         {this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
