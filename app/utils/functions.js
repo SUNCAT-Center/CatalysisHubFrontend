@@ -88,7 +88,7 @@ export const prettyPrintReference = (ref) =>
     )).reduce((prev, curr) => [prev, '; ', curr]))}. </span> : null }
     {(ref.journal !== '' && typeof ref.journal !== 'undefined' && ref.journal !== null) ? <i>{ref.journal}. </i> : null }
     {(ref.volume !== '' && typeof ref.volume !== 'undefined' && ref.volume !== null) ? <b>{ref.volume}</b> : null}
-    {(ref.number !== '' && typeof ref.number !== 'undefined' && ref.number !== null) ? <span>{ref.number}</span> : null}
+    {(ref.number !== '' && typeof ref.number !== 'undefined' && ref.number !== null) ? <span>{', '}{ref.number}</span> : null}
     {(ref.pages !== '' && typeof ref.pages !== 'undefined' && ref.pages !== null) ? <span>{', '}{ref.pages} </span> : null}
     {(ref.year !== '' && typeof ref.year !== 'undefined' && ref.year !== null) ? <span>({ref.year})</span> : null}
   </span>);
