@@ -48,7 +48,15 @@ const initialState = {
 
 };
 
-export const reactions = ['OER', 'NRR', 'CO_Hydrogenation_111', 'ORR', 'CO2RR'];
+export const reactions = ['OER', 'NRR', 'CO_Hydrogenation_111']; // , 'ORR', 'CO2RR'];
+
+export const reactionNames = {
+  OER: 'Oxygen Evolution Reaction (OER)',
+  NRR: 'Nitrogen Reduction Reaction (NRR)',
+  CO_Hydrogenation_111: 'CO Hydrogenation',
+  ORR: 'Oxygen Reduction Reaction (ORR)',
+  CO2RR: 'CO2 Reduction Reaction (CO2RR)',
+};
 
 class ActivityMapPlot extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -214,7 +222,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
           <div ref={(el) => { this.instance = el; }}>
             <Grid container direction="row" justify="space-between">
               <Grid item>
-                <h2>Activity Map {this.props.reaction.replace(/_/g, ' ')}</h2>
+                <h2>{reactionNames[this.props.reaction]}</h2>
               </Grid>
               <Grid item>
                 <FormControl>
@@ -345,7 +353,7 @@ class ActivityMapPlot extends React.Component { // eslint-disable-line react/pre
             }
           </div>
           {_.isEmpty(this.state.reference) ? null :
-          <div>{`${this.state.reference}`}</div>
+          <div>{`Activity map taken from: ${this.state.reference}`}</div>
           }
         </Paper>
         {this.state.loading ? <LinearProgress className={this.props.classes.progress} /> : null }
