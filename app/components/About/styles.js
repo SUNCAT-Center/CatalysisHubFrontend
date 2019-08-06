@@ -13,12 +13,20 @@ export const styles = (theme) => ({
     flexWrap: 'wrap',
   },
   paper: {
+    textAlign: 'justify',
     marginBottom: 3 * theme.spacing.unit,
     marginTop: theme.spacing.unit,
+    marginLeft: '10%',
+    marginRight: '10%',
     padding: theme.spacing.unit * 3,
   },
   text: {
     marginBottom: 2 * theme.spacing.unit,
     marginTop: 2 * theme.spacing.unit,
+  },
+  publication: {
+    marginLeft: '5%',
+    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
   },
 });
