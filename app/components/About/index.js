@@ -12,7 +12,7 @@ import Grid from 'material-ui/Grid';
 import slacLogo from 'components/Header/SLAC_Logo.png';
 import doeLogo from 'components/Header/DOE_Logo.gif';
 import stanfordLogo from 'components/Header/stanford_crop.png';
-import { people } from 'utils/constants';
+import { people, contributors } from 'utils/constants';
 import { styles } from './styles';
 import ccLogoBig from './ccLogoBig.svg';
 
@@ -46,6 +46,15 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
          */}
 
         <Paper className={this.props.classes.paper}>
+          <h2>How to cite</h2>
+          <div>When refering to the Catalysis-Hub platform in general, please cite the following publication: </div>
+          <div className={this.props.classes.publication}>
+            <div> Catalysis-Hub.org, an open electronic structure database for surface reactions, </div>
+            <div> <i> Scientific Data </i> <b>6</b>, Article number: 75 (2019) </div>
+            <a rel="publink" href="https://doi-org.stanford.idm.oclc.org/10.1038/s41597-019-0081-y"> Link to publisher</a>
+          </div>
+        </Paper>
+        <Paper className={this.props.classes.paper}>
           <h2>License</h2>
           <div className={this.props.classes.text}>
             Except where otherwise noted, content on Catalysis-Hub is licensed under a
@@ -55,10 +64,9 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
           </div>
           <img src={ccLogoBig} alt="ccLogoBig" />
         </Paper>
-
         <Paper className={this.props.classes.paper}>
           <h2>People and Contact</h2>
-          <div>The platform is developed at the SUNCAT Center for Interface Science and Catalysis, SLAC National Accelerator Laboratory, Stanford University. Contact information for the primary people involved is provided below. For technical support please contact postdoc Kirsten Winther at winther@stanford.edu.</div>
+          <div>Catalysis-Hub is developed by the SUNCAT Center for Interface Science and Catalysis, SLAC National Accelerator Laboratory, Stanford University. Contact information for the primary people involved is provided below. For technical support please contact postdoc Kirsten Winther at winther@stanford.edu.</div>
           <ul className={this.props.classes.peopleList}>
             {Object.keys(people).map((name, i) => (
               <li key={`person_${i}`}>
@@ -67,6 +75,19 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
                 </a>
                 {'  '}
                 {people[name][0]}
+              </li>
+            ))}
+          </ul>
+          <h2>Contributors</h2>
+          <div>Previously affiliated contributors to platform development are listed below:</div>
+          <ul className={this.props.classes.peopleList}>
+            {Object.keys(contributors).map((name, i) => (
+              <li key={`person_${i}`}>
+                <a href={contributors[name][1]} target="_blank">
+                  {name}
+                </a>
+                {'  '}
+                {contributors[name][0]}
               </li>
             ))}
           </ul>
