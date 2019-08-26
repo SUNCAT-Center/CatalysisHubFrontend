@@ -36,7 +36,7 @@ export const styles = (theme) => ({
   },
   truncatedSection: {
     textAlign: 'justify',
-    width: '480px',
+    width: '100%',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     height: '160px',

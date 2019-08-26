@@ -74,7 +74,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   componentDidMount() {
     const { username, onSubmitForm } = this.props;
-    const { image } = this.state;
     if (username && username.trim().length > 0) {
       onSubmitForm();
     }
@@ -122,7 +121,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           setInterval(
             () => {
               this.setState({
-                image: image + 1,
+                image: this.state.image + 1,
               });
             }, 2000
           );
