@@ -219,7 +219,7 @@
   "dependencies": {
     "@chemistry/elements": "^1.1.0",
     "autosuggest-highlight": "^3.1.1",
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "babel-polyfill": "6.20.0",
     "cachios": "^1.0.7",
     "chalk": "^1.1.3",
