@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { isMobile } from 'react-device-detect';
 import _ from 'lodash';
 import ReactGA from 'react-ga';
@@ -39,7 +40,6 @@ import Slide from 'material-ui/transitions/Slide';
 import axios from 'axios';
 import { newGraphQLRoot, whiteLabel, apps } from 'utils/constants';
 
-
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H1 from 'components/H1';
 import { withCommas, prettyPrintReference } from 'utils/functions';
@@ -58,7 +58,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   constructor(props) {
     super(props);
     this.state = {
-      geometries: 0,
       reactions: 0,
       publications: 0,
       contributors: 0,
@@ -74,9 +73,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
+    const { username, onSubmitForm } = this.props;
+    if (username && username.trim().length > 0) {
+      onSubmitForm();
     }
+    console.log(username);
     axios.post(newGraphQLRoot, { query: '{reactions(first: 0) { totalCount edges { node { id } } }}' }).then((response) => {
       if (response.data.data.reactions === null) {
         this.setState({
@@ -160,10 +161,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       const contributors = new Set();
       response.data.data.publications.edges
         .map((edge) => JSON.parse(edge.node.authors)
-        .filter((x) => x !== 'others')
-        .filter((x) => x !== 'catapp')
-        .filter((x) => x !== 'Catapp')
-        .map((author) => contributors.add(author)));
+          .filter((x) => x !== 'others')
+          .filter((x) => x !== 'catapp')
+          .filter((x) => x !== 'Catapp')
+          .map((author) => contributors.add(author)));
       this.setState({
         contributors: contributors.size,
       });
@@ -171,6 +172,19 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   render() {
+    const { classes } = this.props;
+    const {
+      centeredSection, welcomeHeader, welcome, truncatedSection, expanded,
+      textLink, mainButtons, hoverButton, buttonLink, banner,
+      centerGrid, homePaper, paperInfo, bolditalic, bold,
+      spaced, publicationPaper, publicationEntry, publicationAction,
+      publicationActions,
+    } = classes;
+    const {
+      truncated, randomSystems, randomReaction, image, loading, error,
+      reactions, contributors, publications, lastPublication,
+      lastPublicationTime,
+    } = this.state;
     return (
       <article>
         { whiteLabel === true ? null
@@ -192,20 +206,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           )
         }
         <div>
-          <CenteredSection className={this.props.classes.centeredSection}>
+          <CenteredSection className={centeredSection}>
             {whiteLabel ? null
               : (
                 <Grid
                   container
                   direction={isMobile ? 'column-reverse' : 'row'}
                   justify="space-between"
-                  className={this.props.classes.welcomeHeader}
+                  className={welcomeHeader}
                 >
                   <Grid item xs={isMobile ? 12 : 6}>
-                    <H1 className={this.props.classes.welcome}>
+                    <H1 className={welcome}>
                     Welcome to Catalysis Hub
                     </H1>
-                    <div className={this.state.truncated ? this.props.classes.truncated : this.props.classes.expanded}>
+                    <div className={truncated ? truncatedSection : expanded}>
                       <div>
             A web-platform for sharing data and software for computational catalysis research! The Surface Reactions database contains thousands of reaction energies and barriers from density functional theory (DFT) calculations on surface systems. Reactions can also be browsed under Contributors and Publications, and under Apps is a selection of computational tools.
                       </div>
@@ -214,17 +228,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       container
                       direction="row"
                       justify="space-between"
-                      className={this.props.classes.mainButtons}
+                      className={mainButtons}
                     >
                       <Grid item>
-                        {this.state.truncated
+                        {truncated
                           ? (
-                            <Link to="/about" className={this.props.classes.textLink}>
+                            <Link to="/about" className={textLink}>
                               <Button
                                 mini
                                 raised
                                 role="button"
-                                className={this.props.classes.hoverButton}
+                                className={hoverButton}
                               >
 Read More
                                 <MdChevronRight />
@@ -251,11 +265,11 @@ Read More
                       </Grid>
                       <Grid item>
                         <Link
-                          className={this.props.classes.buttonLink}
+                          className={buttonLink}
                           to="/upload"
                         >
                           <Button
-                            className={this.props.classes.hoverButton}
+                            className={hoverButton}
                             raised
                             color="primary"
                           >
@@ -269,7 +283,7 @@ Read More
                     </Grid>
                   </Grid>
                   <Grid item xs={isMobile ? 12 : 6}>
-                    {_.isEmpty(this.state.randomSystems)
+                    {_.isEmpty(randomSystems)
                       ? (
                         <Grid
                           container
@@ -281,7 +295,7 @@ Read More
                         >
                           <Grid item>
                             <a href="https://suncat.stanford.edu" target="_blank">
-                              <Img className={this.props.classes.banner} src={CathubBanner} alt="Catalysis-Hub.org - Logo" />
+                              <Img className={banner} src={CathubBanner} alt="Catalysis-Hub.org - Logo" />
                             </a>
                           </Grid>
                         </Grid>
@@ -297,10 +311,10 @@ Read More
                         >
                           <Grid item>
                             <GeometryCanvasWithOptions
-                              key={`mc_${this.state.randomReaction.publication.pubId}`}
-                              cifdata={this.state.randomSystems[this.state.image % this.state.randomSystems.length].Cifdata}
-                              uniqueId={`molecule_${this.state.randomReaction.publication.pubId}`}
-                              id={`molecule_${this.state.randomReaction.publication.pubId}`}
+                              key={`mc_${randomReaction.publication.pubId}`}
+                              cifdata={randomSystems[image % randomSystems.length].Cifdata}
+                              uniqueId={`molecule_${randomReaction.publication.pubId}`}
+                              id={`molecule_${randomReaction.publication.pubId}`}
                               height={280}
                               width={280}
                               showButtons={false}
@@ -320,9 +334,9 @@ Read More
                               }}
                             >
                               <Grid item>
-                                <Link to={`/publications/${this.state.randomReaction.publication.pubId}`}>
+                                <Link to={`/publications/${randomReaction.publication.pubId}`}>
                                   <Button
-                                    className={this.props.classes.hoverButton}
+                                    className={hoverButton}
                                     fab
                                     color="primary"
                                     height="100%"
@@ -344,14 +358,14 @@ Read More
               )
             }
           </CenteredSection>
-          <CenteredSection className={this.props.classes.centeredSection}>
-            {this.state.loading ? (
+          <CenteredSection className={centeredSection}>
+            {loading ? (
               <div>
 Contacting database ...
                 <LinearProgress color="primary" />
               </div>
             ) : null }
-            {this.state.error ? (
+            {error ? (
               <div>
                 <MdWarning />
 Failed to contact database.
@@ -359,16 +373,16 @@ Failed to contact database.
               </div>
             ) : null }
           </CenteredSection>
-          <CenteredSection className={this.props.classes.centeredSection}>
+          <CenteredSection className={centeredSection}>
             <Slide mountOnEnter unmountOnExit in direction="left">
               <div>
-                <Grid container justify="space-between" direction="row" className={this.props.classes.centerGrid}>
+                <Grid container justify="space-between" direction="row" className={centerGrid}>
 
 
                   <Grid item>
-                    <Link to="/energies" className={this.props.classes.textLink}>
+                    <Link to="/energies" className={textLink}>
                       <Paper
-                        className={this.props.classes.homePaper}
+                        className={homePaper}
                         elevation={0}
                       >
                         <h3>
@@ -377,14 +391,14 @@ Failed to contact database.
                           {' '}
 Surface Reactions
                         </h3>
-                        <div className={this.props.classes.paperInfo}>
+                        <div className={paperInfo}>
                           A database of reaction energies and barriers.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={withCommas(this.state.reactions)} />
+                            <Chip label={withCommas(reactions)} />
                           </Grid>
-                          <Grid item className={this.props.classes.bolditalic}>
+                          <Grid item className={bolditalic}>
                             See reactions
                             {' '}
                             <MdChevronRight />
@@ -397,9 +411,9 @@ Surface Reactions
 
 
                   <Grid item>
-                    <Link to="/profile" className={this.props.classes.textLink}>
+                    <Link to="/profile" className={textLink}>
                       <Paper
-                        className={this.props.classes.homePaper}
+                        className={homePaper}
                         elevation={0}
                       >
                         <h3>
@@ -408,14 +422,14 @@ Surface Reactions
                           {' '}
 Contributors
                         </h3>
-                        <div className={this.props.classes.paperInfo}>
+                        <div className={paperInfo}>
                           The people (and co-authors) behind the datasets.
                         </div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={withCommas(this.state.contributors)} />
+                            <Chip label={withCommas(contributors)} />
                           </Grid>
-                          <Grid item className={this.props.classes.bold}>
+                          <Grid item className={bold}>
                             See contributors
                             {' '}
                             <MdChevronRight />
@@ -429,9 +443,9 @@ Contributors
 
 
                   <Grid item>
-                    <Link to="/publications" className={this.props.classes.textLink}>
+                    <Link to="/publications" className={textLink}>
                       <Paper
-                        className={this.props.classes.homePaper}
+                        className={homePaper}
                         elevation={0}
                       >
                         <h3>
@@ -440,12 +454,12 @@ Contributors
                           {' '}
 Publications
                         </h3>
-                        <div className={this.props.classes.paperInfo}>A collection of scientific publications with geometries.</div>
+                        <div className={paperInfo}>A collection of scientific publications with geometries.</div>
                         <Grid container direction="row" justify="space-between">
                           <Grid item>
-                            <Chip label={this.state.publications} />
+                            <Chip label={publications} />
                           </Grid>
-                          <Grid item className={this.props.classes.bolditalic}>
+                          <Grid item className={bolditalic}>
                             See publications
                             {' '}
                             <MdChevronRight />
@@ -457,16 +471,16 @@ Publications
 
 
                   <Grid item>
-                    <Link to="/appsIndex" className={this.props.classes.textLink}>
+                    <Link to="/appsIndex" className={textLink}>
                       <Paper
-                        className={this.props.classes.homePaper}
+                        className={homePaper}
                       >
                         <h3>
                           <MdApps size={20} />
                           {' '}
 Apps
                         </h3>
-                        <div className={this.props.classes.paperInfo}>
+                        <div className={paperInfo}>
                           Web apps for exploring calculations
                           and catalysts.
                         </div>
@@ -475,7 +489,7 @@ Apps
                           <Grid item>
                             <Chip label={apps.length} />
                           </Grid>
-                          <Grid item className={this.props.classes.bolditalic}>
+                          <Grid item className={bolditalic}>
                             See our apps
                             {' '}
                             <MdChevronRight />
@@ -487,40 +501,40 @@ Apps
 
 
                 </Grid>
-                {_.isEmpty(this.state.lastPublication)
+                {_.isEmpty(lastPublication)
                   ? (
                     <LinearProgress
                       color="primary"
-                      className={this.props.classes.spaced}
+                      className={spaced}
                     />
                   )
                   : (
-                    <Paper className={this.props.classes.publicationPaper}>
+                    <Paper className={publicationPaper}>
                       <h3>
-Latest Dataset: {`${this.state.lastPublicationTime}`}
-.
+                        Latest Dataset:
+                        {`${lastPublicationTime}`}
+                        .
                       </h3>
-                      <span className={this.props.classes.publicationEntry}>
+                      <span className={publicationEntry}>
                         <IoDocument size={24} />
                         {' '}
-                        {prettyPrintReference(this.state.lastPublication)}
+                        {prettyPrintReference(lastPublication)}
                         {' '}
-                        {`#${this.state.lastPublication.pubId}.`}
+                        {`#${lastPublication.pubId}.`}
 
                       </span>
-                      <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
+                      <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={publicationActions}>
                         <Grid item>
                         </Grid>
                         <Grid item>
 
                           <Link
-                            to={`/publications/${this.state.lastPublication.pubId}`}
-                            className={this.props.classes.textLink}
+                            to={`/publications/${lastPublication.pubId}`}
+                            className={textLink}
                           >
-
                             <Button
                               raised
-                              className={this.props.classes.publicationAction}
+                              className={publicationAction}
                             >
                               <MdViewList />
                               {' '}
@@ -532,27 +546,27 @@ Checkout Reactions
                               <MdChevronRight />
                             </Button>
                           </Link>
-                          {(this.state.lastPublication.doi === null
-                                          || typeof this.state.lastPublication.doi === 'undefined'
-                                          || this.state.lastPublication.doi === ''
+                          {(lastPublication.doi === null
+                                          || typeof lastPublication.doi === 'undefined'
+                                          || lastPublication.doi === ''
                           ) ? null
                             : (
                               <ReactGA.OutboundLink
-                                eventLabel={`http://dx.doi.org/${this.state.lastPublication.doi}`}
-                                to={`http://dx.doi.org/${this.state.lastPublication.doi}`}
+                                eventLabel={`http://dx.doi.org/${lastPublication.doi}`}
+                                to={`http://dx.doi.org/${lastPublication.doi}`}
                                 target="_blank"
-                                className={this.props.classes.textLink}
+                                className={textLink}
                               >
                                 <Button
                                   raised
-                                  className={this.props.classes.publicationAction}
+                                  className={publicationAction}
                                 >
                                   <FaExternalLink />
                                   {'\u00A0\u00A0'}
                                   {' '}
 DOI:
                                   {' '}
-                                  {this.state.lastPublication.doi}
+                                  {lastPublication.doi}
 .
                                 </Button>
                               </ReactGA.OutboundLink>
@@ -577,9 +591,9 @@ DOI:
 }
 
 HomePage.propTypes = {
-  onSubmitForm: React.PropTypes.func,
-  username: React.PropTypes.string,
-  classes: React.PropTypes.object,
+  onSubmitForm: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {

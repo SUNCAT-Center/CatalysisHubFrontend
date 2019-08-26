@@ -48,7 +48,7 @@ describe('energiesPageReducer', () => {
   it('handles SAVE_SYSTEM', () => {
     const saveSystem = { type: constants.SAVE_SYSTEM, payload: 'System' };
     const rs = [{ mass: 1, volume: 1 }, { mass: 2, volume: 1 }, {}];
-    expect(energiesPageReducer({ reactionSystems: rs }, saveSystem)).toEqual({ reactionSystems: [{}, 'System', { mass: 2, volume: 1 }, { mass: 1, volume: 1 }] });
+    expect(energiesPageReducer({ reactionSystems: rs }, saveSystem)).toEqual({ reactionSystems: [{ mass: 1, volume: 1 }, { mass: 2, volume: 1 }, {}, 'System'] });
   });
   it('handles SUBMIT_SEARCH', () => {
     const submitSearch = { type: constants.SUBMIT_SEARCH };

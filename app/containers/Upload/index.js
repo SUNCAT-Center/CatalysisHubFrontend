@@ -163,8 +163,10 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   removeMolecule(i) {
+    let molecules = this.state;
+    molecules = molecules.filter((elem, x) => x !== i);
     this.setState({
-      molecules: this.state.molecules.filter((elem, x) => x !== i),
+      molecules,
     });
   }
 
@@ -182,13 +184,10 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
             'content-type': 'multipart/form-data',
           },
         }).then((response) => {
-        /* console.log(response) */
+          let { molecules } = this.state;
+          molecules = _.concat(molecules, [response.data.cif]);
           this.setState({
-            loading: false,
-            molecules: _.concat(
-              this.state.molecules,
-              [response.data.cif]
-            ),
+            molecules,
           });
         });
     };
@@ -548,7 +547,8 @@ Slack
                     <a href="/profile">profile page</a>
                   </li>
                   <li>
-                    Accelerate transfer of your theoretical insight to experimentalists in the field.</li>
+                    Accelerate transfer of your theoretical insight to experimentalists in the field.
+                  </li>
                   <li>
                     Support
                     {' '}
@@ -558,7 +558,8 @@ Slack
                   <li>
                     Get your dataset referenced in
                     {' '}
-                    <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>.
+                    <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>
+.
                   </li>
                 </ul>
                 <h3>How to submit with the CatHub terminal client</h3>
@@ -567,7 +568,9 @@ Slack
                   {' '}
                   <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a>
                   {' '}
-                  for a detailed guide on how to upload data. Below a short guide is provided. If you have problems, please contact Kirsten Winther ({'winther@stanford.edu'}) or use the
+                  for a detailed guide on how to upload data. Below a short guide is provided. If you have problems, please contact Kirsten Winther (
+                  {'winther@stanford.edu'}
+) or use the
                   {' '}
                   <a href="https://gitter.im/catalysis-hub-org/Lobby#"> Chat room </a>
                   {' '}
@@ -589,33 +592,71 @@ Organize your DFT output files into a folder tree. Choose one of two options:
                     <ul>
                       <li>
                         For automated organization of folders and files (adsorption energies only):
-                        <pre style={{ margin: '8px' }}> cathub organize {'<foldername>'} -a {'<adsorbate1,adsorbate2>'} </pre>
-                        <pre style={{ margin: '8px' }}> -c {'<dft-code>'} -x {'<xc-functional>'} -f {'<facet>'} </pre>
+                        <pre style={{ margin: '8px' }}>
+                          {' '}
+cathub organize
+                          {'<foldername>'}
+                          {' '}
+-a
+                          {'<adsorbate1,adsorbate2>'}
+                          {' '}
+
+                        </pre>
+                        <pre style={{ margin: '8px' }}>
+                          {' '}
+-c
+                          {'<dft-code>'}
+                          {' '}
+-x
+                          {'<xc-functional>'}
+                          {' '}
+-f
+                          {'<facet>'}
+                          {' '}
+
+                        </pre>
                       </li>
                       <li>
                         For more complicated reactions, create an empty folder tree and dump the files yourself:
-                        <pre style={{ margin: '8px' }}> cathub make_folders {'<template>'}</pre>
+                        <pre style={{ margin: '8px' }}>
+                          {' '}
+cathub make_folders
+                          {'<template>'}
+                        </pre>
                       </li>
                     </ul>
                   </li>
                   <li>
                     Turn organized folder into a database file (SQLite3 format):
                     <pre>
-                      cathub folder2db {'<organized folder>'}
+                      cathub folder2db
+                      {' '}
+                      {'<organized folder>'}
                     </pre>
                   </li>
                   <li>
                     Upload the database file to the server:
-                    <pre>cathub db2server {'<NameTitlewordYear>'}.db</pre>
+                    <pre>
+cathub db2server
+                      {'<NameTitlewordYear>'}
+.db
+                    </pre>
                   </li>
                   <li>
                     Go to www.catalysis-hub.org/upload and login with the email you provided together with your files.
                   </li>
                   <li>
-                    Click on {'"Fetch Data Sets"'} to see your uploaded dataset.
+                    Click on
+                    {' '}
+                    {'"Fetch Data Sets"'}
+                    {' '}
+to see your uploaded dataset.
                   </li>
                   <li>
-                    Check that the data looks right. Click on {'"Release"'}, and the dataset will be made available to the public as soon as possible.
+                    Check that the data looks right. Click on
+                    {' '}
+                    {'"Release"'}
+, and the dataset will be made available to the public as soon as possible.
                   </li>
                 </ol>
               </div>

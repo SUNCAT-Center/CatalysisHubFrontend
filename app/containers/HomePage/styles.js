@@ -34,9 +34,9 @@ export const styles = (theme) => ({
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
   },
-  truncated: {
+  truncatedSection: {
     textAlign: 'justify',
-    width: '480px',
+    width: '100%',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     height: '160px',

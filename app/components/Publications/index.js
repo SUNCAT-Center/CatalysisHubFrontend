@@ -16,7 +16,8 @@ import {
   MdChevronRight,
   MdChevronLeft,
   MdFilterList,
-  MdViewList } from 'react-icons/lib/md';
+  MdViewList,
+} from 'react-icons/lib/md';
 import {
   IoDocument,
 } from 'react-icons/lib/io';
@@ -83,12 +84,16 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     this.loadPreviewCif = this.loadPreviewCif.bind(this);
     this.backToList = this.backToList.bind(this);
   }
+
   componentDidMount() {
     const yearQuery = '{publications { edges { node { year } } }}';
     axios.post(newGraphQLRoot, {
       query: yearQuery,
     })
       .then((response) => {
+        const {
+          references, dois, titles, pubIds,
+        } = this.state;
         let years = response.data.data.publications.edges.map((n) => n.node.year);
         years = [...new Set(years)].sort().reverse().filter((x) => x !== null);
         this.setState({
@@ -100,28 +105,21 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
             query,
           })
             .then((yearResponse) => {
-              let references = yearResponse.data.data.publications.edges
-                  .map((n) => (n.node));
-              references = [...new Set(references)];
-              const dois = yearResponse.data.data.publications.edges.map((n) => (n.node.doi));
-              const titles = yearResponse.data.data.publications.edges.map((n) => (n.node.title));
-              const pubIds = yearResponse.data.data.publications.edges.map((n) => (n.node.pubId));
+              const { edges } = yearResponse.data.data.publications;
+              let tempReferences = edges
+                .map((n) => (n.node));
+              tempReferences = [...new Set(tempReferences)];
+              const tempDois = edges.map((n) => (n.node.doi));
+              const tempTitles = edges.map((n) => (n.node.title));
+              const tempPubIds = edges.map((n) => (n.node.pubId));
 
-              const allReferences = this.state.references;
-              const allDois = this.state.dois;
-              const allTitles = this.state.titles;
-              const allPubIds = this.state.pubIds;
-
-              allReferences[year] = references;
-              allDois[year] = dois;
-              allTitles[year] = titles;
-              allPubIds[year] = pubIds;
+              references[year] = tempReferences;
+              dois[year] = tempDois;
+              titles[year] = tempTitles;
+              pubIds[year] = tempPubIds;
 
               this.setState({
-                references: allReferences,
-                dois: allDois,
-                titles: allTitles,
-                pubIds: allPubIds,
+                references, dois, titles, pubIds,
               });
             })
             .catch(() => {
@@ -129,22 +127,26 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         });
       });
   }
+
   backToList() {
+    const { router } = this.props;
     this.setState({
       pubId: '',
       systems: [],
       reactionEnergies: [],
     });
-    this.props.router.push('/publications');
+    router.push('/publications');
   }
+
   clickPublication(event, target, key, pubId, reference) {
+    const { router } = this.props;
     this.setState({
       systems: [],
       reactionEnergies: [],
       pubId,
       reference,
     });
-    this.props.router.push(`/publications/${pubId}`);
+    router.push(`/publications/${pubId}`);
   }
 
   handleChange(name) {
@@ -169,14 +171,15 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
     }
   }
 }}`;
-    const previewCifs = this.state.previewCifs;
-    const totalCounts = this.state.totalCounts;
+    const { previewCifs, totalCounts } = this.state;
     axios.post(newGraphQLRoot, { query: cifQuery })
       .then((response) => {
-        totalCounts[pubId] = response.data.data.reactions.totalCount;
+        const { reactions } = response.data.data;
+        totalCounts[pubId] = reactions.totalCount;
         previewCifs[pubId] = _.sortBy(
-          response.data.data.reactions.edges[0].node.systems,
-          'energy')[0];
+          reactions.edges[0].node.systems,
+          'energy'
+        )[0];
         this.setState({
           previewCifs,
           totalCounts,
@@ -185,6 +188,11 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
   }
 
   render() {
+    const { classes } = this.props;
+    const {
+      pubId, pubIds, reference, publicationFilter, years, titles, previewCifs,
+      openedPublication, loading, systems, dois, references, totalCounts,
+    } = this.state;
     return (
       <div>
         <Helmet>
@@ -193,12 +201,12 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
           <meta name="keywords" content="catalysis, catalyst, chemistry, activation energy, adsorption, datasets, calculations, reaction energies, publications, csv, json, ASE atoms objects, ASE db, cathub, catkit, postgresql" />
         </Helmet>
         <Link
-          className={this.props.classes.buttonLink}
-          to={'/upload'}
+          className={classes.buttonLink}
+          to="/upload"
         >
           <Button
             fab
-            className={this.props.classes.fab}
+            className={classes.fab}
             raised
             color="primary"
           >
@@ -208,67 +216,80 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
         </Link>
         <Script url="https://code.jquery.com/jquery-3.2.1.min.js" />
         <Script url="/static/ChemDoodleWeb.js" />
-        {!_.isEmpty(this.state.pubId) ? <div>
-          <Grid container direction="row" justify="space-between">
-            <Grid item>
-              <Button
-                onClick={() => {
-                  this.backToList();
-                }}
-              >
-                <MdChevronLeft />
-                Back to Publication List</Button>
-            </Grid>
-            <Grid>
-              <Grid container direction="row" className={this.props.classes.shareButtons}>
-                <Grid item>
-                  <EmailShareButton
-                    subject={this.state.reference.title}
-                    body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)}`}
-                    url={window.location.href}
-                  ><EmailIcon size={shareIconSize} round /></EmailShareButton>
-                </Grid>
-                <Grid item>
-                  <LinkedinShareButton
-                    title={this.state.reference.title}
-                    description={`${plainPrintReference(this.state.reference)}`}
-                    url={window.location.href}
-                  >
-                    <LinkedinIcon size={shareIconSize} round />
-                  </LinkedinShareButton>
-                </Grid>
-                <Grid item>
-                  <TwitterShareButton
-                    url={window.location.href}
-                    title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
-                    hashtags={[this.state.reference.pubId]}
-                  > <TwitterIcon size={shareIconSize} round /> </TwitterShareButton>
-                </Grid>
-                <Grid item>
-                  <FacebookShareButton
-                    url={window.location.href}
-                    quote={`${window.location.href} Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
-                  >
-                    <FacebookIcon size={shareIconSize} round />
-                  </FacebookShareButton>
-                </Grid>
-                <Grid item>
-                  <WhatsappShareButton
-                    url={window.location.href}
-                    title={`Reaction energies and structures for ${plainPrintReference(this.state.reference)} `}
-
-                  ><WhatsappIcon size={shareIconSize} round /></WhatsappShareButton>
-                </Grid>
+        {!_.isEmpty(pubId) ? (
+          <div>
+            <Grid container direction="row" justify="space-between">
+              <Grid item>
+                <Button
+                  onClick={() => {
+                    this.backToList();
+                  }}
+                >
+                  <MdChevronLeft />
+                Back to Publication List
+                </Button>
               </Grid>
+              <Grid>
+                <Grid container direction="row" className={classes.shareButtons}>
+                  <Grid item>
+                    <EmailShareButton
+                      subject={reference.title}
+                      body={`${window.location.href} Reaction energies and structures for ${plainPrintReference(reference)}`}
+                      url={window.location.href}
+                    >
+                      <EmailIcon size={shareIconSize} round />
+                    </EmailShareButton>
+                  </Grid>
+                  <Grid item>
+                    <LinkedinShareButton
+                      title={reference.title}
+                      description={`${plainPrintReference(reference)}`}
+                      url={window.location.href}
+                    >
+                      <LinkedinIcon size={shareIconSize} round />
+                    </LinkedinShareButton>
+                  </Grid>
+                  <Grid item>
+                    <TwitterShareButton
+                      url={window.location.href}
+                      title={`Reaction energies and structures for ${plainPrintReference(reference)} `}
+                      hashtags={[reference.pubId]}
+                    >
+                      {' '}
+                      <TwitterIcon size={shareIconSize} round />
+                      {' '}
 
+                    </TwitterShareButton>
+                  </Grid>
+                  <Grid item>
+                    <FacebookShareButton
+                      url={window.location.href}
+                      quote={`${window.location.href} Reaction energies and structures for ${plainPrintReference(reference)} `}
+                    >
+                      <FacebookIcon size={shareIconSize} round />
+                    </FacebookShareButton>
+                  </Grid>
+                  <Grid item>
+                    <WhatsappShareButton
+                      url={window.location.href}
+                      title={`Reaction energies and structures for ${plainPrintReference(reference)} `}
+                    >
+                      <WhatsappIcon size={shareIconSize} round />
+                    </WhatsappShareButton>
+                  </Grid>
+                </Grid>
+
+              </Grid>
             </Grid>
-          </Grid>
-          <PublicationView pubId={this.state.pubId} />
-        </div>
-            : <div>
+            <PublicationView pubId={pubId} />
+          </div>
+        )
+          : (
+            <div>
 
               <Grid
-                container direction={isMobile ? 'column' : 'row'}
+                container
+                direction={isMobile ? 'column' : 'row'}
                 justify="space-between"
               >
                 <Grid item>
@@ -279,48 +300,48 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                     <Grid item>
 
                       <Link
-                        to={'/profile'}
-                        className={this.props.classes.outboundLink}
+                        to="/profile"
+                        className={classes.outboundLink}
                       >
                         <Button
                           raised
-                          className={this.props.classes.publicationAction}
+                          className={classes.publicationAction}
                         >
                       Contributors
-                    </Button>
+                        </Button>
                       </Link>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item>
                   <Input
-                    className={this.props.classes.filterInput}
-                    value={this.state.publicationFilter}
+                    className={classes.filterInput}
+                    value={publicationFilter}
                     onChange={this.handleChange('publicationFilter')}
                     endAdornment={<MdFilterList />}
                   />
                 </Grid>
               </Grid>
 
-              {this.state.references === {} ? <LinearProgress color="primary" /> : null }
-              {this.state.years.map((year, i) => (
+              {references === {} ? <LinearProgress color="primary" /> : null }
+              {years.map((year, i) => (
                 <Slide
-                  key={`slide_${i}`}
+                  key={`slide_${year}`}
                   in
                   mountOnEnter
                   unmountOnExit
                   timeout={200 * i}
                   direction="left"
-                  className={this.props.classes.yearPaper}
+                  className={classes.yearPaper}
                 >
                   <div>
-                    <Paper key={`div_year_${i}`} className={[this.props.classes.paper, this.props.classes.yearPaper].join(' ')}>
-                      {(this.state.references[year] || []).length === 0 ? null :
-                      <h2 key={`pyear_${year}`} className={this.props.classes.publicationYear}>{year}</h2>
+                    <Paper key={`div_year_${year}`} className={[classes.paper, classes.yearPaper].join(' ')}>
+                      {(references[year] || []).length === 0 ? null
+                        : <h2 key={`pyear_${year}`} className={classes.publicationYear}>{year}</h2>
                       }
-                      {(this.state.references[year] || []).map((reference, j) => {
-                        const notFound = this.state.publicationFilter.trim().split(' ').map((term) => {
-                          if ((reference.pubtextsearch || '').toLowerCase().indexOf(term.toLowerCase()) === -1) {
+                      {(references[year] || []).map((referenceJ, j) => {
+                        const notFound = publicationFilter.trim().split(' ').map((term) => {
+                          if ((referenceJ.pubtextsearch || '').toLowerCase().indexOf(term.toLowerCase()) === -1) {
                             return false;
                           }
                           return true;
@@ -328,92 +349,122 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
                         if (!notFound.every((x) => x)) {
                           return null;
                         }
-                        if (this.state.titles[year][j] !== null) {
+                        if (titles[year][j] !== null) {
                           return (
 
-                            <div key={`pli_${i}_${j}`} className={this.props.classes.publicationEntry}>
-                              <Paper className={this.props.classes.smallPaper}>
-                                <span className={this.props.classes.publicationEntry}>
-                                  <IoDocument size={24} /> {prettyPrintReference(reference)} {`#${reference.pubId}.`}
+                            <div key={`pli_${year}_${j}`} className={classes.publicationEntry}>
+                              <Paper className={classes.smallPaper}>
+                                <span className={classes.publicationEntry}>
+                                  <IoDocument size={24} />
+                                  {' '}
+                                  {prettyPrintReference(referenceJ)}
+                                  {' '}
+                                  {`#${referenceJ.pubId}.`}
 
                                 </span>
-                                <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={this.props.classes.publicationActions}>
-                                  {year > 2014 ?
-                                    <Grid item>
-                                      {typeof this.state.previewCifs[reference.pubId] === 'undefined' ?
-                                        <Button
-                                          onClick={() => {
-                                            this.loadPreviewCif(reference.pubId);
-                                          }}
-                                          className={this.props.classes.publicationAction}
-                                          raised
-                                        >
+                                <Grid container direction={isMobile ? 'column' : 'row'} justify="space-between" className={classes.publicationActions}>
+                                  {year > 2014
+                                    ? (
+                                      <Grid item>
+                                        {typeof previewCifs[referenceJ.pubId] === 'undefined'
+                                          ? (
+                                            <Button
+                                              onClick={() => {
+                                                this.loadPreviewCif(referenceJ.pubId);
+                                              }}
+                                              className={classes.publicationAction}
+                                              raised
+                                            >
                                           Preview
-                                        </Button>
-                                          :
-                                        <GeometryCanvasWithOptions
-                                          key={`mc_${reference.pubId}`}
-                                          cifdata={this.state.previewCifs[reference.pubId].Cifdata}
-                                          unique_id={`molecule_${reference.pubId}`}
-                                          id={`molecule_${reference.pubId}`}
-                                          height={300}
-                                          width={300}
-                                          showButtons={false}
-                                          x={1} y={1} z={2}
-                                        />
-                                      }
-                                    </Grid>
-                                     :
-                                    <Grid item>
-                                      <Button className={this.props.classes.publicationOffAction}>
+                                            </Button>
+                                          )
+                                          : (
+                                            <GeometryCanvasWithOptions
+                                              key={`mc_${referenceJ.pubId}`}
+                                              cifdata={previewCifs[referenceJ.pubId].Cifdata}
+                                              unique_id={`molecule_${referenceJ.pubId}`}
+                                              id={`molecule_${referenceJ.pubId}`}
+                                              height={300}
+                                              width={300}
+                                              showButtons={false}
+                                              x={1}
+                                              y={1}
+                                              z={2}
+                                            />
+                                          )
+                                        }
+                                      </Grid>
+                                    )
+                                    : (
+                                      <Grid item>
+                                        <Button className={classes.publicationOffAction}>
                                         Geometries not available
-                                      </Button>
-                                    </Grid>
+                                        </Button>
+                                      </Grid>
+                                    )
                                   }
                                   <Grid item>
                                     <Button
                                       raised
-                                      onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, this.state.pubIds[year][j], reference)} className={this.props.classes.publicationAction}
+                                      onClick={(target, event) => this.clickPublication(event, target, `elem_${year}_${j}`, pubIds[year][j], referenceJ)}
+                                      className={classes.publicationAction}
                                     >
-                                      <MdViewList /> {'\u00A0\u00A0'}Checkout {
-                                          (withCommas(this.state.totalCounts[reference.pubId] || ''))
-                                      } Reactions {'\u00A0\u00A0'} <MdChevronRight />
+                                      <MdViewList />
+                                      {' '}
+                                      {'\u00A0\u00A0'}
+Checkout
+                                      {' '}
+                                      {
+                                        (withCommas(totalCounts[referenceJ.pubId] || ''))
+                                      }
+                                      {' '}
+Reactions
+                                      {' '}
+                                      {'\u00A0\u00A0'}
+                                      {' '}
+                                      <MdChevronRight />
                                     </Button>
-                                    {(this.state.dois[year][j] === null
-                                          || typeof this.state.dois[year][j] === 'undefined'
-                                          || this.state.dois[year][j] === ''
-                                        ) ? null :
+                                    {(dois[year][j] === null
+                                          || typeof dois[year][j] === 'undefined'
+                                          || dois[year][j] === ''
+                                    ) ? null
+                                      : (
                                         <ReactGA.OutboundLink
-                                          eventLabel={`http://dx.doi.org/${this.state.dois[year][j]}`}
-                                          to={`http://dx.doi.org/${this.state.dois[year][j]}`}
+                                          eventLabel={`http://dx.doi.org/${dois[year][j]}`}
+                                          to={`http://dx.doi.org/${dois[year][j]}`}
                                           target="_blank"
-                                          className={this.props.classes.outboundLink}
+                                          className={classes.outboundLink}
                                         >
                                           <Button
                                             raised
-                                            className={this.props.classes.publicationAction}
+                                            className={classes.publicationAction}
                                           >
-                                            <FaExternalLink />{'\u00A0\u00A0'} DOI: {this.state.dois[year][j]}.
-                                              </Button>
+                                            <FaExternalLink />
+                                            {'\u00A0\u00A0'}
+                                            {' '}
+DOI:
+                                            {' '}
+                                            {dois[year][j]}
+.
+                                          </Button>
                                         </ReactGA.OutboundLink>
-                                        }
+                                      )
+                                    }
                                   </Grid>
                                 </Grid>
 
                                 <div>
-                                  { this.state.openedPublication !== `elem_${year}_${j}` ? null :
-                                  <span>
-                                    {this.state.loading === true ? <LinearProgress color="primary" /> : null}
+                                  { openedPublication !== `elem_${year}_${j}` ? null
+                                    : (
+                                      <span>
+                                        {loading === true ? <LinearProgress color="primary" /> : null}
 
-                                    {/*
-                        true || this.state.reactionEnergies.length === 0 ? null :
-                        <PublicationReactions {...this.state} />
-                        */}
-                                    {this.state.systems.length === 0 ? null :
-                                    <PublicationSystems {...this.state} />
-                        }
-                                  </span>
-                                      }
+                                        {systems.length === 0 ? null
+                                          : <PublicationSystems {...this.state} />
+                                        }
+                                      </span>
+                                    )
+                                  }
                                 </div>
                                 <br />
                               </Paper>
@@ -428,6 +479,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
               ))
               }
             </div>
+          )
         }
       </div>
     );
@@ -435,7 +487,7 @@ class Publications extends React.Component { // eslint-disable-line react/prefer
 }
 
 Publications.propTypes = {
-  classes: PropTypes.object,
+  classes: PropTypes.object.isRequired,
   router: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
