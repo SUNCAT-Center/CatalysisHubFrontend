@@ -6,12 +6,14 @@ module.exports = {
   backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
   /* flaskRoot: 'http://localhost:5001', */
   flaskRoot: 'http://catapp-staging.herokuapp.com/',
-  apiRoot: 'https://api.catalysis-hub.org/',
+  /* apiRoot: 'https://api.catalysis-hub.org/', */
+  apiRoot: 'https://backend-master-attsbwhauul9g93.herokuapp.com',
   /* apiRoot: 'http://localhost:5000', */
   /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
   graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
-  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql', */
-  newGraphQLRoot: '//api.catalysis-hub.org/graphql',
+  newGraphQLRoot: '//backend-master-attsbwhauul9g93.herokuapp.com/graphql',
+  /* newGraphQLRoot: '//localhost:5000/graphql',  */
+  /* newGraphQLRoot: '//api.catalysis-hub.org/graphql', */
   uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
   docRoot: 'http://docs.catalysis-hub.org',
   whiteLabel: false,
