@@ -75,7 +75,7 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
         </Paper>
         <Paper className={paper}>
           <h2>People and Contact</h2>
-          <div>Catalysis-Hub is developed by the SUNCAT Center for Interface Science and Catalysis, SLAC National Accelerator Laboratory, Stanford University. Contact information for the primary people involved is provided below. For technical support please contact postdoc Kirsten Winther at winther@stanford.edu.</div>
+          <div>Catalysis-Hub is developed by the SUNCAT Center for Interface Science and Catalysis, SLAC National Accelerator Laboratory, Stanford University. Contact information for the primary people involved is provided below. For technical support please contact Kirsten Winther at winther@stanford.edu.</div>
           <ul className={peopleList}>
             {Object.keys(people).map((name) => (
               <li key={`person_${name}`}>
@@ -88,7 +88,7 @@ class About extends React.Component { // eslint-disable-line react/prefer-statel
             ))}
           </ul>
           <h2>Contributors</h2>
-          <div>Previously affiliated developers of Catalysis-Hub:</div>
+          <div>Previously SUNCAT-affiliated developers of Catalysis-Hub:</div>
           <ul className={peopleList}>
             {Object.keys(contributors).map((name) => (
               <li key={`person_${name}`}>
