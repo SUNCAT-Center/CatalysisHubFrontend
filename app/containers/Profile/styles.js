@@ -30,7 +30,6 @@ export const styles = (theme) => ({
   },
   authorList: {
     display: 'flex',
-    height: '500px',
     flexWrap: 'wrap',
   },
   fab: {

@@ -419,13 +419,13 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
         </Modal>
         <Grid container direction="row" justify="space-between">
           <Grid item>
-            <h2>
+            <h1>
 Upload Datasets
               {!_.isEmpty(this.state.userInfo)
                 ? `\u00A0\u00A0(${this.state.userInfo.email})`
 
                 : null}
-            </h2>
+            </h1>
           </Grid>
           <Grid item>
             {_.isEmpty(this.state.userInfo) ? null
@@ -444,7 +444,7 @@ Upload Datasets
         <Paper className={this.props.classes.paper}>
           {!_.isEmpty(this.state.userInfo) ? null
             : (
-              <Grid container direction="row" justify="flex-end">
+              <Grid container direction="row" justify="space-between">
                 <Grid item>
                   <Button
                     raised
@@ -512,6 +512,7 @@ Slack
                 </Grid>
                 <Grid item>
                   <Button
+                    raised
                     onClick={() => this.logout()}
                   >
                         Logout
@@ -525,69 +526,60 @@ Slack
           }
         </Paper>
         {!this.state.showHelp ? null
-          : (
-            <Paper className={this.props.classes.paper}>
-              <div style={{ width: '62%', textAlign: 'justify', lineHeight: '24px' }}>
-                <MdWarning />
-                {' '}
-                 Disclaimer: data submitted to the preview section can be seen by all registered users
-                 of catalysis-hub.org.
-                <h3>Why should I submit calculations of reaction energies?</h3>
-                <ul>
-                  <li>
+         : (<div>
+           <Paper className={this.props.classes.paper}>
+             <div>
+
+               <h2>Why should I submit calculations of reaction energies?</h2>
+               <ul>
+                 <li>
                     Create an easy-to-use interactive supplementary information for your
                     {' '}
-                    <a href="/publications">publication</a>
-                    {' '}
-                    with its own URL.
+                   <a href="/publications">publication</a>
+                   {' '}
+                    with its own catalysis-hub URL.
                   </li>
-                  <li>
+                 <li>
                     Get your own
                     {' '}
-                    <a href="/profile">profile page</a>
+                   <a href="/profile">profile page</a>
+                 </li>
+                 <li>
+                      Accelerate transfer of your theoretical insight to experimentalists in catalysis,  and support ongoing machine-learning effort in the community by providing first-principles based training data.
                   </li>
-                  <li>
-                    Accelerate transfer of your theoretical insight to experimentalists in the field.
-                  </li>
-                  <li>
-                    Support
-                    {' '}
-                    <a href="/catLearn">ongoing machine-learning efforts</a>
-                    in the community by providing first-principles based training data.
-                  </li>
-                  <li>
+                 <li>
                     Get your dataset referenced in
                     {' '}
-                    <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>
+                   <a target="_blank" href="https://toolbox.google.com/datasetsearch/search?query=catalysis%20hub&docid=NNswoG6o3ztB5JwUAAAAAA%3D%3D">{'Google\'s Dataset Search'}</a>
 .
                   </li>
-                </ul>
-                <h3>How to submit with the CatHub terminal client</h3>
-                <div>
-                  Check
+               </ul>
+             </div>
+           </Paper>
+           <Paper className={this.props.classes.paper}>
+             <div>
+               <h2>How to submit with the CatHub terminal client</h2>
+               <div>
+                  We refer to
                   {' '}
-                  <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a>
-                  {' '}
+                 <a target="_blank" href="http://docs.catalysis-hub.org/en/latest/tutorials/upload.html#suncat-group-members">docs.catalysis-hub.org</a>
+                 {' '}
                   for a detailed guide on how to upload data. Below a short guide is provided. If you have problems, please contact Kirsten Winther (
                   {'winther@stanford.edu'}
-) or use the
-                  {' '}
-                  <a href="https://gitter.im/catalysis-hub-org/Lobby#"> Chat room </a>
-                  {' '}
-                  for assistance.
+).
                 </div>
-                <ol>
-                  <li>
+               <ol>
+                 <li>
                     Install CatHub:
-                    <pre style={{ margin: '8px' }}>pip install cathub --upgrade --user </pre>
-                  </li>
-                  <li>
+                    <pre style={{ margin: '8px' }}>pip3 install git+https://github.com/SUNCAT-Center/CatHub.git --upgrade --user </pre>
+                 </li>
+                 <li>
                     For an overview of commands, run in your terminal:
                     <pre style={{ margin: '8px' }}>cathub --help </pre>
-                    <pre style={{ margin: '8px' }}>cathub make_folders --help </pre>
-                    <pre style={{ margin: '8px' }}>cathub organize --help </pre>
-                  </li>
-                  <li>
+                   <pre style={{ margin: '8px' }}>cathub make_folders --help </pre>
+                   <pre style={{ margin: '8px' }}>cathub organize --help </pre>
+                 </li>
+                 <li>
 Organize your DFT output files into a folder tree. Choose one of two options:
                     <ul>
                       <li>
@@ -595,23 +587,23 @@ Organize your DFT output files into a folder tree. Choose one of two options:
                         <pre style={{ margin: '8px' }}>
                           {' '}
 cathub organize
-                          {'<foldername>'}
+                          {' <foldername>'}
                           {' '}
--a
-                          {'<adsorbate1,adsorbate2>'}
+                          -a
+                          {' <adsorbate1, adsorbate2>'}
                           {' '}
 
                         </pre>
                         <pre style={{ margin: '8px' }}>
                           {' '}
 -c
-                          {'<dft-code>'}
+                          {' <dft-code>'}
                           {' '}
 -x
-                          {'<xc-functional>'}
+                          {' <xc-functional>'}
                           {' '}
 -f
-                          {'<facet>'}
+                          {' <facet>'}
                           {' '}
 
                         </pre>
@@ -625,42 +617,43 @@ cathub make_folders
                         </pre>
                       </li>
                     </ul>
-                  </li>
-                  <li>
+                 </li>
+                 <li>
                     Turn organized folder into a database file (SQLite3 format):
                     <pre>
                       cathub folder2db
                       {' '}
                       {'<organized folder>'}
                     </pre>
-                  </li>
-                  <li>
+                 </li>
+                 <li>
                     Upload the database file to the server:
                     <pre>
 cathub db2server
-                      {'<NameTitlewordYear>'}
+                      {' <NameTitlewordYear>'}
 .db
                     </pre>
-                  </li>
-                  <li>
+                 </li>
+                 <li>
                     Go to www.catalysis-hub.org/upload and login with the email you provided together with your files.
                   </li>
-                  <li>
+                 <li>
                     Click on
-                    {' '}
-                    {'"Fetch Data Sets"'}
-                    {' '}
+                    {' "Fetch Data Sets" '}
+                     and {' "Details" '}
 to see your uploaded dataset.
                   </li>
-                  <li>
+                 <li>
                     Check that the data looks right. Click on
-                    {' '}
-                    {'"Release"'}
-, and the dataset will be made available to the public as soon as possible.
+                    {' "Release" '}, and the dataset will be made available to the public as soon as possible.
                   </li>
-                </ol>
+               </ol>
+               <MdWarning />
+               {' '}
+                  Disclaimer: Data submitted to the upload section is hidden from the public, but can still be seen by registered users of catalysis-hub.org.
               </div>
-            </Paper>
+           </Paper>
+         </div>
           )
         }
         {!showUploadForm ? null
@@ -915,7 +908,7 @@ Reaction
             <Paper className={this.props.classes.paper}>
               <Grid container justify="space-between" direction="row">
                 <Grid item>
-                  <h1>Data Sets</h1>
+                  <h2>Uploaded datasets</h2>
                 </Grid>
                 <Grid item>
                   <Button
@@ -970,9 +963,6 @@ Fetch Data Sets
                             <MdPublic />
                           </Button>
                           {'\u00A0\u00A0\u00A0'}
-                          <div>
-                            {JSON.stringify(this.state.userInfo)}
-                          </div>
                           <div>
                             {_.get(this.state.pubEntries, `${dataset.pubId}.0.username`, '')}
                           </div>
