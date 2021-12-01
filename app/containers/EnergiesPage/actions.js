@@ -14,8 +14,6 @@ export function handleRequestSort(event, property) {
       event,
       property,
     },
-
-
   };
 }
 
@@ -52,6 +50,24 @@ export function toggleSimpleSearch() {
 export function toggleGeometry() {
   return {
     type: constants.TOGGLE_GEOMETRY,
+  };
+}
+
+export function memoHasMoreReactions(hasMoreReactions) {
+  return {
+    type: constants.HAS_MORE_REACTIONS,
+    payload: {
+      hasMoreReactions,
+    },
+  };
+}
+
+export function saveEndCursor(endCursor) {
+  return {
+    type: constants.SAVE_END_CURSOR,
+    payload: {
+      endCursor,
+    },
   };
 }
 

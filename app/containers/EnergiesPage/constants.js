@@ -23,3 +23,5 @@ export const SAVE_SEARCH_QUERY = 'app/EnergiesPage/SAVE_QUERY';
 export const HANDLE_REQUEST_SORT = 'app/EnergiesPage/HANDLE_REQUEST_SORT';
 export const SAVE_PUBLICATION = 'app/EnergiesPage/SAVE_PUBLICATION';
 export const SAVE_LOADING = 'app/EnergiesPage/SAVE_LOADING';
+export const HAS_MORE_REACTIONS = 'app/EnergiesPage/HAS_MORE_REACTIONS';
+export const SAVE_END_CURSOR = 'app/EnergiesPage/SAVE_END_CURSOR';

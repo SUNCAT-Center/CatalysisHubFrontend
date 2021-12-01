@@ -57,7 +57,7 @@ import { styles } from './styles';
 
 const initialState = {
   resultSize: 0,
-  rowsPerPage: 100,
+  rowsPerPage: 50,
   order: 'asc',
   orderBy: 'energy',
   page: 0,
@@ -132,7 +132,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           publication: response.data.data.publications.edges[0].node,
         });
         if (!this.state.loadingReactions) {
-          this.getReactions();
+          this.getReactions(); // get first 100 reactions
         }
       }
     );
@@ -148,46 +148,46 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       const reactionQuery = {
         ttl: 300,
         query: `query{reactions (pubId: "${pubId}",
-        first: ${Math.min(1000, Math.max(100, parseInt(this.state.reactions.length * 0.5, 10)))}, after: "${this.state.endCursor}") {
-    totalCount
-     pageInfo {
-    hasNextPage
-    hasPreviousPage
-    startCursor
-    endCursor
-    }
-    edges {
-      node {
-        Equation
-        sites
-        id
-        pubId
-        dftCode
-        dftFunctional
-        reactants
-        products
-        facet
-        chemicalComposition
-        facet
-        reactionEnergy
-        activationEnergy
-        surfaceComposition
-        chemicalComposition
-        reactionSystems {
-          name
-          aseId
+        first: ${Math.min(1000, Math.max(this.state.rowsPerPage * 2, Number(this.state.reactions.length * 0.5)))}, after: "${this.state.endCursor}") {
+        totalCount
+        pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
         }
-      }
-    }
-  }}`,
+        edges {
+          node {
+            Equation
+            sites
+            id
+            pubId
+            dftCode
+            dftFunctional
+            reactants
+            products
+            facet
+            chemicalComposition
+            facet
+            reactionEnergy
+            activationEnergy
+            surfaceComposition
+            chemicalComposition
+            reactionSystems {
+              name
+              aseId
+            }
+          }
+        }
+        }}`,
       };
-      axios(this.props.graphqlRoot, {
+      return axios(this.props.graphqlRoot, {
         method: 'post',
         data: reactionQuery,
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
-        const newReactions = _.concat(this.state.reactions,
-          response.data.data.reactions.edges.map((edge) => edge.node));
+        const newArr = response.data.data.reactions.edges.map((edge) => edge.node);
+        const newReactions = [...this.state.reactions, ...newArr];
         this.setState({
           reactionQuery,
           reactions: newReactions,
@@ -199,7 +199,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           loadingMoreReactions: false,
         });
       });
-    }
+    } return {};
   }
 
   getStructures(reaction, i) {
@@ -286,6 +286,17 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       tableView: !this.state.tableView,
     });
   }
+
+  handlePaginationRequest = (event, page) => {
+    if (this.state.hasMoreReactions && !this.state.loadingReactions) {
+      const req = this.getReactions();
+      req.then(() => {
+        this.setState({ page });
+      });
+    } else if (!this.state.loadingReactions) {
+      this.setState({ page });
+    }
+  };
 
   handlePageChange = (event, page) => {
     this.setState({ page });
@@ -629,12 +640,12 @@ DOI:
                   >
                     <TableRow>
                       <TablePagination
-                        count={this.state.resultSize}
+                        count={this.state.totalCount}
                         rowsPerPage={this.state.rowsPerPage}
                         page={this.state.page}
-                        onChangePage={this.handlePageChange}
+                        onChangePage={this.handlePaginationRequest}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                        rowsPerPageOptions={[10, 25, 100, 1000]}
+                        rowsPerPageOptions={[10, 25, 50, 1000]}
                         className={this.props.classes.tableFooter}
                         labelRowsPerPage=""
                       />
@@ -646,7 +657,7 @@ DOI:
                 {!this.state.hasMoreReactions ? null
                   : (
                     <div>
-                  Switch to
+                      Switch to
                       <Button
                         className={this.props.classes.publicationAction}
                         onClick={() => {
@@ -656,7 +667,7 @@ DOI:
                     List View
                       </Button>
                       {' '}
-and scroll down to load remaining reactions.
+                      and scroll down to load remaining reactions.
                     </div>
                   )
                 }

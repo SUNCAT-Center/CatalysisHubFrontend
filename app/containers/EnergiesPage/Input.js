@@ -65,6 +65,8 @@ const initialState = {
   loading: false,
   suggestionsReady: false,
   resultCount: '...',
+  endCursor: '',
+  hasMoreReactions: true,
 };
 
 class EnergiesPageInput extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -170,8 +172,15 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 200, ${filterString} ) {
+      query: `query{reactions ( first: 200, ${filterString} ) 
+    {
     totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
     edges {
       node {
         Equation
@@ -196,7 +205,7 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         }
       }
     }
-  }}`,
+    }}`,
     };
     cachios.post(newGraphQLRoot, query).then((response) => {
       Scroll.animateScroll.scrollMore(500);
@@ -210,6 +219,8 @@ class EnergiesPageInput extends React.Component { // eslint-disable-line react/p
         surfaceComposition: this.state.surfaceComposition.label,
         facet: this.state.facet.label,
       });
+      this.props.saveEndCursor(response.data.data.reactions.pageInfo.endCursor);
+      this.props.memoHasMoreReactions(response.data.data.reactions.pageInfo.hasNextPage);
       this.props.receiveReactions(response.data.data.reactions.edges);
       this.props.saveResultSize(response.data.data.reactions.totalCount);
     }).catch(() => {
@@ -317,6 +328,8 @@ EnergiesPageInput.propTypes = {
   submitSearch: PropTypes.func.isRequired,
   setDbError: PropTypes.func,
   saveSearchQuery: PropTypes.func,
+  saveEndCursor: PropTypes.func,
+  memoHasMoreReactions: PropTypes.func,
 };
 
 EnergiesPageInput.defaultProps = {
@@ -347,6 +360,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   saveSearchQuery: (searchQuery) => {
     dispatch(actions.saveSearchQuery(searchQuery));
+  },
+  saveEndCursor: (endCursor) => {
+    dispatch(actions.saveEndCursor(endCursor));
+  },
+  memoHasMoreReactions: (hasMoreReactions) => {
+    dispatch(actions.memoHasMoreReactions(hasMoreReactions));
   },
 });
 

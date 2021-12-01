@@ -38,7 +38,7 @@ export class EnergiesPage extends React.Component { // eslint-disable-line react
 
           <EnergiesPageInput {...this.props} />
 
-          <MatchingReactions />
+          <MatchingReactions {...this.props} />
           <ReactionStructures {...this.props} />
         </div>
       </Slide>

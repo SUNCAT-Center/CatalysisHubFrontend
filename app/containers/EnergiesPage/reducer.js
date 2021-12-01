@@ -25,6 +25,8 @@ const initialState = {
   searchQuery: '',
   order: 'desc',
   orderBy: '',
+  endCursor: '',
+  hasMoreReactions: true,
 };
 
 let order;
@@ -86,6 +88,16 @@ function energiesPageReducer(state = initialState, action) {
       return {
         ...state,
         withGeometry: !state.withGeometry,
+      };
+    case constants.SAVE_END_CURSOR:
+      return {
+        ...state,
+        endCursor: action.payload.endCursor,
+      };
+    case constants.HAS_MORE_REACTIONS:
+      return {
+        ...state,
+        hasMoreReactions: action.payload.hasMoreReactions,
       };
     case constants.SAVE_RESULT_SIZE:
       return {
