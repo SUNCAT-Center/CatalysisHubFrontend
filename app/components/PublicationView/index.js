@@ -75,7 +75,7 @@ const initialState = {
   loadingStructures: false,
   endCursor: '',
   hasMoreReactions: true,
-  tableView: false,
+  tableView: true,
 };
 
 
