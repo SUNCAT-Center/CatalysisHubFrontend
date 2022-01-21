@@ -75,7 +75,7 @@ const initialState = {
   loadingStructures: false,
   endCursor: '',
   hasMoreReactions: true,
-  tableView: false,
+  tableView: true,
 };
 
 
@@ -148,7 +148,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       const reactionQuery = {
         ttl: 300,
         query: `query{reactions (pubId: "${pubId}",
-        first: ${Math.min(1000, Math.max(100, parseInt(this.state.reactions.length * 0.5, 10)))}, after: "${this.state.endCursor}") {
+        first: 100, after: "${this.state.endCursor}") {
     totalCount
      pageInfo {
     hasNextPage
@@ -288,6 +288,15 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   handlePageChange = (event, page) => {
+    if (this.state.hasMoreReactions) {
+      this.setState({
+        loadingMoreReactions: true,
+        hasMoreReactions: false,
+      });
+      if (!this.state.loadingMoreReactions) {
+        this.getReactions();
+      }
+    }
     this.setState({ page });
   };
 
@@ -376,7 +385,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               "encodingFormat": "JSON",
               "headline": "${publication.title}",
               "contentUrl": "http://api.catalysis-hub.org/graphql?query=%7B%0A%20%20reactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%20%20%20%20reactants%0A%20%20%20%20%20%20%20%20products%0A%20%20%20%20%20%20%20%20surfaceComposition%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
-              
             }
           ]
         }`}
@@ -629,7 +637,7 @@ DOI:
                   >
                     <TableRow>
                       <TablePagination
-                        count={this.state.resultSize}
+                        count={this.state.totalCount}
                         rowsPerPage={this.state.rowsPerPage}
                         page={this.state.page}
                         onChangePage={this.handlePageChange}
