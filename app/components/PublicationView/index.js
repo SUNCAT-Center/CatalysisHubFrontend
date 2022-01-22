@@ -706,21 +706,28 @@ and scroll down to load remaining reactions.
   edges {
     node {
       Formula
-      energy
-      numbers
-      initialMagmoms
-      magmoms
-      magmom
-      charges
-      momenta
-      calculator
-      keyValuePairs
-      calculatorParameters
-      publication {
-        title
-        authors
-        doi
-      }
+       calculator
+       energy
+       natoms
+       fmax
+       Pbc
+       volume
+       charge
+       mass
+       smax
+       forces
+       initialMagmoms
+       magmoms
+       magmom
+       charges
+       momenta
+       keyValuePairs
+       calculatorParameters
+       publication {
+         title
+         authors
+         doi
+       }
     }
   }
 }}`}
@@ -978,14 +985,21 @@ eV)
   edges {
     node {
       Formula
+      calculator
       energy
-      numbers
+      natoms
+      fmax
+      Pbc
+      volume
+      charge
+      mass
+      smax
+      forces
       initialMagmoms
       magmoms
       magmom
       charges
       momenta
-      calculator
       keyValuePairs
       calculatorParameters
       publication {
