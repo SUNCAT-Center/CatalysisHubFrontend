@@ -977,24 +977,22 @@ eV)
                                           query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
-      DftCode
-      DftFunctional
-      Facet
       Formula
-      InputFile(format:"cif")
-      Pbc
-      cell
       energy
-      keyValuePairs
-      magmom
-      magmoms
-      mass
-      natoms
       numbers
-      positions
-      tags
-      uniqueId
-      volume
+      initialMagmoms
+      magmoms
+      magmom
+      charges
+      momenta
+      calculator
+      keyValuePairs
+      calculatorParameters
+      publication {
+        title
+        authors
+        doi
+      }
     }
   }
 }}`}
