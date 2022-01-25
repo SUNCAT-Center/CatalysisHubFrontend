@@ -44,14 +44,21 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
   edges {
     node {
       Formula
+      calculator
       energy
-      numbers
+      natoms
+      fmax
+      Pbc
+      volume
+      charge
+      mass
+      smax
+      forces
       initialMagmoms
       magmoms
       magmom
       charges
       momenta
-      calculator
       keyValuePairs
       calculatorParameters
       publication {

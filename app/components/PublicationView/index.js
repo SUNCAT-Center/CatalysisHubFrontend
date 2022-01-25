@@ -387,7 +387,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               "encodingFormat": "JSON",
               "headline": "${publication.title}",
               "contentUrl": "http://api.catalysis-hub.org/graphql?query=%7B%0A%20%20reactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%20%20%20%20reactants%0A%20%20%20%20%20%20%20%20products%0A%20%20%20%20%20%20%20%20surfaceComposition%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
-              
+
             }
           ]
         }`}
@@ -716,24 +716,29 @@ DOI:
                                             query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
-      DftCode
-      DftFunctional
-      Facet
       Formula
-      InputFile(format:"cif")
-      Pbc
-      cell
-      energy
-      keyValuePairs
-      magmom
-      magmoms
-      mass
-      natoms
-      numbers
-      positions
-      tags
-      uniqueId
-      volume
+       calculator
+       energy
+       natoms
+       fmax
+       Pbc
+       volume
+       charge
+       mass
+       smax
+       forces
+       initialMagmoms
+       magmoms
+       magmom
+       charges
+       momenta
+       keyValuePairs
+       calculatorParameters
+       publication {
+         title
+         authors
+         doi
+       }
     }
   }
 }}`}
@@ -990,24 +995,29 @@ eV)
                                           query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
-      DftCode
-      DftFunctional
-      Facet
       Formula
-      InputFile(format:"cif")
-      Pbc
-      cell
+      calculator
       energy
-      keyValuePairs
-      magmom
-      magmoms
-      mass
       natoms
-      numbers
-      positions
-      tags
-      uniqueId
+      fmax
+      Pbc
       volume
+      charge
+      mass
+      smax
+      forces
+      initialMagmoms
+      magmoms
+      magmom
+      charges
+      momenta
+      keyValuePairs
+      calculatorParameters
+      publication {
+        title
+        authors
+        doi
+      }
     }
   }
 }}`}
