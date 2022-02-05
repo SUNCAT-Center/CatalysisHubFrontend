@@ -70,7 +70,7 @@ export const prettyPrintReference = (ref) =>
   // TODO Integrate with crossref.org api
   // if (false && typeof ref.doi === 'undefined' || ref.doi === '') {
   (<span>
-    {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <strong>{`"${toTitleCase(restoreSC(ref.title))}"`}. </strong> : null }
+    {(ref.title !== '' && ref.title !== null && typeof ref.title !== 'undefined') ? <strong>{`"${restoreSC(ref.title)}"`}. </strong> : null }
     {(typeof ref.authors !== 'undefined' && ref.authors !== '' && ref.authors !== null) ? <span> {(typeof ref.authors === 'string' ? JSON.parse(ref.authors).map((author, i) => (
       <Link
         key={`a${i}`}
@@ -185,4 +185,3 @@ export function toSlugFormat(s) {
     .replace(/\s/g, '-')
     .toLowerCase();
 }
-
