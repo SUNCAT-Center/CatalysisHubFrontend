@@ -60,6 +60,7 @@ const initialState = {
   rowsPerPage: 50,
   order: 'asc',
   orderBy: 'energy',
+  orderQueryBy: "chemicalComposition",
   page: 0,
   reactionQuery: '',
   publicationQuery: '',
@@ -75,7 +76,7 @@ const initialState = {
   loadingStructures: false,
   endCursor: '',
   hasMoreReactions: true,
-  tableView: true,
+  tableView: false,
 };
 
 
@@ -148,7 +149,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       const reactionQuery = {
         ttl: 300,
         query: `query{reactions (pubId: "${pubId}",
-        first: ${Math.min(1000, Math.max(this.state.rowsPerPage * 2, Number(this.state.reactions.length * 0.5)))}, after: "${this.state.endCursor}") {
+        first: 200, after: "${this.state.endCursor}",
+        order: "${this.state.orderQueryBy}") {
         totalCount
         pageInfo {
         hasNextPage
@@ -167,8 +169,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
             reactants
             products
             facet
-            chemicalComposition
-            facet
             reactionEnergy
             activationEnergy
             surfaceComposition
@@ -186,8 +186,8 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         data: reactionQuery,
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
-        const newArr = response.data.data.reactions.edges.map((edge) => edge.node);
-        const newReactions = [...this.state.reactions, ...newArr];
+        const newReactions = _.concat(this.state.reactions,
+          response.data.data.reactions.edges.map((edge) => edge.node));
         this.setState({
           reactionQuery,
           reactions: newReactions,
@@ -233,6 +233,24 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         data: structureQuery,
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
+        const name = system.name;
+        const ads = name.replace('star', ' @');
+        var full_key = response.data.data.systems.edges[0].node.Formula;
+        if (name.indexOf('gas') !== -1) {
+          full_key = `Gas phase ${full_key}`;
+        } else if (name.indexOf('bulk') !== -1) {
+          full_key = `Bulk ${full_key}`;
+        } else {
+          if (name === 'star') {
+            full_key = `Surface ${reaction.chemicalComposition}`;
+          } else {
+            full_key = `${ads} ${reaction.chemicalComposition}`;
+          }
+          if (typeof reaction.facet !== 'undefined' && reaction.facet !== '' && reaction.facet !== null) {
+            full_key = `${full_key} [${reaction.facet}]`;
+          }
+        }
+        response.data.data.systems.edges[0].node.full_key = full_key;
         this.setState({
           structureQuery,
           loadingStructures: false,
@@ -263,7 +281,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   handleReactionsScroll(e) {
-    const bottom = e.target.scrollHeight - e.target.scrollTop >= (e.target.clientHeight);
+    const bottom = (e.target.clientHeight + e.target.scrollTop) * 1.1 >= (e.target.scrollHeight);
     if (bottom && this.state.hasMoreReactions) {
       this.setState({
         loadingMoreReactions: true,
@@ -276,9 +294,24 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   sortReactions(field) {
+  if (this.state.hasMoreReactions) {
+      this.setState({
+        endCursor: '',
+        orderQueryBy: field,
+        reactions: [],
+        reaction: {}}, function() {
+          if (!this.state.loadingMoreReactions) {
+            this.getReactions();
+            this.setState({
+              reactions: _.orderBy(this.state.reactions, field),
+            });
+          }
+      });
+    } else {
     this.setState({
       reactions: _.orderBy(this.state.reactions, field),
     });
+  }
   }
 
   toggleView() {
@@ -645,32 +678,13 @@ DOI:
                         page={this.state.page}
                         onChangePage={this.handlePaginationRequest}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                        rowsPerPageOptions={[10, 25, 50, 1000]}
+                        rowsPerPageOptions={[10, 25, 50, 100, 1000]}
                         className={this.props.classes.tableFooter}
                         labelRowsPerPage=""
                       />
                     </TableRow>
                   </TableFooter>
                 </Table>
-
-
-                {!this.state.hasMoreReactions ? null
-                  : (
-                    <div>
-                      Switch to
-                      <Button
-                        className={this.props.classes.publicationAction}
-                        onClick={() => {
-                          this.toggleView();
-                        }}
-                      >
-                    List View
-                      </Button>
-                      {' '}
-                      and scroll down to load remaining reactions.
-                    </div>
-                  )
-                }
               </Paper>
               {this.state.structures.length > 1
                 ? (
@@ -689,7 +703,7 @@ DOI:
                               <Grid container direction="row" justify="center">
                                 <Grid item>
                                   <h2>
-                                    {structures[i].Formula}
+                                    {structures[i].full_key}
                                     {' '}
                                     (
                                     {structures[i].energy}
@@ -712,7 +726,7 @@ DOI:
                                     : (
                                       <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                                         <Grid item>
-                                          <GraphQlbutton
+                                          Open <GraphQlbutton
                                             query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
@@ -743,7 +757,7 @@ DOI:
   }
 }}`}
                                             newSchema
-                                          />
+                                          /> to view calculational details.
                                         </Grid>
                                       </Grid>
                                     )
@@ -762,11 +776,7 @@ DOI:
                   </Paper>
                 )
                 : (
-                  <Paper className={this.props.classes.structuresDiv}>
-                    {_.isEmpty(this.state.reaction) ? null
-                      : <BarrierChart selectedReaction={this.state.reaction} />
-                    }
-                  </Paper>
+                null
                 )}
             </div>
           )
@@ -970,9 +980,9 @@ scroll down for more structures
                             <Grid container direction="row" justify="center">
                               <Grid item>
                                 <h2>
-                                  {structures[i].Formula}
+                                  {structures[i].full_key}
                                   {' '}
-(
+                                  (
                                   {structures[i].energy}
                                   {' '}
 eV)
@@ -991,7 +1001,7 @@ eV)
                                   : (
                                     <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                                       <Grid item>
-                                        <GraphQlbutton
+                                        Open <GraphQlbutton
                                           query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
@@ -1022,7 +1032,7 @@ eV)
   }
 }}`}
                                           newSchema
-                                        />
+                                        /> to view calculational details.
                                       </Grid>
                                     </Grid>
                                   )
@@ -1035,19 +1045,7 @@ eV)
                     </Paper>
                   </Grid>
                 )
-                : (
-                  <Grid item lg={7} md={7} sm={12}>
-                    {this.state.loadingStructures ? null
-                      : (
-                        <Paper className={this.props.classes.structuresDiv}>
-                          {_.isEmpty(this.state.reaction) ? null
-                            : <BarrierChart selectedReaction={this.state.reaction} />
-                          }
-                        </Paper>
-                      )
-                    }
-                  </Grid>
-                )
+                : null
               }
             </Grid>
           )
