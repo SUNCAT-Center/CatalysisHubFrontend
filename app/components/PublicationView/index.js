@@ -57,10 +57,9 @@ import { styles } from './styles';
 
 const initialState = {
   resultSize: 0,
-  rowsPerPage: 50,
+  rowsPerPage: 100,
   order: 'asc',
   orderBy: 'energy',
-  orderQueryBy: "chemicalComposition",
   page: 0,
   reactionQuery: '',
   publicationQuery: '',
@@ -76,7 +75,7 @@ const initialState = {
   loadingStructures: false,
   endCursor: '',
   hasMoreReactions: true,
-  tableView: false,
+  tableView: true,
 };
 
 
@@ -133,7 +132,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           publication: response.data.data.publications.edges[0].node,
         });
         if (!this.state.loadingReactions) {
-          this.getReactions(); // get first 100 reactions
+          this.getReactions();
         }
       }
     );
@@ -149,39 +148,40 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
       const reactionQuery = {
         ttl: 300,
         query: `query{reactions (pubId: "${pubId}",
-        first: 200, after: "${this.state.endCursor}",
-        order: "${this.state.orderQueryBy}") {
-        totalCount
-        pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
+        first: 100, after: "${this.state.endCursor}") {
+    totalCount
+     pageInfo {
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    endCursor
+    }
+    edges {
+      node {
+        Equation
+        sites
+        id
+        pubId
+        dftCode
+        dftFunctional
+        reactants
+        products
+        facet
+        chemicalComposition
+        facet
+        reactionEnergy
+        activationEnergy
+        surfaceComposition
+        chemicalComposition
+        reactionSystems {
+          name
+          aseId
         }
-        edges {
-          node {
-            Equation
-            sites
-            id
-            pubId
-            dftCode
-            dftFunctional
-            reactants
-            products
-            facet
-            reactionEnergy
-            activationEnergy
-            surfaceComposition
-            chemicalComposition
-            reactionSystems {
-              name
-              aseId
-            }
-          }
-        }
-        }}`,
+      }
+    }
+  }}`,
       };
-      return axios(this.props.graphqlRoot, {
+      axios(this.props.graphqlRoot, {
         method: 'post',
         data: reactionQuery,
         withCredentials: this.props.privilegedAccess,
@@ -199,7 +199,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           loadingMoreReactions: false,
         });
       });
-    } return {};
+    }
   }
 
   getStructures(reaction, i) {
@@ -233,24 +233,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
         data: structureQuery,
         withCredentials: this.props.privilegedAccess,
       }).then((response) => {
-        const name = system.name;
-        const ads = name.replace('star', ' @');
-        var full_key = response.data.data.systems.edges[0].node.Formula;
-        if (name.indexOf('gas') !== -1) {
-          full_key = `Gas phase ${full_key}`;
-        } else if (name.indexOf('bulk') !== -1) {
-          full_key = `Bulk ${full_key}`;
-        } else {
-          if (name === 'star') {
-            full_key = `Surface ${reaction.chemicalComposition}`;
-          } else {
-            full_key = `${ads} ${reaction.chemicalComposition}`;
-          }
-          if (typeof reaction.facet !== 'undefined' && reaction.facet !== '' && reaction.facet !== null) {
-            full_key = `${full_key} [${reaction.facet}]`;
-          }
-        }
-        response.data.data.systems.edges[0].node.full_key = full_key;
         this.setState({
           structureQuery,
           loadingStructures: false,
@@ -281,7 +263,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   handleReactionsScroll(e) {
-    const bottom = (e.target.clientHeight + e.target.scrollTop) * 1.1 >= (e.target.scrollHeight);
+    const bottom = e.target.scrollHeight - e.target.scrollTop >= (e.target.clientHeight);
     if (bottom && this.state.hasMoreReactions) {
       this.setState({
         loadingMoreReactions: true,
@@ -294,24 +276,9 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
   }
 
   sortReactions(field) {
-  if (this.state.hasMoreReactions) {
-      this.setState({
-        endCursor: '',
-        orderQueryBy: field,
-        reactions: [],
-        reaction: {}}, function() {
-          if (!this.state.loadingMoreReactions) {
-            this.getReactions();
-            this.setState({
-              reactions: _.orderBy(this.state.reactions, field),
-            });
-          }
-      });
-    } else {
     this.setState({
       reactions: _.orderBy(this.state.reactions, field),
     });
-  }
   }
 
   toggleView() {
@@ -320,18 +287,16 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
     });
   }
 
-  handlePaginationRequest = (event, page) => {
-    if (this.state.hasMoreReactions && !this.state.loadingReactions) {
-      const req = this.getReactions();
-      req.then(() => {
-        this.setState({ page });
-      });
-    } else if (!this.state.loadingReactions) {
-      this.setState({ page });
-    }
-  };
-
   handlePageChange = (event, page) => {
+    if (this.state.hasMoreReactions) {
+      this.setState({
+        loadingMoreReactions: true,
+        hasMoreReactions: false,
+      });
+      if (!this.state.loadingMoreReactions) {
+        this.getReactions();
+      }
+    }
     this.setState({ page });
   };
 
@@ -420,7 +385,6 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
               "encodingFormat": "JSON",
               "headline": "${publication.title}",
               "contentUrl": "http://api.catalysis-hub.org/graphql?query=%7B%0A%20%20reactions(pubId%3A%22${publication.pubId}%22)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20Equation%0A%20%20%20%20%20%20%20%20chemicalComposition%0A%20%20%20%20%20%20%20%20reactionEnergy%0A%20%20%20%20%20%20%20%20activationEnergy%0A%20%20%20%20%20%20%20%20reactants%0A%20%20%20%20%20%20%20%20products%0A%20%20%20%20%20%20%20%20surfaceComposition%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A"
-
             }
           ]
         }`}
@@ -676,15 +640,34 @@ DOI:
                         count={this.state.totalCount}
                         rowsPerPage={this.state.rowsPerPage}
                         page={this.state.page}
-                        onChangePage={this.handlePaginationRequest}
+                        onChangePage={this.handlePageChange}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                        rowsPerPageOptions={[10, 25, 50, 100, 1000]}
+                        rowsPerPageOptions={[10, 25, 100, 1000]}
                         className={this.props.classes.tableFooter}
                         labelRowsPerPage=""
                       />
                     </TableRow>
                   </TableFooter>
                 </Table>
+
+
+                {!this.state.hasMoreReactions ? null
+                  : (
+                    <div>
+                  Switch to
+                      <Button
+                        className={this.props.classes.publicationAction}
+                        onClick={() => {
+                          this.toggleView();
+                        }}
+                      >
+                    List View
+                      </Button>
+                      {' '}
+and scroll down to load remaining reactions.
+                    </div>
+                  )
+                }
               </Paper>
               {this.state.structures.length > 1
                 ? (
@@ -703,7 +686,7 @@ DOI:
                               <Grid container direction="row" justify="center">
                                 <Grid item>
                                   <h2>
-                                    {structures[i].full_key}
+                                    {structures[i].Formula}
                                     {' '}
                                     (
                                     {structures[i].energy}
@@ -726,38 +709,33 @@ DOI:
                                     : (
                                       <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                                         <Grid item>
-                                          Open <GraphQlbutton
+                                          <GraphQlbutton
                                             query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
+      DftCode
+      DftFunctional
+      Facet
       Formula
-       calculator
-       energy
-       natoms
-       fmax
-       Pbc
-       volume
-       charge
-       mass
-       smax
-       forces
-       initialMagmoms
-       magmoms
-       magmom
-       charges
-       momenta
-       keyValuePairs
-       calculatorParameters
-       publication {
-         title
-         authors
-         doi
-       }
+      InputFile(format:"cif")
+      Pbc
+      cell
+      energy
+      keyValuePairs
+      magmom
+      magmoms
+      mass
+      natoms
+      numbers
+      positions
+      tags
+      uniqueId
+      volume
     }
   }
 }}`}
                                             newSchema
-                                          /> to view calculational details.
+                                          />
                                         </Grid>
                                       </Grid>
                                     )
@@ -776,7 +754,11 @@ DOI:
                   </Paper>
                 )
                 : (
-                null
+                  <Paper className={this.props.classes.structuresDiv}>
+                    {_.isEmpty(this.state.reaction) ? null
+                      : <BarrierChart selectedReaction={this.state.reaction} />
+                    }
+                  </Paper>
                 )}
             </div>
           )
@@ -980,9 +962,9 @@ scroll down for more structures
                             <Grid container direction="row" justify="center">
                               <Grid item>
                                 <h2>
-                                  {structures[i].full_key}
+                                  {structures[i].Formula}
                                   {' '}
-                                  (
+(
                                   {structures[i].energy}
                                   {' '}
 eV)
@@ -1001,38 +983,33 @@ eV)
                                   : (
                                     <Grid container className={this.props.classes.headerDiv} direction="row" justify="flex-start">
                                       <Grid item>
-                                        Open <GraphQlbutton
+                                        <GraphQlbutton
                                           query={`query{systems(uniqueId: "${structures[i].uniqueId}") {
   edges {
     node {
+      DftCode
+      DftFunctional
+      Facet
       Formula
-      calculator
-      energy
-      natoms
-      fmax
+      InputFile(format:"cif")
       Pbc
-      volume
-      charge
-      mass
-      smax
-      forces
-      initialMagmoms
-      magmoms
-      magmom
-      charges
-      momenta
+      cell
+      energy
       keyValuePairs
-      calculatorParameters
-      publication {
-        title
-        authors
-        doi
-      }
+      magmom
+      magmoms
+      mass
+      natoms
+      numbers
+      positions
+      tags
+      uniqueId
+      volume
     }
   }
 }}`}
                                           newSchema
-                                        /> to view calculational details.
+                                        />
                                       </Grid>
                                     </Grid>
                                   )
@@ -1045,7 +1022,19 @@ eV)
                     </Paper>
                   </Grid>
                 )
-                : null
+                : (
+                  <Grid item lg={7} md={7} sm={12}>
+                    {this.state.loadingStructures ? null
+                      : (
+                        <Paper className={this.props.classes.structuresDiv}>
+                          {_.isEmpty(this.state.reaction) ? null
+                            : <BarrierChart selectedReaction={this.state.reaction} />
+                          }
+                        </Paper>
+                      )
+                    }
+                  </Grid>
+                )
               }
             </Grid>
           )
