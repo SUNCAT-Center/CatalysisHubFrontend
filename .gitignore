@@ -9,4 +9,4 @@ stats.json
 npm-debug.log
 .idea
 COST_OF_MODULES.txt
-
+.vscode

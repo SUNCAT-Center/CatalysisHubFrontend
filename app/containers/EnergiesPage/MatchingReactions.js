@@ -102,6 +102,77 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     };
   }
 
+  getMoreReactions() {
+    this.setState({ loading: true });
+
+    ReactGA.event({
+      category: 'Search',
+      action: 'Search',
+      label: this.props.search,
+    });
+    const query = {
+      ttl: 300,
+      query: `query{reactions ( first: 200, ${this.props.search}, after: "${this.props.endCursor}" ) 
+    {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        Equation
+        sites
+        id
+        pubId
+        dftCode
+        dftFunctional
+        reactants
+        products
+        facet
+        chemicalComposition
+        facet
+        reactionEnergy
+        activationEnergy
+        surfaceComposition
+        chemicalComposition
+        reactionSystems {
+          name
+          energyCorrection
+          aseId
+        }
+      }
+    }
+    }}`,
+    };
+    return cachios.post(newGraphQLRoot, query).then((response) => {
+      this.setState({
+        loading: false,
+      });
+      this.props.saveEndCursor(response.data.data.reactions.pageInfo.endCursor);
+      this.props.memoHasMoreReactions(response.data.data.reactions.pageInfo.hasNextPage);
+      const newReactions = [...this.props.matchingReactions, ...response.data.data.reactions.edges];
+      this.props.receiveReactions(newReactions);
+    }).catch(() => {
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
+  handlePaginationRequest = (event, page) => {
+    if (this.props.hasMoreReactions && page * this.state.rowsPerPage >= this.props.matchingReactions.length && !this.state.loading) {
+      const req = this.getMoreReactions();
+      req.then(() => {
+        this.setState({ page });
+      });
+    } else if (!this.state.loading) {
+      this.setState({ page });
+    }
+  };
+
   handlePageChange = (event, page) => {
     this.setState({ page });
   };
@@ -437,7 +508,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
                   count={this.props.resultSize}
                   rowsPerPage={this.state.rowsPerPage}
                   page={this.state.page}
-                  onChangePage={this.handlePageChange}
+                  onChangePage={this.handlePaginationRequest}
                   onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   rowsPerPageOptions={[10, 25, 100]}
                   className={this.props.classes.tableFooter}
@@ -468,10 +539,16 @@ MatchingReactions.propTypes = {
   catKitStepperHandleReset: PropTypes.func,
   resultSize: PropTypes.number,
   searchString: PropTypes.string,
+  saveEndCursor: PropTypes.func,
+  memoHasMoreReactions: PropTypes.func,
+  receiveReactions: PropTypes.func,
   handleRequestSort: PropTypes.func,
   order: PropTypes.string,
   orderBy: PropTypes.string,
   publication: PropTypes.object,
+  hasMoreReactions: PropTypes.bool,
+  endCursor: PropTypes.string,
+  search: PropTypes.string,
 };
 
 MatchingReactions.defaultProps = {
@@ -486,6 +563,8 @@ const mapStateToProps = (state) => ({
   searchSubmitted: state.get('energiesPageReducer').searchSubmitted,
   search: state.get('energiesPageReducer').search,
   resultSize: state.get('energiesPageReducer').resultSize,
+  endCursor: state.get('energiesPageReducer').endCursor,
+  hasMoreReactions: state.get('energiesPageReducer').hasMoreReactions,
   searchParams: state.get('energiesPageReducer').searchParams,
   searchQuery: state.get('energiesPageReducer').searchQuery,
   order: state.get('energiesPageReducer').order,
@@ -520,6 +599,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   handleRequestSort: (event, property) => {
     dispatch(actions.handleRequestSort(event, property));
+  },
+  saveEndCursor: (endCursor) => {
+    dispatch(actions.saveEndCursor(endCursor));
+  },
+  memoHasMoreReactions: (hasMoreReactions) => {
+    dispatch(actions.memoHasMoreReactions(hasMoreReactions));
   },
 });
 
