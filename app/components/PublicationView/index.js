@@ -242,7 +242,7 @@ class PublicationView extends React.Component { // eslint-disable-line react/pre
           full_key = `Bulk ${full_key}`;
         } else {
           if (name === 'star') {
-            full_key = `Surface ${reaction.chemicalComposition}`;
+            full_key = `Empty ${reaction.chemicalComposition}`;
           } else {
             full_key = `${ads} ${reaction.chemicalComposition}`;
           }

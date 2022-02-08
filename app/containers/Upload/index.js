@@ -157,11 +157,9 @@ export class Upload extends React.Component { // eslint-disable-line react/prefe
   }
 
   setDataset(dataset) {
-    return () => {
-      this.setState({
-        pubId: dataset.pubId,
-      });
-    };
+    this.setState({
+      pubId: dataset.pubId,
+    });
   }
 
   removeMolecule(i) {

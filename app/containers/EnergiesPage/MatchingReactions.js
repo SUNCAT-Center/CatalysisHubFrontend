@@ -112,7 +112,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
     });
     const query = {
       ttl: 300,
-      query: `query{reactions ( first: 200, ${this.props.search}, after: "${this.props.endCursor}" ) 
+      query: `query{reactions ( first: 200, ${this.props.search}, after: "${this.props.endCursor}" )
     {
     totalCount
     pageInfo {
@@ -273,7 +273,7 @@ class MatchingReactions extends React.Component { // eslint-disable-line react/p
           node.full_key = `Bulk ${node.full_key}`;
         } else {
           if (name === 'star') {
-            node.full_key = `Surface ${reaction.chemicalComposition}`;
+            node.full_key = `Empty ${reaction.chemicalComposition}`;
           } else {
             node.full_key = `${ads} ${reaction.chemicalComposition}`;
           }
