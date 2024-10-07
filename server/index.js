@@ -89,7 +89,7 @@ app.use(csp({
 }));
 app.use(sslRedirect());
 
-const allowedOrigins = ['https://catappdatabase2-pr-63.herokuapp.com', 'https://api.catalysis-hub.org'];
+const allowedOrigins = ['https://api.catalysis-hub.org', 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com']
 app.use(cors({
   origin(origin, callback) {
     // allow requests with no origin
@@ -104,7 +104,7 @@ app.use(cors({
   },
 }));
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://api.catalysis-hub.org, https://newt.nersc.gov');
+  res.setHeader('Access-Control-Allow-Origin', 'https://api.catalysis-hub.org, https://newt.nersc.gov', 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-Pingother, Content-Type, Accept');
   next();
 });
