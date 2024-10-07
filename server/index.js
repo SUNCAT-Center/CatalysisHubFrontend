@@ -34,7 +34,7 @@ app.use(csp({
       'catappdatabase2-pr-63.herokuapp.com',
       'slac-suncat.slack.com',
       'newt.nersc.gov',
-
+      'backend-master-ihpitvqqnuqfw2e.herokuapp.com'
     ],
     fontSrc: [
       "'self'",
@@ -63,6 +63,7 @@ app.use(csp({
       'slack.com',
       'github.com',
       'localhost:5000',
+      'backend-master-ihpitvqqnuqfw2e.herokuapp.com'
     ],
     frameAncestors: [
       "'self'",
