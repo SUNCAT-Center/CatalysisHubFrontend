@@ -46,6 +46,7 @@ app.use(csp({
       "'unsafe-inline'",
       "'self'",
       'api.catalysis-hub.org',
+      'backend-master-ihpitvqqnuqfw2e.herokuapp.com',
       'www.google-analytics.com',
       'code.jquery.com',
     ],
@@ -73,11 +74,13 @@ app.use(csp({
     defaultSrc: [
       "'self'",
       'api.catalysis-hub.org',
+      'backend-master-ihpitvqqnuqfw2e.herokuapp.com',
     ],
     imgSrc: [
       "'self'",
       'data:',
       'api.catalysis-hub.org',
+      'backend-master-ihpitvqqnuqfw2e.herokuapp.com',
       'www.google-analytics.com',
       'lh1.googleusercontent.com',
       'lh2.googleusercontent.com',
