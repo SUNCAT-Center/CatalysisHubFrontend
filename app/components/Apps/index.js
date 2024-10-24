@@ -47,7 +47,6 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                   title="Analyze"
                   apps={apps} filter={[
                     'Activity Maps',
-                    'Prototype Search',
                     'Scaling Relations',
                   ]}
                 />
