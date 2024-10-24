@@ -47,33 +47,11 @@ class Apps extends React.Component { // eslint-disable-line react/prefer-statele
                   title="Analyze"
                   apps={apps} filter={[
                     'Activity Maps',
-                    'CatLearn',
-                    'Pourbaix Diagrams',
                     'Prototype Search',
                     'Scaling Relations',
                   ]}
                 />
               </Grid>
-              <Grid item lg={6} md={12}>
-                <FilteredApps
-                  title="Create"
-                  apps={apps} filter={[
-                    'Wyckoff Bulk Generator',
-                    'CatKit Slab Generator',
-                  ]}
-                />
-              </Grid>
-
-              <Grid item lg={6} md={12}>
-                <FilteredApps
-                  title="Contribute"
-                  apps={apps} filter={[
-                    'Upload Datasets',
-                    'Your Next App ...',
-                  ]}
-                />
-              </Grid>
-
             </Grid>
           </div>
         </Slide>
