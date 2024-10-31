@@ -3,14 +3,10 @@
 import packageJson from './package.json';
 
 module.exports = {
-  backendRoot: 'https://obscure-woodland-71302.herokuapp.com/',
-  /* flaskRoot: 'http://localhost:5001', */
-  flaskRoot: 'http://catapp-staging.herokuapp.com/',
   apiRoot: 'https://api.catalysis-hub.org/',
+  /* apiRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/',*/
   /* apiRoot: 'http://localhost:5000', */
-  /* graphQLRoot: (process.env.NODE_ENV !== 'production') ? '//localhost:5000/graphql' : '//catappdatabase.herokuapp.com/graphql', */
-  graphQLRoot: '//catappdatabase.herokuapp.com/graphql',
-  /* newGraphQLRoot: '//catappdatabase2-pr-48.herokuapp.com/graphql', */
+  /* newGraphQLRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/graphql', */
   newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
   docRoot: 'http://docs.catalysis-hub.org',
@@ -44,30 +40,30 @@ module.exports = {
 
       ],
     }, {
-      title: 'CatLearn',
-      route: '/catLearn',
-      tooltip: 'Machine learning based predictions.',
-    }, {
-      title: 'CatKit Slab Generator',
-      route: '/catKitDemo',
-      tooltip: 'Build your own slab geometry.',
-    }, {
+      //title: 'CatLearn',
+      //route: '/catLearn',
+      //tooltip: 'Machine learning based predictions.',
+    //}, {
+      //title: 'CatKit Slab Generator',
+      //route: '/catKitDemo',
+      //tooltip: 'Build your own slab geometry.',
+    //}, {
       title: 'GraphQL API',
       route: '/graphQLConsole',
       tooltip: 'Programmatic access to database.',
     }, {
-      title: 'Pourbaix Diagrams',
-      route: '/pourbaixDiagrams',
-      tooltip: 'Interactive electrochemical phase diagrams.',
-    }, {
+  //    title: 'Pourbaix Diagrams',
+  //    route: '/pourbaixDiagrams',
+  //    tooltip: 'Interactive electrochemical phase diagrams.',
+  //  }, {
       title: 'Profiles',
       route: '/profile',
       tooltip: 'Contributions by indidual (co-)authors.',
     }, {
-      title: 'Prototype Search',
-      route: '/prototypeSearch',
-      tooltip: 'Search for structures using Wyckoff points.',
-    }, {
+  //    title: 'Prototype Search',
+  //    route: '/prototypeSearch',
+  //    tooltip: 'Search for structures using Wyckoff points.',
+  //  }, {
       title: 'Publications',
       route: '/publications',
       tooltip: 'Calculated structures sorted by publications.',
@@ -79,18 +75,18 @@ module.exports = {
       title: 'Scaling Relations',
       route: '/scalingRelations',
       tooltip: 'App for exploring scaling relations.',
-    }, {
-      title: 'Upload Datasets',
-      route: '/upload',
-      tooltip: 'Contribute reaction energy calculations.',
-    }, {
-      title: 'Wyckoff Bulk Generator',
-      route: '/bulkGenerator',
-      tooltip: 'Construct arbitrary bulk lattices.',
-    }, {
-      title: 'Your Next App ...',
-      route: '/yourNextApp',
-      tooltip: 'How to write your own apps.',
+    //}, {
+    //  title: 'Upload Datasets',
+    //  route: '/upload',
+    //  tooltip: 'Contribute reaction energy calculations.',
+    //}, {
+    //  title: 'Wyckoff Bulk Generator',
+    //  route: '/bulkGenerator',
+    //  tooltip: 'Construct arbitrary bulk lattices.',
+    //}, {
+    //  title: 'Your Next App ...',
+    //  route: '/yourNextApp',
+    //  tooltip: 'How to write your own apps.',
     },
   ],
   people: {
