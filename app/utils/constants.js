@@ -3,11 +3,11 @@
 import packageJson from './package.json';
 
 module.exports = {
-  /* apiRoot: 'https://api.catalysis-hub.org/', */
-  apiRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/',
+  apiRoot: 'https://api.catalysis-hub.org/',
+  /* apiRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/',*/
   /* apiRoot: 'http://localhost:5000', */
-  newGraphQLRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/graphql',
-  /* newGraphQLRoot: '//api.catalysis-hub.org/graphql', */
+  /* newGraphQLRoot: 'https://backend-master-ihpitvqqnuqfw2e.herokuapp.com/graphql', */
+  newGraphQLRoot: '//api.catalysis-hub.org/graphql',
   uploadGraphQLRoot: '//api.catalysis-hub.org/apps/upload/graphql',
   docRoot: 'http://docs.catalysis-hub.org',
   whiteLabel: false,
