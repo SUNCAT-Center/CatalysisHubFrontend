@@ -100,7 +100,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     this.setState({
       downloadOpen: false,
     });
-    const url = `${apiRoot}/apps/catKitDemo/convert_atoms/`;
+    const url = `${apiRoot}/convert_atoms/`;
     const params = { params: {
       format,
       cif: this.props.cifdata,
