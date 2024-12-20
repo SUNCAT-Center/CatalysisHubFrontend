@@ -32,7 +32,7 @@ import GeometryCanvasCifdata from 'components/GeometryCanvasCifdata';
 import * as actions from './actions';
 import { styles } from './styles';
 
-export const outputFormats = ['db', 'cif', 'espresso-in', 'extxyz', 'gaussian-in', 'json', 'proteindatabank', 'traj','vasp', 'xyz',];
+export const outputFormats = ['cif', 'extxyz', 'json', 'proteindatabank', 'vasp', 'xyz'];
 
 const initialState = {
   open: false,
