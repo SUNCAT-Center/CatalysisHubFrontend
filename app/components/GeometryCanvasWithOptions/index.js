@@ -102,7 +102,7 @@ class GeometryCanvasWithOptions extends React.Component { // eslint-disable-line
     const url = `${apiRoot}/convert_atoms/`;
     const params = { params: {
       format,
-      cif: this.props.cifdata,
+      atoms: this.props.trajdata,
     } };
     axios.post(url, params, { headers: {
       'Content-Type': 'application/json',
