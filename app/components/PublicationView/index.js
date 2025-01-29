@@ -991,6 +991,7 @@ eV)
                                 </h2>
                                 <GeometryCanvasWithOptions
                                   cifdata={structures[i].Cifdata}
+                                  trajdata={structures[i].Trajdata}
                                   uniqueId={`slab_preview_${i}`}
                                   key={`slab_preview_${i}`}
                                   id={`slab_preview_${i}`}
