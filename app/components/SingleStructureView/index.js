@@ -95,6 +95,7 @@ class SingleStructureView extends React.Component { // eslint-disable-line react
                 id={this.props.selectedUUID}
                 x={x} y={y} z={z}
                 cifdata={this.props.selectedSystem.Cifdata}
+                trajdata={this.props.selectedSystem.Trajdata}
               />
             </Grid>
           </Grid>
